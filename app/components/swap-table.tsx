@@ -45,7 +45,7 @@ export default function SwapTable() {
 
       <div className="bg-gray-800 rounded-xl px-10 mt-8">
         {swapRows.map((row) => (
-          <SwapRow row={row} />
+          <SwapRow key={row.icon} row={row} />
         ))}
       </div>
     </div>

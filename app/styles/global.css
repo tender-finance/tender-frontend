@@ -33,3 +33,15 @@ body {
 .text-heading {
   font-family: "neue-machina", sans-serif;
 }
+
+.modal .ReactModal__Overlay--after-open {
+  background: rgba(0, 0, 0, 0.8) !important;
+}
+
+.modal .ReactModal__Content--after-open {
+  background: #1c1e22 !important;
+  border: 0 !important;
+  width: 550px;
+  padding: 0 !important;
+  margin: auto;
+}
