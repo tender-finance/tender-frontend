@@ -4,7 +4,8 @@
 
 @layer components {
   body {
-    @apply bg-brand-black text-white;
+    @apply bg-brand-black text-white bg-no-repeat;
+    background-image: url(/images/bg-top.svg);
   }
 
   .c {

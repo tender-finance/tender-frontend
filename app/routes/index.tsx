@@ -16,8 +16,8 @@ export default function Index() {
     },
   ];
   return (
-    <div className="c">
-      <div className="flex">
+    <div className="c ">
+      <div className="flex mb-44">
         <div className="mt-64 flex-grow">
           <div className="text-7xl text-heading mb-6">
             The Liquidity
