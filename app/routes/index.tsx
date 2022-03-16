@@ -1,7 +1,10 @@
 export default function Index() {
   return (
-    <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
-      <h1>Tender Finance</h1>
+    <div>
+      <div>Hero</div>
+      <div>Conversion Table</div>
+      <div>Stake Holders</div>
+      <div>Subscribe to our newsletter</div>
     </div>
   );
 }

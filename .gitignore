@@ -8,3 +8,6 @@ node_modules
 /build/
 /public/build
 /api/index.js
+
+/app/tailwind.css
+.DS_Store
