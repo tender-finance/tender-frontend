@@ -53,7 +53,35 @@ export default function Index() {
       </div>
 
       <div>Conversion Table</div>
-      <div>Stake Holders</div>
+      <div className="c mb-96">
+        <div className="flex">
+          <div className="max-w-sm ">
+            <div className="text-7xl text-heading mb-6">
+              Stake
+              <br /> Holders
+            </div>
+            <div className="leading-loose">
+              These stakeholders actively contribute as part of the community to
+              the Aave Protocol and its governance.
+            </div>
+          </div>
+          <div className="flex-grow">&nbsp;</div>
+          <div className="grid grid-cols-2 gap-8 mt-12">
+            <div>
+              <img className="w-52" src="/images/logo4.png" />
+            </div>
+            <div>
+              <img className="w-52" src="/images/logo1.png" />
+            </div>
+            <div>
+              <img className="w-52" src="/images/logo3.png" />
+            </div>
+            <div>
+              <img className="w-52" src="/images/logo2.png" />
+            </div>
+          </div>
+        </div>
+      </div>
       <div className="c">
         <SubscribeToNewsletter />
       </div>
