@@ -6,7 +6,8 @@
   body {
     @apply bg-brand-black text-white;
   }
-  .custom-class {
-    @apply ...;
+
+  .c {
+    @apply m-auto max-w-6xl px-4;
   }
 }

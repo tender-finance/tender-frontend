@@ -7,12 +7,16 @@ import {
   ScrollRestoration,
 } from "remix";
 import type { MetaFunction, LinksFunction } from "remix";
-import styles from "./tailwind.css";
+import tailwindStyles from "./tailwind.css";
+import globalStyles from "./styles/global.css";
 
 import Header from "~/components/Header";
 import Footer from "~/components/Footer";
 
-export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
+export const links: LinksFunction = () => [
+  { rel: "stylesheet", href: tailwindStyles },
+  { rel: "stylesheet", href: globalStyles },
+];
 export const meta: MetaFunction = () => {
   return { title: "New Remix App" };
 };
@@ -30,6 +34,7 @@ export default function App() {
         <Header />
         <Outlet />
         <Footer />
+
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
