@@ -1,14 +1,23 @@
 import SwapRow from "~/components/swap-row";
-import { SwapRow as SwapRowType } from "~/types/global";
+import { SwapRow as SwapRowType, TokenName, NetworkName } from "~/types/global";
 import { useState } from "react";
 import clsx from "clsx";
+import { useWeb3React } from "@web3-react/core";
+import { Web3Provider } from "@ethersproject/providers";
 
-export default function SwapTable() {
-  let [showUsd, setShowUsd] = useState<boolean>(true);
-  const swapRows: SwapRowType[] = [
-    {
-      icon: "/images/coin-icons/bitcoin.svg",
-      name: "Bitcoin BTC",
+import networks from "~/config/networks";
+import { tokenMetaData } from "~/config/tokenMetaData";
+
+const SUPPORTED_TOKENS = [TokenName.BTC, TokenName.ETH, TokenName.USDT];
+
+function generateSwapRows(
+  supportedRowTypes: TokenName[],
+  network: string
+): SwapRowType[] {
+  return supportedRowTypes.map((token: TokenName): SwapRowType => {
+    return {
+      ...tokenMetaData[token],
+      ...networks[network], // Attach contracts based on chain
       marketSizeUsd: "$1.87B",
       marketSizeNative: "3ETH",
       totalBorrowedUsd: "$1.39B",
@@ -17,32 +26,20 @@ export default function SwapTable() {
       depositDelta: 1.43,
       borrowApy: "3.98%",
       borrowApyDelta: 1.43,
-    },
-    {
-      icon: "/images/coin-icons/ethereum.svg",
-      name: "Ethereum ETH",
-      marketSizeUsd: "$1.87B",
-      marketSizeNative: "3ETH",
-      totalBorrowedUsd: "$1.39B",
-      totalBorrowedNative: "3ETH",
-      depositApy: "2.80%",
-      depositDelta: -1.43,
-      borrowApy: "3.98%",
-      borrowApyDelta: -1.43,
-    },
-    {
-      icon: "/images/coin-icons/tender.svg",
-      name: "Tender USDT",
-      marketSizeUsd: "$1.87B",
-      marketSizeNative: "3ETH",
-      totalBorrowedUsd: "$1.39B",
-      totalBorrowedNative: "3ETH",
-      depositApy: "2.80%",
-      depositDelta: 0,
-      borrowApy: "3.98%",
-      borrowApyDelta: 0,
-    },
-  ];
+    };
+  });
+}
+
+export default function SwapTable() {
+  let [showUsd, setShowUsd] = useState<boolean>(true);
+
+  const { chainId } = useWeb3React<Web3Provider>();
+
+  const swapRows: SwapRowType[] = generateSwapRows(
+    SUPPORTED_TOKENS,
+    NetworkName[chainId || 1]
+  );
+
   return (
     <div className="mb-60">
       <div className="text-center flex">
