@@ -6,6 +6,7 @@ import {
   Scripts,
   ScrollRestoration,
 } from "remix";
+
 import type { MetaFunction, LinksFunction } from "remix";
 import tailwindStyles from "./tailwind.css";
 import globalStyles from "./styles/global.css";
@@ -13,13 +14,24 @@ import globalStyles from "./styles/global.css";
 import Header from "~/components/Header";
 import Footer from "~/components/Footer";
 
+import { Web3ReactProvider } from "@web3-react/core";
+import { Web3Provider } from "@ethersproject/providers";
+
+import type {
+  ExternalProvider,
+  JsonRpcFetchFunc,
+} from "@ethersproject/providers";
+
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: tailwindStyles },
   { rel: "stylesheet", href: globalStyles },
 ];
 export const meta: MetaFunction = () => {
-  return { title: "New Remix App" };
+  return { title: "Tender.Finance" };
 };
+function getLibrary(provider: ExternalProvider | JsonRpcFetchFunc, connector) {
+  return new Web3Provider(provider);
+}
 
 export default function App() {
   return (
@@ -32,8 +44,10 @@ export default function App() {
       </head>
       <body>
         <div id="m"></div>
-        <Header />
-        <Outlet />
+        <Web3ReactProvider getLibrary={getLibrary}>
+          <Header />
+          <Outlet />
+        </Web3ReactProvider>
         <Footer />
 
         <ScrollRestoration />

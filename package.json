@@ -16,8 +16,12 @@
     "start": "cross-env NODE_ENV=production remix-serve build"
   },
   "dependencies": {
+    "@ethersproject/providers": "^5.6.1",
     "@remix-run/react": "^1.2.3",
     "@remix-run/vercel": "^1.2.3",
+    "@web3-react/core": "^6.1.9",
+    "@web3-react/injected-connector": "^6.0.7",
+    "clsx": "^1.1.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-modal": "^3.14.4",
