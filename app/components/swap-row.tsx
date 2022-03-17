@@ -4,11 +4,12 @@ import { useState } from "react";
 
 interface Props {
   row: SwapRow;
+  showUsd: boolean;
 }
 
 ReactModal.setAppElement("#m");
 
-export default function SwapRow({ row }: Props) {
+export default function SwapRow({ row, showUsd }: Props) {
   const [isModalOpen, setIsModalOpen] = useState<boolean>();
   return (
     <div>
@@ -20,8 +21,16 @@ export default function SwapRow({ row }: Props) {
           <div style={{ width: "250px" }}>{row.name}</div>
         </div>
         <div className="grid grid-cols-4 flex-grow">
-          <div>{row.marketSize}</div>
-          <div>{row.totalBorrowed}</div>
+          {showUsd ? (
+            <div>{row.marketSizeUsd}</div>
+          ) : (
+            <div>{row.marketSizeNative}</div>
+          )}
+          {showUsd ? (
+            <div>{row.totalBorrowedUsd}</div>
+          ) : (
+            <div>{row.totalBorrowedNative}</div>
+          )}
           <div>{row.depositApy}</div>
           <div>{row.borrowApy}</div>
         </div>
@@ -40,7 +49,7 @@ export default function SwapRow({ row }: Props) {
       <div>
         <ReactModal
           shouldCloseOnOverlayClick={true}
-          isOpen={isModalOpen}
+          isOpen={!!isModalOpen}
           onRequestClose={() => setIsModalOpen(!isModalOpen)}
           portalClassName="modal"
         >
