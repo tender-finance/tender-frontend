@@ -10,3 +10,41 @@ export interface SwapRow {
   borrowApy: string;
   borrowApyDelta: number;
 }
+
+export interface Token {
+  icon: string;
+  name: string;
+}
+
+export interface Network {}
+
+export interface Networks {
+  mainnet: Network;
+}
+
+export enum TokenName {
+  BTC = "BTC",
+  ETH = "ETH",
+  USDT = "USDT",
+}
+
+export enum NetworkName {
+  mainnet = 1,
+  ropsten = 3,
+  rinkeby = 4,
+  goerli = 5,
+  kovan = 42,
+  xdai = 100,
+  orchid = 30,
+  orchidTestnet = 31,
+  core = 99,
+  sokol = 77,
+  classic = 61,
+  ubiq = 8,
+  thundercore = 108,
+  thundercoreTestnet = 18,
+  lightstreams = 163,
+  fuse = 122,
+  matic = 137,
+  maticMumbai = 80001,
+}
