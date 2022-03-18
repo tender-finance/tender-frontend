@@ -11,6 +11,7 @@ interface TokenMetaData {
   [TokenName.BTC]: TokenMetaDatum;
   [TokenName.USDT]: TokenMetaDatum;
   [TokenName.ETH]: TokenMetaDatum;
+  [TokenName.DAI]: TokenMetaDatum;
 }
 
 const tokenMetaData: TokenMetaData = {
@@ -31,6 +32,12 @@ const tokenMetaData: TokenMetaData = {
     name: "Tender USDT",
     symbol: "USDT",
     cTokenSymbol: "cUSDC",
+  },
+  [TokenName.DAI]: {
+    icon: "/images/coin-icons/tender.svg",
+    name: "Tender DAI",
+    symbol: "DAI",
+    cTokenSymbol: "cDAI",
   },
 };
 

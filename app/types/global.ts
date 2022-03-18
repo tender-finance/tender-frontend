@@ -16,10 +16,12 @@ export interface SwapRow {
 export interface Token {
   icon: string;
   name: string;
+  decimals: number;
 }
 
 export interface cToken {
   name: string;
+  address: string;
 }
 
 export interface Network {}
@@ -33,6 +35,7 @@ export enum TokenName {
   BTC = "BTC",
   ETH = "ETH",
   USDT = "USDT",
+  DAI = "DAI",
 }
 
 export enum NetworkName {
