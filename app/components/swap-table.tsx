@@ -8,8 +8,8 @@ import { Web3Provider } from "@ethersproject/providers";
 import networks from "~/config/networks";
 import { tokenMetaData } from "~/config/tokenMetaData";
 
-// const SUPPORTED_TOKENS = [TokenName.BTC, TokenName.ETH, TokenName.USDT];
-const SUPPORTED_TOKENS = [TokenName.USDT];
+const SUPPORTED_TOKENS = [TokenName.BTC, TokenName.ETH, TokenName.USDT];
+// const SUPPORTED_TOKENS = [TokenName.USDT];
 
 function generateSwapRows(
   supportedRowTypes: TokenName[],
