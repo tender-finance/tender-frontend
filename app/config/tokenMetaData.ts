@@ -3,7 +3,8 @@ import { TokenName } from "~/types/global";
 interface TokenMetaDatum {
   icon: string;
   name: string;
-  tokenName: string;
+  symbol: string;
+  cTokenSymbol: string;
 }
 
 interface TokenMetaData {
@@ -16,17 +17,20 @@ const tokenMetaData: TokenMetaData = {
   [TokenName.BTC]: {
     icon: "/images/coin-icons/bitcoin.svg",
     name: "Bitcoin BTC",
-    tokenName: "BTC",
+    symbol: "BTC",
+    cTokenSymbol: "WBTC",
   },
   [TokenName.ETH]: {
     icon: "/images/coin-icons/ethereum.svg",
     name: "Ethereum ETH",
-    tokenName: "ETH",
+    symbol: "ETH",
+    cTokenSymbol: "cETH",
   },
   [TokenName.USDT]: {
     icon: "/images/coin-icons/tender.svg",
     name: "Tender USDT",
-    tokenName: "USDT",
+    symbol: "USDT",
+    cTokenSymbol: "cUSDC",
   },
 };
 

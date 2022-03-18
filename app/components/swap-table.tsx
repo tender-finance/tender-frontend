@@ -1,6 +1,6 @@
 import SwapRow from "~/components/swap-row";
 import { SwapRow as SwapRowType, TokenName, NetworkName } from "~/types/global";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import clsx from "clsx";
 import { useWeb3React } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
@@ -8,16 +8,20 @@ import { Web3Provider } from "@ethersproject/providers";
 import networks from "~/config/networks";
 import { tokenMetaData } from "~/config/tokenMetaData";
 
-const SUPPORTED_TOKENS = [TokenName.BTC, TokenName.ETH, TokenName.USDT];
+// const SUPPORTED_TOKENS = [TokenName.BTC, TokenName.ETH, TokenName.USDT];
+const SUPPORTED_TOKENS = [TokenName.USDT];
 
 function generateSwapRows(
   supportedRowTypes: TokenName[],
-  network: string
+  networkName: string
 ): SwapRowType[] {
-  return supportedRowTypes.map((token: TokenName): SwapRowType => {
+  return supportedRowTypes.map((tokenName: TokenName): SwapRowType => {
+    // Map current conntected network to config data
+    const networkData = networks[networkName];
+    const tokenMetaDatum = tokenMetaData[tokenName];
+
     return {
-      ...tokenMetaData[token],
-      ...networks[network], // Attach contracts based on chain
+      ...tokenMetaDatum,
       marketSizeUsd: "$1.87B",
       marketSizeNative: "3ETH",
       totalBorrowedUsd: "$1.39B",
@@ -26,6 +30,8 @@ function generateSwapRows(
       depositDelta: 1.43,
       borrowApy: "3.98%",
       borrowApyDelta: 1.43,
+      token: networkData.Tokens[tokenMetaDatum.symbol],
+      cToken: networkData.cTokens[tokenMetaDatum.cTokenSymbol],
     };
   });
 }
@@ -39,6 +45,8 @@ export default function SwapTable() {
     SUPPORTED_TOKENS,
     NetworkName[chainId || 1]
   );
+
+  console.log(swapRows);
 
   return (
     <div className="mb-60">

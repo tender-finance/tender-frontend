@@ -9,6 +9,8 @@ export interface SwapRow {
   depositDelta: number;
   borrowApy: string;
   borrowApyDelta: number;
+  token: Token;
+  cToken: cToken;
 }
 
 export interface Token {
@@ -16,10 +18,15 @@ export interface Token {
   name: string;
 }
 
+export interface cToken {
+  name: string;
+}
+
 export interface Network {}
 
 export interface Networks {
   mainnet: Network;
+  rinkeby: Network;
 }
 
 export enum TokenName {
