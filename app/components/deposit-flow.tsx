@@ -38,23 +38,23 @@ export default function DepositFlow({ closeModal, row }: Props) {
           Widthdraw
         </button>
       </div>
-      <div className="p-6" style={{ background: "#1C1E22" }}>
-        <div className="flex">
+      <div className="py-6 px-12" style={{ background: "#1C1E22" }}>
+        <div className="flex mb-4">
           <span className="font-bold mr-3">Supply Rates</span>{" "}
           <img src="/images/box-arrow.svg" alt="box arrow" />
         </div>
-        <div className="flex items-center">
-          <div>
+        <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 pb-6">
+          <div className="mr-3">
             <img src="/images/supply-icon.svg" />
           </div>
-          <div>Supply APY</div>
+          <div className="flex-grow">Supply APY</div>
           <div>X.XX%</div>
         </div>
-        <div className="flex items-center">
-          <div>
+        <div className="flex items-center text-gray-400 pt-4 pb-8">
+          <div className="mr-3">
             <img src="/images/distribution-icon.svg" />
           </div>
-          <div>Distribution APY</div>
+          <div className="flex-grow">Distribution APY</div>
           <div>0%</div>
         </div>
 
