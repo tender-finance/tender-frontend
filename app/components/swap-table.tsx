@@ -25,8 +25,6 @@ function generateSwapRows(
 ): SwapRowType[] {
   return supportedRowTypes.map((tokenName: TokenName): SwapRowType => {
     // Map current conntected network to config data
-    let c = networks;
-    debugger;
     const networkData = networks[networkName];
     const tokenMetaDatum = tokenMetaData[tokenName];
 
@@ -63,16 +61,35 @@ export default function SwapTable() {
   console.log(swapRows);
 
   useEffect(() => {
-    async function fetchBlah(): Promise<SwapRowType[]> {
-      return await swapRows.map((swapRow: SwapRowType): SwapRowType => {
-        return { ...swapRow, depositApy: "changed" };
-      });
+    console.log(Date.now());
+    async function loadFi() {
+      console.log(swapRows);
+      let newSwapRows = await Promise.all(
+        swapRows.map(async (s: SwapRowType): Promise<SwapRowType> => {
+          // TODO: This could get slow, need a cached API
+          const depositApy: string = await formattedDepositApy(
+            s.token,
+            s.cToken
+          );
+          console.log(depositApy);
+          return {
+            ...s,
+            depositApy,
+          };
+        })
+      );
+
+      //   swapRows.map(async (s: SwapRowType): Promise<SwapRowType> => {
+      //     return {
+      //       ...s,
+      //       depositApy,
+      //     };
+      //   })
+      setSwapRows(newSwapRows);
     }
 
-    setSwapRows(fetchBlah());
-    //   // TODO: This could get slow, need a cached API
-    //   let depositApy = await formattedDepositApy(token, cToken);
-  });
+    loadFi();
+  }, [0]);
 
   return (
     <div className="mb-60">

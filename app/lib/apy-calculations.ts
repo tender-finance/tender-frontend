@@ -1,5 +1,5 @@
-import ethers from "ethers";
-import { sampleCTokenAbi } from "~/config/sampleCTokenAbi.js";
+import { ethers } from "ethers";
+import sampleCTokenAbi from "~/config/sampleCTokenAbi";
 import { Token, cToken } from "~/types/global";
 
 // https://compound.finance/docs#protocol-math
@@ -14,6 +14,7 @@ async function calculateDepositApy(
   // TODO: Use different ABI for cEth and cWBTC
   const cTokenContract = new ethers.Contract(cToken.address, sampleCTokenAbi);
 
+  return 1337;
   const supplyRatePerBlock = await cTokenContract.supplyRatePerBlock();
 
   const supplyApy =
