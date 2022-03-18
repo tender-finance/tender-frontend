@@ -9,7 +9,7 @@ import {
 import { useEffect, useState } from "react";
 import clsx from "clsx";
 import { useWeb3React } from "@web3-react/core";
-import { Web3Provider } from "@ethersproject/providers";
+import { Provider, Web3Provider } from "@ethersproject/providers";
 
 import networks from "~/config/networks";
 import { tokenMetaData } from "~/config/tokenMetaData";
@@ -50,7 +50,7 @@ function generateSwapRows(
 export default function SwapTable() {
   let [showUsd, setShowUsd] = useState<boolean>(true);
 
-  const { chainId } = useWeb3React<Web3Provider>();
+  const { chainId, library } = useWeb3React<Web3Provider>();
   const initialRows: SwapRowType[] = generateSwapRows(
     SUPPORTED_TOKENS,
     NetworkName[chainId || 1]
@@ -58,34 +58,49 @@ export default function SwapTable() {
 
   let [swapRows, setSwapRows] = useState<SwapRowType[]>(initialRows);
 
-  console.log(swapRows);
+  console.log("intial rows", swapRows);
 
   useEffect(() => {
-    console.log(Date.now());
-    async function loadFi() {
-      console.log(swapRows);
-      let newSwapRows = await Promise.all(
-        swapRows.map(async (s: SwapRowType): Promise<SwapRowType> => {
-          // TODO: This could get slow, need a cached API
-          const depositApy: string = await formattedDepositApy(
-            s.token,
-            s.cToken
-          );
-          console.log(depositApy);
-          return {
-            ...s,
-            depositApy,
-          };
-        })
-      );
+    console.log("now", Date.now());
 
-      //   swapRows.map(async (s: SwapRowType): Promise<SwapRowType> => {
-      //     return {
-      //       ...s,
-      //       depositApy,
-      //     };
-      //   })
-      setSwapRows(newSwapRows);
+    async function loadFi() {
+      console.log("loadFi");
+
+      if (!library) {
+        console.log("No library");
+        return;
+      }
+
+      // TODO: Need to use Alchemy to always have a connection
+      if (!library?.provider) {
+        console.error("Error: no provider");
+        return;
+      }
+
+      // @ts-ignore TODO
+      const provider: Provider = library?.provider;
+      console.log("swapRows", swapRows);
+
+      try {
+        let newSwapRows = await Promise.all(
+          swapRows.map(async (s: SwapRowType): Promise<SwapRowType> => {
+            // TODO: This could get slow, need a cached API
+            const depositApy: string = await formattedDepositApy(
+              s.token,
+              s.cToken,
+              provider
+            );
+            console.log("deposite Apy", depositApy);
+            return {
+              ...s,
+              depositApy,
+            };
+          })
+        );
+        setSwapRows(newSwapRows);
+      } catch (error) {
+        console.error(error);
+      }
     }
 
     loadFi();
