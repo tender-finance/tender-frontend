@@ -1,17 +1,14 @@
 import { ethers } from "ethers";
 import sampleCTokenAbi from "~/config/sampleCTokenAbi";
 import { Token, cToken } from "~/types/global";
-import { Provider } from "@ethersproject/providers";
+import { JsonRpcSigner } from "@ethersproject/providers";
 
 // https://compound.finance/docs#protocol-math
 async function calculateDepositApy(
   token: Token,
   cToken: cToken,
-  provider: Provider
+  signer: JsonRpcSigner
 ): Promise<number> {
-  return 1;
-  console.log("in calculate");
-
   const underlyingAssetMantissa = token.decimals;
   const blocksPerDay = 6570; // 13.15 seconds per block
   const daysPerYear = 365;
@@ -20,13 +17,9 @@ async function calculateDepositApy(
   const cTokenContract = new ethers.Contract(
     cToken.address,
     sampleCTokenAbi,
-    provider
+    signer
   );
 
-  let c = cTokenContract;
-
-  console.log("suppply");
-  // debugger;
   const supplyRatePerBlock = await cTokenContract.supplyRatePerBlock();
 
   const supplyApy =
@@ -43,9 +36,9 @@ async function calculateDepositApy(
 async function formattedDepositApy(
   token: Token,
   cToken: cToken,
-  provider: Provider
+  signer: JsonRpcSigner
 ): Promise<string> {
-  let apy: number = await calculateDepositApy(token, cToken, provider);
+  let apy: number = await calculateDepositApy(token, cToken, signer);
 
   return apy.toString();
 }

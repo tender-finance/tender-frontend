@@ -9,7 +9,7 @@ import {
 import { useEffect, useState } from "react";
 import clsx from "clsx";
 import { useWeb3React } from "@web3-react/core";
-import { Provider, Web3Provider } from "@ethersproject/providers";
+import { JsonRpcSigner, Web3Provider } from "@ethersproject/providers";
 
 import networks from "~/config/networks";
 import { tokenMetaData } from "~/config/tokenMetaData";
@@ -58,11 +58,7 @@ export default function SwapTable() {
 
   let [swapRows, setSwapRows] = useState<SwapRowType[]>(initialRows);
 
-  console.log("intial rows", swapRows);
-
   useEffect(() => {
-    console.log("now", Date.now());
-
     async function loadFi() {
       console.log("loadFi");
 
@@ -72,14 +68,12 @@ export default function SwapTable() {
       }
 
       // TODO: Need to use Alchemy to always have a connection
-      if (!library?.provider) {
+      if (!library?.getSigner()) {
         console.error("Error: no provider");
         return;
       }
 
-      // @ts-ignore TODO
-      const provider: Provider = library?.provider;
-      console.log("swapRows", swapRows);
+      const signer: JsonRpcSigner = library?.getSigner();
 
       try {
         let newSwapRows = await Promise.all(
@@ -88,9 +82,9 @@ export default function SwapTable() {
             const depositApy: string = await formattedDepositApy(
               s.token,
               s.cToken,
-              provider
+              signer
             );
-            console.log("deposite Apy", depositApy);
+
             return {
               ...s,
               depositApy,
@@ -104,7 +98,7 @@ export default function SwapTable() {
     }
 
     loadFi();
-  }, [0]);
+  }, [library]);
 
   return (
     <div className="mb-60">
