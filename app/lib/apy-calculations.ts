@@ -8,15 +8,30 @@ function formatApy(apy: number): string {
 }
 
 // https://compound.finance/docs#protocol-math
+
+function calculateApy(
+  underlyingAssetMantissa: number,
+  ratePerBlock: number
+): number {
+  const blocksPerDay = 6570; // 13.15 seconds per block
+  const daysPerYear = 365;
+
+  const apy =
+    (Math.pow(
+      (ratePerBlock / underlyingAssetMantissa) * blocksPerDay + 1,
+      daysPerYear
+    ) -
+      1) *
+    100;
+
+  return apy;
+}
+
 async function calculateDepositApy(
   token: Token,
   cToken: cToken,
   signer: JsonRpcSigner
 ): Promise<number> {
-  const underlyingAssetMantissa = token.decimals;
-  const blocksPerDay = 6570; // 13.15 seconds per block
-  const daysPerYear = 365;
-
   // TODO: Use different ABI for cEth and cWBTC
   const cTokenContract = new ethers.Contract(
     cToken.address,
@@ -25,16 +40,11 @@ async function calculateDepositApy(
   );
 
   const supplyRatePerBlock = await cTokenContract.supplyRatePerBlock();
+  const underlyingAssetMantissa = token.decimals;
 
-  const supplyApy =
-    (Math.pow(
-      (supplyRatePerBlock / underlyingAssetMantissa) * blocksPerDay + 1,
-      daysPerYear
-    ) -
-      1) *
-    100;
+  const apy = calculateApy(underlyingAssetMantissa, supplyRatePerBlock);
 
-  return supplyApy;
+  return apy;
 }
 
 async function calculateBorrowApy(
@@ -42,10 +52,6 @@ async function calculateBorrowApy(
   cToken: cToken,
   signer: JsonRpcSigner
 ): Promise<number> {
-  const underlyingAssetMantissa = token.decimals;
-  const blocksPerDay = 6570; // 13.15 seconds per block
-  const daysPerYear = 365;
-
   // TODO: Use different ABI for cEth and cWBTC
   const cTokenContract = new ethers.Contract(
     cToken.address,
@@ -54,16 +60,11 @@ async function calculateBorrowApy(
   );
 
   const borrowRatePerBlock = await cTokenContract.borrowRatePerBlock();
+  const underlyingAssetMantissa = token.decimals;
 
-  const borrowApy =
-    (Math.pow(
-      (borrowRatePerBlock / underlyingAssetMantissa) * blocksPerDay + 1,
-      daysPerYear
-    ) -
-      1) *
-    100;
+  const apy = calculateApy(underlyingAssetMantissa, borrowRatePerBlock);
 
-  return borrowApy;
+  return apy;
 }
 
 async function formattedDepositApy(
