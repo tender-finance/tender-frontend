@@ -14,7 +14,10 @@ import { JsonRpcSigner, Web3Provider } from "@ethersproject/providers";
 import networks from "~/config/networks";
 import { tokenMetaData } from "~/config/tokenMetaData";
 
-import { formattedDepositApy } from "~/lib/apy-calculations";
+import {
+  formattedBorrowApy,
+  formattedDepositApy,
+} from "~/lib/apy-calculations";
 
 // const SUPPORTED_TOKENS = [TokenName.BTC, TokenName.ETH, TokenName.USDT];
 const SUPPORTED_TOKENS = [TokenName.DAI];
@@ -85,9 +88,16 @@ export default function SwapTable() {
               signer
             );
 
+            const borrowApy: string = await formattedBorrowApy(
+              s.token,
+              s.cToken,
+              signer
+            );
+
             return {
               ...s,
               depositApy,
+              borrowApy,
             };
           })
         );
