@@ -53,64 +53,63 @@ function generateSwapRows(
 
 export default function SwapTable() {
   let [showUsd, setShowUsd] = useState<boolean>(true);
+  let [swapRows, setSwapRows] = useState<SwapRowType[]>([]);
 
   const { chainId, library } = useWeb3React<Web3Provider>();
-  const initialRows: SwapRowType[] = generateSwapRows(
-    SUPPORTED_TOKENS,
-    NetworkName[chainId || 1]
-  );
-
-  let [swapRows, setSwapRows] = useState<SwapRowType[]>(initialRows);
 
   useEffect(() => {
-    async function loadFi() {
-      console.log("loadFi");
-
-      if (!library) {
-        console.log("No library");
-        return;
-      }
-
-      // TODO: Need to use Alchemy to always have a connection
-      if (!library?.getSigner()) {
-        console.error("Error: no provider");
-        return;
-      }
-
-      const signer: JsonRpcSigner = library?.getSigner();
-
-      try {
-        let newSwapRows = await Promise.all(
-          swapRows.map(async (s: SwapRowType): Promise<SwapRowType> => {
-            // TODO: This could get slow, need a cached API
-            const depositApy: string = await formattedDepositApy(
-              s.token,
-              s.cToken,
-              signer
-            );
-
-            const borrowApy: string = await formattedBorrowApy(
-              s.token,
-              s.cToken,
-              signer
-            );
-
-            return {
-              ...s,
-              depositApy,
-              borrowApy,
-            };
-          })
-        );
-        setSwapRows(newSwapRows);
-      } catch (error) {
-        console.error(error);
-      }
+    if (!chainId) {
+      return;
     }
 
+    const rows: SwapRowType[] = generateSwapRows(
+      SUPPORTED_TOKENS,
+      NetworkName[chainId]
+    );
+
+    setSwapRows(rows);
+
+    // async function loadFi() {
+    //   console.log("loadFi");
+    //   if (!library) {
+    //     console.log("No library");
+    //     return;
+    //   }
+    //   // TODO: Need to use Alchemy to always have a connection
+    //   if (!library?.getSigner()) {
+    //     console.error("Error: no provider");
+    //     return;
+    //   }
+    //   const signer: JsonRpcSigner = library?.getSigner();
+    //   try {
+    //     let newSwapRows = await Promise.all(
+    //       swapRows.map(async (s: SwapRowType): Promise<SwapRowType> => {
+    //         // TODO: This could get slow, need a cached API
+    //         const depositApy: string = await formattedDepositApy(
+    //           s.token,
+    //           s.cToken,
+    //           signer
+    //         );
+    //         const borrowApy: string = await formattedBorrowApy(
+    //           s.token,
+    //           s.cToken,
+    //           signer
+    //         );
+    //         return {
+    //           ...s,
+    //           depositApy,
+    //           borrowApy,
+    //         };
+    //       })
+    //     );
+    //     setSwapRows(newSwapRows);
+    //   } catch (error) {
+    //     console.error(error);
+    //   }
+    // }
     // loadFi();
     // TODO something here
-  }, [library]);
+  }, [library, chainId]);
 
   return (
     <div className="mb-60">
