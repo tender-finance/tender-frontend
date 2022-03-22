@@ -14,7 +14,6 @@ import { JsonRpcSigner, Web3Provider } from "@ethersproject/providers";
 import networks from "~/config/networks";
 import { tokenMetaData } from "~/config/tokenMetaData";
 
-
 import {
   formattedBorrowApy,
   formattedDepositApy,
@@ -29,6 +28,7 @@ function generateSwapRows(
 ): SwapRowType[] {
   return supportedRowTypes.map((tokenName: TokenName): SwapRowType => {
     // Map current conntected network to config data
+    // @ts-ignore
     const networkData = networks[networkName];
     const tokenMetaDatum = tokenMetaData[tokenName];
 
@@ -108,7 +108,8 @@ export default function SwapTable() {
       }
     }
 
-    loadFi();
+    // loadFi();
+    // TODO something here
   }, [library]);
 
   return (

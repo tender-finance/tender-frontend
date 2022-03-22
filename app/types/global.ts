@@ -17,6 +17,7 @@ export interface Token {
   icon: string;
   name: string;
   decimals: number;
+  address: string;
 }
 
 export interface cToken {

@@ -1,12 +1,79 @@
-import { SwapRow } from "~/types/global";
-import { useState } from "react";
+import { cToken, SwapRow, Token } from "~/types/global";
+import { useEffect, useState } from "react";
+import { Signer } from "ethers";
+import { useWeb3React } from "@web3-react/core";
+import { JsonRpcSigner, Web3Provider } from "@ethersproject/providers";
+import SampleErc20Abi from "~/config/sampleErc20Abi";
+import SampleCTokenAbi from "~/config/sampleCTokenAbi";
+import { ethers } from "ethers";
+
 interface Props {
   closeModal: Function;
   row: SwapRow;
 }
+
+async function enable(
+  signer: Signer,
+  token: Token,
+  cToken: cToken
+): Promise<void> {
+  console.log("boop", signer, token, cToken);
+
+  // const isCEth = token.address ? false : true;
+  // if (isCEth) {
+  //   throw "Don't need to approve ETH";
+  // }
+
+  // @ts-ignore
+  let contract = new ethers.Contract(token.address, SampleErc20Abi, signer);
+  let approvalVal = "1000000000000000000";
+  let approvalTx = await contract.approve(cToken.address, approvalVal);
+}
+
+async function deposit(value: string, signer: Signer, cToken: cToken) {
+  // if (isCEth) {
+  //   console.log("supply() w/ cEth");
+
+  //   const formattedValue = ethers.utils.parseEther(value);
+  //   console.log("input value:", value, "formattedValue:", formattedValue.toString());
+
+  //   let contract = new ethers.Contract(address, sampleAbi, web3React.library?.getSigner());
+  //   let tx = await contract.mint({ value: ethers.utils.parseEther(value) });
+  // }
+  // else {
+  console.log("supply() with cToken", cToken.name, cToken.address);
+
+  const formattedValue = ethers.BigNumber.from(value);
+  console.log(
+    "input value:",
+    value,
+    "formattedValue:",
+    formattedValue.toString()
+  );
+
+  let contract = new ethers.Contract(cToken.address, SampleCTokenAbi, signer);
+  let tx = await contract.mint(formattedValue);
+  // }
+}
+
 export default function DepositFlow({ closeModal, row }: Props) {
   let [isSupplying, setIsSupplying] = useState<boolean>(true);
   let [isEnabled, setIsEnabled] = useState<boolean>(false);
+  let [signer, setSigner] = useState<JsonRpcSigner | null>(null);
+  let [value, setValue] = useState<string>("");
+
+  const { library } = useWeb3React<Web3Provider>();
+
+  useEffect(() => {
+    if (!library) {
+      // DO we need to reset signer if null here?
+      return;
+    }
+    setSigner(library.getSigner());
+  }, [library]);
+
+  // no library?
+  // library.getSigner();
 
   return isSupplying ? (
     <div>
@@ -36,8 +103,9 @@ export default function DepositFlow({ closeModal, row }: Props) {
           </div>
         )}
         {isEnabled && (
-          <div className="flex flex-col justify-center items-center ">
+          <div className="flex flex-col justify-center items-center overflow-hidden">
             <input
+              onChange={(e) => setValue(e.target.value)}
               className="bg-transparent text-6xl text-white text-center outline-none"
               placeholder="0"
             />
@@ -81,17 +149,37 @@ export default function DepositFlow({ closeModal, row }: Props) {
         </div>
 
         <div className="mb-8">
-          {!isEnabled && (
+          {!signer && <div>Connect wallet to get started</div>}
+          {signer && !isEnabled && (
             <button
-              onClick={() => setIsEnabled(true)}
+              onClick={async () => {
+                try {
+                  // @ts-ignore existence of signer is gated above.
+                  await enable(signer, row.token, row.cToken);
+                  setIsEnabled(true);
+                } catch (e) {
+                  console.error(e);
+                }
+              }}
               className="py-4 text-center text-white font-bold rounded bg-brand-green w-full"
             >
               Enable
             </button>
           )}
 
-          {isEnabled && (
-            <button className="py-4 text-center text-white font-bold rounded bg-brand-green w-full">
+          {signer && isEnabled && (
+            <button
+              onClick={async () => {
+                try {
+                  // TODO: error state no value
+                  // @ts-ignore existence of signer is gated above.
+                  deposit(value, signer, row.cToken);
+                } catch (e) {
+                  console.error(e);
+                }
+              }}
+              className="py-4 text-center text-white font-bold rounded bg-brand-green w-full"
+            >
               Deposit
             </button>
           )}
