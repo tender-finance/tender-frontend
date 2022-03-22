@@ -1,15 +1,27 @@
 import SwapRow from "~/components/swap-row";
-import { SwapRow as SwapRowType, TokenName, NetworkName } from "~/types/global";
+import {
+  SwapRow as SwapRowType,
+  TokenName,
+  NetworkName,
+  Token,
+  cToken,
+} from "~/types/global";
 import { useEffect, useState } from "react";
 import clsx from "clsx";
 import { useWeb3React } from "@web3-react/core";
-import { Web3Provider } from "@ethersproject/providers";
+import { JsonRpcSigner, Web3Provider } from "@ethersproject/providers";
 
 import networks from "~/config/networks";
 import { tokenMetaData } from "~/config/tokenMetaData";
 
-const SUPPORTED_TOKENS = [TokenName.BTC, TokenName.ETH, TokenName.USDT];
-// const SUPPORTED_TOKENS = [TokenName.USDT];
+
+import {
+  formattedBorrowApy,
+  formattedDepositApy,
+} from "~/lib/apy-calculations";
+
+// const SUPPORTED_TOKENS = [TokenName.BTC, TokenName.ETH, TokenName.USDT];
+const SUPPORTED_TOKENS = [TokenName.DAI];
 
 function generateSwapRows(
   supportedRowTypes: TokenName[],
@@ -20,18 +32,21 @@ function generateSwapRows(
     const networkData = networks[networkName];
     const tokenMetaDatum = tokenMetaData[tokenName];
 
+    let token: Token = networkData.Tokens[tokenMetaDatum.symbol];
+    let cToken: cToken = networkData.cTokens[tokenMetaDatum.cTokenSymbol];
+
     return {
       ...tokenMetaDatum,
-      marketSizeUsd: "$1.87B",
-      marketSizeNative: "3ETH",
-      totalBorrowedUsd: "$1.39B",
-      totalBorrowedNative: "3ETH",
-      depositApy: "2.80%",
+      marketSizeUsd: "loading",
+      marketSizeNative: "loading",
+      totalBorrowedUsd: "loading",
+      totalBorrowedNative: "loading",
+      depositApy: "loading",
       depositDelta: 1.43,
-      borrowApy: "3.98%",
+      borrowApy: "loading",
       borrowApyDelta: 1.43,
-      token: networkData.Tokens[tokenMetaDatum.symbol],
-      cToken: networkData.cTokens[tokenMetaDatum.cTokenSymbol],
+      token: token,
+      cToken: cToken,
     };
   });
 }
@@ -39,14 +54,62 @@ function generateSwapRows(
 export default function SwapTable() {
   let [showUsd, setShowUsd] = useState<boolean>(true);
 
-  const { chainId } = useWeb3React<Web3Provider>();
-
-  const swapRows: SwapRowType[] = generateSwapRows(
+  const { chainId, library } = useWeb3React<Web3Provider>();
+  const initialRows: SwapRowType[] = generateSwapRows(
     SUPPORTED_TOKENS,
     NetworkName[chainId || 1]
   );
 
-  console.log(swapRows);
+  let [swapRows, setSwapRows] = useState<SwapRowType[]>(initialRows);
+
+  useEffect(() => {
+    async function loadFi() {
+      console.log("loadFi");
+
+      if (!library) {
+        console.log("No library");
+        return;
+      }
+
+      // TODO: Need to use Alchemy to always have a connection
+      if (!library?.getSigner()) {
+        console.error("Error: no provider");
+        return;
+      }
+
+      const signer: JsonRpcSigner = library?.getSigner();
+
+      try {
+        let newSwapRows = await Promise.all(
+          swapRows.map(async (s: SwapRowType): Promise<SwapRowType> => {
+            // TODO: This could get slow, need a cached API
+            const depositApy: string = await formattedDepositApy(
+              s.token,
+              s.cToken,
+              signer
+            );
+
+            const borrowApy: string = await formattedBorrowApy(
+              s.token,
+              s.cToken,
+              signer
+            );
+
+            return {
+              ...s,
+              depositApy,
+              borrowApy,
+            };
+          })
+        );
+        setSwapRows(newSwapRows);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    loadFi();
+  }, [library]);
 
   return (
     <div className="mb-60">

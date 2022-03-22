@@ -35,7 +35,7 @@ export default function DepositFlow({ closeModal, row }: Props) {
           className="flex-grow py-3"
           onClick={() => setIsSupplying(false)}
         >
-          Widthdraw
+          Withdraw
         </button>
       </div>
       <div className="py-6 px-12" style={{ background: "#1C1E22" }}>
@@ -100,7 +100,7 @@ export default function DepositFlow({ closeModal, row }: Props) {
             className="flex-grow py-3 text-brand-green border-b-2 border-b-brand-green"
             onClick={() => setIsSupplying(false)}
           >
-            Widthdraw
+            Withdraw
           </button>
         </div>
         <div className="p-6" style={{ background: "#1C1E22" }}>
