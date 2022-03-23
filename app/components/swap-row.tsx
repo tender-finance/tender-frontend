@@ -1,4 +1,4 @@
-import type { SwapRow } from "~/types/global";
+import type { SwapRow, SwapRowFiDatum } from "~/types/global";
 import ReactModal from "react-modal";
 import { useState } from "react";
 import DepositFlow from "./deposit-flow";
@@ -7,11 +7,12 @@ import BorrowFlow from "./borrow-flow";
 interface Props {
   row: SwapRow;
   showUsd: boolean;
+  fiData: SwapRowFiDatum;
 }
 
 ReactModal.setAppElement("#m");
 
-export default function SwapRow({ row, showUsd }: Props) {
+export default function SwapRow({ row, showUsd, fiData }: Props) {
   const [isDepositModalOpen, setIsDepositModalOpen] = useState<boolean>();
   const [isBorrowModalOpen, setIsBorrowModalOpen] = useState<boolean>();
   return (
@@ -34,8 +35,8 @@ export default function SwapRow({ row, showUsd }: Props) {
           ) : (
             <div>{row.totalBorrowedNative}</div>
           )}
-          <div>{row.depositApy}</div>
-          <div>{row.borrowApy}</div>
+          <div>{fiData.depositApy || "-"}</div>
+          <div>{fiData.borrowApy || "-"}</div>
         </div>
         <div>
           <button

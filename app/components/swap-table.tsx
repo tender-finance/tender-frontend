@@ -1,10 +1,13 @@
 import SwapRow from "~/components/swap-row";
+import { Signer } from "ethers";
 import {
   SwapRow as SwapRowType,
   TokenName,
   NetworkName,
   Token,
   cToken,
+  SwapRowFiData,
+  SwapRowFiDatum,
 } from "~/types/global";
 import { useEffect, useState } from "react";
 import clsx from "clsx";
@@ -52,9 +55,44 @@ function generateSwapRows(
   });
 }
 
+async function loadFi(
+  signer: JsonRpcSigner,
+  swapRows: SwapRowType[]
+): Promise<SwapRowFiData> {
+  try {
+    let m = await Promise.all(
+      swapRows.map(async (s: SwapRowType): Promise<SwapRowFiDatum> => {
+        // TODO: This could get slow, need a cached API
+        const depositApy: string = await formattedDepositApy(
+          s.token,
+          s.cToken,
+          signer
+        );
+        const borrowApy: string = await formattedBorrowApy(
+          s.token,
+          s.cToken,
+          signer
+        );
+        return {
+          id: s.name,
+          depositApy,
+          borrowApy,
+        };
+      })
+    );
+    let d: SwapRowFiData = {};
+    m.forEach((f) => (d[f.id] = { ...f }));
+    return d;
+  } catch (error) {
+    console.error(error);
+    return {};
+  }
+}
+
 export default function SwapTable() {
   let [showUsd, setShowUsd] = useState<boolean>(true);
   let [swapRows, setSwapRows] = useState<SwapRowType[]>([]);
+  let [swapRowsFiData, setSwapRowsFiData] = useState<SwapRowFiData>({});
 
   const { chainId, library } = useWeb3React<Web3Provider>();
 
@@ -69,48 +107,17 @@ export default function SwapTable() {
     );
 
     setSwapRows(rows);
-
-    // async function loadFi() {
-    //   console.log("loadFi");
-    //   if (!library) {
-    //     console.log("No library");
-    //     return;
-    //   }
-    //   // TODO: Need to use Alchemy to always have a connection
-    //   if (!library?.getSigner()) {
-    //     console.error("Error: no provider");
-    //     return;
-    //   }
-    //   const signer: JsonRpcSigner = library?.getSigner();
-    //   try {
-    //     let newSwapRows = await Promise.all(
-    //       swapRows.map(async (s: SwapRowType): Promise<SwapRowType> => {
-    //         // TODO: This could get slow, need a cached API
-    //         const depositApy: string = await formattedDepositApy(
-    //           s.token,
-    //           s.cToken,
-    //           signer
-    //         );
-    //         const borrowApy: string = await formattedBorrowApy(
-    //           s.token,
-    //           s.cToken,
-    //           signer
-    //         );
-    //         return {
-    //           ...s,
-    //           depositApy,
-    //           borrowApy,
-    //         };
-    //       })
-    //     );
-    //     setSwapRows(newSwapRows);
-    //   } catch (error) {
-    //     console.error(error);
-    //   }
-    // }
-    // loadFi();
-    // TODO something here
   }, [library, chainId]);
+
+  useEffect(() => {
+    if (!library) {
+      return;
+    }
+    loadFi(library.getSigner(), swapRows).then((f) => {
+      console.log(f);
+      setSwapRowsFiData(f);
+    });
+  }, [swapRows]);
 
   return (
     <div className="mb-60">
@@ -139,7 +146,12 @@ export default function SwapTable() {
 
           <div className="bg-gray-800 rounded-xl px-10 mt-8">
             {swapRows.map((row) => (
-              <SwapRow showUsd={showUsd} key={row.icon} row={row} />
+              <SwapRow
+                showUsd={showUsd}
+                key={row.icon}
+                row={row}
+                fiData={swapRowsFiData[row.name] || {}}
+              />
             ))}
           </div>
         </>
