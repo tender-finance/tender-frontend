@@ -1,5 +1,4 @@
 import SwapRow from "~/components/swap-row";
-import { Signer } from "ethers";
 import {
   SwapRow as SwapRowType,
   TokenName,
@@ -60,7 +59,7 @@ async function loadMarketData(
   swapRows: SwapRowType[]
 ): Promise<SwapRowMarketData> {
   try {
-    let m = await Promise.all(
+    let marketData: SwapRowMarketDatum[] = await Promise.all(
       swapRows.map(async (s: SwapRowType): Promise<SwapRowMarketDatum> => {
         // TODO: This could get slow, need a cached API
         const depositApy: string = await formattedDepositApy(
@@ -80,9 +79,9 @@ async function loadMarketData(
         };
       })
     );
-    let d: SwapRowMarketData = {};
-    m.forEach((f) => (d[f.id] = { ...f }));
-    return d;
+    let swapRowMarketData: SwapRowMarketData = {};
+    marketData.forEach((md) => (swapRowMarketData[md.id] = { ...md }));
+    return swapRowMarketData;
   } catch (error) {
     console.error(error);
     return {};
