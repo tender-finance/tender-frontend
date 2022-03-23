@@ -6,6 +6,7 @@ import { JsonRpcSigner, Web3Provider } from "@ethersproject/providers";
 import SampleErc20Abi from "~/config/sampleErc20Abi";
 import SampleCTokenAbi from "~/config/sampleCTokenAbi";
 import { ethers } from "ethers";
+import sampleErc20Abi from "~/config/sampleErc20Abi";
 
 interface Props {
   closeModal: Function;
@@ -17,8 +18,6 @@ async function enable(
   token: Token,
   cToken: cToken
 ): Promise<void> {
-  console.log("boop", signer, token, cToken);
-
   // const isCEth = token.address ? false : true;
   // if (isCEth) {
   //   throw "Don't need to approve ETH";
@@ -79,11 +78,19 @@ async function redeem(value: string, signer: Signer, cToken: cToken) {
   // }
 }
 
+async function getWalletBalance(signer: Signer, token: Token): Promise<string> {
+  let contract = new ethers.Contract(token.address, sampleErc20Abi, signer);
+  let address = await signer.getAddress();
+  let balance = await contract.balanceOf(address);
+  return balance.toString();
+}
+
 export default function DepositFlow({ closeModal, row }: Props) {
   let [isSupplying, setIsSupplying] = useState<boolean>(true);
   let [isEnabled, setIsEnabled] = useState<boolean>(false);
   let [signer, setSigner] = useState<JsonRpcSigner | null>(null);
   let [value, setValue] = useState<string>("");
+  let [walletBalance, setWalletBalance] = useState<string>("0");
 
   const { library } = useWeb3React<Web3Provider>();
 
@@ -92,7 +99,11 @@ export default function DepositFlow({ closeModal, row }: Props) {
       // DO we need to reset signer if null here?
       return;
     }
-    setSigner(library.getSigner());
+    let signer = library.getSigner();
+    setSigner(signer);
+    if (signer && row.token) {
+      getWalletBalance(signer, row.token).then((b) => setWalletBalance(b));
+    }
   }, [library]);
 
   // no library?
@@ -210,7 +221,9 @@ export default function DepositFlow({ closeModal, row }: Props) {
 
         <div className="flex text-gray-500">
           <div className="flex-grow">Wallet Balance</div>
-          <div>0 {row.name}</div>
+          <div>
+            {walletBalance} {row.name}
+          </div>
         </div>
       </div>
     </div>
