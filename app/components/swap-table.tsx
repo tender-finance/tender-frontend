@@ -6,8 +6,8 @@ import {
   NetworkName,
   Token,
   cToken,
-  SwapRowFiData,
-  SwapRowFiDatum,
+  SwapRowMarketData,
+  SwapRowMarketDatum,
 } from "~/types/global";
 import { useEffect, useState } from "react";
 import clsx from "clsx";
@@ -55,13 +55,13 @@ function generateSwapRows(
   });
 }
 
-async function loadFi(
+async function loadMarketData(
   signer: JsonRpcSigner,
   swapRows: SwapRowType[]
-): Promise<SwapRowFiData> {
+): Promise<SwapRowMarketData> {
   try {
     let m = await Promise.all(
-      swapRows.map(async (s: SwapRowType): Promise<SwapRowFiDatum> => {
+      swapRows.map(async (s: SwapRowType): Promise<SwapRowMarketDatum> => {
         // TODO: This could get slow, need a cached API
         const depositApy: string = await formattedDepositApy(
           s.token,
@@ -80,7 +80,7 @@ async function loadFi(
         };
       })
     );
-    let d: SwapRowFiData = {};
+    let d: SwapRowMarketData = {};
     m.forEach((f) => (d[f.id] = { ...f }));
     return d;
   } catch (error) {
@@ -92,7 +92,9 @@ async function loadFi(
 export default function SwapTable() {
   let [showUsd, setShowUsd] = useState<boolean>(true);
   let [swapRows, setSwapRows] = useState<SwapRowType[]>([]);
-  let [swapRowsFiData, setSwapRowsFiData] = useState<SwapRowFiData>({});
+  let [swapRowsMarketData, setSwapRowsMarketData] = useState<SwapRowMarketData>(
+    {}
+  );
 
   const { chainId, library } = useWeb3React<Web3Provider>();
 
@@ -113,10 +115,9 @@ export default function SwapTable() {
     if (!library) {
       return;
     }
-    loadFi(library.getSigner(), swapRows).then((f) => {
-      console.log(f);
-      setSwapRowsFiData(f);
-    });
+    loadMarketData(library.getSigner(), swapRows).then((f) =>
+      setSwapRowsMarketData(f)
+    );
   }, [swapRows]);
 
   return (
@@ -150,7 +151,7 @@ export default function SwapTable() {
                 showUsd={showUsd}
                 key={row.icon}
                 row={row}
-                fiData={swapRowsFiData[row.name] || {}}
+                marketData={swapRowsMarketData[row.name] || {}}
               />
             ))}
           </div>

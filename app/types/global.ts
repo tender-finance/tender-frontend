@@ -60,11 +60,11 @@ export enum NetworkName {
   maticMumbai = 80001,
 }
 
-export interface SwapRowFiData {
-  [id: string]: SwapRowFiDatum;
+export interface SwapRowMarketData {
+  [id: string]: SwapRowMarketDatum;
 }
 
-export interface SwapRowFiDatum {
+export interface SwapRowMarketDatum {
   id: string;
   depositApy: string;
   borrowApy: string;
