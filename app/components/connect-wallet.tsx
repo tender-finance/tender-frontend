@@ -35,10 +35,16 @@ export default function ConnectWallet() {
     }
   }, [active]);
 
+  function truncateAccount(account: string): string {
+    return `${account.slice(0, 3)}...${account.slice(-4)}`;
+  }
+
   return (
     <div className="box">
-      {active && (
-        <div className="text-sm text-white">Connected as {account}</div>
+      {active && account && (
+        <div className="text-sm text-gray-400">
+          Connected as {truncateAccount(account)}
+        </div>
       )}
       {!active && (
         <>

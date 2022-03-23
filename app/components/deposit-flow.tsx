@@ -216,6 +216,7 @@ export default function DepositFlow({ closeModal, row }: Props) {
     </div>
   ) : (
     <div>
+      {/* Withdraw */}
       <div>
         <div className="py-8" style={{ backgroundColor: "#23262B" }}>
           <div className="float-right">
@@ -233,25 +234,14 @@ export default function DepositFlow({ closeModal, row }: Props) {
             <div>Deposit {row.name}</div>
           </div>
 
-          {!isEnabled && (
-            <div>
-              <div className="mt-12 mb-6 bg-white w-16 h-16 rounded-full ml-auto mr-auto"></div>
-              <div className="max-w-sm text-center m-auto mt-5 mb-5 text-sm text-gray-400">
-                To supply or repay {row.name} to the Tender Protocol, you need
-                to enable it first.
-              </div>
-            </div>
-          )}
-          {isEnabled && (
-            <div className="flex flex-col justify-center items-center overflow-hidden">
-              <input
-                onChange={(e) => setValue(e.target.value)}
-                className="bg-transparent text-6xl text-white text-center outline-none"
-                placeholder="0"
-              />
-              <div className="text-gray-400 text-sm m-auto">Max ⬆</div>
-            </div>
-          )}
+          <div className="flex flex-col justify-center items-center overflow-hidden">
+            <input
+              onChange={(e) => setValue(e.target.value)}
+              className="bg-transparent text-6xl text-white text-center outline-none"
+              placeholder="0"
+            />
+            <div className="text-gray-400 text-sm m-auto">Max ⬆</div>
+          </div>
         </div>
         <div className="flex">
           <button
@@ -290,24 +280,7 @@ export default function DepositFlow({ closeModal, row }: Props) {
 
             <div className="mb-8">
               {!signer && <div>Connect wallet to get started</div>}
-              {signer && !isEnabled && (
-                <button
-                  onClick={async () => {
-                    try {
-                      // @ts-ignore existence of signer is gated above.
-                      await enable(signer, row.token, row.cToken);
-                      setIsEnabled(true);
-                    } catch (e) {
-                      console.error(e);
-                    }
-                  }}
-                  className="py-4 text-center text-white font-bold rounded bg-brand-green w-full"
-                >
-                  Enable
-                </button>
-              )}
-
-              {signer && isEnabled && (
+              {signer && (
                 <button
                   onClick={async () => {
                     try {
