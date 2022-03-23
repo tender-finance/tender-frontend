@@ -19,12 +19,12 @@ export default function SwapRow({ row, showUsd, marketData }: Props) {
     <div>
       <div className="py-6 flex align-middle items-center border-b border-b-gray-700 font-light text-gray-300">
         <div className="flex items-center align-middle">
-          <div className="mr-4">
+          <div style={{ width: "55px" }} className="mr-4">
             <img src={row.icon} />
           </div>
           <div style={{ width: "250px" }}>{row.name}</div>
         </div>
-        <div className="grid grid-cols-4 flex-grow">
+        <div className="grid grid-cols-4 flex-grow text-center">
           {showUsd ? (
             <div>{row.marketSizeUsd}</div>
           ) : (
@@ -38,7 +38,7 @@ export default function SwapRow({ row, showUsd, marketData }: Props) {
           <div>{marketData.depositApy || "-"}</div>
           <div>{marketData.borrowApy || "-"}</div>
         </div>
-        <div>
+        <div style={{ width: "280px" }}>
           <button
             onClick={() => setIsDepositModalOpen(true)}
             className="border rounded py-3 px-8 mr-3"

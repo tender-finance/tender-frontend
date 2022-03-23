@@ -143,6 +143,19 @@ export default function SwapTable() {
               Native
             </div>
           </div>
+          <div className=" flex align-middle items-center  font-light text-gray-300 px-10">
+            <div className="flex items-center align-middle">
+              <div style={{ width: "55px" }} className="mr-4"></div>
+              <div style={{ width: "250px" }}></div>
+            </div>
+            <div className="grid grid-cols-4 flex-grow text-xs text-gray-500 text-center">
+              <div>Market size </div>
+              <div>Total borrowed </div>
+              <div>Deposit APY</div>
+              <div>Borrow APY</div>
+            </div>
+            <div style={{ width: "280px" }}></div>
+          </div>
 
           <div className="bg-gray-800 rounded-xl px-10 mt-8">
             {swapRows.map((row) => (
