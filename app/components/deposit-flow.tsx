@@ -1,4 +1,4 @@
-import { cToken, SwapRow, Token } from "~/types/global";
+import { cToken, SwapRow, SwapRowMarketDatum, Token } from "~/types/global";
 import { useEffect, useState } from "react";
 import { Signer } from "ethers";
 import { useWeb3React } from "@web3-react/core";
@@ -11,6 +11,7 @@ import sampleErc20Abi from "~/config/sampleErc20Abi";
 interface Props {
   closeModal: Function;
   row: SwapRow;
+  marketData: SwapRowMarketDatum;
 }
 
 async function enable(
@@ -85,7 +86,7 @@ async function getWalletBalance(signer: Signer, token: Token): Promise<string> {
   return balance.toString();
 }
 
-export default function DepositFlow({ closeModal, row }: Props) {
+export default function DepositFlow({ closeModal, row, marketData }: Props) {
   let [isSupplying, setIsSupplying] = useState<boolean>(true);
   let [isEnabled, setIsEnabled] = useState<boolean>(false);
   let [signer, setSigner] = useState<JsonRpcSigner | null>(null);
@@ -131,7 +132,7 @@ export default function DepositFlow({ closeModal, row }: Props) {
           <div>
             <div className="mt-12 mb-6 bg-white w-16 h-16 rounded-full ml-auto mr-auto"></div>
             <div className="max-w-sm text-center m-auto mt-5 mb-5 text-sm text-gray-400">
-              To supply or repay {row.name} to the Tender Protocol, you need to
+              To deposit or repay {row.name} to the Tender Protocol, you need to
               enable it first.
             </div>
           </div>
@@ -153,7 +154,7 @@ export default function DepositFlow({ closeModal, row }: Props) {
           className="flex-grow py-3 text-brand-green border-b-2 border-b-brand-green"
           onClick={() => setIsSupplying(true)}
         >
-          Supply
+          Deposit
         </button>
         <button
           className="flex-grow py-3"
@@ -164,15 +165,15 @@ export default function DepositFlow({ closeModal, row }: Props) {
       </div>
       <div className="py-6 px-12" style={{ background: "#1C1E22" }}>
         <div className="flex mb-4">
-          <span className="font-bold mr-3">Supply Rates</span>{" "}
+          <span className="font-bold mr-3">Deposit Rates</span>{" "}
           <img src="/images/box-arrow.svg" alt="box arrow" />
         </div>
         <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 pb-6">
           <div className="mr-3">
             <img src="/images/supply-icon.svg" />
           </div>
-          <div className="flex-grow">Supply APY</div>
-          <div>X.XX%</div>
+          <div className="flex-grow">Deposit APY</div>
+          <div>{marketData.depositApy}</div>
         </div>
         <div className="flex items-center text-gray-400 pt-4 pb-8">
           <div className="mr-3">
@@ -261,7 +262,7 @@ export default function DepositFlow({ closeModal, row }: Props) {
             className="flex-grow py-3"
             onClick={() => setIsSupplying(true)}
           >
-            Supply
+            Deposit
           </button>
           <button
             className="flex-grow py-3 text-brand-green border-b-2 border-b-brand-green"
@@ -273,15 +274,15 @@ export default function DepositFlow({ closeModal, row }: Props) {
         <div className="py-8" style={{ background: "#1C1E22" }}>
           <div className="py-6 px-12" style={{ background: "#1C1E22" }}>
             <div className="flex mb-4">
-              <span className="font-bold mr-3">Supply Rates</span>{" "}
+              <span className="font-bold mr-3">Deposit Rates</span>{" "}
               <img src="/images/box-arrow.svg" alt="box arrow" />
             </div>
             <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 pb-6">
               <div className="mr-3">
                 <img src="/images/supply-icon.svg" />
               </div>
-              <div className="flex-grow">Borrow APY</div>
-              <div>X.XX%</div>
+              <div className="flex-grow">Deposit APY</div>
+              <div>{marketData.depositApy}</div>
             </div>
             <div className="flex items-center text-gray-400 pt-4 pb-8">
               <div className="mr-3">

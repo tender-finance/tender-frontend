@@ -63,6 +63,7 @@ export default function SwapRow({ row, showUsd, marketData }: Props) {
           <DepositFlow
             closeModal={() => setIsDepositModalOpen(false)}
             row={row}
+            marketData={marketData}
           />
         </ReactModal>
 
@@ -75,6 +76,7 @@ export default function SwapRow({ row, showUsd, marketData }: Props) {
           <BorrowFlow
             closeModal={() => setIsBorrowModalOpen(false)}
             row={row}
+            marketData={marketData}
           />
         </ReactModal>
       </div>
