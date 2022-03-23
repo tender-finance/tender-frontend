@@ -59,3 +59,13 @@ export enum NetworkName {
   matic = 137,
   maticMumbai = 80001,
 }
+
+export interface SwapRowMarketData {
+  [id: string]: SwapRowMarketDatum;
+}
+
+export interface SwapRowMarketDatum {
+  id: string;
+  depositApy: string;
+  borrowApy: string;
+}

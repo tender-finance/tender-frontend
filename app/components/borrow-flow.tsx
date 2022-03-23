@@ -1,4 +1,4 @@
-import { cToken, SwapRow, Token } from "~/types/global";
+import { cToken, SwapRow, Token, SwapRowMarketDatum } from "~/types/global";
 import { useEffect, useState } from "react";
 import { Signer } from "ethers";
 import { useWeb3React } from "@web3-react/core";
@@ -10,6 +10,7 @@ import { ethers } from "ethers";
 interface Props {
   closeModal: Function;
   row: SwapRow;
+  marketData: SwapRowMarketDatum;
 }
 
 async function enable(
@@ -58,7 +59,7 @@ async function borrow(value: string, signer: Signer, cToken: cToken) {
   // }
 }
 
-export default function BorrowFlow({ closeModal, row }: Props) {
+export default function BorrowFlow({ closeModal, row, marketData }: Props) {
   let [isRepaying, setIsRepaying] = useState<boolean>(false);
   let [isEnabled, setIsEnabled] = useState<boolean>(false);
   let [signer, setSigner] = useState<JsonRpcSigner | null>(null);
@@ -99,7 +100,7 @@ export default function BorrowFlow({ closeModal, row }: Props) {
           <div>
             <div className="mt-12 mb-6 bg-white w-16 h-16 rounded-full ml-auto mr-auto"></div>
             <div className="max-w-sm text-center m-auto mt-5 mb-5 text-sm text-gray-400">
-              To supply or repay {row.name} to the Tender Protocol, you need to
+              To borrow or repay {row.name} to the Tender Protocol, you need to
               enable it first.
             </div>
           </div>
@@ -129,15 +130,15 @@ export default function BorrowFlow({ closeModal, row }: Props) {
       </div>
       <div className="py-6 px-12" style={{ background: "#1C1E22" }}>
         <div className="flex mb-4">
-          <span className="font-bold mr-3">Supply Rates</span>{" "}
+          <span className="font-bold mr-3">Borrow Rates</span>{" "}
           <img src="/images/box-arrow.svg" alt="box arrow" />
         </div>
         <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 pb-6">
           <div className="mr-3">
             <img src="/images/supply-icon.svg" />
           </div>
-          <div className="flex-grow">Supply APY</div>
-          <div>X.XX%</div>
+          <div className="flex-grow">Borrow APY</div>
+          <div>{marketData.borrowApy}</div>
         </div>
         <div className="flex items-center text-gray-400 pt-4 pb-8">
           <div className="mr-3">
@@ -235,7 +236,7 @@ export default function BorrowFlow({ closeModal, row }: Props) {
         <div className="py-8" style={{ background: "#1C1E22" }}>
           <div className="py-6 px-12" style={{ background: "#1C1E22" }}>
             <div className="flex mb-4">
-              <span className="font-bold mr-3">Supply Rates</span>{" "}
+              <span className="font-bold mr-3">Borrow Rates</span>{" "}
               <img src="/images/box-arrow.svg" alt="box arrow" />
             </div>
             <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 pb-6">
@@ -243,7 +244,7 @@ export default function BorrowFlow({ closeModal, row }: Props) {
                 <img src="/images/supply-icon.svg" />
               </div>
               <div className="flex-grow">Borrow APY</div>
-              <div>X.XX%</div>
+              <div>{marketData.borrowApy}</div>
             </div>
             <div className="flex items-center text-gray-400 pt-4 pb-8">
               <div className="mr-3">

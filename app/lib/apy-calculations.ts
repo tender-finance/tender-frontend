@@ -4,7 +4,7 @@ import { Token, cToken } from "~/types/global";
 import { JsonRpcSigner } from "@ethersproject/providers";
 
 function formatApy(apy: number): string {
-  return apy.toString();
+  return `${apy.toString()}%`;
 }
 
 // https://compound.finance/docs#protocol-math
