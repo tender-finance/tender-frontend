@@ -18,6 +18,7 @@ import {
   formattedBorrowApy,
   formattedDepositApy,
 } from "~/lib/apy-calculations";
+import ConnectWallet from "./connect-wallet";
 
 // const SUPPORTED_TOKENS = [TokenName.BTC, TokenName.ETH, TokenName.USDT];
 const SUPPORTED_TOKENS = [TokenName.DAI];
@@ -113,32 +114,37 @@ export default function SwapTable() {
 
   return (
     <div className="mb-60">
-      <div className="text-center flex">
-        <div
-          onClick={() => setShowUsd(true)}
-          className={clsx("cursor-pointer  text-white py-3 px-6", {
-            "bg-brand-green": showUsd,
-            "bg-brand-black opacity-50": !showUsd,
-          })}
-        >
-          USD
-        </div>
-        <div
-          onClick={() => setShowUsd(false)}
-          className={clsx("cursor-pointer  text-white  py-3 px-6", {
-            "bg-brand-green": !showUsd,
-            "bg-brand-black opacity-50": showUsd,
-          })}
-        >
-          Native
-        </div>
-      </div>
+      {chainId && (
+        <>
+          <div className="text-center flex">
+            <div
+              onClick={() => setShowUsd(true)}
+              className={clsx("cursor-pointer  text-white py-3 px-6", {
+                "bg-brand-green": showUsd,
+                "bg-brand-black opacity-50": !showUsd,
+              })}
+            >
+              USD
+            </div>
+            <div
+              onClick={() => setShowUsd(false)}
+              className={clsx("cursor-pointer  text-white  py-3 px-6", {
+                "bg-brand-green": !showUsd,
+                "bg-brand-black opacity-50": showUsd,
+              })}
+            >
+              Native
+            </div>
+          </div>
 
-      <div className="bg-gray-800 rounded-xl px-10 mt-8">
-        {swapRows.map((row) => (
-          <SwapRow showUsd={showUsd} key={row.icon} row={row} />
-        ))}
-      </div>
+          <div className="bg-gray-800 rounded-xl px-10 mt-8">
+            {swapRows.map((row) => (
+              <SwapRow showUsd={showUsd} key={row.icon} row={row} />
+            ))}
+          </div>
+        </>
+      )}
+      {!chainId && <ConnectWallet />}
     </div>
   );
 }
