@@ -313,7 +313,7 @@ export default function DepositFlow({ closeModal, row, marketData }: Props) {
             </div>
 
             <div className="flex text-gray-500">
-              <div className="flex-grow">Currently Borrowing</div>
+              <div className="flex-grow">Currently Supplying</div>
               <div>0 {row.name}</div>
             </div>
           </div>
