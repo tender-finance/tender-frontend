@@ -435,10 +435,19 @@ export default function DepositFlow({ closeModal, row, marketData }: Props) {
                 <button
                   onClick={async () => {
                     try {
+                      if (!value) {
+                        toast("Please set a value", {
+                          icon: "⚠️",
+                        });
+                        return;
+                      }
                       setIsWithdrawing(true);
-                      // TODO: error state no value
                       // @ts-ignore existence of signer is gated above.
                       await redeem(value, signer, row.cToken);
+
+                      setValue("");
+                      toast.success("Withdraw successful");
+                      closeModal();
                     } catch (e) {
                       console.error(e);
                     } finally {
@@ -448,8 +457,8 @@ export default function DepositFlow({ closeModal, row, marketData }: Props) {
                   className={clsx(
                     "py-4 text-center text-white font-bold rounded bg-brand-green w-full",
                     {
-                      "bg-brand-green": !isDepositing,
-                      "bg-gray-200": isDepositing,
+                      "bg-brand-green": !isWithdrawing,
+                      "bg-gray-200": isWithdrawing,
                     }
                   )}
                 >

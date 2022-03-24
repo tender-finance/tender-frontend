@@ -6,6 +6,8 @@ import { JsonRpcSigner, Web3Provider } from "@ethersproject/providers";
 import SampleErc20Abi from "~/config/sample-erc20-abi";
 import SampleCTokenAbi from "~/config/sample-ctoken-abi";
 import { ethers } from "ethers";
+import clsx from "clsx";
+import toast from "react-hot-toast";
 
 interface Props {
   closeModal: Function;
@@ -73,6 +75,10 @@ export default function BorrowFlow({ closeModal, row, marketData }: Props) {
   let [value, setValue] = useState<string>("");
   let [walletBalance, setWalletBalance] = useState<string>("0");
 
+  let [isEnabling, setIsEnabling] = useState<boolean>(false);
+  let [isBorrowing, setIsBorrowing] = useState<boolean>(false);
+  let [isRepayingTxn, setIsRepayingTxn] = useState<boolean>(false);
+
   const { library } = useWeb3React<Web3Provider>();
 
   useEffect(() => {
@@ -87,9 +93,6 @@ export default function BorrowFlow({ closeModal, row, marketData }: Props) {
       getWalletBalance(signer, row.token).then((b) => setWalletBalance(b));
     }
   }, [library]);
-
-  // no library?
-  // library.getSigner();
 
   return isRepaying ? (
     <div>
@@ -167,16 +170,25 @@ export default function BorrowFlow({ closeModal, row, marketData }: Props) {
             <button
               onClick={async () => {
                 try {
+                  setIsEnabling(true);
                   // @ts-ignore existence of signer is gated above.
                   await enable(signer, row.token, row.cToken);
                   setIsEnabled(true);
                 } catch (e) {
                   console.error(e);
+                } finally {
+                  setIsEnabling(false);
                 }
               }}
-              className="py-4 text-center text-white font-bold rounded bg-brand-green w-full"
+              className={clsx(
+                "py-4 text-center text-white font-bold rounded bg-brand-green w-full",
+                {
+                  "bg-brand-green": !isEnabling,
+                  "bg-gray-200": isEnabling,
+                }
+              )}
             >
-              Enable
+              {isEnabling ? "Enabling..." : "Enable"}
             </button>
           )}
 
@@ -184,16 +196,35 @@ export default function BorrowFlow({ closeModal, row, marketData }: Props) {
             <button
               onClick={async () => {
                 try {
-                  // TODO: error state no value
+                  if (!value) {
+                    toast("Please set a value", {
+                      icon: "⚠️",
+                    });
+                    return;
+                  }
+
+                  setIsRepayingTxn(true);
                   // @ts-ignore existence of signer is gated above.
-                  repay(value, signer, row.cToken);
+                  await repay(value, signer, row.cToken);
+                  setValue("");
+                  toast.success("Repayment successful");
+                  closeModal();
                 } catch (e) {
+                  toast.error("Repayment unsuccessful");
                   console.error(e);
+                } finally {
+                  setIsRepayingTxn(false);
                 }
               }}
-              className="py-4 text-center text-white font-bold rounded bg-brand-green w-full"
+              className={clsx(
+                "py-4 text-center text-white font-bold rounded bg-brand-green w-full",
+                {
+                  "bg-brand-green": !isRepayingTxn,
+                  "bg-gray-200": isRepayingTxn,
+                }
+              )}
             >
-              Repay
+              {isRepayingTxn ? "Repaying..." : "Repay"}
             </button>
           )}
         </div>
@@ -275,16 +306,33 @@ export default function BorrowFlow({ closeModal, row, marketData }: Props) {
                 <button
                   onClick={async () => {
                     try {
-                      // TODO: error state no value
+                      if (!value) {
+                        toast("Please set a value", {
+                          icon: "⚠️",
+                        });
+                        return;
+                      }
+                      setIsBorrowing(true);
                       // @ts-ignore existence of signer is gated above.
-                      borrow(value, signer, row.cToken);
+                      await borrow(value, signer, row.cToken);
+                      setValue("");
+                      toast.success("Borrow successful");
+                      closeModal();
                     } catch (e) {
                       console.error(e);
+                    } finally {
+                      setIsBorrowing(false);
                     }
                   }}
-                  className="py-4 text-center text-white font-bold rounded bg-brand-green w-full"
+                  className={clsx(
+                    "py-4 text-center text-white font-bold rounded bg-brand-green w-full",
+                    {
+                      "bg-brand-green": !isBorrowing,
+                      "bg-gray-200": isBorrowing,
+                    }
+                  )}
                 >
-                  Borrow
+                  {isBorrowing ? "Borrowing..." : "Borrow"}
                 </button>
               )}
             </div>
