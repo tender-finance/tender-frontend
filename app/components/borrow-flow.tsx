@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import { Signer } from "ethers";
 import { useWeb3React } from "@web3-react/core";
 import { JsonRpcSigner, Web3Provider } from "@ethersproject/providers";
-import SampleErc20Abi from "~/config/sampleErc20Abi";
-import SampleCTokenAbi from "~/config/sampleCTokenAbi";
+import SampleErc20Abi from "~/config/sample-erc20-abi";
+import SampleCTokenAbi from "~/config/sample-ctoken-abi";
 import { ethers } from "ethers";
 
 interface Props {

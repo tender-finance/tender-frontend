@@ -11,6 +11,7 @@ export interface SwapRow {
   borrowApyDelta: number;
   token: Token;
   cToken: cToken;
+  comptrollerAddress: string;
 }
 
 export interface Token {
@@ -68,4 +69,13 @@ export interface SwapRowMarketDatum {
   id: string;
   depositApy: string;
   borrowApy: string;
+}
+
+export interface NetworkData {
+  Contracts: {
+    Comptroller: string;
+  };
+
+  Tokens: any;
+  cTokens: any;
 }

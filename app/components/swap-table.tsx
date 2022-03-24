@@ -7,6 +7,7 @@ import {
   cToken,
   SwapRowMarketData,
   SwapRowMarketDatum,
+  NetworkData,
 } from "~/types/global";
 import { useEffect, useState } from "react";
 import clsx from "clsx";
@@ -32,17 +33,19 @@ function generateSwapRows(
   return supportedRowTypes.map((tokenName: TokenName): SwapRowType => {
     // Map current conntected network to config data
     // @ts-ignore
-    const networkData = networks[networkName];
+    const networkData: NetworkData = networks[networkName];
     const tokenMetaDatum = tokenMetaData[tokenName];
 
     let token: Token = networkData.Tokens[tokenMetaDatum.symbol];
     let cToken: cToken = networkData.cTokens[tokenMetaDatum.cTokenSymbol];
+    let comptrollerAddress: string = networkData.Contracts.Comptroller;
 
     return {
       ...tokenMetaDatum,
       marketSizeUsd: "loading",
       marketSizeNative: "loading",
       totalBorrowedUsd: "loading",
+      comptrollerAddress: comptrollerAddress,
       totalBorrowedNative: "loading",
       depositApy: "loading",
       depositDelta: 1.43,

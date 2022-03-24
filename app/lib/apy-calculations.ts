@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import sampleCTokenAbi from "~/config/sampleCTokenAbi";
+import sampleCTokenAbi from "~/config/sample-ctoken-abi";
 import { Token, cToken } from "~/types/global";
 import { JsonRpcSigner } from "@ethersproject/providers";
 

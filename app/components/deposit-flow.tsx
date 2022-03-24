@@ -5,8 +5,9 @@ import { useWeb3React } from "@web3-react/core";
 import { JsonRpcSigner, Web3Provider } from "@ethersproject/providers";
 import { ethers } from "ethers";
 
-import SampleCTokenAbi from "~/config/sampleCTokenAbi";
-import SampleErc20Abi from "~/config/sampleErc20Abi";
+import SampleCTokenAbi from "~/config/sample-ctoken-abi";
+import SampleErc20Abi from "~/config/sample-erc20-abi";
+import SampleComptrollerAbi from "~/config/sample-comptroller-abi";
 
 interface Props {
   closeModal: Function;
@@ -96,6 +97,39 @@ async function getCurrentlySupplying(
   return balance.toString();
 }
 
+async function getBorrowLimit(
+  signer: Signer,
+  comptrollerAddress: string,
+  cToken: cToken
+): Promise<string> {
+  let comptrollerContract = new ethers.Contract(
+    comptrollerAddress,
+    SampleComptrollerAbi,
+    signer
+  );
+  let { 1: collateralFactor } = await comptrollerContract.markets(
+    cToken.address
+  );
+  collateralFactor = (collateralFactor / 1e18) * 100;
+
+  let address = await signer.getAddress();
+  let { 1: liquidity } = await comptrollerContract.getAccountLiquidity(address);
+  liquidity = liquidity / 1e18;
+
+  return `${(collateralFactor * liquidity).toFixed(2)}`;
+}
+
+async function getBorrowLimitUsed(
+  signer: Signer,
+  cToken: cToken
+): Promise<string> {
+  // let contract = new ethers.Contract(cToken.address, SampleCTokenAbi, signer);
+  // let address = await signer.getAddress();
+  // let balance = await contract.balanceOf(address);
+  // return balance.toString();
+  return "todo";
+}
+
 export default function DepositFlow({ closeModal, row, marketData }: Props) {
   let [isSupplying, setIsSupplying] = useState<boolean>(true);
   let [isEnabled, setIsEnabled] = useState<boolean>(false);
@@ -103,6 +137,8 @@ export default function DepositFlow({ closeModal, row, marketData }: Props) {
   let [value, setValue] = useState<string>("");
   let [walletBalance, setWalletBalance] = useState<string>("0");
   let [currentlySupplying, setCurrentlySupplying] = useState<string>("0");
+  let [borrowLimit, setBorrowLimit] = useState<string>("0");
+  let [borrowLimitUsed, setBorrowLimitUsed] = useState<string>("0");
 
   const { library } = useWeb3React<Web3Provider>();
 
@@ -118,6 +154,11 @@ export default function DepositFlow({ closeModal, row, marketData }: Props) {
       getCurrentlySupplying(signer, row.cToken).then((c) =>
         setCurrentlySupplying(c)
       );
+
+      getBorrowLimit(signer, row.comptrollerAddress, row.cToken).then((b) =>
+        setBorrowLimit(b)
+      );
+      getBorrowLimitUsed(signer, row.cToken).then((b) => setBorrowLimit(b));
     }
   }, [library]);
 
@@ -304,6 +345,25 @@ export default function DepositFlow({ closeModal, row, marketData }: Props) {
               </div>
               <div className="flex-grow">Distribution APY</div>
               <div>0%</div>
+            </div>
+
+            <div>
+              <div className="font-bold mr-3 border-b border-b-gray-600 w-full pb-5">
+                Borrow Limit
+              </div>
+              <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 py-5">
+                <div className="flex-grow">Borrow Limit </div>
+                <div>
+                  $0 <span className="text-brand-green">→</span> ${borrowLimit}
+                </div>
+              </div>
+              <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 py-5">
+                <div className="flex-grow">Borrow Limit Used</div>
+                <div>
+                  $0 <span className="text-brand-green">→</span> $
+                  {borrowLimitUsed}
+                </div>
+              </div>
             </div>
 
             <div className="mb-8">
