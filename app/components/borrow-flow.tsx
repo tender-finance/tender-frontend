@@ -13,6 +13,13 @@ interface Props {
   marketData: SwapRowMarketDatum;
 }
 
+async function getWalletBalance(signer: Signer, token: Token): Promise<string> {
+  let contract = new ethers.Contract(token.address, SampleErc20Abi, signer);
+  let address = await signer.getAddress();
+  let balance = await contract.balanceOf(address);
+  return balance.toString();
+}
+
 async function enable(
   signer: Signer,
   token: Token,
@@ -64,6 +71,7 @@ export default function BorrowFlow({ closeModal, row, marketData }: Props) {
   let [isEnabled, setIsEnabled] = useState<boolean>(false);
   let [signer, setSigner] = useState<JsonRpcSigner | null>(null);
   let [value, setValue] = useState<string>("");
+  let [walletBalance, setWalletBalance] = useState<string>("0");
 
   const { library } = useWeb3React<Web3Provider>();
 
@@ -72,7 +80,12 @@ export default function BorrowFlow({ closeModal, row, marketData }: Props) {
       // DO we need to reset signer if null here?
       return;
     }
-    setSigner(library.getSigner());
+    const signer = library.getSigner();
+    setSigner(signer);
+
+    if (signer && row.token) {
+      getWalletBalance(signer, row.token).then((b) => setWalletBalance(b));
+    }
   }, [library]);
 
   // no library?
@@ -187,7 +200,9 @@ export default function BorrowFlow({ closeModal, row, marketData }: Props) {
 
         <div className="flex text-gray-500">
           <div className="flex-grow">Wallet Balance</div>
-          <div>0 {row.name}</div>
+          <div>
+            {walletBalance} {row.name}
+          </div>
         </div>
       </div>
     </div>

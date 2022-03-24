@@ -3,10 +3,10 @@ import { useEffect, useState } from "react";
 import { Signer } from "ethers";
 import { useWeb3React } from "@web3-react/core";
 import { JsonRpcSigner, Web3Provider } from "@ethersproject/providers";
-import SampleErc20Abi from "~/config/sampleErc20Abi";
-import SampleCTokenAbi from "~/config/sampleCTokenAbi";
 import { ethers } from "ethers";
-import sampleErc20Abi from "~/config/sampleErc20Abi";
+
+import SampleCTokenAbi from "~/config/sampleCTokenAbi";
+import SampleErc20Abi from "~/config/sampleErc20Abi";
 
 interface Props {
   closeModal: Function;
@@ -80,7 +80,7 @@ async function redeem(value: string, signer: Signer, cToken: cToken) {
 }
 
 async function getWalletBalance(signer: Signer, token: Token): Promise<string> {
-  let contract = new ethers.Contract(token.address, sampleErc20Abi, signer);
+  let contract = new ethers.Contract(token.address, SampleErc20Abi, signer);
   let address = await signer.getAddress();
   let balance = await contract.balanceOf(address);
   return balance.toString();
