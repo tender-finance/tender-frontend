@@ -101,7 +101,7 @@ async function getBorrowLimit(
   signer: Signer,
   comptrollerAddress: string,
   cToken: cToken
-): Promise<string> {
+): Promise<number> {
   let comptrollerContract = new ethers.Contract(
     comptrollerAddress,
     SampleComptrollerAbi,
@@ -116,18 +116,24 @@ async function getBorrowLimit(
   let { 1: liquidity } = await comptrollerContract.getAccountLiquidity(address);
   liquidity = liquidity / 1e18;
 
-  return `${(collateralFactor * liquidity).toFixed(2)}`;
+  return collateralFactor * liquidity;
+}
+
+async function getBorrowedAmount(
+  signer: Signer,
+  cToken: cToken
+): Promise<number> {
+  let contract = new ethers.Contract(cToken.address, SampleCTokenAbi, signer);
+  let address = await signer.getAddress();
+  let borrowedAmount: number = await contract.borrowBalanceStored(address);
+  return borrowedAmount;
 }
 
 async function getBorrowLimitUsed(
-  signer: Signer,
-  cToken: cToken
-): Promise<string> {
-  // let contract = new ethers.Contract(cToken.address, SampleCTokenAbi, signer);
-  // let address = await signer.getAddress();
-  // let balance = await contract.balanceOf(address);
-  // return balance.toString();
-  return "todo";
+  borrowedAmount: number,
+  borrowedLimit: number
+): Promise<number> {
+  return Math.round((borrowedAmount / borrowedLimit) * 100);
 }
 
 export default function DepositFlow({ closeModal, row, marketData }: Props) {
@@ -137,8 +143,9 @@ export default function DepositFlow({ closeModal, row, marketData }: Props) {
   let [value, setValue] = useState<string>("");
   let [walletBalance, setWalletBalance] = useState<string>("0");
   let [currentlySupplying, setCurrentlySupplying] = useState<string>("0");
-  let [borrowLimit, setBorrowLimit] = useState<string>("0");
-  let [borrowLimitUsed, setBorrowLimitUsed] = useState<string>("0");
+  let [borrowLimit, setBorrowLimit] = useState<number>(0);
+  let [borrowLimitUsed, setBorrowLimitUsed] = useState<number>(0);
+  let [borrowedAmount, setBorrowedAmount] = useState<number>(0);
 
   const { library } = useWeb3React<Web3Provider>();
 
@@ -158,9 +165,19 @@ export default function DepositFlow({ closeModal, row, marketData }: Props) {
       getBorrowLimit(signer, row.comptrollerAddress, row.cToken).then((b) =>
         setBorrowLimit(b)
       );
-      getBorrowLimitUsed(signer, row.cToken).then((b) => setBorrowLimit(b));
+      getBorrowedAmount(signer, row.cToken).then((b) => setBorrowedAmount(b));
     }
   }, [library]);
+
+  useEffect(() => {
+    if (!borrowedAmount || !borrowLimit) {
+      return;
+    }
+
+    getBorrowLimitUsed(borrowedAmount, borrowLimit).then((b) =>
+      setBorrowLimitUsed(b)
+    );
+  }, [borrowedAmount, borrowLimit]);
 
   // no library?
   // library.getSigner();
@@ -237,7 +254,24 @@ export default function DepositFlow({ closeModal, row, marketData }: Props) {
           <div className="flex-grow">Distribution APY</div>
           <div>0%</div>
         </div>
-
+        <div>
+          <div className="font-bold mr-3 border-b border-b-gray-600 w-full pb-5">
+            Borrow Limit
+          </div>
+          <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 py-5">
+            <div className="flex-grow">Borrow Limit </div>
+            <div>
+              $0 <span className="text-brand-green">→</span> ${borrowLimit}
+            </div>
+          </div>
+          <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 py-5">
+            <div className="flex-grow">Borrow Limit Used</div>
+            <div>
+              0 <span className="text-brand-green">→</span>
+              {borrowLimitUsed}%
+            </div>
+          </div>
+        </div>
         <div className="mb-8">
           {!signer && <div>Connect wallet to get started</div>}
           {signer && !isEnabled && (
@@ -360,8 +394,8 @@ export default function DepositFlow({ closeModal, row, marketData }: Props) {
               <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 py-5">
                 <div className="flex-grow">Borrow Limit Used</div>
                 <div>
-                  $0 <span className="text-brand-green">→</span> $
-                  {borrowLimitUsed}
+                  0 <span className="text-brand-green">→</span>
+                  {borrowLimitUsed}%
                 </div>
               </div>
             </div>
