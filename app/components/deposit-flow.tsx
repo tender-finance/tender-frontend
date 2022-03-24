@@ -8,6 +8,7 @@ import { ethers } from "ethers";
 import SampleCTokenAbi from "~/config/sample-ctoken-abi";
 import SampleErc20Abi from "~/config/sample-erc20-abi";
 import SampleComptrollerAbi from "~/config/sample-comptroller-abi";
+import clsx from "clsx";
 
 interface Props {
   closeModal: Function;
@@ -146,6 +147,9 @@ export default function DepositFlow({ closeModal, row, marketData }: Props) {
   let [borrowLimit, setBorrowLimit] = useState<number>(0);
   let [borrowLimitUsed, setBorrowLimitUsed] = useState<number>(0);
   let [borrowedAmount, setBorrowedAmount] = useState<number>(0);
+  let [isEnabling, setIsEnabling] = useState<boolean>(false);
+  let [isDepositing, setIsDepositing] = useState<boolean>(false);
+  let [isWithdrawing, setIsWithdrawing] = useState<boolean>(false);
 
   const { library } = useWeb3React<Web3Provider>();
 
@@ -278,16 +282,25 @@ export default function DepositFlow({ closeModal, row, marketData }: Props) {
             <button
               onClick={async () => {
                 try {
+                  setIsEnabling(true);
                   // @ts-ignore existence of signer is gated above.
                   await enable(signer, row.token, row.cToken);
                   setIsEnabled(true);
                 } catch (e) {
                   console.error(e);
+                } finally {
+                  setIsEnabling(false);
                 }
               }}
-              className="py-4 text-center text-white font-bold rounded bg-brand-green w-full"
+              className={clsx(
+                "py-4 text-center text-white font-bold rounded bg-brand-green w-full",
+                {
+                  "bg-brand-green": !isEnabling,
+                  "bg-gray-200": isEnabling,
+                }
+              )}
             >
-              Enable
+              {isEnabling ? "Enabling..." : "Enable"}
             </button>
           )}
 
