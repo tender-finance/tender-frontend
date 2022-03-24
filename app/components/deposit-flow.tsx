@@ -9,6 +9,7 @@ import SampleCTokenAbi from "~/config/sample-ctoken-abi";
 import SampleErc20Abi from "~/config/sample-erc20-abi";
 import SampleComptrollerAbi from "~/config/sample-comptroller-abi";
 import clsx from "clsx";
+import toast from "react-hot-toast";
 
 interface Props {
   closeModal: Function;
@@ -305,13 +306,20 @@ export default function DepositFlow({ closeModal, row, marketData }: Props) {
             <button
               onClick={async () => {
                 try {
-                  // TODO: error state no value
+                  if (!value) {
+                    toast("Please set a value", {
+                      icon: "⚠️",
+                    });
+                    return;
+                  }
                   setIsDepositing(true);
                   // @ts-ignore existence of signer is gated above.
                   await deposit(value, signer, row.cToken);
-                  // TODO: clear form value
+                  setValue("");
+                  toast.success("Deposit successful");
+                  closeModal();
                 } catch (e) {
-                  // TODO: toast failed to deposit
+                  toast.error("Deposit unsuccessful");
                   console.error(e);
                 } finally {
                   setIsDepositing(false);
