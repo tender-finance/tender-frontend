@@ -183,9 +183,6 @@ export default function DepositFlow({ closeModal, row, marketData }: Props) {
     );
   }, [borrowedAmount, borrowLimit]);
 
-  // no library?
-  // library.getSigner();
-
   return isSupplying ? (
     <div>
       <div className="py-8" style={{ backgroundColor: "#23262B" }}>
@@ -309,15 +306,26 @@ export default function DepositFlow({ closeModal, row, marketData }: Props) {
               onClick={async () => {
                 try {
                   // TODO: error state no value
+                  setIsDepositing(true);
                   // @ts-ignore existence of signer is gated above.
-                  deposit(value, signer, row.cToken);
+                  await deposit(value, signer, row.cToken);
+                  // TODO: clear form value
                 } catch (e) {
+                  // TODO: toast failed to deposit
                   console.error(e);
+                } finally {
+                  setIsDepositing(false);
                 }
               }}
-              className="py-4 text-center text-white font-bold rounded bg-brand-green w-full"
+              className={clsx(
+                "py-4 text-center text-white font-bold rounded bg-brand-green w-full",
+                {
+                  "bg-brand-green": !isDepositing,
+                  "bg-gray-200": isDepositing,
+                }
+              )}
             >
-              Deposit
+              {isDepositing ? "Depositing..." : "Deposit"}
             </button>
           )}
         </div>
@@ -419,16 +427,25 @@ export default function DepositFlow({ closeModal, row, marketData }: Props) {
                 <button
                   onClick={async () => {
                     try {
+                      setIsWithdrawing(true);
                       // TODO: error state no value
                       // @ts-ignore existence of signer is gated above.
-                      redeem(value, signer, row.cToken);
+                      await redeem(value, signer, row.cToken);
                     } catch (e) {
                       console.error(e);
+                    } finally {
+                      setIsWithdrawing(false);
                     }
                   }}
-                  className="py-4 text-center text-white font-bold rounded bg-brand-green w-full"
+                  className={clsx(
+                    "py-4 text-center text-white font-bold rounded bg-brand-green w-full",
+                    {
+                      "bg-brand-green": !isDepositing,
+                      "bg-gray-200": isDepositing,
+                    }
+                  )}
                 >
-                  Withdraw
+                  {isWithdrawing ? "Withdrawing..." : "Withdraw"}
                 </button>
               )}
             </div>
