@@ -86,12 +86,23 @@ async function getWalletBalance(signer: Signer, token: Token): Promise<string> {
   return balance.toString();
 }
 
+async function getCurrentlySupplying(
+  signer: Signer,
+  cToken: cToken
+): Promise<string> {
+  let contract = new ethers.Contract(cToken.address, SampleCTokenAbi, signer);
+  let address = await signer.getAddress();
+  let balance = await contract.balanceOf(address);
+  return balance.toString();
+}
+
 export default function DepositFlow({ closeModal, row, marketData }: Props) {
   let [isSupplying, setIsSupplying] = useState<boolean>(true);
   let [isEnabled, setIsEnabled] = useState<boolean>(false);
   let [signer, setSigner] = useState<JsonRpcSigner | null>(null);
   let [value, setValue] = useState<string>("");
   let [walletBalance, setWalletBalance] = useState<string>("0");
+  let [currentlySupplying, setCurrentlySupplying] = useState<string>("0");
 
   const { library } = useWeb3React<Web3Provider>();
 
@@ -104,6 +115,9 @@ export default function DepositFlow({ closeModal, row, marketData }: Props) {
     setSigner(signer);
     if (signer && row.token) {
       getWalletBalance(signer, row.token).then((b) => setWalletBalance(b));
+      getCurrentlySupplying(signer, row.cToken).then((c) =>
+        setCurrentlySupplying(c)
+      );
     }
   }, [library]);
 
@@ -314,7 +328,9 @@ export default function DepositFlow({ closeModal, row, marketData }: Props) {
 
             <div className="flex text-gray-500">
               <div className="flex-grow">Currently Supplying</div>
-              <div>0 {row.name}</div>
+              <div>
+                {currentlySupplying} {row.name}
+              </div>
             </div>
           </div>
         </div>
