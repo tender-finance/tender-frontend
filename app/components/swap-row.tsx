@@ -26,14 +26,14 @@ export default function SwapRow({ row, showUsd, marketData }: Props) {
         </div>
         <div className="grid grid-cols-4 flex-grow text-center">
           {showUsd ? (
-            <div>{row.marketSizeUsd}</div>
+            <div>{marketData.marketSizeUsd || "-"}</div>
           ) : (
-            <div>{row.marketSizeNative}</div>
+            <div>{marketData.marketSizeNative || "-"}</div>
           )}
           {showUsd ? (
-            <div>{row.totalBorrowedUsd}</div>
+            <div>{marketData.totalBorrowedUsd || "-"}</div>
           ) : (
-            <div>{row.totalBorrowedNative}</div>
+            <div>{marketData.totalBorrowedNative || "-"}</div>
           )}
           <div>{marketData.depositApy || "-"}</div>
           <div>{marketData.borrowApy || "-"}</div>

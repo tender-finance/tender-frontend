@@ -244,6 +244,28 @@ async function borrow(value: string, signer: Signer, cToken: cToken) {
   // }
 }
 
+async function getMarketSizeUsd(
+  signer: Signer,
+  cToken: cToken
+): Promise<string> {
+  let contract = new ethers.Contract(cToken.address, SampleCTokenAbi, signer);
+  let value = await contract.totalSupply();
+
+  // TODO: better formatting here, test net number is super big. This should probably initially be millions?
+  return `${(value / 1e30).toFixed(2).toString()}T`;
+}
+
+async function getTotalBorrowedUsd(
+  signer: Signer,
+  cToken: cToken
+): Promise<string> {
+  let contract = new ethers.Contract(cToken.address, SampleCTokenAbi, signer);
+  let value = await contract.totalBorrows();
+
+  // TODO: better formatting here, test net number is super big. This should probably initially be millions?
+  return `${(value / 1e30).toFixed(2).toString()}B`;
+}
+
 export {
   enable,
   deposit,
@@ -256,4 +278,6 @@ export {
   getBorrowLimitUsed,
   repay,
   borrow,
+  getMarketSizeUsd,
+  getTotalBorrowedUsd,
 };

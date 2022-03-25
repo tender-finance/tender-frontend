@@ -21,6 +21,9 @@ import {
   formattedBorrowApy,
   formattedDepositApy,
 } from "~/lib/apy-calculations";
+
+import { getMarketSizeUsd, getTotalBorrowedUsd } from "~/lib/tender";
+
 import ConnectWallet from "./connect-wallet";
 
 // const SUPPORTED_TOKENS = [TokenName.BTC, TokenName.ETH, TokenName.USDT];
@@ -42,15 +45,7 @@ function generateSwapRows(
 
     return {
       ...tokenMetaDatum,
-      marketSizeUsd: "loading",
-      marketSizeNative: "loading",
-      totalBorrowedUsd: "loading",
       comptrollerAddress: comptrollerAddress,
-      totalBorrowedNative: "loading",
-      depositApy: "loading",
-      depositDelta: 1.43,
-      borrowApy: "loading",
-      borrowApyDelta: 1.43,
       token: token,
       cToken: cToken,
     };
@@ -65,6 +60,11 @@ async function loadMarketData(
     let marketData: SwapRowMarketDatum[] = await Promise.all(
       swapRows.map(async (s: SwapRowType): Promise<SwapRowMarketDatum> => {
         // TODO: This could get slow, need a cached API
+        const marketSizeUsd: string = await getMarketSizeUsd(signer, s.cToken);
+        const totalBorrowedUsd: string = await getTotalBorrowedUsd(
+          signer,
+          s.cToken
+        );
         const depositApy: string = await formattedDepositApy(
           s.token,
           s.cToken,
@@ -77,6 +77,10 @@ async function loadMarketData(
         );
         return {
           id: s.name,
+          marketSizeUsd,
+          marketSizeNative: "~",
+          totalBorrowedUsd,
+          totalBorrowedNative: "~",
           depositApy,
           borrowApy,
         };
