@@ -22,7 +22,7 @@ export default function SwapRow({ row, showUsd, marketData }: Props) {
           <div style={{ width: "55px" }} className="mr-4">
             <img src={row.icon} />
           </div>
-          <div style={{ width: "250px" }}>{row.name}</div>
+          <div style={{ width: "200px" }}>{row.name}</div>
         </div>
         <div className="grid grid-cols-4 flex-grow text-center">
           {showUsd ? (
