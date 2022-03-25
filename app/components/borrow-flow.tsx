@@ -3,69 +3,16 @@ import { useEffect, useState } from "react";
 import { Signer } from "ethers";
 import { useWeb3React } from "@web3-react/core";
 import { JsonRpcSigner, Web3Provider } from "@ethersproject/providers";
-import SampleErc20Abi from "~/config/sample-erc20-abi";
-import SampleCTokenAbi from "~/config/sample-ctoken-abi";
-import { ethers } from "ethers";
+
 import clsx from "clsx";
 import toast from "react-hot-toast";
+
+import { getWalletBalance, enable } from "~/lib/tender";
 
 interface Props {
   closeModal: Function;
   row: SwapRow;
   marketData: SwapRowMarketDatum;
-}
-
-async function getWalletBalance(signer: Signer, token: Token): Promise<string> {
-  let contract = new ethers.Contract(token.address, SampleErc20Abi, signer);
-  let address = await signer.getAddress();
-  let balance = await contract.balanceOf(address);
-  return balance.toString();
-}
-
-async function enable(
-  signer: Signer,
-  token: Token,
-  cToken: cToken
-): Promise<void> {
-  console.log("boop", signer, token, cToken);
-
-  // const isCEth = token.address ? false : true;
-  // if (isCEth) {
-  //   throw "Don't need to approve ETH";
-  // }
-
-  // @ts-ignore
-  let contract = new ethers.Contract(token.address, SampleErc20Abi, signer);
-  let approvalVal = "1000000000000000000";
-  let approvalTx = await contract.approve(cToken.address, approvalVal);
-}
-
-async function repay(value: string, signer: Signer, cToken: cToken) {
-  const formattedValue = value;
-  console.log("input value:", value, "formattedValue:", formattedValue);
-
-  let contract = new ethers.Contract(cToken.address, SampleCTokenAbi, signer);
-  let tx = await contract.repayBorrow(formattedValue);
-}
-async function borrow(value: string, signer: Signer, cToken: cToken) {
-  //  if (isCEth) {
-  //   console.log("borrow() with cEth");
-
-  //   const formattedValue = ethers.utils.parseEther(value);
-  //   console.log("input value:", value, "formattedValue:", formattedValue);
-
-  //   let contract = new ethers.Contract(address, sampleAbi, web3React.library?.getSigner());
-  //   let tx = await contract.borrow(formattedValue);
-  // }
-  // else {
-  console.log("borrow() with cToken", cToken.name, cToken.address);
-
-  const formattedValue = value;
-  console.log("input value:", value, "formattedValue:", formattedValue);
-
-  let contract = new ethers.Contract(cToken.address, SampleCTokenAbi, signer);
-  let tx = await contract.borrow(formattedValue);
-  // }
 }
 
 export default function BorrowFlow({ closeModal, row, marketData }: Props) {
