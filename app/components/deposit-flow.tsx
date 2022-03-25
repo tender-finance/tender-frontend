@@ -156,7 +156,7 @@ export default function DepositFlow({ closeModal, row, marketData }: Props) {
           <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 py-5">
             <div className="flex-grow">Borrow Limit Used</div>
             <div>
-              0 <span className="text-brand-green">→</span>
+              0 <span className="text-brand-green">→</span>&nbsp;
               {borrowLimitUsed}%
             </div>
           </div>
@@ -310,7 +310,7 @@ export default function DepositFlow({ closeModal, row, marketData }: Props) {
               <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 py-5">
                 <div className="flex-grow">Borrow Limit Used</div>
                 <div>
-                  0 <span className="text-brand-green">→</span>
+                  0 <span className="text-brand-green">→</span>&nbsp;
                   {borrowLimitUsed}%
                 </div>
               </div>

@@ -7,7 +7,14 @@ import { JsonRpcSigner, Web3Provider } from "@ethersproject/providers";
 import clsx from "clsx";
 import toast from "react-hot-toast";
 
-import { getWalletBalance, enable } from "~/lib/tender";
+import {
+  getWalletBalance,
+  enable,
+  getCurrentlyBorrowing,
+  getBorrowLimit,
+  getBorrowedAmount,
+  getBorrowLimitUsed,
+} from "~/lib/tender";
 
 interface Props {
   closeModal: Function;
@@ -21,6 +28,12 @@ export default function BorrowFlow({ closeModal, row, marketData }: Props) {
   let [signer, setSigner] = useState<JsonRpcSigner | null>(null);
   let [value, setValue] = useState<string>("");
   let [walletBalance, setWalletBalance] = useState<string>("0");
+  let [currentlyBorrowing, setCurrentlyBorrowing] = useState<string>("0");
+  let [borrowLimit, setBorrowLimit] = useState<number>(0);
+  let [borrowLimitUsed, setBorrowLimitUsed] = useState<number>(0);
+  let [borrowedAmount, setBorrowedAmount] = useState<number>(0);
+  let [formattedBorrowedAmount, setFormattedBorrowedAmount] =
+    useState<string>("0");
 
   let [isEnabling, setIsEnabling] = useState<boolean>(false);
   let [isBorrowing, setIsBorrowing] = useState<boolean>(false);
@@ -38,8 +51,33 @@ export default function BorrowFlow({ closeModal, row, marketData }: Props) {
 
     if (signer && row.token) {
       getWalletBalance(signer, row.token).then((b) => setWalletBalance(b));
+
+      getCurrentlyBorrowing(signer, row.cToken).then((c) =>
+        setCurrentlyBorrowing(c)
+      );
+
+      getBorrowLimit(signer, row.comptrollerAddress, row.cToken).then((b) =>
+        setBorrowLimit(b)
+      );
+      getBorrowedAmount(signer, row.cToken).then((b) => {
+        setBorrowedAmount(b);
+
+        // TODO: We do this formatting in several places, should be abstracted into a function
+        const formattedAmount = (b / 1e18).toFixed(2).toString();
+        setFormattedBorrowedAmount(formattedAmount);
+      });
     }
   }, [library]);
+
+  useEffect(() => {
+    if (!borrowedAmount || !borrowLimit) {
+      return;
+    }
+
+    getBorrowLimitUsed(borrowedAmount, borrowLimit).then((b) =>
+      setBorrowLimitUsed(b)
+    );
+  }, [borrowedAmount, borrowLimit]);
 
   return isRepaying ? (
     <div>
@@ -111,6 +149,22 @@ export default function BorrowFlow({ closeModal, row, marketData }: Props) {
           <div>0%</div>
         </div>
 
+        <div>
+          <div className="font-bold mr-3 border-b border-b-gray-600 w-full pb-5">
+            Borrow Limit
+          </div>
+          <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 py-5">
+            <div className="flex-grow">Borrow Balance</div>
+            <div>${formattedBorrowedAmount}</div>
+          </div>
+          <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 py-5">
+            <div className="flex-grow">Borrow Limit Used</div>
+            <div>
+              0 <span className="text-brand-green">→</span>&nbsp;
+              {borrowLimitUsed}%
+            </div>
+          </div>
+        </div>
         <div className="mb-8">
           {!signer && <div>Connect wallet to get started</div>}
           {signer && !isEnabled && (
@@ -246,6 +300,22 @@ export default function BorrowFlow({ closeModal, row, marketData }: Props) {
               <div className="flex-grow">Distribution APY</div>
               <div>0%</div>
             </div>
+            <div>
+              <div className="font-bold mr-3 border-b border-b-gray-600 w-full pb-5">
+                Borrow Limit
+              </div>
+              <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 py-5">
+                <div className="flex-grow">Borrow Balance</div>
+                <div>${formattedBorrowedAmount}</div>
+              </div>
+              <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 py-5">
+                <div className="flex-grow">Borrow Limit Used</div>
+                <div>
+                  0 <span className="text-brand-green">→</span>&nbsp;
+                  {borrowLimitUsed}%
+                </div>
+              </div>
+            </div>
 
             <div className="mb-8">
               {!signer && <div>Connect wallet to get started</div>}
@@ -286,7 +356,9 @@ export default function BorrowFlow({ closeModal, row, marketData }: Props) {
 
             <div className="flex text-gray-500">
               <div className="flex-grow">Currently Borrowing</div>
-              <div>0 {row.name}</div>
+              <div>
+                {currentlyBorrowing} {row.name}
+              </div>
             </div>
           </div>
         </div>
