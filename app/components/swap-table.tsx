@@ -153,7 +153,7 @@ export default function SwapTable() {
           <div className=" flex align-middle items-center  font-light text-gray-300 px-10">
             <div className="flex items-center align-middle">
               <div style={{ width: "55px" }} className="mr-4"></div>
-              <div style={{ width: "200px" }}></div>
+              <div style={{ width: "130px" }}></div>
             </div>
             <div className="grid grid-cols-4 flex-grow text-xs text-gray-500 text-center">
               <div>Market size </div>
