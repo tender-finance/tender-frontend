@@ -57,7 +57,7 @@ export default function ConnectWallet() {
           </button>
         </>
       )}
-      {!active && error && <button onClick={handleRetry}>Retry</button>}
+      {!active && error && <></>}
     </div>
   );
 }
