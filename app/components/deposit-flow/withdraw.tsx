@@ -64,7 +64,7 @@ export default function Withdraw({
               className="bg-transparent text-6xl text-white text-center outline-none"
               placeholder="0"
             />
-            <div className="text-gray-400 text-sm m-auto">Max ⬆</div>
+            <div className="text-gray-400 text-sm m-auto hidden">Max ⬆</div>
           </div>
         </div>
         <div className="flex">
