@@ -1,5 +1,5 @@
 import { cToken, SwapRow, SwapRowMarketDatum, Token } from "~/types/global";
-import { Signer, ethers } from "ethers";
+import { Signer, ethers, BigNumber } from "ethers";
 
 import SampleCTokenAbi from "~/config/sample-ctoken-abi";
 import SampleErc20Abi from "~/config/sample-erc20-abi";
@@ -118,14 +118,19 @@ async function redeem(value: string, signer: Signer, cToken: cToken) {
  */
 async function getCurrentlySupplying(
   signer: Signer,
-  cToken: cToken
+  cToken: cToken,
+  token: Token
 ): Promise<string> {
   let contract = new ethers.Contract(cToken.address, SampleCTokenAbi, signer);
   let address = await signer.getAddress();
-  let balance = await contract.balanceOf(address);
-  // TODO: Do we need to do a similar thing here?
-  // return (balance / 1e18).toFixed(2).toString();
-  return balance.toString();
+
+  const rawBalance = await contract.callStatic.balanceOfUnderlying(address);
+  const balance: BigNumber = rawBalance;
+  const mantissa = ethers.utils.parseUnits("1", token.decimals);
+
+  const val = balance.div(mantissa).toString();
+
+  return val;
 }
 
 /**

@@ -34,7 +34,7 @@ export default function Withdraw({
     if (!signer) {
       return;
     }
-    getCurrentlySupplying(signer, row.cToken).then((c) =>
+    getCurrentlySupplying(signer, row.cToken, row.token).then((c) =>
       setCurrentlySupplying(c)
     );
   }, [signer, row.cToken]);
