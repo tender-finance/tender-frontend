@@ -4,25 +4,27 @@ import { Token, cToken } from "~/types/global";
 import { JsonRpcSigner } from "@ethersproject/providers";
 
 function formatApy(apy: number): string {
-  return `${apy.toString()}%`;
+  return `${apy.toFixed(2).toString()}%`;
 }
 
 // https://compound.finance/docs#protocol-math
 
-function calculateApy(
-  underlyingAssetMantissa: number,
-  ratePerBlock: number
-): number {
+// Note: this is intentionally a number and not a BigNumber.
+// If the ratePerBlock is way lower than the mantissa
+// i.e., the rate per block is in the millions and the mantissa is 1e18
+// it becomes 0 in the integer division math.
+//
+// This might be a mistake, but I get the correct APYs based on Compound on Rinkeby.
+function calculateApy(decimals: number, ratePerBlock: number): number {
   const blocksPerDay = 6570; // 13.15 seconds per block
+  const underlyingAssetMantissa = 1e18;
+
+  const supplyRate =
+    (ratePerBlock / underlyingAssetMantissa) * blocksPerDay + 1;
+
   const daysPerYear = 365;
 
-  const apy =
-    (Math.pow(
-      (ratePerBlock / underlyingAssetMantissa) * blocksPerDay + 1,
-      daysPerYear
-    ) -
-      1) *
-    100;
+  const apy = (Math.pow(supplyRate, daysPerYear) - 1) * 100;
 
   return apy;
 }
@@ -60,6 +62,7 @@ async function calculateBorrowApy(
   );
 
   const borrowRatePerBlock = await cTokenContract.borrowRatePerBlock();
+
   const underlyingAssetMantissa = token.decimals;
 
   const apy = calculateApy(underlyingAssetMantissa, borrowRatePerBlock);
