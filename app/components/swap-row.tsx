@@ -6,13 +6,12 @@ import BorrowFlow from "./borrow-flow";
 
 interface Props {
   row: SwapRow;
-  showUsd: boolean;
   marketData: SwapRowMarketDatum;
 }
 
 ReactModal.setAppElement("#m");
 
-export default function SwapRow({ row, showUsd, marketData }: Props) {
+export default function SwapRow({ row, marketData }: Props) {
   const [isDepositModalOpen, setIsDepositModalOpen] = useState<boolean>();
   const [isBorrowModalOpen, setIsBorrowModalOpen] = useState<boolean>();
   return (
@@ -25,16 +24,8 @@ export default function SwapRow({ row, showUsd, marketData }: Props) {
           <div style={{ width: "130px" }}>{row.name}</div>
         </div>
         <div className="grid grid-cols-4 flex-grow text-center">
-          {showUsd ? (
-            <div>{marketData.marketSizeUsd || "-"}</div>
-          ) : (
-            <div>{marketData.marketSizeNative || "-"}</div>
-          )}
-          {showUsd ? (
-            <div>{marketData.totalBorrowedUsd || "-"}</div>
-          ) : (
-            <div>{marketData.totalBorrowedNative || "-"}</div>
-          )}
+          <div>{marketData.marketSizeUsd || "-"}</div>
+          <div>{marketData.totalBorrowedUsd || "-"}</div>
           <div>{marketData.depositApy || "-"}</div>
           <div>{marketData.borrowApy || "-"}</div>
         </div>
