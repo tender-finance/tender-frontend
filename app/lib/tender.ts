@@ -24,7 +24,7 @@ async function enable(
 
   // @ts-ignore
   let contract = new ethers.Contract(token.address, SampleErc20Abi, signer);
-  let approvalVal = "1000000000000000000";
+  let approvalVal = BigNumber.from(2).pow(256).sub(1).toString(); // Max approval value
   let approvalTx = await contract.approve(cToken.address, approvalVal);
 }
 
@@ -54,7 +54,12 @@ async function getWalletBalance(signer: Signer, token: Token): Promise<string> {
  * @param signer
  * @param cToken
  */
-async function deposit(value: string, signer: Signer, cToken: cToken) {
+async function deposit(
+  value: string,
+  signer: Signer,
+  cToken: cToken,
+  token: Token
+) {
   // if (isCEth) {
   //   console.log("supply() w/ cEth");
 
@@ -67,7 +72,7 @@ async function deposit(value: string, signer: Signer, cToken: cToken) {
   // else {
   console.log("supply() with cToken", cToken.name, cToken.address);
 
-  const formattedValue = ethers.BigNumber.from(value);
+  const formattedValue = ethers.utils.parseUnits(value, token.decimals);
   console.log(
     "input value:",
     value,
