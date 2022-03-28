@@ -135,7 +135,7 @@ export default function Withdraw({
                       }
                       setIsWithdrawing(true);
                       // @ts-ignore existence of signer is gated above.
-                      await redeem(value, signer, row.cToken);
+                      await redeem(value, signer, row.cToken, row.token);
 
                       setValue("");
                       toast.success("Withdraw successful");

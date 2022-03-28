@@ -91,7 +91,12 @@ async function deposit(
  * @param signer
  * @param cToken
  */
-async function redeem(value: string, signer: Signer, cToken: cToken) {
+async function redeem(
+  value: string,
+  signer: Signer,
+  cToken: cToken,
+  token: Token
+) {
   // if (isCEth) {
   //   console.log("redeem() with cEth");
 
@@ -105,13 +110,14 @@ async function redeem(value: string, signer: Signer, cToken: cToken) {
   //   );
   //   let tx = await contract.redeemUnderlying(formattedValue);
   // } else {
-  console.log("redeem() with cToken", name, "address:", cToken.address);
+  const formattedValue = ethers.utils.parseUnits(value, token.decimals);
 
-  const formattedValue = ethers.utils.parseEther(value);
-  console.log("input value:", value, "formattedValue:", formattedValue);
-
-  let contract = new ethers.Contract(cToken.address, SampleCTokenAbi, signer);
-  let tx = await contract.redeem(formattedValue);
+  let cTokenContract = new ethers.Contract(
+    cToken.address,
+    SampleCTokenAbi,
+    signer
+  );
+  let tx = await cTokenContract.redeemUnderlying(formattedValue);
   // }
 }
 
