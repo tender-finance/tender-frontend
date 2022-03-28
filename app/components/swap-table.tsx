@@ -78,9 +78,7 @@ async function loadMarketData(
         return {
           id: s.name,
           marketSizeUsd,
-          marketSizeNative: "~",
           totalBorrowedUsd,
-          totalBorrowedNative: "~",
           depositApy,
           borrowApy,
         };
@@ -96,7 +94,6 @@ async function loadMarketData(
 }
 
 export default function SwapTable() {
-  let [showUsd, setShowUsd] = useState<boolean>(true);
   let [swapRows, setSwapRows] = useState<SwapRowType[]>([]);
   let [swapRowsMarketData, setSwapRowsMarketData] = useState<SwapRowMarketData>(
     {}
@@ -130,26 +127,6 @@ export default function SwapTable() {
     <div className="mb-60">
       {chainId && (
         <>
-          <div className="text-center flex">
-            <div
-              onClick={() => setShowUsd(true)}
-              className={clsx("cursor-pointer  text-white py-3 px-6", {
-                "bg-brand-green": showUsd,
-                "bg-brand-black opacity-50": !showUsd,
-              })}
-            >
-              USD
-            </div>
-            <div
-              onClick={() => setShowUsd(false)}
-              className={clsx("cursor-pointer  text-white  py-3 px-6", {
-                "bg-brand-green": !showUsd,
-                "bg-brand-black opacity-50": showUsd,
-              })}
-            >
-              Native
-            </div>
-          </div>
           <div className=" flex align-middle items-center  font-light text-gray-300 px-10">
             <div className="flex items-center align-middle">
               <div style={{ width: "55px" }} className="mr-4"></div>
@@ -167,7 +144,6 @@ export default function SwapTable() {
           <div className="bg-gray-800 rounded-xl px-10 mt-8">
             {swapRows.map((row) => (
               <SwapRow
-                showUsd={showUsd}
                 key={row.icon}
                 row={row}
                 marketData={swapRowsMarketData[row.name] || {}}

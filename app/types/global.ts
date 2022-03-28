@@ -62,9 +62,7 @@ export interface SwapRowMarketDatum {
   depositApy: string;
   borrowApy: string;
   marketSizeUsd: string;
-  marketSizeNative: string;
   totalBorrowedUsd: string;
-  totalBorrowedNative: string;
 }
 
 export interface NetworkData {
