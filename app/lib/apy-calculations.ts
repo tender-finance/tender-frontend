@@ -62,7 +62,6 @@ async function calculateBorrowApy(
   );
 
   const borrowRatePerBlock = await cTokenContract.borrowRatePerBlock();
-
   const underlyingAssetMantissa = token.decimals;
 
   const apy = calculateApy(underlyingAssetMantissa, borrowRatePerBlock);

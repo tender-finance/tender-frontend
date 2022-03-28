@@ -24,7 +24,7 @@ async function enable(
 
   // @ts-ignore
   let contract = new ethers.Contract(token.address, SampleErc20Abi, signer);
-  let approvalVal = BigNumber.from(2).pow(256).sub(1).toString(); // Max approval value
+  let approvalVal = BigNumber.from(2).pow(256).sub(1).toString(); // Max approval value, 2^256 - 1
   let approvalTx = await contract.approve(cToken.address, approvalVal);
 }
 
