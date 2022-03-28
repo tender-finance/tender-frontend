@@ -16,6 +16,7 @@ export interface Token {
 export interface cToken {
   name: string;
   address: string;
+  decimals: number;
 }
 
 export interface Network {}

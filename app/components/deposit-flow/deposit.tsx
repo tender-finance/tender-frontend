@@ -162,7 +162,7 @@ export default function Deposit({
                   }
                   setIsDepositing(true);
                   // @ts-ignore existence of signer is gated above.
-                  await deposit(value, signer, row.cToken);
+                  await deposit(value, signer, row.cToken, row.token);
                   setValue("");
                   toast.success("Deposit successful");
                   closeModal();

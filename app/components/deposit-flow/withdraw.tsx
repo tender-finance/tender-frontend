@@ -34,7 +34,7 @@ export default function Withdraw({
     if (!signer) {
       return;
     }
-    getCurrentlySupplying(signer, row.cToken).then((c) =>
+    getCurrentlySupplying(signer, row.cToken, row.token).then((c) =>
       setCurrentlySupplying(c)
     );
   }, [signer, row.cToken]);
@@ -135,7 +135,7 @@ export default function Withdraw({
                       }
                       setIsWithdrawing(true);
                       // @ts-ignore existence of signer is gated above.
-                      await redeem(value, signer, row.cToken);
+                      await redeem(value, signer, row.cToken, row.token);
 
                       setValue("");
                       toast.success("Withdraw successful");
