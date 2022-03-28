@@ -282,6 +282,22 @@ async function getTotalBorrowedUsd(
   return `${(value / 1e30).toFixed(2).toString()}B`;
 }
 
+async function hasSufficientAllowanceCToken(
+  signer: Signer,
+  cToken: cToken
+): Promise<boolean> {
+  // TODO
+  return false;
+}
+
+async function hasSufficientAllowanceToken(
+  signer: Signer,
+  token: Token
+): Promise<boolean> {
+  // TODO:
+  return false;
+}
+
 export {
   enable,
   deposit,
@@ -296,4 +312,5 @@ export {
   borrow,
   getMarketSizeUsd,
   getTotalBorrowedUsd,
+  hasSufficientAllowance,
 };
