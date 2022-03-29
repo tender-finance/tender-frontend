@@ -5,6 +5,9 @@ import SampleCTokenAbi from "~/config/sample-ctoken-abi";
 import SampleErc20Abi from "~/config/sample-erc20-abi";
 import SampleComptrollerAbi from "~/config/sample-comptroller-abi";
 
+// TODO: Determine this balance in ernest
+const MINIMUM_REQUIRED_APPROVAL_BALANCE = 10000000000000000000000000000000000000000;
+
 /**
  * Enable
  *
@@ -284,17 +287,30 @@ async function getTotalBorrowedUsd(
 
 async function hasSufficientAllowanceCToken(
   signer: Signer,
+  token: Token,
   cToken: cToken
 ): Promise<boolean> {
   // TODO
-  return false;
+  // function allowance(address _owner, address _spender) public view returns (uint256 remaining)
+
+  let contract = new ethers.Contract(token.address, SampleErc20Abi, signer);
+  let address = await signer.getAddress();
+  let allowance = await contract.allowance(address, cToken.address);
+
+  return allowance.toBigInt() > MINIMUM_REQUIRED_APPROVAL_BALANCE;
 }
 
 async function hasSufficientAllowanceToken(
   signer: Signer,
   token: Token
 ): Promise<boolean> {
-  // TODO:
+  // NOTE: Do we only need the other allowance check? Or do we need this, the inverse of the first?
+  // function allowance(address _owner, address _spender) public view returns (uint256 remaining)
+  // let contract = new ethers.Contract(token.address, SampleErc20Abi, signer);
+  // let address = await signer.getAddress();
+  // let allowance = await contract.allowance(address, token.address);
+
+  debugger;
   return false;
 }
 
@@ -312,5 +328,6 @@ export {
   borrow,
   getMarketSizeUsd,
   getTotalBorrowedUsd,
-  hasSufficientAllowance,
+  hasSufficientAllowanceToken,
+  hasSufficientAllowanceCToken,
 };
