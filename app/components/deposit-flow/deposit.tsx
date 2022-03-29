@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 
 import clsx from "clsx";
 
-import { enable, deposit } from "~/lib/tender";
+import { enable, deposit, hasSufficientAllowance } from "~/lib/tender";
 
 interface Props {
   closeModal: Function;
@@ -31,6 +31,19 @@ export default function Deposit({
   let [isEnabling, setIsEnabling] = useState<boolean>(false);
   let [isDepositing, setIsDepositing] = useState<boolean>(false);
   let [value, setValue] = useState<string>("");
+
+  useEffect(() => {
+    if (!signer) {
+      return;
+    }
+    hasSufficientAllowance(signer, row.token, row.cToken).then(
+      (has: boolean) => {
+        if (has) {
+          setIsEnabled(true);
+        }
+      }
+    );
+  }, [signer]);
 
   return (
     <div>

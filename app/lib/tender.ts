@@ -1,9 +1,11 @@
-import { cToken, SwapRow, SwapRowMarketDatum, Token } from "~/types/global";
+import { cToken, Token } from "~/types/global";
 import { Signer, ethers, BigNumber } from "ethers";
 
 import SampleCTokenAbi from "~/config/sample-ctoken-abi";
 import SampleErc20Abi from "~/config/sample-erc20-abi";
 import SampleComptrollerAbi from "~/config/sample-comptroller-abi";
+
+const MINIMUM_REQUIRED_APPROVAL_BALANCE = BigNumber.from("1");
 
 /**
  * Enable
@@ -282,6 +284,18 @@ async function getTotalBorrowedUsd(
   return `${(value / 1e30).toFixed(2).toString()}B`;
 }
 
+async function hasSufficientAllowance(
+  signer: Signer,
+  token: Token,
+  cToken: cToken
+): Promise<boolean> {
+  let contract = new ethers.Contract(token.address, SampleErc20Abi, signer);
+  let address = await signer.getAddress();
+  let allowance: BigNumber = await contract.allowance(address, cToken.address);
+
+  return allowance.gte(MINIMUM_REQUIRED_APPROVAL_BALANCE);
+}
+
 export {
   enable,
   deposit,
@@ -296,4 +310,5 @@ export {
   borrow,
   getMarketSizeUsd,
   getTotalBorrowedUsd,
+  hasSufficientAllowance,
 };

@@ -1,11 +1,11 @@
 import { SwapRow, SwapRowMarketDatum } from "~/types/global";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { JsonRpcSigner, Web3Provider } from "@ethersproject/providers";
 
 import clsx from "clsx";
 import toast from "react-hot-toast";
 
-import { enable, repay } from "~/lib/tender";
+import { enable, repay, hasSufficientAllowance } from "~/lib/tender";
 
 interface Props {
   closeModal: Function;
@@ -34,6 +34,18 @@ export default function Repay({
   let [isRepayingTxn, setIsRepayingTxn] = useState<boolean>(false);
   let [value, setValue] = useState<string>("");
 
+  useEffect(() => {
+    if (!signer) {
+      return;
+    }
+    hasSufficientAllowance(signer, row.token, row.cToken).then(
+      (has: boolean) => {
+        if (has) {
+          setIsEnabled(true);
+        }
+      }
+    );
+  }, [signer]);
   return (
     <div>
       <div className="py-8" style={{ backgroundColor: "#23262B" }}>
