@@ -23,6 +23,9 @@ const chainIdToNetwork: { [network: number]: string } = {
   122: "fuse",
   137: "matic",
   80001: "maticMumbai",
+  1313161554: "auroraTestnet",
+  1313161555: "auroraMainnet",
+  1313161556: "auroraLocalnet",
 };
 
 export { chainIdToNetwork };
