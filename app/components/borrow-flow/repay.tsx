@@ -5,7 +5,7 @@ import { JsonRpcSigner, Web3Provider } from "@ethersproject/providers";
 import clsx from "clsx";
 import toast from "react-hot-toast";
 
-import { enable, repay, hasSufficientAllowanceCToken } from "~/lib/tender";
+import { enable, repay, hasSufficientAllowance } from "~/lib/tender";
 
 interface Props {
   closeModal: Function;
@@ -35,12 +35,17 @@ export default function Repay({
   let [value, setValue] = useState<string>("");
 
   useEffect(() => {
-    hasSufficientAllowanceCToken().then((has: boolean) => {
-      if (has) {
-        setIsEnabled(true);
+    if (!signer) {
+      return;
+    }
+    hasSufficientAllowance(signer, row.token, row.cToken).then(
+      (has: boolean) => {
+        if (has) {
+          setIsEnabled(true);
+        }
       }
-    });
-  }, [1]);
+    );
+  }, [signer]);
   return (
     <div>
       <div className="py-8" style={{ backgroundColor: "#23262B" }}>
