@@ -132,6 +132,8 @@ async function redeem(
  * @param cToken
  * @returns
  */
+// TODO: Is this a USD amount or a token amount? We've been using DAI as the example so it's basically 1:1,
+// but for things like ether this likely won't work and need to separate supplying vs USD value of supplying
 async function getCurrentlySupplying(
   signer: Signer,
   cToken: cToken,
@@ -196,7 +198,9 @@ async function getBorrowLimit(
 
       let mantissa = ethers.utils.parseUnits("1", tokenPair.token.decimals);
 
-      // This collateralFactor var is only 17 digits, and most tokens are 18 digits.
+      // collateralFactor represents the % you can borrow against your asset,
+      // when scaled down by the mantissa it represents a number like 0.7 or 0.8, i.e., 70% or 80%.
+      // collateralFactor is only 17 digits, and most tokens are 18 digits.
       // This makes dividing by 1e18 always 0, so by inflating by 100 and dividing by 100
       // we can stay using BigNumbers.
       let amount =

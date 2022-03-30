@@ -1,4 +1,4 @@
-import { SwapRow, SwapRowMarketDatum } from "~/types/global";
+import { SwapRow, SwapRowMarketDatum, TokenPair } from "~/types/global";
 import { useEffect, useState } from "react";
 import { useWeb3React } from "@web3-react/core";
 import { JsonRpcSigner, Web3Provider } from "@ethersproject/providers";
@@ -16,10 +16,16 @@ import {
 interface Props {
   closeModal: Function;
   row: SwapRow;
+  tokenPairs: TokenPair[];
   marketData: SwapRowMarketDatum;
 }
 
-export default function BorrowFlow({ closeModal, row, marketData }: Props) {
+export default function BorrowFlow({
+  closeModal,
+  row,
+  marketData,
+  tokenPairs,
+}: Props) {
   let [isRepaying, setIsRepaying] = useState<boolean>(false);
   let [signer, setSigner] = useState<JsonRpcSigner | null>(null);
   let [walletBalance, setWalletBalance] = useState<string>("0");
@@ -42,7 +48,7 @@ export default function BorrowFlow({ closeModal, row, marketData }: Props) {
     if (signer && row.token) {
       getWalletBalance(signer, row.token).then((b) => setWalletBalance(b));
 
-      getBorrowLimit(signer, row.comptrollerAddress, row.cToken).then((b) =>
+      getBorrowLimit(signer, row.comptrollerAddress, tokenPairs).then((b) =>
         setBorrowLimit(b)
       );
       getBorrowedAmount(signer, row.cToken).then((b) => {

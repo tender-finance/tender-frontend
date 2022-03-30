@@ -69,6 +69,7 @@ export default function SwapRow({ row, marketData, tokenPairs }: Props) {
           <BorrowFlow
             closeModal={() => setIsBorrowModalOpen(false)}
             row={row}
+            tokenPairs={tokenPairs}
             marketData={marketData}
           />
         </ReactModal>
