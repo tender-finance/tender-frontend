@@ -1,4 +1,4 @@
-import type { SwapRow, SwapRowMarketDatum } from "~/types/global";
+import type { SwapRow, SwapRowMarketDatum, TokenPair } from "~/types/global";
 import ReactModal from "react-modal";
 import { useState } from "react";
 import DepositFlow from "./deposit-flow";
@@ -6,12 +6,13 @@ import BorrowFlow from "./borrow-flow";
 
 interface Props {
   row: SwapRow;
+  tokenPairs: TokenPair[];
   marketData: SwapRowMarketDatum;
 }
 
 ReactModal.setAppElement("#m");
 
-export default function SwapRow({ row, marketData }: Props) {
+export default function SwapRow({ row, marketData, tokenPairs }: Props) {
   const [isDepositModalOpen, setIsDepositModalOpen] = useState<boolean>();
   const [isBorrowModalOpen, setIsBorrowModalOpen] = useState<boolean>();
   return (
@@ -54,6 +55,7 @@ export default function SwapRow({ row, marketData }: Props) {
           <DepositFlow
             closeModal={() => setIsDepositModalOpen(false)}
             row={row}
+            tokenPairs={tokenPairs}
             marketData={marketData}
           />
         </ReactModal>

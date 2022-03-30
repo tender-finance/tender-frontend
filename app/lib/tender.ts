@@ -4,6 +4,9 @@ import { Signer, ethers, BigNumber } from "ethers";
 import SampleCTokenAbi from "~/config/sample-ctoken-abi";
 import SampleErc20Abi from "~/config/sample-erc20-abi";
 import SampleComptrollerAbi from "~/config/sample-comptroller-abi";
+import { createBrowserHistory } from "history";
+
+import { TokenPair } from "~/types/global";
 
 const MINIMUM_REQUIRED_APPROVAL_BALANCE = BigNumber.from("1");
 
@@ -172,23 +175,46 @@ async function getCurrentlyBorrowing(
 async function getBorrowLimit(
   signer: Signer,
   comptrollerAddress: string,
-  cToken: cToken
+  tokenPairs: Array<TokenPair>
 ): Promise<number> {
   let comptrollerContract = new ethers.Contract(
     comptrollerAddress,
     SampleComptrollerAbi,
     signer
   );
-  let { 1: collateralFactor } = await comptrollerContract.markets(
-    cToken.address
+
+  let tokenBalances = await Promise.all(
+    tokenPairs.map(async (tokenPair: TokenPair): Promise<number> => {
+      let suppliedAmount: BigNumber = BigNumber.from(
+        await getCurrentlySupplying(signer, tokenPair.cToken, tokenPair.token)
+      );
+
+      let { 1: rawCollateralFactor } = await comptrollerContract.markets(
+        tokenPair.cToken.address
+      );
+      let collateralFactor: BigNumber = rawCollateralFactor;
+
+      let mantissa = ethers.utils.parseUnits("1", tokenPair.token.decimals);
+
+      // This collateralFactor var is only 17 digits, and most tokens are 18 digits.
+      // This makes dividing by 1e18 always 0, so by inflating by 100 and dividing by 100
+      // we can stay using BigNumbers.
+      let amount =
+        suppliedAmount.mul(100).mul(collateralFactor).div(mantissa).toNumber() /
+        100;
+
+      return amount;
+    })
   );
-  collateralFactor = (collateralFactor / 1e18) * 100;
 
-  let address = await signer.getAddress();
-  let { 1: liquidity } = await comptrollerContract.getAccountLiquidity(address);
-  liquidity = liquidity / 1e18;
+  let borrowLimit = tokenBalances.reduce(
+    (acc: number, curr: number): number => {
+      return acc + curr;
+    },
+    0
+  );
 
-  return collateralFactor * liquidity;
+  return borrowLimit;
 }
 
 /**

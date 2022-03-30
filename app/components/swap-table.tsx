@@ -8,6 +8,7 @@ import {
   SwapRowMarketData,
   SwapRowMarketDatum,
   NetworkData,
+  TokenPair,
 } from "~/types/global";
 import { useEffect, useState } from "react";
 import clsx from "clsx";
@@ -93,11 +94,32 @@ async function loadMarketData(
   }
 }
 
+function generateTokenPairs(
+  supportedRowTypes: TokenName[],
+  networkName: string
+): Array<TokenPair> {
+  // @ts-ignore
+  const networkData: NetworkData = networks[networkName];
+
+  return supportedRowTypes.map((tokenName: TokenName): TokenPair => {
+    const tokenMetaDatum = tokenMetaData[tokenName];
+
+    let token: Token = networkData.Tokens[tokenMetaDatum.symbol];
+    let cToken: cToken = networkData.cTokens[tokenMetaDatum.cTokenSymbol];
+
+    return {
+      token: token,
+      cToken: cToken,
+    };
+  });
+}
+
 export default function SwapTable() {
   let [swapRows, setSwapRows] = useState<SwapRowType[]>([]);
   let [swapRowsMarketData, setSwapRowsMarketData] = useState<SwapRowMarketData>(
     {}
   );
+  let [tokenPairs, setTokenPairs] = useState<TokenPair[]>([]);
 
   const { chainId, library } = useWeb3React<Web3Provider>();
 
@@ -112,6 +134,12 @@ export default function SwapTable() {
     );
 
     setSwapRows(rows);
+
+    let pairs: TokenPair[] = generateTokenPairs(
+      SUPPORTED_TOKENS,
+      NetworkName[chainId]
+    );
+    setTokenPairs(pairs);
   }, [library, chainId]);
 
   useEffect(() => {
@@ -146,6 +174,7 @@ export default function SwapTable() {
               <SwapRow
                 key={row.icon}
                 row={row}
+                tokenPairs={tokenPairs}
                 marketData={swapRowsMarketData[row.name] || {}}
               />
             ))}
