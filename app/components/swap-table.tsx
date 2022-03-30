@@ -94,10 +94,14 @@ async function loadMarketData(
   }
 }
 
+/**
+ * Calculating things like total deposits or borrow limits requires checking balances
+ * across all tokens, so this function provides a list of all tokens paired with their cTokens.
+ */
 function generateTokenPairs(
   supportedRowTypes: TokenName[],
   networkName: string
-): Array<TokenPair> {
+): TokenPair[] {
   // @ts-ignore
   const networkData: NetworkData = networks[networkName];
 

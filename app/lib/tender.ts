@@ -1,10 +1,9 @@
 import { cToken, Token } from "~/types/global";
-import { Signer, ethers, BigNumber } from "ethers";
+import { Signer, ethers, BigNumber, Contract } from "ethers";
 
 import SampleCTokenAbi from "~/config/sample-ctoken-abi";
 import SampleErc20Abi from "~/config/sample-erc20-abi";
 import SampleComptrollerAbi from "~/config/sample-comptroller-abi";
-import { createBrowserHistory } from "history";
 
 import { TokenPair } from "~/types/global";
 
@@ -126,14 +125,14 @@ async function redeem(
   // }
 }
 
+// TODO: Is this a USD amount or a token amount? We've been using DAI as the example so it's basically 1:1,
+// but for things like ether this likely won't work and need to separate supplying vs USD value of supplying
 /**
  *
  * @param signer
  * @param cToken
  * @returns
  */
-// TODO: Is this a USD amount or a token amount? We've been using DAI as the example so it's basically 1:1,
-// but for things like ether this likely won't work and need to separate supplying vs USD value of supplying
 async function getCurrentlySupplying(
   signer: Signer,
   cToken: cToken,
@@ -170,6 +169,36 @@ async function getCurrentlyBorrowing(
   return balance.div(mantissa);
 }
 
+async function availableCollateralToBorrowAgainst(
+  signer: Signer,
+  comptrollerContract: Contract,
+  tokenPair: TokenPair
+): Promise<number> {
+  let suppliedAmount: BigNumber = BigNumber.from(
+    await getCurrentlySupplying(signer, tokenPair.cToken, tokenPair.token)
+  );
+
+  let { 1: rawCollateralFactor } = await comptrollerContract.markets(
+    tokenPair.cToken.address
+  );
+  let collateralFactor: BigNumber = rawCollateralFactor;
+
+  let mantissa = ethers.utils.parseUnits("1", tokenPair.token.decimals);
+
+  // collateralFactor represents the % you can borrow against your asset,
+  // when scaled down by the mantissa it represents a number like 0.7 or 0.8, i.e., 70% or 80%.
+  // collateralFactor is only 17 digits, and most tokens are 18 digits.
+  // This makes dividing by 1e18 always 0, so by inflating by 100 and dividing by 100
+  // we can stay using BigNumbers as long as possible.
+  //
+  // TODO: Do this same thing division workaround in the APY calculations?
+  let amount =
+    suppliedAmount.mul(100).mul(collateralFactor).div(mantissa).toNumber() /
+    100;
+
+  return amount;
+}
+
 /**
  *
  * @param signer
@@ -180,7 +209,7 @@ async function getCurrentlyBorrowing(
 async function getBorrowLimit(
   signer: Signer,
   comptrollerAddress: string,
-  tokenPairs: Array<TokenPair>
+  tokenPairs: TokenPair[]
 ): Promise<number> {
   let comptrollerContract = new ethers.Contract(
     comptrollerAddress,
@@ -190,37 +219,16 @@ async function getBorrowLimit(
 
   let tokenBalances = await Promise.all(
     tokenPairs.map(async (tokenPair: TokenPair): Promise<number> => {
-      let suppliedAmount: BigNumber = BigNumber.from(
-        await getCurrentlySupplying(signer, tokenPair.cToken, tokenPair.token)
+      return availableCollateralToBorrowAgainst(
+        signer,
+        comptrollerContract,
+        tokenPair
       );
-
-      let { 1: rawCollateralFactor } = await comptrollerContract.markets(
-        tokenPair.cToken.address
-      );
-      let collateralFactor: BigNumber = rawCollateralFactor;
-
-      let mantissa = ethers.utils.parseUnits("1", tokenPair.token.decimals);
-
-      // collateralFactor represents the % you can borrow against your asset,
-      // when scaled down by the mantissa it represents a number like 0.7 or 0.8, i.e., 70% or 80%.
-      // collateralFactor is only 17 digits, and most tokens are 18 digits.
-      // This makes dividing by 1e18 always 0, so by inflating by 100 and dividing by 100
-      // we can stay using BigNumbers.
-      //
-      // TODO: Do this same thing division workaround in the APY calculations?
-      let amount =
-        suppliedAmount.mul(100).mul(collateralFactor).div(mantissa).toNumber() /
-        100;
-
-      return amount;
     })
   );
 
   let borrowLimit = tokenBalances.reduce(
-    (acc: number, curr: number): number => {
-      return acc + curr;
-    },
-    0
+    (acc: number, curr: number): number => acc + curr
   );
 
   return borrowLimit;
