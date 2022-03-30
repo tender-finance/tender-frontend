@@ -14,7 +14,7 @@ interface Props {
   setIsRepaying: Function;
   signer: JsonRpcSigner | null;
   formattedBorrowedAmount: string;
-  borrowLimitUsed: number;
+  borrowLimitUsed: string;
   walletBalance: string;
 }
 

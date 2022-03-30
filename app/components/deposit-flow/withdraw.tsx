@@ -14,7 +14,7 @@ interface Props {
   setIsSupplying: Function;
   borrowLimit: number;
   signer: JsonRpcSigner | null;
-  borrowLimitUsed: number;
+  borrowLimitUsed: string;
   walletBalance: string;
 }
 export default function Withdraw({

@@ -159,12 +159,15 @@ async function getCurrentlySupplying(
  */
 async function getCurrentlyBorrowing(
   signer: Signer,
-  cToken: cToken
-): Promise<string> {
+  cToken: cToken,
+  token: Token
+): Promise<BigNumber> {
   let contract = new ethers.Contract(cToken.address, SampleCTokenAbi, signer);
   let address = await signer.getAddress();
   let balance = await contract.borrowBalanceStored(address);
-  return (balance / 1e18).toFixed(2).toString();
+  let mantissa = ethers.utils.parseUnits("1", token.decimals);
+
+  return balance.div(mantissa);
 }
 
 /**
@@ -203,6 +206,8 @@ async function getBorrowLimit(
       // collateralFactor is only 17 digits, and most tokens are 18 digits.
       // This makes dividing by 1e18 always 0, so by inflating by 100 and dividing by 100
       // we can stay using BigNumbers.
+      //
+      // TODO: Do this same thing division workaround in the APY calculations?
       let amount =
         suppliedAmount.mul(100).mul(collateralFactor).div(mantissa).toNumber() /
         100;
@@ -244,10 +249,34 @@ async function getBorrowedAmount(
  * @returns
  */
 async function getBorrowLimitUsed(
-  borrowedAmount: number,
+  totalBorrowed: BigNumber,
   borrowedLimit: number
-): Promise<number> {
-  return Math.round((borrowedAmount / borrowedLimit) * 100);
+): Promise<string> {
+  return ((totalBorrowed.toNumber() / borrowedLimit) * 100).toFixed(2);
+}
+
+async function getTotalBorrowed(
+  signer: Signer,
+  tokenPairs: TokenPair[]
+): Promise<BigNumber> {
+  let borrowedAmounts = await Promise.all(
+    tokenPairs.map(async (tokenPair: TokenPair): Promise<BigNumber> => {
+      let borrowedAmount: BigNumber = BigNumber.from(
+        await getCurrentlyBorrowing(signer, tokenPair.cToken, tokenPair.token)
+      );
+
+      return borrowedAmount;
+    })
+  );
+
+  let totalBorrowed = borrowedAmounts.reduce(
+    (acc: BigNumber, curr: BigNumber): BigNumber => {
+      return acc.add(curr);
+    },
+    BigNumber.from(0)
+  );
+
+  return totalBorrowed;
 }
 
 /**
@@ -341,4 +370,5 @@ export {
   getMarketSizeUsd,
   getTotalBorrowedUsd,
   hasSufficientAllowance,
+  getTotalBorrowed,
 };
