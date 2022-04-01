@@ -4,16 +4,16 @@ import SwapTable from "~/components/swap-table";
 export default function Index() {
   const coinDetails = [
     {
-      num: "32k+",
-      label: "Coins",
+      num: "6",
+      label: "Tokens",
     },
     {
-      num: "20k+",
-      label: "Auctions",
+      num: "100m+",
+      label: "TLV",
     },
     {
       num: "10k+",
-      label: "Artists",
+      label: "Investors",
     },
   ];
   return (
@@ -65,22 +65,19 @@ export default function Index() {
             </div>
             <div className="leading-loose">
               These stakeholders actively contribute as part of the community to
-              the Aave Protocol and its governance.
+              the liquidity protocol and its governance.
             </div>
           </div>
           <div className="flex-grow">&nbsp;</div>
           <div className="grid grid-cols-2 gap-8 mt-12">
             <div>
-              <img className="w-52" src="/images/logo4.png" />
+              <img className="w-52" src="/images/stakeholder-aurora.svg" />
             </div>
             <div>
-              <img className="w-52" src="/images/logo1.png" />
+              <img className="w-52" src="/images/stakeholder-metapool.png" />
             </div>
             <div>
-              <img className="w-52" src="/images/logo3.png" />
-            </div>
-            <div>
-              <img className="w-52" src="/images/logo2.png" />
+              <img className="w-52" src="/images/stakeholder-ang.svg" />
             </div>
           </div>
         </div>
