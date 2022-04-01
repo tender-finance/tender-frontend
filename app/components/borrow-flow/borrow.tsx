@@ -133,7 +133,7 @@ export default function Borrow({
                       }
                       setIsBorrowing(true);
                       // @ts-ignore existence of signer is gated above.
-                      await borrow(value, signer, row.cToken);
+                      await borrow(value, signer, row.cToken, row.token);
                       //   setValue("");
                       toast.success("Borrow successful");
                       closeModal();
