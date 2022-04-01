@@ -303,8 +303,16 @@ async function getTotalBorrowed(
  * @param signer
  * @param cToken
  */
-async function repay(value: string, signer: Signer, cToken: cToken) {
-  const formattedValue = value;
+async function repay(
+  value: string,
+  signer: Signer,
+  cToken: cToken,
+  token: Token
+) {
+  const formattedValue: BigNumber = ethers.utils.parseUnits(
+    value,
+    token.decimals
+  );
   let contract = new ethers.Contract(cToken.address, SampleCTokenAbi, signer);
   await contract.repayBorrow(formattedValue);
 }
@@ -315,7 +323,12 @@ async function repay(value: string, signer: Signer, cToken: cToken) {
  * @param signer
  * @param cToken
  */
-async function borrow(value: string, signer: Signer, cToken: cToken) {
+async function borrow(
+  value: string,
+  signer: Signer,
+  cToken: cToken,
+  token: Token
+) {
   //  if (isCEth) {
   //   console.log("borrow() with cEth");
 
@@ -327,7 +340,10 @@ async function borrow(value: string, signer: Signer, cToken: cToken) {
   // }
   // else {
 
-  const formattedValue = value;
+  const formattedValue: BigNumber = ethers.utils.parseUnits(
+    value,
+    token.decimals
+  );
   let contract = new ethers.Contract(cToken.address, SampleCTokenAbi, signer);
   let tx = await contract.borrow(formattedValue);
   // }
