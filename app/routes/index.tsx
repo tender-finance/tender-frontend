@@ -71,14 +71,13 @@ export default function Index() {
           <div className="flex-grow">&nbsp;</div>
           <div className="grid grid-cols-2 gap-8 mt-12">
             <div>
-              <img className="w-52" src="/images/stakeholder-ang.svg" />
-            </div>
-            <div>
               <img className="w-52" src="/images/stakeholder-aurora.svg" />
             </div>
             <div>
-              <img className="w-52" src="/images/stakeholder-aurora.png" />
               <img className="w-52" src="/images/stakeholder-metapool.png" />
+            </div>
+            <div>
+              <img className="w-52" src="/images/stakeholder-ang.svg" />
             </div>
           </div>
         </div>
