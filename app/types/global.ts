@@ -74,3 +74,8 @@ export interface NetworkData {
   Tokens: any;
   cTokens: any;
 }
+
+export interface TokenPair {
+  token: Token;
+  cToken: cToken;
+}

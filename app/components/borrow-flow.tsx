@@ -1,7 +1,8 @@
-import { SwapRow, SwapRowMarketDatum } from "~/types/global";
+import { SwapRow, SwapRowMarketDatum, TokenPair } from "~/types/global";
 import { useEffect, useState } from "react";
 import { useWeb3React } from "@web3-react/core";
 import { JsonRpcSigner, Web3Provider } from "@ethersproject/providers";
+import { BigNumber } from "ethers";
 
 import Repay from "~/components/borrow-flow/repay";
 import Borrow from "~/components/borrow-flow/borrow";
@@ -11,23 +12,33 @@ import {
   getBorrowLimit,
   getBorrowedAmount,
   getBorrowLimitUsed,
+  getTotalBorrowed,
 } from "~/lib/tender";
 
 interface Props {
   closeModal: Function;
   row: SwapRow;
+  tokenPairs: TokenPair[];
   marketData: SwapRowMarketDatum;
 }
 
-export default function BorrowFlow({ closeModal, row, marketData }: Props) {
+export default function BorrowFlow({
+  closeModal,
+  row,
+  marketData,
+  tokenPairs,
+}: Props) {
   let [isRepaying, setIsRepaying] = useState<boolean>(false);
   let [signer, setSigner] = useState<JsonRpcSigner | null>(null);
   let [walletBalance, setWalletBalance] = useState<string>("0");
   let [borrowLimit, setBorrowLimit] = useState<number>(0);
-  let [borrowLimitUsed, setBorrowLimitUsed] = useState<number>(0);
+  let [borrowLimitUsed, setBorrowLimitUsed] = useState<string>("");
   let [borrowedAmount, setBorrowedAmount] = useState<number>(0);
   let [formattedBorrowedAmount, setFormattedBorrowedAmount] =
     useState<string>("0");
+  let [totalBorrowedAmount, setTotalBorrowedAmount] = useState<BigNumber>(
+    BigNumber.from(0)
+  );
 
   const { library } = useWeb3React<Web3Provider>();
 
@@ -42,7 +53,7 @@ export default function BorrowFlow({ closeModal, row, marketData }: Props) {
     if (signer && row.token) {
       getWalletBalance(signer, row.token).then((b) => setWalletBalance(b));
 
-      getBorrowLimit(signer, row.comptrollerAddress, row.cToken).then((b) =>
+      getBorrowLimit(signer, row.comptrollerAddress, tokenPairs).then((b) =>
         setBorrowLimit(b)
       );
       getBorrowedAmount(signer, row.cToken).then((b) => {
@@ -52,6 +63,9 @@ export default function BorrowFlow({ closeModal, row, marketData }: Props) {
         const formattedAmount = (b / 1e18).toFixed(2).toString();
         setFormattedBorrowedAmount(formattedAmount);
       });
+      getTotalBorrowed(signer, tokenPairs).then((b) =>
+        setTotalBorrowedAmount(b)
+      );
     }
   }, [library]);
 
@@ -60,10 +74,10 @@ export default function BorrowFlow({ closeModal, row, marketData }: Props) {
       return;
     }
 
-    getBorrowLimitUsed(borrowedAmount, borrowLimit).then((b) =>
+    getBorrowLimitUsed(totalBorrowedAmount, borrowLimit).then((b) =>
       setBorrowLimitUsed(b)
     );
-  }, [borrowedAmount, borrowLimit]);
+  }, [borrowedAmount, borrowLimit, totalBorrowedAmount]);
 
   return isRepaying ? (
     <Repay

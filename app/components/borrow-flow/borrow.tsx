@@ -6,6 +6,7 @@ import clsx from "clsx";
 import toast from "react-hot-toast";
 
 import { getCurrentlyBorrowing, borrow } from "~/lib/tender";
+import { BigNumber } from "ethers";
 
 interface Props {
   closeModal: Function;
@@ -14,7 +15,7 @@ interface Props {
   setIsRepaying: Function;
   signer: JsonRpcSigner | null;
   formattedBorrowedAmount: string;
-  borrowLimitUsed: number;
+  borrowLimitUsed: string;
   walletBalance: string;
 }
 
@@ -35,8 +36,11 @@ export default function Borrow({
     if (!signer) {
       return;
     }
-    getCurrentlyBorrowing(signer, row.cToken).then((c) =>
-      setCurrentlyBorrowing(c)
+    getCurrentlyBorrowing(signer, row.cToken, row.token).then(
+      (c: BigNumber) => {
+        let formattedValue: string = c.toString();
+        setCurrentlyBorrowing(formattedValue);
+      }
     );
   }, [signer, row.cToken]);
 

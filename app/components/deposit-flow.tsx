@@ -1,7 +1,8 @@
-import { SwapRow, SwapRowMarketDatum } from "~/types/global";
+import { SwapRow, SwapRowMarketDatum, TokenPair } from "~/types/global";
 import { useEffect, useState } from "react";
 import { useWeb3React } from "@web3-react/core";
 import { JsonRpcSigner, Web3Provider } from "@ethersproject/providers";
+import { BigNumber } from "ethers";
 
 import Deposit from "~/components/deposit-flow/deposit";
 import Withdraw from "~/components/deposit-flow/withdraw";
@@ -11,21 +12,31 @@ import {
   getBorrowLimit,
   getBorrowedAmount,
   getBorrowLimitUsed,
+  getTotalBorrowed,
 } from "~/lib/tender";
 
 interface Props {
   closeModal: Function;
   row: SwapRow;
+  tokenPairs: TokenPair[];
   marketData: SwapRowMarketDatum;
 }
 
-export default function DepositFlow({ closeModal, row, marketData }: Props) {
+export default function DepositFlow({
+  closeModal,
+  row,
+  marketData,
+  tokenPairs,
+}: Props) {
   let [isSupplying, setIsSupplying] = useState<boolean>(true);
   let [signer, setSigner] = useState<JsonRpcSigner | null>(null);
   let [walletBalance, setWalletBalance] = useState<string>("0");
   let [borrowLimit, setBorrowLimit] = useState<number>(0);
-  let [borrowLimitUsed, setBorrowLimitUsed] = useState<number>(0);
+  let [borrowLimitUsed, setBorrowLimitUsed] = useState<string>("");
   let [borrowedAmount, setBorrowedAmount] = useState<number>(0);
+  let [totalBorrowedAmount, setTotalBorrowedAmount] = useState<BigNumber>(
+    BigNumber.from(0)
+  );
 
   const { library } = useWeb3React<Web3Provider>();
 
@@ -38,10 +49,14 @@ export default function DepositFlow({ closeModal, row, marketData }: Props) {
     setSigner(signer);
     if (signer && row.token) {
       getWalletBalance(signer, row.token).then((b) => setWalletBalance(b));
-      getBorrowLimit(signer, row.comptrollerAddress, row.cToken).then((b) =>
+
+      getBorrowLimit(signer, row.comptrollerAddress, tokenPairs).then((b) =>
         setBorrowLimit(b)
       );
       getBorrowedAmount(signer, row.cToken).then((b) => setBorrowedAmount(b));
+      getTotalBorrowed(signer, tokenPairs).then((b) =>
+        setTotalBorrowedAmount(b)
+      );
     }
   }, [library]);
 
@@ -50,10 +65,10 @@ export default function DepositFlow({ closeModal, row, marketData }: Props) {
       return;
     }
 
-    getBorrowLimitUsed(borrowedAmount, borrowLimit).then((b) =>
+    getBorrowLimitUsed(totalBorrowedAmount, borrowLimit).then((b) =>
       setBorrowLimitUsed(b)
     );
-  }, [borrowedAmount, borrowLimit]);
+  }, [borrowedAmount, borrowLimit, totalBorrowedAmount]);
 
   return isSupplying ? (
     <Deposit
