@@ -173,7 +173,7 @@ export default function Repay({
 
                   setIsRepayingTxn(true);
                   // @ts-ignore existence of signer is gated above.
-                  await repay(value, signer, row.cToken);
+                  await repay(value, signer, row.cToken, row.token);
                   setValue("");
                   toast.success("Repayment successful");
                   closeModal();
