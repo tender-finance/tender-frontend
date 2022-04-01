@@ -238,7 +238,10 @@ async function repay(
   cToken: cToken,
   token: Token
 ) {
-  const formattedValue = ethers.utils.parseUnits(value, token.decimals);
+  const formattedValue: BigNumber = ethers.utils.parseUnits(
+    value,
+    token.decimals
+  );
   let contract = new ethers.Contract(cToken.address, SampleCTokenAbi, signer);
   await contract.repayBorrow(formattedValue);
 }
@@ -266,7 +269,10 @@ async function borrow(
   // }
   // else {
 
-  const formattedValue = ethers.utils.parseUnits(value, token.decimals);
+  const formattedValue: BigNumber = ethers.utils.parseUnits(
+    value,
+    token.decimals
+  );
   let contract = new ethers.Contract(cToken.address, SampleCTokenAbi, signer);
   let tx = await contract.borrow(formattedValue);
   // }
