@@ -161,10 +161,14 @@ async function getCurrentlyBorrowing(
   cToken: cToken,
   token: Token
 ): Promise<BigNumber> {
-  let contract = new ethers.Contract(cToken.address, SampleCTokenAbi, signer);
-  let address = await signer.getAddress();
-  let balance = await contract.borrowBalanceStored(address);
-  let mantissa = ethers.utils.parseUnits("1", token.decimals);
+  let contract: Contract = new ethers.Contract(
+    cToken.address,
+    SampleCTokenAbi,
+    signer
+  );
+  let address: string = await signer.getAddress();
+  let balance: BigNumber = await contract.borrowBalanceStored(address);
+  let mantissa: BigNumber = ethers.utils.parseUnits("1", token.decimals);
 
   return balance.div(mantissa);
 }
