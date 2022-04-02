@@ -1,45 +1,30 @@
+import { useEffect } from "react";
 import { hooks, metaMask } from "~/connectors/meta-mask";
-const {
-  useChainId,
-  useAccounts,
-  useError,
-  useIsActivating,
-  useIsActive,
-  useProvider,
-  useENSNames,
-} = hooks;
+const { useAccounts, useError, useIsActivating, useIsActive } = hooks;
 
-// const switchChain = useCallback(
-//   async (desiredChainId: number) => {
-//     setDesiredChainId(desiredChainId)
-//     // if we're already connected to the desired chain, return
-//     if (desiredChainId === chainId) return
-//     // if they want to connect to the default chain and we're already connected, return
-//     if (desiredChainId === -1 && chainId !== undefined) return
-
-//     if (connector instanceof WalletConnect || connector instanceof Network) {
-//       await connector.activate(desiredChainId === -1 ? undefined : desiredChainId)
-//     } else {
-//       await connector.activate(desiredChainId === -1 ? undefined : getAddChainParameters(desiredChainId))
-//     }
-//   },
-//   [connector, chainId]
-// )
-function connectWallet() {
-  console.log("boop");
-}
 export default function ConnectWallet() {
-  const chainId = useChainId();
   const accounts = useAccounts();
   const error = useError();
   const isActivating = useIsActivating();
 
   const isActive = useIsActive();
 
+  function truncateAccount(accounts: string[]): string {
+    return accounts
+      .map((account) => `${account.slice(0, 3)}...${account.slice(-4)}`)
+      .join(",");
+  }
+
+  useEffect(() => {
+    void metaMask.connectEagerly();
+  }, []);
+
   return (
     <div className="box">
       {isActive && accounts && (
-        <div className="text-sm text-gray-400">Connected as</div>
+        <div className="text-sm text-gray-400">
+          <div>Connected as {truncateAccount(accounts)}</div>
+        </div>
       )}
       {!isActive && (
         <>
@@ -52,7 +37,7 @@ export default function ConnectWallet() {
           </button>
         </>
       )}
-      {!isActive && error && <></>}
+      {!isActive && error && <>{error}</>}
     </div>
   );
 }

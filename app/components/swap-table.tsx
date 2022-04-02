@@ -11,10 +11,8 @@ import {
   TokenPair,
 } from "~/types/global";
 import { useEffect, useState } from "react";
-import clsx from "clsx";
-import { useWeb3React } from "@web3-react/core";
+import { hooks as Web3Hooks } from "~/connectors/meta-mask";
 import { JsonRpcSigner, Web3Provider } from "@ethersproject/providers";
-
 import networks from "~/config/networks";
 import { tokenMetaData } from "~/config/tokenMetaData";
 
@@ -26,6 +24,7 @@ import {
 import { getMarketSizeUsd, getTotalBorrowedUsd } from "~/lib/tender";
 
 import ConnectWallet from "./connect-wallet";
+import { useWeb3Signer } from "~/hooks/use-web3-signer";
 
 // const SUPPORTED_TOKENS = [TokenName.BTC, TokenName.ETH, TokenName.USDT];
 const SUPPORTED_TOKENS = [TokenName.DAI];
@@ -124,8 +123,12 @@ export default function SwapTable() {
     {}
   );
   let [tokenPairs, setTokenPairs] = useState<TokenPair[]>([]);
+  let provider = Web3Hooks.useProvider();
 
-  const { chainId, library } = useWeb3React<Web3Provider>();
+  const signer = useWeb3Signer(provider);
+
+  Web3Hooks.useProvider;
+  const chainId = Web3Hooks.useChainId();
 
   useEffect(() => {
     if (!chainId) {
@@ -144,16 +147,14 @@ export default function SwapTable() {
       NetworkName[chainId]
     );
     setTokenPairs(pairs);
-  }, [library, chainId]);
+  }, [chainId]);
 
   useEffect(() => {
-    if (!library) {
+    if (!signer) {
       return;
     }
-    loadMarketData(library.getSigner(), swapRows).then((f) =>
-      setSwapRowsMarketData(f)
-    );
-  }, [swapRows]);
+    loadMarketData(signer, swapRows).then((f) => setSwapRowsMarketData(f));
+  }, [swapRows, signer]);
 
   return (
     <div className="mb-60">
