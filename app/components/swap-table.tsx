@@ -124,7 +124,6 @@ export default function SwapTable() {
   );
   let [tokenPairs, setTokenPairs] = useState<TokenPair[]>([]);
   let provider = Web3Hooks.useProvider();
-
   const signer = useWeb3Signer(provider);
 
   Web3Hooks.useProvider;

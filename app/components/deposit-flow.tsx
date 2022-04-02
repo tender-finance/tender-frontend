@@ -4,6 +4,9 @@ import { useWeb3React } from "@web3-react/core";
 import { JsonRpcSigner, Web3Provider } from "@ethersproject/providers";
 import { BigNumber } from "ethers";
 
+import { hooks as Web3Hooks } from "~/connectors/meta-mask";
+import { useWeb3Signer } from "~/hooks/use-web3-signer";
+
 import Deposit from "~/components/deposit-flow/deposit";
 import Withdraw from "~/components/deposit-flow/withdraw";
 
@@ -29,7 +32,6 @@ export default function DepositFlow({
   tokenPairs,
 }: Props) {
   let [isSupplying, setIsSupplying] = useState<boolean>(true);
-  let [signer, setSigner] = useState<JsonRpcSigner | null>(null);
   let [walletBalance, setWalletBalance] = useState<string>("0");
   let [borrowLimit, setBorrowLimit] = useState<number>(0);
   let [borrowLimitUsed, setBorrowLimitUsed] = useState<string>("");
@@ -38,15 +40,15 @@ export default function DepositFlow({
     BigNumber.from(0)
   );
 
-  const { library } = useWeb3React<Web3Provider>();
+  let provider = Web3Hooks.useProvider();
+  const signer = useWeb3Signer(provider);
 
   useEffect(() => {
-    if (!library) {
+    if (!signer) {
       // DO we need to reset signer if null here?
       return;
     }
-    let signer = library.getSigner();
-    setSigner(signer);
+
     if (signer && row.token) {
       getWalletBalance(signer, row.token).then((b) => setWalletBalance(b));
 
@@ -58,7 +60,7 @@ export default function DepositFlow({
         setTotalBorrowedAmount(b)
       );
     }
-  }, [library]);
+  }, [signer]);
 
   useEffect(() => {
     if (!borrowedAmount || !borrowLimit) {
