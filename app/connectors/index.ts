@@ -1,9 +1,3 @@
-import { InjectedConnector } from "@web3-react/injected-connector";
-
-export const injected = new InjectedConnector({
-  supportedChainIds: [1, 3, 4, 5, 42],
-});
-
 const chainIdToNetwork: { [network: number]: string } = {
   1: "mainnet",
   3: "ropsten",
@@ -29,7 +23,3 @@ const chainIdToNetwork: { [network: number]: string } = {
 };
 
 export { chainIdToNetwork };
-
-export const connectorList = {
-  MetaMask: injected,
-};

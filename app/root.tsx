@@ -15,8 +15,14 @@ import globalStyles from "./styles/global.css";
 import Header from "~/components/Header";
 import Footer from "~/components/Footer";
 
-import { Web3ReactProvider } from "@web3-react/core";
-import { Web3Provider } from "@ethersproject/providers";
+import {
+  useWeb3React,
+  Web3ReactHooks,
+  Web3ReactProvider,
+} from "@web3-react/core";
+import { MetaMask } from "@web3-react/metamask";
+
+import { hooks as metaMaskHooks, metaMask } from "~/connectors/meta-mask";
 
 import type {
   ExternalProvider,
@@ -30,9 +36,8 @@ export const links: LinksFunction = () => [
 export const meta: MetaFunction = () => {
   return { title: "Tender.Finance" };
 };
-function getLibrary(provider: ExternalProvider | JsonRpcFetchFunc, connector) {
-  return new Web3Provider(provider);
-}
+
+const connectors: [MetaMask, Web3ReactHooks][] = [[metaMask, metaMaskHooks]];
 
 export default function App() {
   return (
@@ -46,7 +51,7 @@ export default function App() {
       <body>
         <div id="m"></div>
         <Toaster />
-        <Web3ReactProvider getLibrary={getLibrary}>
+        <Web3ReactProvider connectors={connectors}>
           <Header />
           <Outlet />
         </Web3ReactProvider>
