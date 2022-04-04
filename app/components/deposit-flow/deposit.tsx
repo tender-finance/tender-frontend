@@ -13,7 +13,7 @@ interface Props {
   marketData: SwapRowMarketDatum;
   setIsSupplying: Function;
   borrowLimit: number;
-  signer: JsonRpcSigner | null;
+  signer: JsonRpcSigner | null | undefined;
   borrowLimitUsed: string;
   walletBalance: string;
 }

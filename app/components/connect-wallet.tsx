@@ -1,63 +1,43 @@
-import { useEffect, useState } from "react";
-import { useWeb3React } from "@web3-react/core";
-import { Web3Provider } from "@ethersproject/providers";
-
-import { useEagerConnect, useInactiveListener } from "../hooks";
-import { connectorList } from "../connectors";
-
-type ConnectorName = "MetaMask";
+import { useEffect } from "react";
+import { hooks, metaMask } from "~/connectors/meta-mask";
+const { useAccounts, useError, useIsActivating, useIsActive } = hooks;
 
 export default function ConnectWallet() {
-  const [isConnecing, setIsConnecing] = useState(false);
-  const { activate, deactivate, active, error, account } =
-    useWeb3React<Web3Provider>();
+  const accounts = useAccounts();
+  const error = useError();
+  const isActivating = useIsActivating();
 
-  const triedEager = useEagerConnect();
-  useInactiveListener(!triedEager);
+  const isActive = useIsActive();
 
-  const handleClick = (connectorName: ConnectorName) => () => {
-    setIsConnecing(true);
-    activate(connectorList[connectorName]);
-  };
-
-  const handleDisconnect = () => {
-    deactivate();
-  };
-
-  const handleRetry = () => {
-    setIsConnecing(false);
-    deactivate();
-  };
+  function truncateAccount(accounts: string[]): string {
+    return accounts
+      .map((account) => `${account.slice(0, 3)}...${account.slice(-4)}`)
+      .join(",");
+  }
 
   useEffect(() => {
-    if (active) {
-      setIsConnecing(false);
-    }
-  }, [active]);
-
-  function truncateAccount(account: string): string {
-    return `${account.slice(0, 3)}...${account.slice(-4)}`;
-  }
+    void metaMask.connectEagerly();
+  }, []);
 
   return (
     <div className="box">
-      {active && account && (
+      {isActive && accounts && (
         <div className="text-sm text-gray-400">
-          Connected as {truncateAccount(account)}
+          <div>Connected as {truncateAccount(accounts)}</div>
         </div>
       )}
-      {!active && (
+      {!isActive && (
         <>
           <button
             className="bg-brand-green text-white py-2 px-4"
-            onClick={handleClick("MetaMask")}
-            disabled={isConnecing}
+            onClick={isActivating ? undefined : () => metaMask.activate()}
+            disabled={isActivating}
           >
             Connect wallet
           </button>
         </>
       )}
-      {!active && error && <></>}
+      {!isActive && error && <>{error}</>}
     </div>
   );
 }

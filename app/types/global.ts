@@ -24,6 +24,10 @@ export interface Network {}
 export interface Networks {
   mainnet: Network;
   rinkeby: Network;
+  ropsten: Network;
+  auroraTestnet: Network;
+  auroraMainnet: Network;
+  auroraLocalnet: Network;
 }
 
 export enum TokenName {
@@ -52,6 +56,9 @@ export enum NetworkName {
   fuse = 122,
   matic = 137,
   maticMumbai = 80001,
+  auroraTestnet = 1313161555,
+  auroraMainnet = 1313161554,
+  auroraLocalnet = 1313161556,
 }
 
 export interface SwapRowMarketData {

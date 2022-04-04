@@ -1,6 +1,6 @@
 import { Link, useLocation } from "remix";
-import clsx from "clsx";
 import ConnectWallet from "./connect-wallet";
+import clsx from "clsx";
 export default function Header() {
   const location = useLocation();
 
