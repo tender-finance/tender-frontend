@@ -29,7 +29,12 @@ import { useWeb3Signer } from "~/hooks/use-web3-signer";
 import { useOnSupportedNetwork } from "~/hooks/use-on-supported-network";
 
 // const SUPPORTED_TOKENS = [TokenName.BTC, TokenName.ETH, TokenName.USDT];
-const SUPPORTED_TOKENS = [TokenName.DAI];
+const SUPPORTED_TOKENS = [
+  TokenName.DAI,
+  TokenName.USDC,
+  TokenName.USDT,
+  TokenName.WBTC,
+];
 
 function generateSwapRows(
   supportedRowTypes: TokenName[],

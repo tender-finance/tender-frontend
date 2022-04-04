@@ -9,6 +9,8 @@ interface TokenMetaDatum {
 
 interface TokenMetaData {
   [TokenName.BTC]: TokenMetaDatum;
+  [TokenName.WBTC]: TokenMetaDatum;
+  [TokenName.USDC]: TokenMetaDatum;
   [TokenName.USDT]: TokenMetaDatum;
   [TokenName.ETH]: TokenMetaDatum;
   [TokenName.DAI]: TokenMetaDatum;
@@ -19,7 +21,13 @@ const tokenMetaData: TokenMetaData = {
     icon: "/images/coin-icons/bitcoin.svg",
     name: "Bitcoin BTC",
     symbol: "BTC",
-    cTokenSymbol: "WBTC",
+    cTokenSymbol: "BTC",
+  },
+  [TokenName.WBTC]: {
+    icon: "/images/coin-icons/bitcoin.svg",
+    name: "WBTC",
+    symbol: "WBTC",
+    cTokenSymbol: "cWBTC",
   },
   [TokenName.ETH]: {
     icon: "/images/coin-icons/ethereum.svg",
@@ -27,15 +35,21 @@ const tokenMetaData: TokenMetaData = {
     symbol: "ETH",
     cTokenSymbol: "cETH",
   },
-  [TokenName.USDT]: {
-    icon: "/images/coin-icons/tender.svg",
-    name: "Tender USDT",
-    symbol: "USDT",
+  [TokenName.USDC]: {
+    icon: "/images/coin-icons/usdc.svg",
+    name: "USDC",
+    symbol: "USDC",
     cTokenSymbol: "cUSDC",
+  },
+  [TokenName.USDT]: {
+    icon: "/images/coin-icons/usdt.svg",
+    name: "USDT",
+    symbol: "USDT",
+    cTokenSymbol: "cUSDT",
   },
   [TokenName.DAI]: {
     icon: "/images/coin-icons/tender.svg",
-    name: "Tender DAI",
+    name: "DAI",
     symbol: "DAI",
     cTokenSymbol: "cDAI",
   },

@@ -357,7 +357,7 @@ async function getMarketSizeUsd(
   let value = await contract.totalSupply();
 
   // TODO: better formatting here, test net number is super big. This should probably initially be millions?
-  return `${(value / 1e30).toFixed(2).toString()}T`;
+  return `${value.toString().slice(0, 3)}M`;
 }
 
 async function getTotalBorrowedUsd(
@@ -368,7 +368,7 @@ async function getTotalBorrowedUsd(
   let value = await contract.totalBorrows();
 
   // TODO: better formatting here, test net number is super big. This should probably initially be millions?
-  return `${(value / 1e30).toFixed(2).toString()}B`;
+  return `${value.toString().slice(0, 3)}M`;
 }
 
 async function hasSufficientAllowance(
