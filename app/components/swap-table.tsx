@@ -15,6 +15,7 @@ import { hooks as Web3Hooks } from "~/connectors/meta-mask";
 import { JsonRpcSigner, Web3Provider } from "@ethersproject/providers";
 import networks from "~/config/networks";
 import { tokenMetaData } from "~/config/tokenMetaData";
+import { chainIdToNetwork } from "~/connectors";
 
 import {
   formattedBorrowApy,
@@ -25,6 +26,7 @@ import { getMarketSizeUsd, getTotalBorrowedUsd } from "~/lib/tender";
 
 import ConnectWallet from "./connect-wallet";
 import { useWeb3Signer } from "~/hooks/use-web3-signer";
+import { useOnSupportedNetwork } from "~/hooks/use-on-supported-network";
 
 // const SUPPORTED_TOKENS = [TokenName.BTC, TokenName.ETH, TokenName.USDT];
 const SUPPORTED_TOKENS = [TokenName.DAI];
@@ -126,8 +128,8 @@ export default function SwapTable() {
   let provider = Web3Hooks.useProvider();
   const signer = useWeb3Signer(provider);
 
-  Web3Hooks.useProvider;
   const chainId = Web3Hooks.useChainId();
+  const onSupportedNetwork = useOnSupportedNetwork(chainId);
 
   useEffect(() => {
     if (!chainId) {
@@ -157,7 +159,7 @@ export default function SwapTable() {
 
   return (
     <div className="mb-60">
-      {chainId && (
+      {chainId && onSupportedNetwork && (
         <>
           <div className=" flex align-middle items-center  font-light text-gray-300 px-10">
             <div className="flex items-center align-middle">
@@ -184,6 +186,14 @@ export default function SwapTable() {
             ))}
           </div>
         </>
+      )}
+      {chainId && !onSupportedNetwork && (
+        <div>
+          <span className="text-yellow-100 font-bold">
+            {chainIdToNetwork[chainId] || ""}
+          </span>{" "}
+          network not supported. Please check back soon.
+        </div>
       )}
       {!chainId && <ConnectWallet />}
     </div>
