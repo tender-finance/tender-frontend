@@ -40,9 +40,11 @@ async function enable(
  */
 async function getWalletBalance(signer: Signer, token: Token): Promise<string> {
   let contract = new ethers.Contract(token.address, SampleErc20Abi, signer);
-  let address = await signer.getAddress();
-  let balance = await contract.balanceOf(address);
-  return (balance / 1e18).toFixed(2).toString();
+  let address: string = await signer.getAddress();
+  let balance: BigNumber = await contract.balanceOf(address);
+  let mantissa = ethers.utils.parseUnits("1", token.decimals);
+
+  return balance.div(mantissa).toNumber().toFixed(2).toString();
 }
 
 /**
@@ -173,6 +175,9 @@ async function getCurrentlyBorrowing(
   return balance.div(mantissa);
 }
 
+// TODO: This function should take into account which markets we've entered
+// as collateral. By default for now I believe the product spec says we want
+// to automatically enter markets upon depositing.
 async function availableCollateralToBorrowAgainst(
   signer: Signer,
   comptrollerContract: Contract,
@@ -187,7 +192,8 @@ async function availableCollateralToBorrowAgainst(
   );
   let collateralFactor: BigNumber = rawCollateralFactor;
 
-  let mantissa = ethers.utils.parseUnits("1", tokenPair.token.decimals);
+  // Collateral factors are always 1e18
+  let mantissa = ethers.utils.parseUnits("1", 18);
 
   // collateralFactor represents the % you can borrow against your asset,
   // when scaled down by the mantissa it represents a number like 0.7 or 0.8, i.e., 70% or 80%.
@@ -357,7 +363,7 @@ async function getMarketSizeUsd(
   let value = await contract.totalSupply();
 
   // TODO: better formatting here, test net number is super big. This should probably initially be millions?
-  return `${(value / 1e30).toFixed(2).toString()}T`;
+  return `${value.toString().slice(0, 3)}M`;
 }
 
 async function getTotalBorrowedUsd(
@@ -368,7 +374,7 @@ async function getTotalBorrowedUsd(
   let value = await contract.totalBorrows();
 
   // TODO: better formatting here, test net number is super big. This should probably initially be millions?
-  return `${(value / 1e30).toFixed(2).toString()}B`;
+  return `${value.toString().slice(0, 3)}M`;
 }
 
 async function hasSufficientAllowance(
