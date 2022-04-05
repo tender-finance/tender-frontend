@@ -175,6 +175,9 @@ async function getCurrentlyBorrowing(
   return balance.div(mantissa);
 }
 
+// TODO: This function should take into account which markets we've entered
+// as collateral. By default for now I believe the product spec says we want
+// to automatically enter markets upon depositing.
 async function availableCollateralToBorrowAgainst(
   signer: Signer,
   comptrollerContract: Contract,
@@ -189,7 +192,8 @@ async function availableCollateralToBorrowAgainst(
   );
   let collateralFactor: BigNumber = rawCollateralFactor;
 
-  let mantissa = ethers.utils.parseUnits("1", tokenPair.token.decimals);
+  // Collateral factors are always 1e18
+  let mantissa = ethers.utils.parseUnits("1", 18);
 
   // collateralFactor represents the % you can borrow against your asset,
   // when scaled down by the mantissa it represents a number like 0.7 or 0.8, i.e., 70% or 80%.
