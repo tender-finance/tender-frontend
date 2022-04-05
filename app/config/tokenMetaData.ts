@@ -8,7 +8,6 @@ interface TokenMetaDatum {
 }
 
 interface TokenMetaData {
-  [TokenName.BTC]: TokenMetaDatum;
   [TokenName.WBTC]: TokenMetaDatum;
   [TokenName.USDC]: TokenMetaDatum;
   [TokenName.USDT]: TokenMetaDatum;
@@ -17,12 +16,6 @@ interface TokenMetaData {
 }
 
 const tokenMetaData: TokenMetaData = {
-  [TokenName.BTC]: {
-    icon: "/images/coin-icons/bitcoin.svg",
-    name: "Bitcoin BTC",
-    symbol: "BTC",
-    cTokenSymbol: "BTC",
-  },
   [TokenName.WBTC]: {
     icon: "/images/coin-icons/bitcoin.svg",
     name: "WBTC",

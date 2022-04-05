@@ -40,9 +40,11 @@ async function enable(
  */
 async function getWalletBalance(signer: Signer, token: Token): Promise<string> {
   let contract = new ethers.Contract(token.address, SampleErc20Abi, signer);
-  let address = await signer.getAddress();
-  let balance = await contract.balanceOf(address);
-  return (balance / 1e18).toFixed(2).toString();
+  let address: string = await signer.getAddress();
+  let balance: BigNumber = await contract.balanceOf(address);
+  let mantissa = ethers.utils.parseUnits("1", token.decimals);
+
+  return balance.div(mantissa).toNumber().toFixed(2).toString();
 }
 
 /**
