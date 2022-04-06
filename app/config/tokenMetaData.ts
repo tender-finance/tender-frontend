@@ -41,7 +41,7 @@ const tokenMetaData: TokenMetaData = {
     cTokenSymbol: "cUSDT",
   },
   [TokenName.DAI]: {
-    icon: "/images/coin-icons/tender.svg",
+    icon: "/images/coin-icons/dai.svg",
     name: "DAI",
     symbol: "DAI",
     cTokenSymbol: "cDAI",
