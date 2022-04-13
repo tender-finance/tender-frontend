@@ -1,8 +1,10 @@
 import { Link, useLocation } from "remix";
 import ConnectWallet from "./connect-wallet";
-import clsx from "clsx";
+import { hooks as Web3Hooks } from "~/connectors/meta-mask";
+
 export default function Header() {
   const location = useLocation();
+  const chainId = Web3Hooks.useChainId();
 
   return (
     <div className="flex c mt-8">
@@ -10,19 +12,15 @@ export default function Header() {
         <img src="/images/logo.svg" alt="Tender Finance" />
       </div>
       <div>
-        <button
-          className={clsx("bg-brand-green text-white py-2 px-4", {
-            hidden: location.pathname !== "/",
-          })}
-        >
-          <Link to="/app">Enter App</Link>
-        </button>
-        <div
-          className={clsx("", {
-            hidden: location.pathname === "/",
-          })}
-        >
+        <div style={{ display: "inline-block" }} className="mr-3">
           <ConnectWallet />
+        </div>
+        <div style={{ display: "inline-block" }}>
+          {location.pathname === "/" && chainId ? (
+            <button className="bg-brand-green text-white py-2 px-4">
+              <Link to="/app">Enter App</Link>
+            </button>
+          ) : null}
         </div>
       </div>
     </div>
