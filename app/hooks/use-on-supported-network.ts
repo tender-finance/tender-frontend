@@ -1,5 +1,3 @@
-import { Web3Provider } from "@ethersproject/providers";
-import type { JsonRpcSigner } from "@ethersproject/providers";
 import { useState, useEffect } from "react";
 
 // Reference ~/connectors/index.ts for chain mappings
