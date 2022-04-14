@@ -38,8 +38,13 @@ const SUPPORTED_TOKENS = [
 
 function generateSwapRows(
   supportedRowTypes: TokenName[],
-  networkName: string
+  networkName: string,
+  onSupportedNetwork: boolean
 ): SwapRowType[] {
+  if (!onSupportedNetwork) {
+    return [];
+  }
+
   return supportedRowTypes.map((tokenName: TokenName): SwapRowType => {
     // Map current conntected network to config data
     // @ts-ignore
@@ -106,8 +111,12 @@ async function loadMarketData(
  */
 function generateTokenPairs(
   supportedRowTypes: TokenName[],
-  networkName: string
+  networkName: string,
+  onSupportedNetwork: boolean
 ): TokenPair[] {
+  if (!onSupportedNetwork) {
+    return [];
+  }
   // @ts-ignore
   const networkData: NetworkData = networks[networkName];
 
@@ -143,17 +152,19 @@ export default function SwapTable() {
 
     const rows: SwapRowType[] = generateSwapRows(
       SUPPORTED_TOKENS,
-      NetworkName[chainId]
+      NetworkName[chainId],
+      onSupportedNetwork
     );
 
     setSwapRows(rows);
 
     let pairs: TokenPair[] = generateTokenPairs(
       SUPPORTED_TOKENS,
-      NetworkName[chainId]
+      NetworkName[chainId],
+      onSupportedNetwork
     );
     setTokenPairs(pairs);
-  }, [chainId]);
+  }, [chainId, onSupportedNetwork]);
 
   useEffect(() => {
     if (!signer) {
