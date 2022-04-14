@@ -9,7 +9,15 @@ export default function Header() {
   return (
     <div className="flex c mt-8">
       <div className="flex-grow">
-        <img src="/images/logo.svg" alt="Tender Finance" />
+        <a href="/">
+          <img
+            src="/images/logo.svg"
+            alt="Tender Finance"
+            style={{
+              height: 30,
+            }}
+          />
+        </a>
       </div>
       <div>
         <div style={{ display: "inline-block" }} className="mr-3">
