@@ -57,7 +57,7 @@ export default function Deposit({
           </button>
         </div>
         <div className="flex align-middle justify-center items-center">
-          <div className="mr-4">
+          <div className="mr-4" style={{ width: 55 }}>
             <img src={row.icon} />
           </div>
           <div>Deposit {row.name}</div>
@@ -65,7 +65,6 @@ export default function Deposit({
 
         {!isEnabled && (
           <div>
-            <div className="mt-12 mb-6 bg-white w-16 h-16 rounded-full ml-auto mr-auto"></div>
             <div className="max-w-sm text-center m-auto mt-5 mb-5 text-sm text-gray-400">
               To deposit or repay {row.name} to the Tender Protocol, you need to
               enable it first.
@@ -104,7 +103,7 @@ export default function Deposit({
           <img src="/images/box-arrow.svg" alt="box arrow" />
         </div>
         <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 pb-6">
-          <div className="mr-3">
+          <div className="mr-3" style={{ width: 55 }}>
             <img src={row.icon} />
           </div>
           <div className="flex-grow">Deposit APY</div>

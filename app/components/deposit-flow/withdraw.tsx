@@ -52,7 +52,7 @@ export default function Withdraw({
             </button>
           </div>
           <div className="flex align-middle justify-center items-center">
-            <div className="mr-4">
+            <div className="mr-4" style={{ width: 55 }}>
               <img src={row.icon} />
             </div>
             <div>Deposit {row.name}</div>
@@ -88,7 +88,7 @@ export default function Withdraw({
               <img src="/images/box-arrow.svg" alt="box arrow" />
             </div>
             <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 pb-6">
-              <div className="mr-3">
+              <div className="mr-3" style={{ width: 55 }}>
                 <img src={row.icon} />
               </div>
               <div className="flex-grow">Deposit APY</div>
