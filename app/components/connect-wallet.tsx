@@ -37,7 +37,9 @@ export default function ConnectWallet() {
           </button>
         </>
       )}
-      {!isActive && error && <>{error}</>}
+      {error?.message && (
+        <div className="text-xs text-gray-500">{error.message}</div>
+      )}
     </div>
   );
 }
