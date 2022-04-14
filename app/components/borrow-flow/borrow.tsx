@@ -94,7 +94,7 @@ export default function Borrow({
             </div>
             <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 pb-6">
               <div className="mr-3">
-                <img src="/images/supply-icon.svg" />
+                <img src={row.icon} />
               </div>
               <div className="flex-grow">Borrow APY</div>
               <div>{marketData.borrowApy}</div>
