@@ -1,12 +1,12 @@
-import { ICON_SIZE } from '~/lib/constants';
-import { SwapRow, SwapRowMarketDatum } from '~/types/global';
-import { useEffect, useState } from 'react';
-import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers';
-import toast from 'react-hot-toast';
+import { ICON_SIZE } from "~/lib/constants";
+import { SwapRow, SwapRowMarketDatum } from "~/types/global";
+import { useEffect, useState } from "react";
+import { JsonRpcSigner, Web3Provider } from "@ethersproject/providers";
+import toast from "react-hot-toast";
 
-import clsx from 'clsx';
+import clsx from "clsx";
 
-import { enable, deposit, hasSufficientAllowance } from '~/lib/tender';
+import { enable, deposit, hasSufficientAllowance } from "~/lib/tender";
 
 interface Props {
   closeModal: Function;
@@ -31,7 +31,7 @@ export default function Deposit({
   let [isEnabled, setIsEnabled] = useState<boolean>(false);
   let [isEnabling, setIsEnabling] = useState<boolean>(false);
   let [isDepositing, setIsDepositing] = useState<boolean>(false);
-  let [value, setValue] = useState<string>('');
+  let [value, setValue] = useState<string>("");
 
   useEffect(() => {
     if (!signer) {
@@ -48,7 +48,7 @@ export default function Deposit({
 
   return (
     <div>
-      <div className="py-8" style={{ backgroundColor: '#23262B' }}>
+      <div className="py-8" style={{ backgroundColor: "#23262B" }}>
         <div className="float-right">
           <button
             onClick={() => closeModal()}
@@ -101,9 +101,9 @@ export default function Deposit({
           Withdraw
         </button>
       </div>
-      <div className="py-6 px-12" style={{ background: '#1C1E22' }}>
+      <div className="py-6 px-12" style={{ background: "#1C1E22" }}>
         <div className="flex mb-4">
-          <span className="font-bold mr-3">Deposit Rates</span>{' '}
+          <span className="font-bold mr-3">Deposit Rates</span>{" "}
           <img src="/images/box-arrow.svg" alt="box arrow" />
         </div>
         <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 pb-6">
@@ -158,14 +158,14 @@ export default function Deposit({
                 }
               }}
               className={clsx(
-                'py-4 text-center text-white font-bold rounded bg-brand-green w-full',
+                "py-4 text-center text-white font-bold rounded bg-brand-green w-full",
                 {
-                  'bg-brand-green': !isEnabling,
-                  'bg-gray-200': isEnabling,
+                  "bg-brand-green": !isEnabling,
+                  "bg-gray-200": isEnabling,
                 }
               )}
             >
-              {isEnabling ? 'Enabling...' : 'Enable'}
+              {isEnabling ? "Enabling..." : "Enable"}
             </button>
           )}
 
@@ -174,33 +174,33 @@ export default function Deposit({
               onClick={async () => {
                 try {
                   if (!value) {
-                    toast('Please set a value', {
-                      icon: '⚠️',
+                    toast("Please set a value", {
+                      icon: "⚠️",
                     });
                     return;
                   }
                   setIsDepositing(true);
                   // @ts-ignore existence of signer is gated above.
                   await deposit(value, signer, row.cToken, row.token);
-                  setValue('');
-                  toast.success('Deposit successful');
+                  setValue("");
+                  toast.success("Deposit successful");
                   closeModal();
                 } catch (e) {
-                  toast.error('Deposit unsuccessful');
+                  toast.error("Deposit unsuccessful");
                   console.error(e);
                 } finally {
                   setIsDepositing(false);
                 }
               }}
               className={clsx(
-                'py-4 text-center text-white font-bold rounded bg-brand-green w-full',
+                "py-4 text-center text-white font-bold rounded bg-brand-green w-full",
                 {
-                  'bg-brand-green': !isDepositing,
-                  'bg-gray-200': isDepositing,
+                  "bg-brand-green": !isDepositing,
+                  "bg-gray-200": isDepositing,
                 }
               )}
             >
-              {isDepositing ? 'Depositing...' : 'Deposit'}
+              {isDepositing ? "Depositing..." : "Deposit"}
             </button>
           )}
         </div>
