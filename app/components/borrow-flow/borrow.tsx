@@ -1,3 +1,4 @@
+import { ICON_SIZE } from "~/lib/constants";
 import { SwapRow, SwapRowMarketDatum } from "~/types/global";
 import { useEffect, useState } from "react";
 import { JsonRpcSigner } from "@ethersproject/providers";
@@ -57,9 +58,12 @@ export default function Borrow({
             </button>
           </div>
           <div className="flex align-middle justify-center items-center">
-            <div className="mr-4">
-              <img src={row.icon} />
-            </div>
+            <img
+              src={row.icon}
+              style={{ width: ICON_SIZE }}
+              className="mr-3"
+              alt="icon"
+            />
             <div>Deposit {row.name}</div>
           </div>
 
@@ -93,9 +97,12 @@ export default function Borrow({
               <img src="/images/box-arrow.svg" alt="box arrow" />
             </div>
             <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 pb-6">
-              <div className="mr-3">
-                <img src={row.icon} />
-              </div>
+              <img
+                src={row.icon}
+                style={{ width: ICON_SIZE }}
+                className="mr-3"
+                alt="icon"
+              />
               <div className="flex-grow">Borrow APY</div>
               <div>{marketData.borrowApy}</div>
             </div>
