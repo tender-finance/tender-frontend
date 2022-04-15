@@ -211,7 +211,6 @@ export default function SwapTable() {
           network not supported. Please check back soon.
         </div>
       )}
-      {!chainId && <ConnectWallet />}
     </div>
   );
 }
