@@ -20,15 +20,15 @@ export default function Header() {
         </a>
       </div>
       <div>
-        <div style={{ display: "inline-block" }} className="mr-3">
+        <div className="inline-block mr-3">
           <ConnectWallet />
         </div>
-        <div style={{ display: "inline-block" }}>
-          {location.pathname === "/" && chainId ? (
+        <div className="inline-block">
+          {location.pathname === "/" && chainId && (
             <button className="bg-brand-green text-white py-2 px-4">
               <Link to="/app">Enter App</Link>
             </button>
-          ) : null}
+          )}
         </div>
       </div>
     </div>
