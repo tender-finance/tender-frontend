@@ -1,12 +1,12 @@
-import { ICON_SIZE } from "~/lib/constants";
-import { SwapRow, SwapRowMarketDatum } from "~/types/global";
-import { useEffect, useState } from "react";
-import { JsonRpcSigner } from "@ethersproject/providers";
-import toast from "react-hot-toast";
+import { ICON_SIZE } from '~/lib/constants';
+import { SwapRow, SwapRowMarketDatum } from '~/types/global';
+import { useEffect, useState } from 'react';
+import { JsonRpcSigner } from '@ethersproject/providers';
+import toast from 'react-hot-toast';
 
-import clsx from "clsx";
+import clsx from 'clsx';
 
-import { redeem, getCurrentlySupplying } from "~/lib/tender";
+import { redeem, getCurrentlySupplying } from '~/lib/tender';
 
 interface Props {
   closeModal: Function;
@@ -27,9 +27,9 @@ export default function Withdraw({
   signer,
   borrowLimitUsed,
 }: Props) {
-  let [value, setValue] = useState<string>("");
+  let [value, setValue] = useState<string>('');
   let [isWithdrawing, setIsWithdrawing] = useState<boolean>(false);
-  let [currentlySupplying, setCurrentlySupplying] = useState<string>("0");
+  let [currentlySupplying, setCurrentlySupplying] = useState<string>('0');
 
   useEffect(() => {
     if (!signer) {
@@ -43,7 +43,7 @@ export default function Withdraw({
   return (
     <div>
       <div>
-        <div className="py-8" style={{ backgroundColor: "#23262B" }}>
+        <div className="py-8" style={{ backgroundColor: '#23262B' }}>
           <div className="float-right">
             <button
               onClick={() => closeModal()}
@@ -53,8 +53,12 @@ export default function Withdraw({
             </button>
           </div>
           <div className="flex align-middle justify-center items-center">
-            
-              <img src={row.icon}  style={{ width: ICON_SIZE }} className="mr-3"  alt="icon"  />
+            <img
+              src={row.icon}
+              style={{ width: ICON_SIZE }}
+              className="mr-3"
+              alt="icon"
+            />
             <div>Deposit {row.name}</div>
           </div>
 
@@ -81,15 +85,19 @@ export default function Withdraw({
             Withdraw
           </button>
         </div>
-        <div className="py-8" style={{ background: "#1C1E22" }}>
-          <div className="py-6 px-12" style={{ background: "#1C1E22" }}>
+        <div className="py-8" style={{ background: '#1C1E22' }}>
+          <div className="py-6 px-12" style={{ background: '#1C1E22' }}>
             <div className="flex mb-4">
-              <span className="font-bold mr-3">Deposit Rates</span>{" "}
+              <span className="font-bold mr-3">Deposit Rates</span>{' '}
               <img src="/images/box-arrow.svg" alt="box arrow" />
             </div>
             <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 pb-6">
-              
-                <img src={row.icon}  style={{ width: ICON_SIZE }} className="mr-3"  alt="icon"  />
+              <img
+                src={row.icon}
+                style={{ width: ICON_SIZE }}
+                className="mr-3"
+                alt="icon"
+              />
               <div className="flex-grow">Deposit APY</div>
               <div>{marketData.depositApy}</div>
             </div>
@@ -127,8 +135,8 @@ export default function Withdraw({
                   onClick={async () => {
                     try {
                       if (!value) {
-                        toast("Please set a value", {
-                          icon: "⚠️",
+                        toast('Please set a value', {
+                          icon: '⚠️',
                         });
                         return;
                       }
@@ -136,8 +144,8 @@ export default function Withdraw({
                       // @ts-ignore existence of signer is gated above.
                       await redeem(value, signer, row.cToken, row.token);
 
-                      setValue("");
-                      toast.success("Withdraw successful");
+                      setValue('');
+                      toast.success('Withdraw successful');
                       closeModal();
                     } catch (e) {
                       console.error(e);
@@ -146,14 +154,14 @@ export default function Withdraw({
                     }
                   }}
                   className={clsx(
-                    "py-4 text-center text-white font-bold rounded bg-brand-green w-full",
+                    'py-4 text-center text-white font-bold rounded bg-brand-green w-full',
                     {
-                      "bg-brand-green": !isWithdrawing,
-                      "bg-gray-200": isWithdrawing,
+                      'bg-brand-green': !isWithdrawing,
+                      'bg-gray-200': isWithdrawing,
                     }
                   )}
                 >
-                  {isWithdrawing ? "Withdrawing..." : "Withdraw"}
+                  {isWithdrawing ? 'Withdrawing...' : 'Withdraw'}
                 </button>
               )}
             </div>

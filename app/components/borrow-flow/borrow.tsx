@@ -1,13 +1,13 @@
-import { ICON_SIZE } from "~/lib/constants";
-import { SwapRow, SwapRowMarketDatum } from "~/types/global";
-import { useEffect, useState } from "react";
-import { JsonRpcSigner } from "@ethersproject/providers";
+import { ICON_SIZE } from '~/lib/constants';
+import { SwapRow, SwapRowMarketDatum } from '~/types/global';
+import { useEffect, useState } from 'react';
+import { JsonRpcSigner } from '@ethersproject/providers';
 
-import clsx from "clsx";
-import toast from "react-hot-toast";
+import clsx from 'clsx';
+import toast from 'react-hot-toast';
 
-import { getCurrentlyBorrowing, borrow } from "~/lib/tender";
-import { BigNumber } from "ethers";
+import { getCurrentlyBorrowing, borrow } from '~/lib/tender';
+import { BigNumber } from 'ethers';
 
 interface Props {
   closeModal: Function;
@@ -29,8 +29,8 @@ export default function Borrow({
   formattedBorrowedAmount,
   borrowLimitUsed,
 }: Props) {
-  let [value, setValue] = useState<string>("");
-  let [currentlyBorrowing, setCurrentlyBorrowing] = useState<string>("0");
+  let [value, setValue] = useState<string>('');
+  let [currentlyBorrowing, setCurrentlyBorrowing] = useState<string>('0');
   let [isBorrowing, setIsBorrowing] = useState<boolean>(false);
 
   useEffect(() => {
@@ -48,7 +48,7 @@ export default function Borrow({
   return (
     <div>
       <div>
-        <div className="py-8" style={{ backgroundColor: "#23262B" }}>
+        <div className="py-8" style={{ backgroundColor: '#23262B' }}>
           <div className="float-right">
             <button
               onClick={() => closeModal()}
@@ -58,8 +58,12 @@ export default function Borrow({
             </button>
           </div>
           <div className="flex align-middle justify-center items-center">
-            
-              <img src={row.icon} style={{ width: ICON_SIZE }} className="mr-3" alt="icon" />
+            <img
+              src={row.icon}
+              style={{ width: ICON_SIZE }}
+              className="mr-3"
+              alt="icon"
+            />
             <div>Deposit {row.name}</div>
           </div>
 
@@ -86,15 +90,19 @@ export default function Borrow({
             Repay
           </button>
         </div>
-        <div className="py-8" style={{ background: "#1C1E22" }}>
-          <div className="py-6 px-12" style={{ background: "#1C1E22" }}>
+        <div className="py-8" style={{ background: '#1C1E22' }}>
+          <div className="py-6 px-12" style={{ background: '#1C1E22' }}>
             <div className="flex mb-4">
-              <span className="font-bold mr-3">Borrow Rates</span>{" "}
+              <span className="font-bold mr-3">Borrow Rates</span>{' '}
               <img src="/images/box-arrow.svg" alt="box arrow" />
             </div>
             <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 pb-6">
-              
-                <img src={row.icon}  style={{ width: ICON_SIZE }} className="mr-3"  alt="icon"  />
+              <img
+                src={row.icon}
+                style={{ width: ICON_SIZE }}
+                className="mr-3"
+                alt="icon"
+              />
               <div className="flex-grow">Borrow APY</div>
               <div>{marketData.borrowApy}</div>
             </div>
@@ -129,8 +137,8 @@ export default function Borrow({
                   onClick={async () => {
                     try {
                       if (!value) {
-                        toast("Please set a value", {
-                          icon: "⚠️",
+                        toast('Please set a value', {
+                          icon: '⚠️',
                         });
                         return;
                       }
@@ -138,7 +146,7 @@ export default function Borrow({
                       // @ts-ignore existence of signer is gated above.
                       await borrow(value, signer, row.cToken, row.token);
                       //   setValue("");
-                      toast.success("Borrow successful");
+                      toast.success('Borrow successful');
                       closeModal();
                     } catch (e) {
                       console.error(e);
@@ -147,14 +155,14 @@ export default function Borrow({
                     }
                   }}
                   className={clsx(
-                    "py-4 text-center text-white font-bold rounded bg-brand-green w-full",
+                    'py-4 text-center text-white font-bold rounded bg-brand-green w-full',
                     {
-                      "bg-brand-green": !isBorrowing,
-                      "bg-gray-200": isBorrowing,
+                      'bg-brand-green': !isBorrowing,
+                      'bg-gray-200': isBorrowing,
                     }
                   )}
                 >
-                  {isBorrowing ? "Borrowing..." : "Borrow"}
+                  {isBorrowing ? 'Borrowing...' : 'Borrow'}
                 </button>
               )}
             </div>
