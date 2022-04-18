@@ -28,6 +28,8 @@ export interface Networks {
   auroraTestnet: Network;
   auroraMainnet: Network;
   auroraLocalnet: Network;
+  metisTestnet: Network;
+  metisMainnet: Network;
 }
 
 export enum TokenName {
@@ -58,6 +60,8 @@ export enum NetworkName {
   fuse = 122,
   matic = 137,
   maticMumbai = 80001,
+  metisTestnet = 588,
+  metisMainnet = 1088,
   auroraTestnet = 1313161555,
   auroraMainnet = 1313161554,
   auroraLocalnet = 1313161556,
