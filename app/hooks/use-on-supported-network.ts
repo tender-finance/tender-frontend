@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 // Reference ~/connectors/index.ts for chain mappings
-const SUPPORTED_CHAINS: number[] = [1, 3, 4];
+const SUPPORTED_CHAINS: number[] = [1, 3, 4, 588, 1088];
 
 function checkIfNetworkIsSupported(chainId: number): boolean {
   return SUPPORTED_CHAINS.indexOf(chainId) > -1;

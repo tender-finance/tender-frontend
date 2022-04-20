@@ -16,6 +16,8 @@ const chainIdToNetwork: { [network: number]: string } = {
   163: "lightstreams",
   122: "fuse",
   137: "matic",
+  588: "metisTestnet",
+  1088: "metisMainnet",
   80001: "maticMumbai",
   1313161555: "auroraTestnet",
   1313161554: "auroraMainnet",
