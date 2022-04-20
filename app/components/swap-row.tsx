@@ -1,11 +1,15 @@
-import type { SwapRow, SwapRowMarketDatum, TokenPair } from "~/types/global";
+import type {
+  SwapRow as SwapRowType,
+  SwapRowMarketDatum,
+  TokenPair,
+} from "~/types/global";
 import ReactModal from "react-modal";
 import { useState } from "react";
 import DepositFlow from "./deposit-flow";
 import BorrowFlow from "./borrow-flow";
 
 interface Props {
-  row: SwapRow;
+  row: SwapRowType;
   tokenPairs: TokenPair[];
   marketData: SwapRowMarketDatum;
 }
