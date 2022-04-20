@@ -120,10 +120,13 @@ export default function Footer() {
           </div>
           <div className="flex">
             <a href="https://twitter.com/tender_finance" className="mr-3">
-              <img src="/images/twitter-icon.svg" />
+              <img src="/images/twitter-icon.svg" alt="Link to twitter" />
             </a>
-            <a href="https://www.linkedin.com/company/80238010" className="mr-3">
-              <img src="/images/li-icon.svg" />
+            <a
+              href="https://www.linkedin.com/company/80238010"
+              className="mr-3"
+            >
+              <img src="/images/li-icon.svg" alt="Link to LinkedIn" />
             </a>
           </div>
         </div>

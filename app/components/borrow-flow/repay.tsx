@@ -1,7 +1,7 @@
 import { ICON_SIZE } from "~/lib/constants";
 import { SwapRow, SwapRowMarketDatum } from "~/types/global";
 import { useEffect, useState } from "react";
-import { JsonRpcSigner, Web3Provider } from "@ethersproject/providers";
+import { JsonRpcSigner } from "@ethersproject/providers";
 
 import clsx from "clsx";
 import toast from "react-hot-toast";
@@ -46,7 +46,7 @@ export default function Repay({
         }
       }
     );
-  }, [signer]);
+  }, [signer, row.cToken, row.token]);
   return (
     <div>
       <div className="py-8" style={{ backgroundColor: "#23262B" }}>

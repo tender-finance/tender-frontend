@@ -1,7 +1,5 @@
 import { SwapRow, SwapRowMarketDatum, TokenPair } from "~/types/global";
 import { useEffect, useState } from "react";
-import { useWeb3React } from "@web3-react/core";
-import { JsonRpcSigner, Web3Provider } from "@ethersproject/providers";
 import { BigNumber } from "ethers";
 import { hooks as Web3Hooks } from "~/connectors/meta-mask";
 
@@ -68,7 +66,7 @@ export default function BorrowFlow({
         setTotalBorrowedAmount(b)
       );
     }
-  }, [signer]);
+  }, [signer, row.cToken, row.comptrollerAddress, row.token, tokenPairs]);
 
   useEffect(() => {
     if (!borrowedAmount || !borrowLimit) {
