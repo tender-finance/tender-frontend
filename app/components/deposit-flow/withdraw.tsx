@@ -38,7 +38,7 @@ export default function Withdraw({
     getCurrentlySupplying(signer, row.cToken, row.token).then((c) =>
       setCurrentlySupplying(c)
     );
-  }, [signer, row.cToken]);
+  }, [signer, row.cToken, row.token]);
 
   return (
     <div>
@@ -103,7 +103,10 @@ export default function Withdraw({
             </div>
             <div className="flex items-center text-gray-400 pt-4 pb-8">
               <div className="mr-3">
-                <img src="/images/distribution-icon.svg" />
+                <img
+                  src="/images/distribution-icon.svg"
+                  alt="Distribution APY Icon"
+                />
               </div>
               <div className="flex-grow">Distribution APY</div>
               <div>0%</div>
