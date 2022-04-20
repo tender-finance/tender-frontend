@@ -33,7 +33,6 @@ export interface Networks {
 }
 
 export enum TokenName {
-  BTC = "BTC",
   ETH = "ETH",
   DAI = "DAI",
   USDC = "USDC",

@@ -23,3 +23,5 @@ module.exports = (
 
   return config;
 };
+
+export {};
