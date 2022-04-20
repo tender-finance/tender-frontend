@@ -30,7 +30,10 @@ export default function Index() {
           </div>
           <div className="mb-16">
             <Link to="/app">
-              <button className="text-white bg-brand-green py-4 px-16">
+              <button
+                className="text-white bg-brand-green py-4 px-16"
+                data-testid="enter-app"
+              >
                 Enter App
               </button>
             </Link>
