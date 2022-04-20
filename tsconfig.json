@@ -1,6 +1,8 @@
 {
   "include": ["remix.env.d.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"],
   "compilerOptions": {
+    "skipLibCheck": true,
     "lib": ["DOM", "DOM.Iterable", "ES2019"],
     "isolatedModules": true,
     "esModuleInterop": true,
