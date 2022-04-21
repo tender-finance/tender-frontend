@@ -26,13 +26,21 @@ import { getMarketSizeUsd, getTotalBorrowedUsd } from "~/lib/tender";
 import { useWeb3Signer } from "~/hooks/use-web3-signer";
 import { useOnSupportedNetwork } from "~/hooks/use-on-supported-network";
 
-// const SUPPORTED_TOKENS = [TokenName.BTC, TokenName.ETH, TokenName.USDT];
 const SUPPORTED_TOKENS = [
+  TokenName.AAVE,
+  TokenName.BAT,
   TokenName.DAI,
+  TokenName.ETH,
+  TokenName.LINK,
+  TokenName.PAX,
+  TokenName.SUSHI,
+  TokenName.TUSD,
+  TokenName.UNI,
   TokenName.USDC,
   TokenName.USDT,
   TokenName.WBTC,
-  TokenName.BAT,
+  TokenName.YFI,
+  TokenName.ZRX,
 ];
 
 function generateSwapRows(
@@ -44,19 +52,54 @@ function generateSwapRows(
     return [];
   }
 
-  return supportedRowTypes.map((tokenName: TokenName): SwapRowType => {
-    // Map current conntected network to config data
-    // @ts-ignore
-    const networkData: NetworkData = networks[networkName];
+  return supportedRowTypes
+    .filter((supportedRowType) => {
+      // only map tokens supported by our current network
+      // @ts-ignore
+      const networkData: NetworkData = networks[networkName];
+      return networkData.Tokens[supportedRowType];
+    })
+    .map((tokenName: TokenName): SwapRowType => {
+      // Map current conntected network to config data
+      // @ts-ignore
+      const networkData: NetworkData = networks[networkName];
+      const tokenMetaDatum = tokenMetaData[tokenName];
+
+      let token: Token = networkData.Tokens[tokenMetaDatum.symbol];
+      let cToken: cToken = networkData.cTokens[tokenMetaDatum.cTokenSymbol];
+      let comptrollerAddress: string = networkData.Contracts.Comptroller;
+
+      return {
+        ...tokenMetaDatum,
+        comptrollerAddress: comptrollerAddress,
+        token: token,
+        cToken: cToken,
+      };
+    });
+}
+
+/**
+ * Calculating things like total deposits or borrow limits requires checking balances
+ * across all tokens, so this function provides a list of all tokens paired with their cTokens.
+ */
+function generateTokenPairs(
+  supportedRowTypes: TokenName[],
+  networkName: string,
+  onSupportedNetwork: boolean
+): TokenPair[] {
+  if (!onSupportedNetwork) {
+    return [];
+  }
+  // @ts-ignore
+  const networkData: NetworkData = networks[networkName];
+
+  return supportedRowTypes.map((tokenName: TokenName): TokenPair => {
     const tokenMetaDatum = tokenMetaData[tokenName];
 
     let token: Token = networkData.Tokens[tokenMetaDatum.symbol];
     let cToken: cToken = networkData.cTokens[tokenMetaDatum.cTokenSymbol];
-    let comptrollerAddress: string = networkData.Contracts.Comptroller;
 
     return {
-      ...tokenMetaDatum,
-      comptrollerAddress: comptrollerAddress,
       token: token,
       cToken: cToken,
     };
@@ -104,34 +147,6 @@ async function loadMarketData(
   }
 }
 
-/**
- * Calculating things like total deposits or borrow limits requires checking balances
- * across all tokens, so this function provides a list of all tokens paired with their cTokens.
- */
-function generateTokenPairs(
-  supportedRowTypes: TokenName[],
-  networkName: string,
-  onSupportedNetwork: boolean
-): TokenPair[] {
-  if (!onSupportedNetwork) {
-    return [];
-  }
-  // @ts-ignore
-  const networkData: NetworkData = networks[networkName];
-
-  return supportedRowTypes.map((tokenName: TokenName): TokenPair => {
-    const tokenMetaDatum = tokenMetaData[tokenName];
-
-    let token: Token = networkData.Tokens[tokenMetaDatum.symbol];
-    let cToken: cToken = networkData.cTokens[tokenMetaDatum.cTokenSymbol];
-
-    return {
-      token: token,
-      cToken: cToken,
-    };
-  });
-}
-
 export default function SwapTable() {
   let [swapRows, setSwapRows] = useState<SwapRowType[]>([]);
   let [swapRowsMarketData, setSwapRowsMarketData] = useState<SwapRowMarketData>(
@@ -154,7 +169,6 @@ export default function SwapTable() {
       NetworkName[chainId],
       onSupportedNetwork
     );
-
     setSwapRows(rows);
 
     let pairs: TokenPair[] = generateTokenPairs(
