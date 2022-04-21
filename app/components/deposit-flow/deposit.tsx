@@ -44,7 +44,7 @@ export default function Deposit({
         }
       }
     );
-  }, [signer]);
+  }, [signer, row.cToken, row.token]);
 
   return (
     <div>
