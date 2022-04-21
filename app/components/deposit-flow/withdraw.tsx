@@ -1,7 +1,7 @@
 import { ICON_SIZE } from "~/lib/constants";
-import { SwapRow, SwapRowMarketDatum } from "~/types/global";
+import type { SwapRow, SwapRowMarketDatum } from "~/types/global";
 import { useEffect, useState, useRef } from "react";
-import { JsonRpcSigner } from "@ethersproject/providers";
+import type { JsonRpcSigner } from "@ethersproject/providers";
 import toast from "react-hot-toast";
 import Max from "~/components/max";
 

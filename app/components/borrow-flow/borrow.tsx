@@ -1,14 +1,14 @@
 import { ICON_SIZE } from "~/lib/constants";
-import { SwapRow, SwapRowMarketDatum } from "~/types/global";
+import type { SwapRow, SwapRowMarketDatum } from "~/types/global";
 import { useEffect, useState, useRef } from "react";
-import { JsonRpcSigner } from "@ethersproject/providers";
+import type { JsonRpcSigner } from "@ethersproject/providers";
 
 import clsx from "clsx";
 import toast from "react-hot-toast";
 import Max from "~/components/max";
 
 import { getCurrentlyBorrowing, borrow } from "~/lib/tender";
-import { BigNumber } from "ethers";
+import type { BigNumber } from "ethers";
 
 interface Props {
   closeModal: Function;

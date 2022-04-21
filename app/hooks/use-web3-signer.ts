@@ -1,4 +1,4 @@
-import { Web3Provider } from "@ethersproject/providers";
+import type { Web3Provider } from "@ethersproject/providers";
 import type { JsonRpcSigner } from "@ethersproject/providers";
 import { useState, useEffect } from "react";
 
