@@ -52,7 +52,7 @@ export default function Borrow({
   return (
     <div>
       <div>
-        <div className="py-8" style={{ backgroundColor: "#23262B" }}>
+        <div className="py-8 bg-brand-black-light">
           <div className="float-right">
             <button
               onClick={() => closeModal()}
