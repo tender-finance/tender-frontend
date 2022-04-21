@@ -1,8 +1,9 @@
 import { ICON_SIZE } from "~/lib/constants";
 import { SwapRow, SwapRowMarketDatum } from "~/types/global";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { JsonRpcSigner } from "@ethersproject/providers";
 import toast from "react-hot-toast";
+import Max from "~/components/max";
 
 import clsx from "clsx";
 
@@ -30,6 +31,7 @@ export default function Withdraw({
   let [value, setValue] = useState<string>("");
   let [isWithdrawing, setIsWithdrawing] = useState<boolean>(false);
   let [currentlySupplying, setCurrentlySupplying] = useState<string>("0");
+  let inputEl = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!signer) {
@@ -43,7 +45,7 @@ export default function Withdraw({
   return (
     <div>
       <div>
-        <div className="py-8" style={{ backgroundColor: "#23262B" }}>
+        <div className="py-8 bg-brand-black-light">
           <div className="float-right">
             <button
               onClick={() => closeModal()}
@@ -64,11 +66,21 @@ export default function Withdraw({
 
           <div className="flex flex-col justify-center items-center overflow-hidden">
             <input
+              ref={inputEl}
               onChange={(e) => setValue(e.target.value)}
               className="bg-transparent text-6xl text-white text-center outline-none"
               placeholder="0"
             />
-            <div className="text-gray-400 text-sm m-auto hidden">Max ⬆</div>
+            <Max
+              maxValue={currentlySupplying}
+              updateValue={() => {
+                if (!inputEl || !inputEl.current) return;
+                inputEl.current.focus();
+                inputEl.current.value = currentlySupplying;
+                setValue(currentlySupplying);
+              }}
+              maxValueLabel={row.name}
+            />
           </div>
         </div>
         <div className="flex">

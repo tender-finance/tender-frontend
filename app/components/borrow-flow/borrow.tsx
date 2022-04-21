@@ -1,10 +1,11 @@
 import { ICON_SIZE } from "~/lib/constants";
 import { SwapRow, SwapRowMarketDatum } from "~/types/global";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { JsonRpcSigner } from "@ethersproject/providers";
 
 import clsx from "clsx";
 import toast from "react-hot-toast";
+import Max from "~/components/max";
 
 import { getCurrentlyBorrowing, borrow } from "~/lib/tender";
 import { BigNumber } from "ethers";
@@ -17,6 +18,7 @@ interface Props {
   signer: JsonRpcSigner | null | undefined;
   formattedBorrowedAmount: string;
   borrowLimitUsed: string;
+  borrowLimit: number;
   walletBalance: string;
 }
 
@@ -27,11 +29,13 @@ export default function Borrow({
   setIsRepaying,
   signer,
   formattedBorrowedAmount,
+  borrowLimit,
   borrowLimitUsed,
 }: Props) {
   let [value, setValue] = useState<string>("");
   let [currentlyBorrowing, setCurrentlyBorrowing] = useState<string>("0");
   let [isBorrowing, setIsBorrowing] = useState<boolean>(false);
+  let inputEl = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!signer) {
@@ -48,7 +52,7 @@ export default function Borrow({
   return (
     <div>
       <div>
-        <div className="py-8" style={{ backgroundColor: "#23262B" }}>
+        <div className="py-8 bg-brand-black-light">
           <div className="float-right">
             <button
               onClick={() => closeModal()}
@@ -69,11 +73,22 @@ export default function Borrow({
 
           <div className="flex flex-col justify-center items-center overflow-hidden">
             <input
+              ref={inputEl}
               onChange={(e) => setValue(e.target.value)}
               className="bg-transparent text-6xl text-white text-center outline-none"
               placeholder="0"
             />
-            <div className="text-gray-400 text-sm m-auto hidden">Max ⬆</div>
+
+            <Max
+              maxValue={`${borrowLimit}`}
+              updateValue={() => {
+                if (!inputEl || !inputEl.current) return;
+                inputEl.current.focus();
+                inputEl.current.value = `${borrowLimit}`;
+                setValue(`${borrowLimit}`);
+              }}
+              maxValueLabel={row.name}
+            />
           </div>
         </div>
         <div className="flex">

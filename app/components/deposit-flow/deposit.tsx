@@ -1,8 +1,9 @@
 import { ICON_SIZE } from "~/lib/constants";
 import { SwapRow, SwapRowMarketDatum } from "~/types/global";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { JsonRpcSigner } from "@ethersproject/providers";
 import toast from "react-hot-toast";
+import Max from "~/components/max";
 
 import clsx from "clsx";
 
@@ -32,6 +33,7 @@ export default function Deposit({
   let [isEnabling, setIsEnabling] = useState<boolean>(false);
   let [isDepositing, setIsDepositing] = useState<boolean>(false);
   let [value, setValue] = useState<string>("");
+  let inputEl = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!signer) {
@@ -48,7 +50,7 @@ export default function Deposit({
 
   return (
     <div>
-      <div className="py-8" style={{ backgroundColor: "#23262B" }}>
+      <div className="py-8 bg-brand-black-light relative">
         <div className="float-right">
           <button
             onClick={() => closeModal()}
@@ -76,13 +78,25 @@ export default function Deposit({
           </div>
         )}
         {isEnabled && (
-          <div className="flex flex-col justify-center items-center overflow-hidden">
-            <input
-              onChange={(e) => setValue(e.target.value)}
-              className="bg-transparent text-6xl text-white text-center outline-none"
-              placeholder="0"
+          <div className="relative">
+            <Max
+              maxValue={walletBalance}
+              updateValue={() => {
+                if (!inputEl || !inputEl.current) return;
+                inputEl.current.focus();
+                inputEl.current.value = walletBalance;
+                setValue(walletBalance);
+              }}
+              maxValueLabel={row.name}
             />
-            <div className="text-gray-400 text-sm m-auto hidden">Max ⬆</div>
+            <div className="flex flex-col justify-center items-center overflow-hidden">
+              <input
+                ref={inputEl}
+                onChange={(e) => setValue(e.target.value)}
+                className="bg-transparent text-6xl text-white text-center outline-none"
+                defaultValue={0}
+              />
+            </div>
           </div>
         )}
       </div>
@@ -116,16 +130,7 @@ export default function Deposit({
           <div className="flex-grow">Deposit APY</div>
           <div>{marketData.depositApy}</div>
         </div>
-        <div className="flex items-center text-gray-400 pt-4 pb-8">
-          <div className="mr-3">
-            <img
-              src="/images/distribution-icon.svg"
-              alt="Distribution APY Icon"
-            />
-          </div>
-          <div className="flex-grow">Distribution APY</div>
-          <div>0%</div>
-        </div>
+
         <div>
           <div className="font-bold mr-3 border-b border-b-gray-600 w-full pb-5">
             Borrow Limit
