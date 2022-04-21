@@ -59,7 +59,7 @@ export default function Withdraw({
               className="mr-3"
               alt="icon"
             />
-            <div>Deposit {row.name}</div>
+            <div>Withdraw {row.name}</div>
           </div>
 
           <div className="flex flex-col justify-center items-center overflow-hidden">

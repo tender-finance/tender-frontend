@@ -28,7 +28,7 @@ export default function Deposit({
   borrowLimitUsed,
   walletBalance,
 }: Props) {
-  let [isEnabled, setIsEnabled] = useState<boolean>(false);
+  let [isEnabled, setIsEnabled] = useState<boolean>(true);
   let [isEnabling, setIsEnabling] = useState<boolean>(false);
   let [isDepositing, setIsDepositing] = useState<boolean>(false);
   let [value, setValue] = useState<string>("");
@@ -39,8 +39,8 @@ export default function Deposit({
     }
     hasSufficientAllowance(signer, row.token, row.cToken).then(
       (has: boolean) => {
-        if (has) {
-          setIsEnabled(true);
+        if (!has) {
+          setIsEnabled(false);
         }
       }
     );

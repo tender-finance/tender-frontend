@@ -29,7 +29,7 @@ export default function Repay({
   borrowLimitUsed,
   walletBalance,
 }: Props) {
-  let [isEnabled, setIsEnabled] = useState<boolean>(false);
+  let [isEnabled, setIsEnabled] = useState<boolean>(true);
   let [isEnabling, setIsEnabling] = useState<boolean>(false);
 
   let [isRepayingTxn, setIsRepayingTxn] = useState<boolean>(false);
@@ -41,8 +41,8 @@ export default function Repay({
     }
     hasSufficientAllowance(signer, row.token, row.cToken).then(
       (has: boolean) => {
-        if (has) {
-          setIsEnabled(true);
+        if (!has) {
+          setIsEnabled(false);
         }
       }
     );
@@ -65,7 +65,7 @@ export default function Repay({
             className="mr-3"
             alt="icon"
           />
-          <div>Deposit {row.name}</div>
+          <div>Repay {row.name}</div>
         </div>
 
         {!isEnabled && (
