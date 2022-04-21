@@ -64,7 +64,7 @@ export default function Borrow({
               className="mr-3"
               alt="icon"
             />
-            <div>Deposit {row.name}</div>
+            <div>Borrow {row.name}</div>
           </div>
 
           <div className="flex flex-col justify-center items-center overflow-hidden">
