@@ -16,7 +16,7 @@ export default function Max(props: MaxProps) {
 
       <button
         onClick={() => props.updateValue()}
-        className="text-xs border-brand-green border-2 py-0.5 px-2 rounded-lg text-bg-brand-black-light uppercase text-green-300"
+        className="text-xs border-brand-green border-2 py-1 px-3 rounded-lg text-bg-brand-black-light uppercase text-green-300"
       >
         Use
       </button>
