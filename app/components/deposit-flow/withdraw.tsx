@@ -103,7 +103,7 @@ export default function Withdraw({
               <span className="font-bold mr-3">Deposit Rates</span>{" "}
               <img src="/images/box-arrow.svg" alt="box arrow" />
             </div>
-            <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 pb-6">
+            <div className="flex items-center mb-3 text-gray-400  pb-6">
               <img
                 src={row.icon}
                 style={{ width: ICON_SIZE }}
@@ -112,16 +112,6 @@ export default function Withdraw({
               />
               <div className="flex-grow">Deposit APY</div>
               <div>{marketData.depositApy}</div>
-            </div>
-            <div className="flex items-center text-gray-400 pt-4 pb-8">
-              <div className="mr-3">
-                <img
-                  src="/images/distribution-icon.svg"
-                  alt="Distribution APY Icon"
-                />
-              </div>
-              <div className="flex-grow">Distribution APY</div>
-              <div>0%</div>
             </div>
 
             <div>

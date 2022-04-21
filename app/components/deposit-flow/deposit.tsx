@@ -120,7 +120,7 @@ export default function Deposit({
           <span className="font-bold mr-3">Deposit Rates</span>{" "}
           <img src="/images/box-arrow.svg" alt="box arrow" />
         </div>
-        <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 pb-6">
+        <div className="flex items-center mb-3 text-gray-400  pb-6">
           <img
             src={row.icon}
             style={{ width: ICON_SIZE }}
