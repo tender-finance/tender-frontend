@@ -10,6 +10,8 @@ import Max from "~/components/max";
 
 import { enable, repay, hasSufficientAllowance } from "~/lib/tender";
 
+import type { BigNumber } from "ethers";
+
 interface Props {
   closeModal: Function;
   row: SwapRow;
@@ -18,7 +20,7 @@ interface Props {
   signer: JsonRpcSigner | null | undefined;
   formattedBorrowedAmount: string;
   borrowLimitUsed: string;
-  walletBalance: string;
+  walletBalance: BigNumber;
 }
 
 export default function Repay({

@@ -7,7 +7,13 @@ import Max from "~/components/max";
 
 import clsx from "clsx";
 
-import { enable, deposit, hasSufficientAllowance } from "~/lib/tender";
+import {
+  enable,
+  deposit,
+  hasSufficientAllowance,
+  formattedValue,
+} from "~/lib/tender";
+import { BigNumber } from "ethers";
 
 interface Props {
   closeModal: Function;
@@ -17,7 +23,7 @@ interface Props {
   borrowLimit: number;
   signer: JsonRpcSigner | null | undefined;
   borrowLimitUsed: string;
-  walletBalance: string;
+  walletBalance: BigNumber;
 }
 export default function Deposit({
   closeModal,
@@ -34,6 +40,11 @@ export default function Deposit({
   let [isDepositing, setIsDepositing] = useState<boolean>(false);
   let [value, setValue] = useState<string>("");
   let inputEl = useRef<HTMLInputElement>(null);
+
+  let formattedWalletBalance: string = formattedValue(
+    walletBalance,
+    row.token.decimals
+  );
 
   useEffect(() => {
     if (!signer) {
@@ -80,12 +91,12 @@ export default function Deposit({
         {isEnabled && (
           <div className="relative">
             <Max
-              maxValue={walletBalance}
+              maxValue={formattedWalletBalance}
               updateValue={() => {
                 if (!inputEl || !inputEl.current) return;
                 inputEl.current.focus();
-                inputEl.current.value = walletBalance;
-                setValue(walletBalance);
+                inputEl.current.value = formattedWalletBalance;
+                setValue(formattedWalletBalance);
               }}
               maxValueLabel={row.name}
             />
@@ -216,7 +227,7 @@ export default function Deposit({
         <div className="flex text-gray-500">
           <div className="flex-grow">Wallet Balance</div>
           <div>
-            {walletBalance} {row.name}
+            {formattedWalletBalance} {row.name}
           </div>
         </div>
       </div>

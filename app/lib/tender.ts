@@ -9,6 +9,12 @@ import { TokenPair } from "~/types/global";
 
 const MINIMUM_REQUIRED_APPROVAL_BALANCE = BigNumber.from("1");
 
+function formattedValue(value: BigNumber, decimals: number): string {
+  let scaledValue: string = ethers.utils.formatUnits(value, decimals);
+
+  return parseFloat(scaledValue).toFixed(2).toString();
+}
+
 /**
  * Enable
  *
@@ -38,13 +44,15 @@ async function enable(
  * @param token
  * @returns
  */
-async function getWalletBalance(signer: Signer, token: Token): Promise<string> {
+async function getWalletBalance(
+  signer: Signer,
+  token: Token
+): Promise<BigNumber> {
   let contract = new ethers.Contract(token.address, SampleErc20Abi, signer);
   let address: string = await signer.getAddress();
   let balance: BigNumber = await contract.balanceOf(address);
-  let mantissa = ethers.utils.parseUnits("1", token.decimals);
 
-  return balance.div(mantissa).toNumber().toFixed(2).toString();
+  return balance;
 }
 
 /**
@@ -405,4 +413,5 @@ export {
   getTotalBorrowedUsd,
   hasSufficientAllowance,
   getTotalBorrowed,
+  formattedValue,
 };

@@ -30,7 +30,9 @@ export default function DepositFlow({
   tokenPairs,
 }: Props) {
   let [isSupplying, setIsSupplying] = useState<boolean>(true);
-  let [walletBalance, setWalletBalance] = useState<string>("0");
+  let [walletBalance, setWalletBalance] = useState<BigNumber>(
+    BigNumber.from(0)
+  );
   let [borrowLimit, setBorrowLimit] = useState<number>(0);
   let [borrowLimitUsed, setBorrowLimitUsed] = useState<string>("");
   let [borrowedAmount, setBorrowedAmount] = useState<number>(0);
