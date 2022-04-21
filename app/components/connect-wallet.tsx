@@ -6,7 +6,6 @@ export default function ConnectWallet() {
   const accounts = useAccounts();
   const error = useError();
   const isActivating = useIsActivating();
-
   const isActive = useIsActive();
 
   function truncateAccount(accounts: string[]): string {
@@ -22,20 +21,28 @@ export default function ConnectWallet() {
   return (
     <div className="box">
       {isActive && accounts && (
-        <div className="text-sm text-gray-400">
-          <div>Connected as {truncateAccount(accounts)}</div>
+        <div className="flex text-sm text-gray-400">
+          <div className=" py-2 px-4">
+            Connected as {truncateAccount(accounts)}
+          </div>
+          <button
+            className="bg-brand-green text-white py-2 px-4"
+            onClick={() => metaMask.deactivate()}
+          >
+            Disconnect
+          </button>
         </div>
       )}
       {!isActive && (
-        <>
+        <div className="text-sm">
           <button
             className="bg-brand-green text-white py-2 px-4"
             onClick={isActivating ? undefined : () => metaMask.activate()}
             disabled={isActivating}
           >
-            Connect wallet
+            Connect Wallet
           </button>
-        </>
+        </div>
       )}
       {error?.message && (
         <div className="text-xs text-gray-500">{error.message}</div>
