@@ -9,7 +9,8 @@
     "plugins/**/*",
     "support/**/*",
     "../node_modules/cypress",
-    "../node_modules/@testing-library/cypress"
+    "../node_modules/@testing-library/cypress",
+    "remix.env.d.ts"
   ],
   "compilerOptions": {
     "baseUrl": ".",
@@ -21,9 +22,8 @@
     "target": "es2019",
     "strict": true,
     "skipLibCheck": true,
-    "resolveJsonModule": true,
     "typeRoots": ["../types", "../node_modules/@types"],
-
+    "resolveJsonModule": true,
     "paths": {
       "~/*": ["../app/*"]
     }

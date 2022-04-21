@@ -4,3 +4,5 @@ describe("smoke tests", () => {
     cy.findByTestId("enter-app").click();
   });
 });
+
+export {};

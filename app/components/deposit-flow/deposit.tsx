@@ -1,7 +1,7 @@
 import { ICON_SIZE } from "~/lib/constants";
 import { SwapRow, SwapRowMarketDatum } from "~/types/global";
 import { useEffect, useState } from "react";
-import { JsonRpcSigner, Web3Provider } from "@ethersproject/providers";
+import { JsonRpcSigner } from "@ethersproject/providers";
 import toast from "react-hot-toast";
 
 import clsx from "clsx";
@@ -44,7 +44,7 @@ export default function Deposit({
         }
       }
     );
-  }, [signer]);
+  }, [signer, row.cToken, row.token]);
 
   return (
     <div>
@@ -118,7 +118,10 @@ export default function Deposit({
         </div>
         <div className="flex items-center text-gray-400 pt-4 pb-8">
           <div className="mr-3">
-            <img src="/images/distribution-icon.svg" />
+            <img
+              src="/images/distribution-icon.svg"
+              alt="Distribution APY Icon"
+            />
           </div>
           <div className="flex-grow">Distribution APY</div>
           <div>0%</div>

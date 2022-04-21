@@ -116,7 +116,7 @@ export default function Repay({
         </div>
         <div className="flex items-center text-gray-400 pt-4 pb-8">
           <div className="mr-3">
-            <img src="/images/distribution-icon.svg" />
+            <img src="/images/distribution-icon.svg" alt="Distribution icon" />
           </div>
           <div className="flex-grow">Distribution APY</div>
           <div>0%</div>
