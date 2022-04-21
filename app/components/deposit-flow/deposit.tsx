@@ -50,7 +50,7 @@ export default function Deposit({
 
   return (
     <div>
-      <div className="py-8 bg-brand-black-light">
+      <div className="py-8 bg-brand-black-light relative">
         <div className="float-right">
           <button
             onClick={() => closeModal()}
@@ -78,13 +78,7 @@ export default function Deposit({
           </div>
         )}
         {isEnabled && (
-          <div className="flex flex-col justify-center items-center overflow-hidden">
-            <input
-              ref={inputEl}
-              onChange={(e) => setValue(e.target.value)}
-              className="bg-transparent text-6xl text-white text-center outline-none"
-              defaultValue={0}
-            />
+          <div className="relative">
             <Max
               maxValue={walletBalance}
               updateValue={() => {
@@ -95,6 +89,14 @@ export default function Deposit({
               }}
               maxValueLabel={row.name}
             />
+            <div className="flex flex-col justify-center items-center overflow-hidden">
+              <input
+                ref={inputEl}
+                onChange={(e) => setValue(e.target.value)}
+                className="bg-transparent text-6xl text-white text-center outline-none"
+                defaultValue={0}
+              />
+            </div>
           </div>
         )}
       </div>
