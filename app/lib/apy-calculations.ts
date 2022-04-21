@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 import sampleCTokenAbi from "~/config/sample-ctoken-abi";
-import { Token, cToken } from "~/types/global";
-import { JsonRpcSigner } from "@ethersproject/providers";
+import type { Token, cToken } from "~/types/global";
+import type { JsonRpcSigner } from "@ethersproject/providers";
 
 function formatApy(apy: number): string {
   return `${apy.toFixed(2).toString()}%`;

@@ -1,14 +1,14 @@
 import { ICON_SIZE } from "~/lib/constants";
-import { SwapRow, SwapRowMarketDatum } from "~/types/global";
+import type { SwapRow, SwapRowMarketDatum } from "~/types/global";
 import { useEffect, useState, useRef } from "react";
-import { JsonRpcSigner } from "@ethersproject/providers";
+import type { JsonRpcSigner } from "@ethersproject/providers";
 
 import clsx from "clsx";
 import toast from "react-hot-toast";
 import Max from "~/components/max";
 
 import { getCurrentlyBorrowing, borrow } from "~/lib/tender";
-import { BigNumber } from "ethers";
+import type { BigNumber } from "ethers";
 
 interface Props {
   closeModal: Function;
@@ -111,7 +111,7 @@ export default function Borrow({
               <span className="font-bold mr-3">Borrow Rates</span>{" "}
               <img src="/images/box-arrow.svg" alt="box arrow" />
             </div>
-            <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 pb-6">
+            <div className="flex items-center mb-3 text-gray-400  pb-6">
               <img
                 src={row.icon}
                 style={{ width: ICON_SIZE }}
@@ -120,16 +120,6 @@ export default function Borrow({
               />
               <div className="flex-grow">Borrow APY</div>
               <div>{marketData.borrowApy}</div>
-            </div>
-            <div className="flex items-center text-gray-400 pt-4 pb-8">
-              <div className="mr-3">
-                <img
-                  src="/images/distribution-icon.svg"
-                  alt="Distribution APY Icon"
-                />
-              </div>
-              <div className="flex-grow">Distribution APY</div>
-              <div>0%</div>
             </div>
             <div>
               <div className="font-bold mr-3 border-b border-b-gray-600 w-full pb-5">

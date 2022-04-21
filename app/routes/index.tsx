@@ -51,7 +51,11 @@ export default function Index() {
         </div>
         <div>
           <div className="mt-32">
-            <img width="530" src="/images/money-tree.svg" />
+            <img
+              width="530"
+              src="/images/money-tree.svg"
+              alt="Hero illustration of a tree with money and tubes"
+            />
           </div>
         </div>
       </div>
@@ -74,13 +78,25 @@ export default function Index() {
           <div className="flex-grow">&nbsp;</div>
           <div className="grid grid-cols-2 gap-8 mt-12">
             <div>
-              <img className="w-52" src="/images/stakeholder-aurora.svg" />
+              <img
+                className="w-52"
+                src="/images/stakeholder-aurora.svg"
+                alt="Aurora Mark"
+              />
             </div>
             <div>
-              <img className="w-52" src="/images/stakeholder-metapool.png" />
+              <img
+                className="w-52"
+                src="/images/stakeholder-metapool.png"
+                alt="Metapol Mark"
+              />
             </div>
             <div>
-              <img className="w-52" src="/images/stakeholder-ang.svg" />
+              <img
+                className="w-52"
+                src="/images/stakeholder-ang.svg"
+                alt="ANG Mark"
+              />
             </div>
           </div>
         </div>

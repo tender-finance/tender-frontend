@@ -1,8 +1,6 @@
 import SwapRow from "~/components/swap-row";
-import {
+import type {
   SwapRow as SwapRowType,
-  TokenName,
-  NetworkName,
   Token,
   cToken,
   SwapRowMarketData,
@@ -10,9 +8,10 @@ import {
   NetworkData,
   TokenPair,
 } from "~/types/global";
+import { TokenName, NetworkName } from "~/types/global";
 import { useEffect, useState } from "react";
 import { hooks as Web3Hooks } from "~/connectors/meta-mask";
-import { JsonRpcSigner, Web3Provider } from "@ethersproject/providers";
+import type { JsonRpcSigner } from "@ethersproject/providers";
 import networks from "~/config/networks";
 import { tokenMetaData } from "~/config/tokenMetaData";
 import { chainIdToNetwork } from "~/connectors";
@@ -24,7 +23,6 @@ import {
 
 import { getMarketSizeUsd, getTotalBorrowedUsd } from "~/lib/tender";
 
-import ConnectWallet from "./connect-wallet";
 import { useWeb3Signer } from "~/hooks/use-web3-signer";
 import { useOnSupportedNetwork } from "~/hooks/use-on-supported-network";
 

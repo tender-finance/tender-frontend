@@ -1,4 +1,4 @@
-import { SwapRow, SwapRowMarketDatum, TokenPair } from "~/types/global";
+import type { SwapRow, SwapRowMarketDatum, TokenPair } from "~/types/global";
 import { useEffect, useState } from "react";
 import { BigNumber } from "ethers";
 import { hooks as Web3Hooks } from "~/connectors/meta-mask";
