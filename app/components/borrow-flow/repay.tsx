@@ -8,7 +8,12 @@ import toast from "react-hot-toast";
 
 import Max from "~/components/max";
 
-import { enable, repay, hasSufficientAllowance } from "~/lib/tender";
+import {
+  enable,
+  repay,
+  hasSufficientAllowance,
+  formattedValue,
+} from "~/lib/tender";
 
 import type { BigNumber } from "ethers";
 
@@ -222,7 +227,7 @@ export default function Repay({
         <div className="flex text-gray-500">
           <div className="flex-grow">Wallet Balance</div>
           <div>
-            {walletBalance} {row.name}
+            {formattedValue(walletBalance, row.token.decimals)} {row.name}
           </div>
         </div>
       </div>

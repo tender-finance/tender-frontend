@@ -145,19 +145,15 @@ async function redeem(
  */
 async function getCurrentlySupplying(
   signer: Signer,
-  cToken: cToken,
-  token: Token
-): Promise<string> {
+  cToken: cToken
+): Promise<BigNumber> {
   let contract = new ethers.Contract(cToken.address, SampleCTokenAbi, signer);
   let address = await signer.getAddress();
+  let balance: BigNumber = await contract.callStatic.balanceOfUnderlying(
+    address
+  );
 
-  const rawBalance = await contract.callStatic.balanceOfUnderlying(address);
-  const balance: BigNumber = rawBalance;
-  const mantissa = ethers.utils.parseUnits("1", token.decimals);
-
-  const val = balance.div(mantissa).toString();
-
-  return val;
+  return balance;
 }
 
 /**
@@ -168,8 +164,7 @@ async function getCurrentlySupplying(
  */
 async function getCurrentlyBorrowing(
   signer: Signer,
-  cToken: cToken,
-  token: Token
+  cToken: cToken
 ): Promise<BigNumber> {
   let contract: Contract = new ethers.Contract(
     cToken.address,
@@ -178,9 +173,8 @@ async function getCurrentlyBorrowing(
   );
   let address: string = await signer.getAddress();
   let balance: BigNumber = await contract.borrowBalanceStored(address);
-  let mantissa: BigNumber = ethers.utils.parseUnits("1", token.decimals);
 
-  return balance.div(mantissa);
+  return balance;
 }
 
 // TODO: This function should take into account which markets we've entered
@@ -191,30 +185,32 @@ async function availableCollateralToBorrowAgainst(
   comptrollerContract: Contract,
   tokenPair: TokenPair
 ): Promise<number> {
-  let suppliedAmount: BigNumber = BigNumber.from(
-    await getCurrentlySupplying(signer, tokenPair.cToken, tokenPair.token)
+  let suppliedAmount: BigNumber = await getCurrentlySupplying(
+    signer,
+    tokenPair.cToken
   );
-
   let { 1: rawCollateralFactor } = await comptrollerContract.markets(
     tokenPair.cToken.address
   );
-  let collateralFactor: BigNumber = rawCollateralFactor;
-
-  // Collateral factors are always 1e18
-  let mantissa = ethers.utils.parseUnits("1", 18);
 
   // collateralFactor represents the % you can borrow against your asset,
   // when scaled down by the mantissa it represents a number like 0.7 or 0.8, i.e., 70% or 80%.
-  // collateralFactor is only 17 digits, and most tokens are 18 digits.
-  // This makes dividing by 1e18 always 0, so by inflating by 100 and dividing by 100
-  // we can stay using BigNumbers as long as possible.
-  //
-  // TODO: Do this same thing division workaround in the APY calculations?
-  let amount =
-    suppliedAmount.mul(100).mul(collateralFactor).div(mantissa).toNumber() /
-    100;
+  // Collateral factors are always scaled by 1e18
+  let collateralFactor: number = rawCollateralFactor / 1e18;
 
-  return amount;
+  let scaledAmount: string = ethers.utils.formatUnits(
+    suppliedAmount,
+    tokenPair.token.decimals
+  );
+  let availableAmount: number = parseFloat(scaledAmount) * collateralFactor;
+
+  return availableAmount;
+
+  // let amount = parseFloat(
+  //   formattedValue(suppliedAmount, tokenPair.token.decimals)
+  // );
+  //   suppliedAmount.mul(100).mul(collateralFactor).div(mantissa).toNumber() /
+  //   100;
 }
 
 /**
@@ -249,6 +245,7 @@ async function getBorrowLimit(
     (acc: number, curr: number): number => acc + curr
   );
 
+  console.log("borrowLimt", borrowLimit.toString());
   return borrowLimit;
 }
 
@@ -275,10 +272,10 @@ async function getBorrowedAmount(
  * @returns
  */
 async function getBorrowLimitUsed(
-  totalBorrowed: BigNumber,
+  totalBorrowed: number,
   borrowedLimit: number
 ): Promise<string> {
-  return ((totalBorrowed.toNumber() / borrowedLimit) * 100).toFixed(2);
+  return ((totalBorrowed / borrowedLimit) * 100).toFixed(2);
 }
 
 async function getTotalBorrowed(
@@ -288,7 +285,7 @@ async function getTotalBorrowed(
   let borrowedAmounts = await Promise.all(
     tokenPairs.map(async (tokenPair: TokenPair): Promise<BigNumber> => {
       let borrowedAmount: BigNumber = BigNumber.from(
-        await getCurrentlyBorrowing(signer, tokenPair.cToken, tokenPair.token)
+        await getCurrentlyBorrowing(signer, tokenPair.cToken)
       );
 
       return borrowedAmount;

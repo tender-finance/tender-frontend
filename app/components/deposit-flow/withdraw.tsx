@@ -7,7 +7,8 @@ import Max from "~/components/max";
 
 import clsx from "clsx";
 
-import { redeem, getCurrentlySupplying } from "~/lib/tender";
+import { redeem, getCurrentlySupplying, formattedValue } from "~/lib/tender";
+import { BigNumber } from "ethers";
 
 interface Props {
   closeModal: Function;
@@ -30,17 +31,31 @@ export default function Withdraw({
 }: Props) {
   let [value, setValue] = useState<string>("");
   let [isWithdrawing, setIsWithdrawing] = useState<boolean>(false);
-  let [currentlySupplying, setCurrentlySupplying] = useState<string>("0");
+  let [currentlySupplying, setCurrentlySupplying] = useState<BigNumber>(
+    BigNumber.from(0)
+  );
+  let [formattedCurrentlySupplying, setFormattedCurrentlySupplying] =
+    useState<string>("0");
   let inputEl = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!signer) {
       return;
     }
-    getCurrentlySupplying(signer, row.cToken, row.token).then((c) =>
-      setCurrentlySupplying(c)
-    );
+    getCurrentlySupplying(signer, row.cToken).then((c) => {
+      setCurrentlySupplying(c);
+    });
   }, [signer, row.cToken, row.token]);
+
+  useEffect(() => {
+    if (!currentlySupplying) {
+      return;
+    }
+
+    setFormattedCurrentlySupplying(
+      formattedValue(currentlySupplying, row.token.decimals)
+    );
+  }, [currentlySupplying]);
 
   return (
     <div>
@@ -72,12 +87,12 @@ export default function Withdraw({
               placeholder="0"
             />
             <Max
-              maxValue={currentlySupplying}
+              maxValue={formattedCurrentlySupplying}
               updateValue={() => {
                 if (!inputEl || !inputEl.current) return;
                 inputEl.current.focus();
-                inputEl.current.value = currentlySupplying;
-                setValue(currentlySupplying);
+                inputEl.current.value = formattedCurrentlySupplying;
+                setValue(formattedCurrentlySupplying);
               }}
               maxValueLabel={row.name}
             />
@@ -184,7 +199,7 @@ export default function Withdraw({
             <div className="flex text-gray-500">
               <div className="flex-grow">Currently Supplying</div>
               <div>
-                {currentlySupplying} {row.name}
+                {formattedCurrentlySupplying} {row.name}
               </div>
             </div>
           </div>

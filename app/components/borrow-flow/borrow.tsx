@@ -7,7 +7,7 @@ import clsx from "clsx";
 import toast from "react-hot-toast";
 import Max from "~/components/max";
 
-import { getCurrentlyBorrowing, borrow } from "~/lib/tender";
+import { getCurrentlyBorrowing, borrow, formattedValue } from "~/lib/tender";
 import { BigNumber } from "ethers";
 
 interface Props {
@@ -33,7 +33,9 @@ export default function Borrow({
   borrowLimitUsed,
 }: Props) {
   let [value, setValue] = useState<string>("");
-  let [currentlyBorrowing, setCurrentlyBorrowing] = useState<string>("0");
+  let [currentlyBorrowing, setCurrentlyBorrowing] = useState<BigNumber>(
+    BigNumber.from(0)
+  );
   let [isBorrowing, setIsBorrowing] = useState<boolean>(false);
   let inputEl = useRef<HTMLInputElement>(null);
 
@@ -41,12 +43,9 @@ export default function Borrow({
     if (!signer) {
       return;
     }
-    getCurrentlyBorrowing(signer, row.cToken, row.token).then(
-      (c: BigNumber) => {
-        let formattedValue: string = c.toString();
-        setCurrentlyBorrowing(formattedValue);
-      }
-    );
+    getCurrentlyBorrowing(signer, row.cToken).then((c: BigNumber) => {
+      setCurrentlyBorrowing(c);
+    });
   }, [signer, row.cToken, row.token]);
 
   return (
@@ -188,7 +187,8 @@ export default function Borrow({
             <div className="flex text-gray-500">
               <div className="flex-grow">Currently Borrowing</div>
               <div>
-                {currentlyBorrowing} {row.name}
+                {formattedValue(currentlyBorrowing, row.token.decimals)}{" "}
+                {row.name}
               </div>
             </div>
           </div>

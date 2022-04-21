@@ -1,6 +1,6 @@
 import { SwapRow, SwapRowMarketDatum, TokenPair } from "~/types/global";
 import { useEffect, useState } from "react";
-import { BigNumber } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import { hooks as Web3Hooks } from "~/connectors/meta-mask";
 
 import Repay from "~/components/borrow-flow/repay";
@@ -75,7 +75,10 @@ export default function BorrowFlow({
       return;
     }
 
-    getBorrowLimitUsed(totalBorrowedAmount, borrowLimit).then((b) =>
+    let scaledTotalBorrowedAmount: number = parseFloat(
+      ethers.utils.formatUnits(totalBorrowedAmount, row.token.decimals)
+    );
+    getBorrowLimitUsed(scaledTotalBorrowedAmount, borrowLimit).then((b) =>
       setBorrowLimitUsed(b)
     );
   }, [borrowedAmount, borrowLimit, totalBorrowedAmount]);
