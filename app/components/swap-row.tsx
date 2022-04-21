@@ -24,7 +24,7 @@ export default function SwapRow({ row, marketData, tokenPairs }: Props) {
       <div className="py-6 flex align-middle items-center border-b border-b-gray-700 font-light text-gray-300">
         <div className="flex items-center align-middle">
           <div style={{ width: "55px" }} className="mr-4">
-            <img src={row.icon} />
+            <img src={row.icon} alt={`${row.name} coin illo`} />
           </div>
           <div style={{ width: "130px" }}>{row.name}</div>
         </div>

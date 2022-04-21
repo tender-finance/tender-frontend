@@ -15,19 +15,11 @@ import globalStyles from "./styles/global.css";
 import Header from "~/components/Header";
 import Footer from "~/components/Footer";
 
-import {
-  useWeb3React,
-  Web3ReactHooks,
-  Web3ReactProvider,
-} from "@web3-react/core";
-import { MetaMask } from "@web3-react/metamask";
+import type { Web3ReactHooks } from "@web3-react/core";
+import { Web3ReactProvider } from "@web3-react/core";
+import type { MetaMask } from "@web3-react/metamask";
 
 import { hooks as metaMaskHooks, metaMask } from "~/connectors/meta-mask";
-
-import type {
-  ExternalProvider,
-  JsonRpcFetchFunc,
-} from "@ethersproject/providers";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: tailwindStyles },

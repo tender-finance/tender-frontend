@@ -1,11 +1,12 @@
-import { cToken, Token } from "~/types/global";
-import { Signer, ethers, BigNumber, Contract } from "ethers";
+import type { cToken, Token } from "~/types/global";
+import type { Signer, Contract } from "ethers";
+import { ethers, BigNumber } from "ethers";
 
 import SampleCTokenAbi from "~/config/sample-ctoken-abi";
 import SampleErc20Abi from "~/config/sample-erc20-abi";
 import SampleComptrollerAbi from "~/config/sample-comptroller-abi";
 
-import { TokenPair } from "~/types/global";
+import type { TokenPair } from "~/types/global";
 
 const MINIMUM_REQUIRED_APPROVAL_BALANCE = BigNumber.from("1");
 
@@ -29,7 +30,7 @@ async function enable(
   // @ts-ignore
   let contract = new ethers.Contract(token.address, SampleErc20Abi, signer);
   let approvalVal = BigNumber.from(2).pow(256).sub(1).toString(); // Max approval value, 2^256 - 1
-  let approvalTx = await contract.approve(cToken.address, approvalVal);
+  await contract.approve(cToken.address, approvalVal);
 }
 
 /**
@@ -87,7 +88,7 @@ async function deposit(
   );
 
   let contract = new ethers.Contract(cToken.address, SampleCTokenAbi, signer);
-  let tx = await contract.mint(formattedValue);
+  await contract.mint(formattedValue);
   // }
 }
 
@@ -123,7 +124,7 @@ async function redeem(
     SampleCTokenAbi,
     signer
   );
-  let tx = await cTokenContract.redeemUnderlying(formattedValue);
+  await cTokenContract.redeemUnderlying(formattedValue);
   // }
 }
 
@@ -351,7 +352,7 @@ async function borrow(
     token.decimals
   );
   let contract = new ethers.Contract(cToken.address, SampleCTokenAbi, signer);
-  let tx = await contract.borrow(formattedValue);
+  await contract.borrow(formattedValue);
   // }
 }
 
