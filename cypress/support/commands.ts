@@ -1,3 +1,14 @@
+/*
+eslint
+  @typescript-eslint/no-namespace: "off",
+*/
+
+const cleanupUser = (): void => {
+  // This is an example
+};
+
+export {};
+
 declare global {
   namespace Cypress {
     interface Chainable {
@@ -11,14 +22,9 @@ declare global {
        * @example
        *    cy.cleanupUser({ email: 'whatever@example.com' })
        */
-      // cleanupUser: typeof cleanupUser;
+      cleanupUser: typeof cleanupUser;
     }
   }
 }
 
-// Cypress.Commands.add("cleanupUser", cleanupUser);
-
-/*
-eslint
-  @typescript-eslint/no-namespace: "off",
-*/
+Cypress.Commands.add("cleanupUser", cleanupUser);
