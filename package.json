@@ -51,6 +51,11 @@
     "vite-tsconfig-paths": "^3.4.1",
     "vitest": "^0.9.3"
   },
+  "eslintIgnore": [
+    "/node_modules",
+    "/build",
+    "/public/build"
+  ],
   "devDependencies": {
     "@remix-run/dev": "^1.2.3",
     "@remix-run/eslint-config": "^1.2.3",
