@@ -38,6 +38,7 @@ export enum TokenName {
   USDC = "USDC",
   USDT = "USDT",
   WBTC = "WBTC",
+  BAT = "BAT",
 }
 
 export enum NetworkName {

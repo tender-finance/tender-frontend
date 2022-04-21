@@ -34,6 +34,7 @@ const SUPPORTED_TOKENS = [
   TokenName.USDC,
   TokenName.USDT,
   TokenName.WBTC,
+  TokenName.BAT,
 ];
 
 function generateSwapRows(

@@ -13,6 +13,7 @@ interface TokenMetaData {
   [TokenName.USDT]: TokenMetaDatum;
   [TokenName.ETH]: TokenMetaDatum;
   [TokenName.DAI]: TokenMetaDatum;
+  [TokenName.BAT]: TokenMetaDatum;
 }
 
 const tokenMetaData: TokenMetaData = {
@@ -45,6 +46,12 @@ const tokenMetaData: TokenMetaData = {
     name: "DAI",
     symbol: "DAI",
     cTokenSymbol: "cDAI",
+  },
+  [TokenName.BAT]: {
+    icon: "/images/coin-icons/bat.svg",
+    name: "BAT",
+    symbol: "BAT",
+    cTokenSymbol: "cBAT",
   },
 };
 
