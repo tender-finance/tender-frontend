@@ -8,6 +8,7 @@ import Max from "~/components/max";
 import clsx from "clsx";
 
 import { enable, deposit, hasSufficientAllowance } from "~/lib/tender";
+import { BigNumber } from "ethers";
 
 interface Props {
   closeModal: Function;
@@ -29,10 +30,11 @@ export default function Deposit({
   borrowLimitUsed,
   walletBalance,
 }: Props) {
+  let [isValid, setIsValid] = useState<boolean>(false);
   let [isEnabled, setIsEnabled] = useState<boolean>(true);
   let [isEnabling, setIsEnabling] = useState<boolean>(false);
   let [isDepositing, setIsDepositing] = useState<boolean>(false);
-  let [value, setValue] = useState<string>("");
+  let [value, setValue] = useState<string>("0");
   let inputEl = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -47,6 +49,34 @@ export default function Deposit({
       }
     );
   }, [signer, row.cToken, row.token]);
+
+  console.log(walletBalance);
+  useEffect(() => {
+    try {
+      let b = BigNumber;
+      debugger;
+      // let v: BigNumber = BigNumber.from(value);
+      // let v: BigNubmer = BigNumber.from(ethers.utils.formatUnits(value, row.token.decimals));
+      let floor: BigNumber = BigNumber.from(0);
+      let ciel: BigNumber = BigNumber.from(walletBalance);
+      console.log(v, floor, ciel, walletBalance);
+      if (v.gt(floor) && v.lt(ciel)) {
+        debugger;
+        setIsValid(true);
+      } else {
+        debugger;
+        setIsValid(false);
+      }
+    } catch (e) {
+      console.error(`Invalid bignumber`, e);
+      // invalid bignumber string
+      setIsValid(false);
+    }
+  }, [value, walletBalance]);
+
+  useEffect(() => {
+    inputEl && inputEl.current && inputEl.current.select();
+  }, []);
 
   return (
     <div>
@@ -177,7 +207,12 @@ export default function Deposit({
             </button>
           )}
 
-          {signer && isEnabled && (
+          {signer && isEnabled && !isValid && (
+            <button className="py-4 text-center text-white font-bold rounded bg-brand-green w-full bg-gray-200">
+              Deposit
+            </button>
+          )}
+          {signer && isEnabled && isValid && (
             <button
               onClick={async () => {
                 try {
