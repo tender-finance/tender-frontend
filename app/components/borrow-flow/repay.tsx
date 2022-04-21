@@ -1,10 +1,12 @@
 import { ICON_SIZE } from "~/lib/constants";
 import { SwapRow, SwapRowMarketDatum } from "~/types/global";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { JsonRpcSigner } from "@ethersproject/providers";
 
 import clsx from "clsx";
 import toast from "react-hot-toast";
+
+import Max from "~/components/max";
 
 import { enable, repay, hasSufficientAllowance } from "~/lib/tender";
 
@@ -34,6 +36,8 @@ export default function Repay({
 
   let [isRepayingTxn, setIsRepayingTxn] = useState<boolean>(false);
   let [value, setValue] = useState<string>("");
+
+  let inputEl = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!signer) {
@@ -79,11 +83,21 @@ export default function Repay({
         {isEnabled && (
           <div className="flex flex-col justify-center items-center overflow-hidden">
             <input
+              ref={inputEl}
               onChange={(e) => setValue(e.target.value)}
               className="bg-transparent text-6xl text-white text-center outline-none"
               placeholder="0"
             />
-            <div className="text-gray-400 text-sm m-auto hidden">Max ⬆</div>
+            <Max
+              maxValue={formattedBorrowedAmount}
+              updateValue={() => {
+                if (!inputEl || !inputEl.current) return;
+                inputEl.current.focus();
+                inputEl.current.value = formattedBorrowedAmount;
+                setValue(formattedBorrowedAmount);
+              }}
+              maxValueLabel={row.name}
+            />
           </div>
         )}
       </div>
