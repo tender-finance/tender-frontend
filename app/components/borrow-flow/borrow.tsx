@@ -8,7 +8,6 @@ import toast from "react-hot-toast";
 import Max from "~/components/max";
 
 import { getCurrentlyBorrowing, borrow } from "~/lib/tender";
-import type { BigNumber } from "ethers";
 
 interface Props {
   closeModal: Function;
