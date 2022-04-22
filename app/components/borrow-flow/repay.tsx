@@ -137,13 +137,16 @@ export default function Repay({
             <div className="flex-grow">Borrow Balance</div>
             <div>${formattedBorrowedAmount}</div>
           </div>
-          <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 py-5">
-            <div className="flex-grow">Borrow Limit Used</div>
-            <div>
-              0 <span className="text-brand-green">→</span>&nbsp;
-              {borrowLimitUsed}%
+
+          {borrowLimitUsed && (
+            <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 py-5">
+              <div className="flex-grow">Borrow Limit Used</div>
+              <div>
+                0 <span className="text-brand-green">→</span>&nbsp;
+                {borrowLimitUsed}%
+              </div>
             </div>
-          </div>
+          )}
         </div>
         <div className="mb-8">
           {!signer && <div>Connect wallet to get started</div>}
