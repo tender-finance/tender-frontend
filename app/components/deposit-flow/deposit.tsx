@@ -2,6 +2,7 @@ import { ICON_SIZE } from "~/lib/constants";
 import type { SwapRow, SwapRowMarketDatum } from "~/types/global";
 import { useEffect, useRef, useState } from "react";
 import type { JsonRpcSigner } from "@ethersproject/providers";
+import { useValidInput } from "~/hooks/use-valid-input";
 import toast from "react-hot-toast";
 import Max from "~/components/max";
 
@@ -32,8 +33,9 @@ export default function Deposit({
   let [isEnabled, setIsEnabled] = useState<boolean>(true);
   let [isEnabling, setIsEnabling] = useState<boolean>(false);
   let [isDepositing, setIsDepositing] = useState<boolean>(false);
-  let [value, setValue] = useState<string>("");
+  let [value, setValue] = useState<string>("0");
   let inputEl = useRef<HTMLInputElement>(null);
+  let isValid = useValidInput(value, 0, walletBalance);
 
   useEffect(() => {
     if (!signer) {
@@ -47,6 +49,11 @@ export default function Deposit({
       }
     );
   }, [signer, row.cToken, row.token]);
+
+  // Highlights value input
+  useEffect(() => {
+    inputEl && inputEl.current && inputEl.current.select();
+  }, []);
 
   return (
     <div>
@@ -177,7 +184,12 @@ export default function Deposit({
             </button>
           )}
 
-          {signer && isEnabled && (
+          {signer && isEnabled && !isValid && (
+            <button className="py-4 text-center text-white font-bold rounded  w-full bg-gray-200">
+              Deposit
+            </button>
+          )}
+          {signer && isEnabled && isValid && (
             <button
               onClick={async () => {
                 try {

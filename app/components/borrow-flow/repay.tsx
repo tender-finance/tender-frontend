@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import Max from "~/components/max";
 
 import { enable, repay, hasSufficientAllowance } from "~/lib/tender";
+import { useValidInput } from "~/hooks/use-valid-input";
 
 interface Props {
   closeModal: Function;
@@ -38,6 +39,7 @@ export default function Repay({
   let [value, setValue] = useState<string>("");
 
   let inputEl = useRef<HTMLInputElement>(null);
+  let isValid = useValidInput(value, 0, walletBalance);
 
   useEffect(() => {
     if (!signer) {
@@ -51,6 +53,12 @@ export default function Repay({
       }
     );
   }, [signer, row.cToken, row.token]);
+
+  // Highlights value input
+  useEffect(() => {
+    inputEl && inputEl.current && inputEl.current.select();
+  }, []);
+
   return (
     <div>
       <div className="py-8 bg-brand-black-light">
@@ -86,7 +94,7 @@ export default function Repay({
               ref={inputEl}
               onChange={(e) => setValue(e.target.value)}
               className="bg-transparent text-6xl text-white text-center outline-none"
-              placeholder="0"
+              defaultValue={0}
             />
             <Max
               maxValue={formattedBorrowedAmount}
@@ -175,7 +183,13 @@ export default function Repay({
             </button>
           )}
 
-          {signer && isEnabled && (
+          {signer && isEnabled && !isValid && (
+            <button className="py-4 text-center text-white font-bold rounded bg-brand-green w-full bg-gray-200">
+              Deposit
+            </button>
+          )}
+
+          {signer && isEnabled && isValid && (
             <button
               onClick={async () => {
                 try {
