@@ -19,7 +19,7 @@ interface Props {
   formattedBorrowedAmount: string;
   borrowLimitUsed: string;
   borrowLimit: number;
-  walletBalance: string;
+  walletBalance: number;
 }
 
 export default function Borrow({

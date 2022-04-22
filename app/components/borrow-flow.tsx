@@ -30,7 +30,7 @@ export default function BorrowFlow({
   tokenPairs,
 }: Props) {
   let [isRepaying, setIsRepaying] = useState<boolean>(false);
-  let [walletBalance, setWalletBalance] = useState<string>("0");
+  let [walletBalance, setWalletBalance] = useState<number>(0);
   let [borrowLimit, setBorrowLimit] = useState<number>(0);
   let [borrowLimitUsed, setBorrowLimitUsed] = useState<string>("");
   let [borrowedAmount, setBorrowedAmount] = useState<number>(0);

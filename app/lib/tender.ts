@@ -7,6 +7,7 @@ import SampleErc20Abi from "~/config/sample-erc20-abi";
 import SampleComptrollerAbi from "~/config/sample-comptroller-abi";
 
 import type { TokenPair } from "~/types/global";
+import { formatUnits } from "ethers/lib/utils";
 
 const MINIMUM_REQUIRED_APPROVAL_BALANCE = BigNumber.from("1");
 
@@ -39,13 +40,14 @@ async function enable(
  * @param token
  * @returns
  */
-async function getWalletBalance(signer: Signer, token: Token): Promise<string> {
+async function getWalletBalance(signer: Signer, token: Token): Promise<number> {
   let contract = new ethers.Contract(token.address, SampleErc20Abi, signer);
   let address: string = await signer.getAddress();
   let balance: BigNumber = await contract.balanceOf(address);
-  let mantissa = ethers.utils.parseUnits("1", token.decimals);
 
-  return balance.div(mantissa).toNumber().toFixed(2).toString();
+  return parseFloat(
+    parseFloat(formatUnits(balance, token.decimals)).toFixed(2)
+  );
 }
 
 /**

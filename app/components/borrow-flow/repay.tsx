@@ -18,7 +18,7 @@ interface Props {
   signer: JsonRpcSigner | null | undefined;
   formattedBorrowedAmount: string;
   borrowLimitUsed: string;
-  walletBalance: string;
+  walletBalance: number;
 }
 
 export default function Repay({
