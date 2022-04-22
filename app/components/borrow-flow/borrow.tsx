@@ -32,7 +32,7 @@ export default function Borrow({
   borrowLimitUsed,
 }: Props) {
   let [value, setValue] = useState<string>("");
-  let [currentlyBorrowing, setCurrentlyBorrowing] = useState<string>("0");
+  let [currentlyBorrowing, setCurrentlyBorrowing] = useState<number>(0);
   let [isBorrowing, setIsBorrowing] = useState<boolean>(false);
   let inputEl = useRef<HTMLInputElement>(null);
 
@@ -41,8 +41,7 @@ export default function Borrow({
       return;
     }
     getCurrentlyBorrowing(signer, row.cToken, row.token).then((c: number) => {
-      let formattedValue: string = c.toString();
-      setCurrentlyBorrowing(formattedValue);
+      setCurrentlyBorrowing(c);
     });
   }, [signer, row.cToken, row.token]);
 
