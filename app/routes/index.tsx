@@ -52,8 +52,8 @@ export default function Index() {
         <div>
           <div className="mt-32">
             <img
-              width="530"
-              src="/images/money-tree.svg"
+              width="600"
+              src="/images/home-tree.svg"
               alt="Hero illustration of a tree with money and tubes"
             />
           </div>
