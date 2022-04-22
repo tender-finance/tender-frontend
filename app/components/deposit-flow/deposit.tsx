@@ -50,26 +50,23 @@ export default function Deposit({
     );
   }, [signer, row.cToken, row.token]);
 
-  console.log(walletBalance);
   useEffect(() => {
     try {
-      let b = BigNumber;
-      debugger;
-      // let v: BigNumber = BigNumber.from(value);
-      // let v: BigNubmer = BigNumber.from(ethers.utils.formatUnits(value, row.token.decimals));
-      let floor: BigNumber = BigNumber.from(0);
-      let ciel: BigNumber = BigNumber.from(walletBalance);
-      console.log(v, floor, ciel, walletBalance);
-      if (v.gt(floor) && v.lt(ciel)) {
-        debugger;
+      if (isNaN(parseFloat(value))) {
+        throw "NaN";
+      }
+
+      let v: number = parseFloat(value);
+
+      let floor: number = 0;
+      let ciel: number = walletBalance;
+      if (v > floor && v < ciel) {
         setIsValid(true);
       } else {
-        debugger;
         setIsValid(false);
       }
     } catch (e) {
       console.error(`Invalid bignumber`, e);
-      // invalid bignumber string
       setIsValid(false);
     }
   }, [value, walletBalance]);
