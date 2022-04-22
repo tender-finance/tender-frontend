@@ -165,7 +165,7 @@ async function getCurrentlyBorrowing(
   signer: Signer,
   cToken: cToken,
   token: Token
-): Promise<BigNumber> {
+): Promise<number> {
   let contract: Contract = new ethers.Contract(
     cToken.address,
     SampleCTokenAbi,
@@ -173,9 +173,8 @@ async function getCurrentlyBorrowing(
   );
   let address: string = await signer.getAddress();
   let balance: BigNumber = await contract.borrowBalanceStored(address);
-  let mantissa: BigNumber = ethers.utils.parseUnits("1", token.decimals);
 
-  return balance.div(mantissa);
+  return formatBigNumber(balance, token.decimals);
 }
 
 // TODO: This function should take into account which markets we've entered
@@ -264,31 +263,32 @@ async function getBorrowedAmount(
  * @returns
  */
 async function getBorrowLimitUsed(
-  totalBorrowed: BigNumber,
+  totalBorrowed: number,
   borrowedLimit: number
 ): Promise<string> {
-  return ((totalBorrowed.toNumber() / borrowedLimit) * 100).toFixed(2);
+  return ((totalBorrowed / borrowedLimit) * 100).toFixed(2);
 }
 
 async function getTotalBorrowed(
   signer: Signer,
   tokenPairs: TokenPair[]
-): Promise<BigNumber> {
+): Promise<number> {
   let borrowedAmounts = await Promise.all(
-    tokenPairs.map(async (tokenPair: TokenPair): Promise<BigNumber> => {
-      let borrowedAmount: BigNumber = BigNumber.from(
-        await getCurrentlyBorrowing(signer, tokenPair.cToken, tokenPair.token)
+    tokenPairs.map(async (tokenPair: TokenPair): Promise<number> => {
+      let borrowedAmount: number = await getCurrentlyBorrowing(
+        signer,
+        tokenPair.cToken,
+        tokenPair.token
       );
-
       return borrowedAmount;
     })
   );
 
   let totalBorrowed = borrowedAmounts.reduce(
-    (acc: BigNumber, curr: BigNumber): BigNumber => {
-      return acc.add(curr);
+    (acc: number, curr: number): number => {
+      return acc + curr;
     },
-    BigNumber.from(0)
+    0
   );
 
   return totalBorrowed;

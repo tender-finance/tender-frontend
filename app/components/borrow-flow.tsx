@@ -36,9 +36,7 @@ export default function BorrowFlow({
   let [borrowedAmount, setBorrowedAmount] = useState<number>(0);
   let [formattedBorrowedAmount, setFormattedBorrowedAmount] =
     useState<string>("0");
-  let [totalBorrowedAmount, setTotalBorrowedAmount] = useState<BigNumber>(
-    BigNumber.from(0)
-  );
+  let [totalBorrowedAmount, setTotalBorrowedAmount] = useState<number>(0);
 
   let provider = Web3Hooks.useProvider();
   const signer = useWeb3Signer(provider);

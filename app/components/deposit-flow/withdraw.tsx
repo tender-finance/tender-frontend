@@ -17,7 +17,7 @@ interface Props {
   borrowLimit: number;
   signer: JsonRpcSigner | null | undefined;
   borrowLimitUsed: string;
-  walletBalance: string;
+  walletBalance: number;
 }
 export default function Withdraw({
   closeModal,

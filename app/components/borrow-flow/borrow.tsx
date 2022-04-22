@@ -41,12 +41,10 @@ export default function Borrow({
     if (!signer) {
       return;
     }
-    getCurrentlyBorrowing(signer, row.cToken, row.token).then(
-      (c: BigNumber) => {
-        let formattedValue: string = c.toString();
-        setCurrentlyBorrowing(formattedValue);
-      }
-    );
+    getCurrentlyBorrowing(signer, row.cToken, row.token).then((c: number) => {
+      let formattedValue: string = c.toString();
+      setCurrentlyBorrowing(formattedValue);
+    });
   }, [signer, row.cToken, row.token]);
 
   return (
@@ -127,7 +125,9 @@ export default function Borrow({
               </div>
               <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 py-5">
                 <div className="flex-grow">Borrow Balance</div>
-                <div>${formattedBorrowedAmount}</div>
+                <div>
+                  {formattedBorrowedAmount} {row.name}
+                </div>
               </div>
               <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 py-5">
                 <div className="flex-grow">Borrow Limit Used</div>
