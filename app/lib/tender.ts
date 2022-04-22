@@ -12,6 +12,10 @@ import { formatUnits } from "ethers/lib/utils";
 const MINIMUM_REQUIRED_APPROVAL_BALANCE = BigNumber.from("1");
 
 function formatBigNumber(value: BigNumber, decimals: number): number {
+  // formatUnits returns a string with the decimals in the appropriate place,
+  // and it needs to be made a float.
+  // toFixed(2) rounds the float to two decimals, and returns a string,
+  // so we need to make it a float again. :(
   return parseFloat(parseFloat(formatUnits(value, decimals)).toFixed(2));
 }
 
