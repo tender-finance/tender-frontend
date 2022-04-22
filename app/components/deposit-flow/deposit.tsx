@@ -17,7 +17,7 @@ interface Props {
   borrowLimit: number;
   signer: JsonRpcSigner | null | undefined;
   borrowLimitUsed: string;
-  walletBalance: string;
+  walletBalance: number;
 }
 export default function Deposit({
   closeModal,
@@ -80,12 +80,12 @@ export default function Deposit({
         {isEnabled && (
           <div className="relative">
             <Max
-              maxValue={walletBalance}
+              maxValue={walletBalance.toString()}
               updateValue={() => {
                 if (!inputEl || !inputEl.current) return;
                 inputEl.current.focus();
-                inputEl.current.value = walletBalance;
-                setValue(walletBalance);
+                inputEl.current.value = walletBalance.toString();
+                setValue(walletBalance.toString());
               }}
               maxValueLabel={row.name}
             />

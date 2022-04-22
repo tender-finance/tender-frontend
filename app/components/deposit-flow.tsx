@@ -1,6 +1,5 @@
 import type { SwapRow, SwapRowMarketDatum, TokenPair } from "~/types/global";
 import { useEffect, useState } from "react";
-import { BigNumber } from "ethers";
 
 import { hooks as Web3Hooks } from "~/connectors/meta-mask";
 import { useWeb3Signer } from "~/hooks/use-web3-signer";
@@ -30,13 +29,11 @@ export default function DepositFlow({
   tokenPairs,
 }: Props) {
   let [isSupplying, setIsSupplying] = useState<boolean>(true);
-  let [walletBalance, setWalletBalance] = useState<string>("0");
+  let [walletBalance, setWalletBalance] = useState<number>(0);
   let [borrowLimit, setBorrowLimit] = useState<number>(0);
   let [borrowLimitUsed, setBorrowLimitUsed] = useState<string>("");
   let [borrowedAmount, setBorrowedAmount] = useState<number>(0);
-  let [totalBorrowedAmount, setTotalBorrowedAmount] = useState<BigNumber>(
-    BigNumber.from(0)
-  );
+  let [totalBorrowedAmount, setTotalBorrowedAmount] = useState<number>(0);
 
   let provider = Web3Hooks.useProvider();
   const signer = useWeb3Signer(provider);

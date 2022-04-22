@@ -18,7 +18,7 @@ interface Props {
   signer: JsonRpcSigner | null | undefined;
   formattedBorrowedAmount: string;
   borrowLimitUsed: string;
-  walletBalance: string;
+  walletBalance: number;
 }
 
 export default function Repay({
@@ -135,7 +135,9 @@ export default function Repay({
           </div>
           <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 py-5">
             <div className="flex-grow">Borrow Balance</div>
-            <div>${formattedBorrowedAmount}</div>
+            <div>
+              {formattedBorrowedAmount} {row.name}
+            </div>
           </div>
           <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 py-5">
             <div className="flex-grow">Borrow Limit Used</div>

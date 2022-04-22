@@ -8,7 +8,6 @@ import toast from "react-hot-toast";
 import Max from "~/components/max";
 
 import { getCurrentlyBorrowing, borrow } from "~/lib/tender";
-import type { BigNumber } from "ethers";
 
 interface Props {
   closeModal: Function;
@@ -19,7 +18,7 @@ interface Props {
   formattedBorrowedAmount: string;
   borrowLimitUsed: string;
   borrowLimit: number;
-  walletBalance: string;
+  walletBalance: number;
 }
 
 export default function Borrow({
@@ -33,7 +32,7 @@ export default function Borrow({
   borrowLimitUsed,
 }: Props) {
   let [value, setValue] = useState<string>("");
-  let [currentlyBorrowing, setCurrentlyBorrowing] = useState<string>("0");
+  let [currentlyBorrowing, setCurrentlyBorrowing] = useState<number>(0);
   let [isBorrowing, setIsBorrowing] = useState<boolean>(false);
   let inputEl = useRef<HTMLInputElement>(null);
 
@@ -41,12 +40,9 @@ export default function Borrow({
     if (!signer) {
       return;
     }
-    getCurrentlyBorrowing(signer, row.cToken, row.token).then(
-      (c: BigNumber) => {
-        let formattedValue: string = c.toString();
-        setCurrentlyBorrowing(formattedValue);
-      }
-    );
+    getCurrentlyBorrowing(signer, row.cToken, row.token).then((c: number) => {
+      setCurrentlyBorrowing(c);
+    });
   }, [signer, row.cToken, row.token]);
 
   return (
@@ -127,7 +123,9 @@ export default function Borrow({
               </div>
               <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 py-5">
                 <div className="flex-grow">Borrow Balance</div>
-                <div>${formattedBorrowedAmount}</div>
+                <div>
+                  {formattedBorrowedAmount} {row.name}
+                </div>
               </div>
               <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 py-5">
                 <div className="flex-grow">Borrow Limit Used</div>

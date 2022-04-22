@@ -1,6 +1,5 @@
 import type { SwapRow, SwapRowMarketDatum, TokenPair } from "~/types/global";
 import { useEffect, useState } from "react";
-import { BigNumber } from "ethers";
 import { hooks as Web3Hooks } from "~/connectors/meta-mask";
 
 import Repay from "~/components/borrow-flow/repay";
@@ -30,15 +29,13 @@ export default function BorrowFlow({
   tokenPairs,
 }: Props) {
   let [isRepaying, setIsRepaying] = useState<boolean>(false);
-  let [walletBalance, setWalletBalance] = useState<string>("0");
+  let [walletBalance, setWalletBalance] = useState<number>(0);
   let [borrowLimit, setBorrowLimit] = useState<number>(0);
   let [borrowLimitUsed, setBorrowLimitUsed] = useState<string>("");
   let [borrowedAmount, setBorrowedAmount] = useState<number>(0);
   let [formattedBorrowedAmount, setFormattedBorrowedAmount] =
     useState<string>("0");
-  let [totalBorrowedAmount, setTotalBorrowedAmount] = useState<BigNumber>(
-    BigNumber.from(0)
-  );
+  let [totalBorrowedAmount, setTotalBorrowedAmount] = useState<number>(0);
 
   let provider = Web3Hooks.useProvider();
   const signer = useWeb3Signer(provider);
