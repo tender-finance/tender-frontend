@@ -33,11 +33,20 @@ export interface Networks {
 }
 
 export enum TokenName {
-  ETH = "ETH",
+  AAVE = "AAVE",
+  BAT = "BAT",
   DAI = "DAI",
+  ETH = "ETH",
+  LINK = "LINK",
+  PAX = "PAX",
+  SUSHI = "SUSHI",
+  TUSD = "TUSD",
+  UNI = "UNI",
   USDC = "USDC",
   USDT = "USDT",
   WBTC = "WBTC",
+  YFI = "YFI",
+  ZRX = "ZRX",
 }
 
 export enum NetworkName {
