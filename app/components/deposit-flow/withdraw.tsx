@@ -30,7 +30,7 @@ export default function Withdraw({
 }: Props) {
   let [value, setValue] = useState<string>("");
   let [isWithdrawing, setIsWithdrawing] = useState<boolean>(false);
-  let [currentlySupplying, setCurrentlySupplying] = useState<string>("0");
+  let [currentlySupplying, setCurrentlySupplying] = useState<number>(0);
   let inputEl = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -72,12 +72,12 @@ export default function Withdraw({
               placeholder="0"
             />
             <Max
-              maxValue={currentlySupplying}
+              maxValue={currentlySupplying.toString()}
               updateValue={() => {
                 if (!inputEl || !inputEl.current) return;
                 inputEl.current.focus();
-                inputEl.current.value = currentlySupplying;
-                setValue(currentlySupplying);
+                inputEl.current.value = currentlySupplying.toString();
+                setValue(currentlySupplying.toString());
               }}
               maxValueLabel={row.name}
             />

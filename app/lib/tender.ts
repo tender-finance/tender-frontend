@@ -11,6 +11,10 @@ import { formatUnits } from "ethers/lib/utils";
 
 const MINIMUM_REQUIRED_APPROVAL_BALANCE = BigNumber.from("1");
 
+function formatBigNumber(value: BigNumber, decimals: number): number {
+  return parseFloat(parseFloat(formatUnits(value, decimals)).toFixed(2));
+}
+
 /**
  * Enable
  *
@@ -45,9 +49,7 @@ async function getWalletBalance(signer: Signer, token: Token): Promise<number> {
   let address: string = await signer.getAddress();
   let balance: BigNumber = await contract.balanceOf(address);
 
-  return parseFloat(
-    parseFloat(formatUnits(balance, token.decimals)).toFixed(2)
-  );
+  return formatBigNumber(balance, token.decimals);
 }
 
 /**
@@ -142,17 +144,15 @@ async function getCurrentlySupplying(
   signer: Signer,
   cToken: cToken,
   token: Token
-): Promise<string> {
+): Promise<number> {
   let contract = new ethers.Contract(cToken.address, SampleCTokenAbi, signer);
   let address = await signer.getAddress();
 
-  const rawBalance = await contract.callStatic.balanceOfUnderlying(address);
-  const balance: BigNumber = rawBalance;
-  const mantissa = ethers.utils.parseUnits("1", token.decimals);
+  const balance: BigNumber = await contract.callStatic.balanceOfUnderlying(
+    address
+  );
 
-  const val = balance.div(mantissa).toString();
-
-  return val;
+  return formatBigNumber(balance, token.decimals);
 }
 
 /**
@@ -186,30 +186,24 @@ async function availableCollateralToBorrowAgainst(
   comptrollerContract: Contract,
   tokenPair: TokenPair
 ): Promise<number> {
-  let suppliedAmount: BigNumber = BigNumber.from(
-    await getCurrentlySupplying(signer, tokenPair.cToken, tokenPair.token)
+  let suppliedAmount: number = await getCurrentlySupplying(
+    signer,
+    tokenPair.cToken,
+    tokenPair.token
   );
 
   let { 1: rawCollateralFactor } = await comptrollerContract.markets(
     tokenPair.cToken.address
   );
-  let collateralFactor: BigNumber = rawCollateralFactor;
 
   // Collateral factors are always 1e18
-  let mantissa = ethers.utils.parseUnits("1", 18);
+  let collateralFactor: number = parseFloat(
+    formatUnits(rawCollateralFactor, 18)
+  );
 
-  // collateralFactor represents the % you can borrow against your asset,
-  // when scaled down by the mantissa it represents a number like 0.7 or 0.8, i.e., 70% or 80%.
-  // collateralFactor is only 17 digits, and most tokens are 18 digits.
-  // This makes dividing by 1e18 always 0, so by inflating by 100 and dividing by 100
-  // we can stay using BigNumbers as long as possible.
-  //
-  // TODO: Do this same thing division workaround in the APY calculations?
-  let amount =
-    suppliedAmount.mul(100).mul(collateralFactor).div(mantissa).toNumber() /
-    100;
+  let amount = suppliedAmount * collateralFactor;
 
-  return amount;
+  return parseFloat(amount.toFixed(2));
 }
 
 /**
