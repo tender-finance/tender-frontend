@@ -8,7 +8,6 @@ import Max from "~/components/max";
 import clsx from "clsx";
 
 import { enable, deposit, hasSufficientAllowance } from "~/lib/tender";
-import { BigNumber } from "ethers";
 
 interface Props {
   closeModal: Function;
@@ -66,7 +65,7 @@ export default function Deposit({
         setIsValid(false);
       }
     } catch (e) {
-      console.error(`Invalid bignumber`, e);
+      console.error(`Invalid input`, e);
       setIsValid(false);
     }
   }, [value, walletBalance]);
