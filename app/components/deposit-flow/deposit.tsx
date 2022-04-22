@@ -50,6 +50,7 @@ export default function Deposit({
     );
   }, [signer, row.cToken, row.token]);
 
+  // Highlights value input
   useEffect(() => {
     inputEl && inputEl.current && inputEl.current.select();
   }, []);
@@ -184,7 +185,7 @@ export default function Deposit({
           )}
 
           {signer && isEnabled && !isValid && (
-            <button className="py-4 text-center text-white font-bold rounded bg-brand-green w-full bg-gray-200">
+            <button className="py-4 text-center text-white font-bold rounded  w-full bg-gray-200">
               Deposit
             </button>
           )}

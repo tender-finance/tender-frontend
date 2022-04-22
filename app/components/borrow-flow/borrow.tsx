@@ -1,6 +1,6 @@
 import { ICON_SIZE } from "~/lib/constants";
 import type { SwapRow, SwapRowMarketDatum } from "~/types/global";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, isValidElement } from "react";
 import type { JsonRpcSigner } from "@ethersproject/providers";
 
 import clsx from "clsx";
@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import Max from "~/components/max";
 
 import { getCurrentlyBorrowing, borrow } from "~/lib/tender";
+import { useValidInput } from "~/hooks/use-valid-input";
 
 interface Props {
   closeModal: Function;
@@ -35,6 +36,7 @@ export default function Borrow({
   let [currentlyBorrowing, setCurrentlyBorrowing] = useState<number>(0);
   let [isBorrowing, setIsBorrowing] = useState<boolean>(false);
   let inputEl = useRef<HTMLInputElement>(null);
+  let isValid = useValidInput(value, 0, currentlyBorrowing);
 
   useEffect(() => {
     if (!signer) {
@@ -44,6 +46,11 @@ export default function Borrow({
       setCurrentlyBorrowing(c);
     });
   }, [signer, row.cToken, row.token]);
+
+  // Highlights value input
+  useEffect(() => {
+    inputEl && inputEl.current && inputEl.current.select();
+  }, []);
 
   return (
     <div>
@@ -72,7 +79,7 @@ export default function Borrow({
               ref={inputEl}
               onChange={(e) => setValue(e.target.value)}
               className="bg-transparent text-6xl text-white text-center outline-none"
-              placeholder="0"
+              defaultValue={0}
             />
 
             <Max
@@ -138,7 +145,12 @@ export default function Borrow({
 
             <div className="mb-8">
               {!signer && <div>Connect wallet to get started</div>}
-              {signer && (
+              {signer && !isValid && (
+                <button className="py-4 text-center text-white font-bold rounded bg-brand-green w-full bg-gray-200">
+                  Borrow
+                </button>
+              )}
+              {signer && isValid && (
                 <button
                   onClick={async () => {
                     try {

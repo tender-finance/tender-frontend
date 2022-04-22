@@ -8,6 +8,7 @@ import Max from "~/components/max";
 import clsx from "clsx";
 
 import { redeem, getCurrentlySupplying } from "~/lib/tender";
+import { useValidInput } from "~/hooks/use-valid-input";
 
 interface Props {
   closeModal: Function;
@@ -32,6 +33,7 @@ export default function Withdraw({
   let [isWithdrawing, setIsWithdrawing] = useState<boolean>(false);
   let [currentlySupplying, setCurrentlySupplying] = useState<number>(0);
   let inputEl = useRef<HTMLInputElement>(null);
+  let isValid = useValidInput(value, 0, currentlySupplying);
 
   useEffect(() => {
     if (!signer) {
@@ -41,6 +43,11 @@ export default function Withdraw({
       setCurrentlySupplying(c)
     );
   }, [signer, row.cToken, row.token]);
+
+  // Highlights value input
+  useEffect(() => {
+    inputEl && inputEl.current && inputEl.current.select();
+  }, []);
 
   return (
     <div>
@@ -69,7 +76,7 @@ export default function Withdraw({
               ref={inputEl}
               onChange={(e) => setValue(e.target.value)}
               className="bg-transparent text-6xl text-white text-center outline-none"
-              placeholder="0"
+              defaultValue={0}
             />
             <Max
               maxValue={currentlySupplying.toString()}
@@ -135,7 +142,12 @@ export default function Withdraw({
 
             <div className="mb-8">
               {!signer && <div>Connect wallet to get started</div>}
-              {signer && (
+              {signer && !isValid && (
+                <button className="py-4 text-center text-white font-bold rounded w-full bg-gray-200">
+                  Withdraw
+                </button>
+              )}
+              {signer && isValid && (
                 <button
                   onClick={async () => {
                     try {
