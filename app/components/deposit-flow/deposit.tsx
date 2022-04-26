@@ -1,5 +1,5 @@
 import { ICON_SIZE } from "~/lib/constants";
-import type { SwapRow, SwapRowMarketDatum } from "~/types/global";
+import type { SwapRow, SwapRowMarketDatum, TokenPair } from "~/types/global";
 import { useEffect, useRef, useState } from "react";
 import type { JsonRpcSigner } from "@ethersproject/providers";
 import { useValidInput } from "~/hooks/use-valid-input";
@@ -8,7 +8,13 @@ import Max from "~/components/max";
 
 import clsx from "clsx";
 
-import { enable, deposit, hasSufficientAllowance } from "~/lib/tender";
+import {
+  enable,
+  deposit,
+  hasSufficientAllowance,
+  projectBorrowLimit,
+  getBorrowLimitUsed,
+} from "~/lib/tender";
 
 interface Props {
   closeModal: Function;
@@ -19,6 +25,8 @@ interface Props {
   signer: JsonRpcSigner | null | undefined;
   borrowLimitUsed: string;
   walletBalance: number;
+  tokenPairs: TokenPair[];
+  totalBorrowedAmount: number;
 }
 export default function Deposit({
   closeModal,
@@ -29,10 +37,14 @@ export default function Deposit({
   signer,
   borrowLimitUsed,
   walletBalance,
+  tokenPairs,
+  totalBorrowedAmount,
 }: Props) {
   let [isEnabled, setIsEnabled] = useState<boolean>(true);
   let [isEnabling, setIsEnabling] = useState<boolean>(false);
   let [isDepositing, setIsDepositing] = useState<boolean>(false);
+  let [newBorrowLimit, setNewBorrowLimit] = useState<number>(0);
+  let [newBorrowLimitUsed, setNewBorrowLimitUsed] = useState<string>("0");
   let [value, setValue] = useState<string>("0");
   let inputEl = useRef<HTMLInputElement>(null);
   let isValid = useValidInput(value, 0, walletBalance);
@@ -49,6 +61,28 @@ export default function Deposit({
       }
     );
   }, [signer, row.cToken, row.token]);
+
+  useEffect(() => {
+    if (!signer) {
+      return;
+    }
+    projectBorrowLimit(
+      signer,
+      row.comptrollerAddress,
+      tokenPairs,
+      row.cToken,
+      parseFloat(value)
+    ).then((v) => setNewBorrowLimit(v));
+  }, [signer, row.comptrollerAddress, tokenPairs, value]);
+
+  useEffect(() => {
+    if (!signer) {
+      return;
+    }
+    getBorrowLimitUsed(totalBorrowedAmount, newBorrowLimit).then((v) =>
+      setNewBorrowLimitUsed(v)
+    );
+  }, [newBorrowLimit, totalBorrowedAmount]);
 
   // Highlights value input
   useEffect(() => {
@@ -145,19 +179,29 @@ export default function Deposit({
           <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 py-5">
             <div className="flex-grow">Borrow Limit </div>
             <div>
-              $0 <span className="text-brand-green">→</span> ${borrowLimit}
+              {(value == "0" || !isValid) && <>${borrowLimit}</>}
+              {isValid && value != "0" && (
+                <>
+                  ${borrowLimit} <span className="text-brand-green">→</span> $
+                  {newBorrowLimit}
+                </>
+              )}
+              {}
             </div>
           </div>
 
-          {borrowLimitUsed && (
-            <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 py-5">
-              <div className="flex-grow">Borrow Limit Used</div>
-              <div>
-                0 <span className="text-brand-green">→</span>&nbsp;
-                {borrowLimitUsed}%
-              </div>
+          <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 py-5">
+            <div className="flex-grow">Borrow Limit Used</div>
+            <div>
+              {(value == "0" || !isValid) && <>{borrowLimitUsed}%</>}
+              {isValid && value != "0" && (
+                <>
+                  {borrowLimitUsed}% <span className="text-brand-green">→</span>
+                  {newBorrowLimitUsed}%
+                </>
+              )}
             </div>
-          )}
+          </div>
         </div>
         <div className="mb-8">
           {!signer && <div>Connect wallet to get started</div>}

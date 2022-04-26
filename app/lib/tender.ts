@@ -244,6 +244,37 @@ async function getBorrowLimit(
   return borrowLimit;
 }
 
+async function projectBorrowLimit(
+  signer: Signer,
+  comptrollerAddress: string,
+  tokenPairs: TokenPair[],
+  cToken: cToken,
+  value: number
+): Promise<number> {
+  let borrowLimit = await getBorrowLimit(
+    signer,
+    comptrollerAddress,
+    tokenPairs
+  );
+
+  let comptrollerContract = new ethers.Contract(
+    comptrollerAddress,
+    SampleComptrollerAbi,
+    signer
+  );
+
+  let { 1: rawCollateralFactor } = await comptrollerContract.markets(
+    cToken.address
+  );
+
+  // Collateral factors are always 1e18
+  let collateralFactor: number = parseFloat(
+    formatUnits(rawCollateralFactor, 18)
+  );
+
+  return collateralFactor * value + borrowLimit;
+}
+
 /**
  *
  * @param signer
@@ -406,4 +437,5 @@ export {
   getTotalBorrowedUsd,
   hasSufficientAllowance,
   getTotalBorrowed,
+  projectBorrowLimit,
 };

@@ -77,6 +77,8 @@ export default function DepositFlow({
       borrowLimitUsed={borrowLimitUsed}
       signer={signer}
       walletBalance={walletBalance}
+      tokenPairs={tokenPairs}
+      totalBorrowedAmount={totalBorrowedAmount}
     />
   ) : (
     <Withdraw
