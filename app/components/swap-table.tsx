@@ -71,9 +71,9 @@ function generateSwapRows(
 
       return {
         ...tokenMetaDatum,
-        comptrollerAddress: comptrollerAddress,
-        token: token,
-        cToken: cToken,
+        comptrollerAddress,
+        token,
+        cToken,
       };
     });
 }
@@ -93,17 +93,23 @@ function generateTokenPairs(
   // @ts-ignore
   const networkData: NetworkData = networks[networkName];
 
-  return supportedRowTypes.map((tokenName: TokenName): TokenPair => {
-    const tokenMetaDatum = tokenMetaData[tokenName];
+  return supportedRowTypes
+    .filter((supportedRowType) => {
+      // @ts-ignore TODO: fix type error
+      const networkData: NetworkData = networks[networkName];
+      return networkData.Tokens[supportedRowType];
+    })
+    .map((tokenName: TokenName): TokenPair => {
+      const tokenMetaDatum = tokenMetaData[tokenName];
 
-    let token: Token = networkData.Tokens[tokenMetaDatum.symbol];
-    let cToken: cToken = networkData.cTokens[tokenMetaDatum.cTokenSymbol];
+      let token: Token = networkData.Tokens[tokenMetaDatum.symbol];
+      let cToken: cToken = networkData.cTokens[tokenMetaDatum.cTokenSymbol];
 
-    return {
-      token: token,
-      cToken: cToken,
-    };
-  });
+      return {
+        token: token,
+        cToken: cToken,
+      };
+    });
 }
 
 async function loadMarketData(
