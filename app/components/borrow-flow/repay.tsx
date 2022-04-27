@@ -10,6 +10,7 @@ import Max from "~/components/max";
 
 import { enable, repay, hasSufficientAllowance } from "~/lib/tender";
 import { useValidInput } from "~/hooks/use-valid-input";
+import BorrowLimit from "../fi-modal/borrow-limit";
 
 interface Props {
   closeModal: Function;
@@ -20,6 +21,7 @@ interface Props {
   formattedBorrowedAmount: string;
   borrowLimitUsed: string;
   walletBalance: number;
+  borrowLimit: number;
 }
 
 export default function Repay({
@@ -31,6 +33,7 @@ export default function Repay({
   formattedBorrowedAmount,
   borrowLimitUsed,
   walletBalance,
+  borrowLimit,
 }: Props) {
   let [isEnabled, setIsEnabled] = useState<boolean>(true);
   let [isEnabling, setIsEnabling] = useState<boolean>(false);
@@ -40,6 +43,11 @@ export default function Repay({
 
   let inputEl = useRef<HTMLInputElement>(null);
   let isValid = useValidInput(value, 0, walletBalance);
+
+  // For borrow limit
+  // TODO: Can I refactor this all into the same hook?
+  let [newBorrowLimit, setNewBorrowLimit] = useState<number>(0);
+  let [newBorrowLimitUsed, setNewBorrowLimitUsed] = useState<string>("0");
 
   useEffect(() => {
     if (!signer) {
@@ -137,27 +145,15 @@ export default function Repay({
           <div>{marketData.borrowApy}</div>
         </div>
 
-        <div>
-          <div className="font-bold mr-3 border-b border-b-gray-600 w-full pb-5">
-            Borrow Limit
-          </div>
-          <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 py-5">
-            <div className="flex-grow">Borrow Balance</div>
-            <div>
-              {formattedBorrowedAmount} {row.name}
-            </div>
-          </div>
+        <BorrowLimit
+          value={value}
+          isValid={isValid}
+          borrowLimit={borrowLimit}
+          newBorrowLimit={newBorrowLimit}
+          borrowLimitUsed={borrowLimitUsed}
+          newBorrowLimitUsed={newBorrowLimitUsed}
+        />
 
-          {borrowLimitUsed && (
-            <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 py-5">
-              <div className="flex-grow">Borrow Limit Used</div>
-              <div>
-                0 <span className="text-brand-green">→</span>&nbsp;
-                {borrowLimitUsed}%
-              </div>
-            </div>
-          )}
-        </div>
         <div className="mb-8">
           {!signer && <div>Connect wallet to get started</div>}
           {signer && !isEnabled && (

@@ -9,6 +9,7 @@ import clsx from "clsx";
 
 import { redeem, getCurrentlySupplying } from "~/lib/tender";
 import { useValidInput } from "~/hooks/use-valid-input";
+import BorrowLimit from "../fi-modal/borrow-limit";
 
 interface Props {
   closeModal: Function;
@@ -34,6 +35,11 @@ export default function Withdraw({
   let [currentlySupplying, setCurrentlySupplying] = useState<number>(0);
   let inputEl = useRef<HTMLInputElement>(null);
   let isValid = useValidInput(value, 0, currentlySupplying);
+
+  // For borrow limit
+  // TODO: Can I refactor this all into the same hook?
+  let [newBorrowLimit, setNewBorrowLimit] = useState<number>(0);
+  let [newBorrowLimitUsed, setNewBorrowLimitUsed] = useState<string>("0");
 
   useEffect(() => {
     if (!signer) {
@@ -121,27 +127,14 @@ export default function Withdraw({
               <div>{marketData.depositApy}</div>
             </div>
 
-            <div>
-              <div className="font-bold mr-3 border-b border-b-gray-600 w-full pb-5">
-                Borrow Limit
-              </div>
-              <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 py-5">
-                <div className="flex-grow">Borrow Limit </div>
-                <div>
-                  $0 <span className="text-brand-green">→</span> ${borrowLimit}
-                </div>
-              </div>
-
-              {borrowLimitUsed && (
-                <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 py-5">
-                  <div className="flex-grow">Borrow Limit Used</div>
-                  <div>
-                    0 <span className="text-brand-green">→</span>&nbsp;
-                    {borrowLimitUsed}%
-                  </div>
-                </div>
-              )}
-            </div>
+            <BorrowLimit
+              value={value}
+              isValid={isValid}
+              borrowLimit={borrowLimit}
+              newBorrowLimit={newBorrowLimit}
+              borrowLimitUsed={borrowLimitUsed}
+              newBorrowLimitUsed={newBorrowLimitUsed}
+            />
 
             <div className="mb-8">
               {!signer && <div>Connect wallet to get started</div>}

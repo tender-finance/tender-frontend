@@ -15,6 +15,7 @@ import {
   projectBorrowLimit,
   getBorrowLimitUsed,
 } from "~/lib/tender";
+import BorrowLimit from "../fi-modal/borrow-limit";
 
 interface Props {
   closeModal: Function;
@@ -142,6 +143,7 @@ export default function Deposit({
         )}
       </div>
 
+      {/* Sub Navigation */}
       <div className="flex mb-10">
         <button
           className="flex-grow py-3 text-brand-green border-b-2 border-b-brand-green"
@@ -172,37 +174,15 @@ export default function Deposit({
           <div>{marketData.depositApy}</div>
         </div>
 
-        <div>
-          <div className="font-bold mr-3 border-b border-b-gray-600 w-full pb-5">
-            Borrow Limit
-          </div>
-          <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 py-5">
-            <div className="flex-grow">Borrow Limit </div>
-            <div>
-              {(value == "0" || !isValid) && <>${borrowLimit}</>}
-              {isValid && value != "0" && (
-                <>
-                  ${borrowLimit} <span className="text-brand-green">→</span> $
-                  {newBorrowLimit}
-                </>
-              )}
-              {}
-            </div>
-          </div>
+        <BorrowLimit
+          value={value}
+          isValid={isValid}
+          borrowLimit={borrowLimit}
+          newBorrowLimit={newBorrowLimit}
+          borrowLimitUsed={borrowLimitUsed}
+          newBorrowLimitUsed={newBorrowLimitUsed}
+        />
 
-          <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 py-5">
-            <div className="flex-grow">Borrow Limit Used</div>
-            <div>
-              {(value == "0" || !isValid) && <>{borrowLimitUsed}%</>}
-              {isValid && value != "0" && (
-                <>
-                  {borrowLimitUsed}% <span className="text-brand-green">→</span>
-                  {newBorrowLimitUsed}%
-                </>
-              )}
-            </div>
-          </div>
-        </div>
         <div className="mb-8">
           {!signer && <div>Connect wallet to get started</div>}
           {signer && !isEnabled && (

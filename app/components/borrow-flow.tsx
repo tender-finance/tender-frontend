@@ -83,6 +83,7 @@ export default function BorrowFlow({
       setIsRepaying={setIsRepaying}
       formattedBorrowedAmount={formattedBorrowedAmount}
       signer={signer}
+      borrowLimit={borrowLimit}
       borrowLimitUsed={borrowLimitUsed}
       walletBalance={walletBalance}
     />
