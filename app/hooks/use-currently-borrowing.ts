@@ -1,4 +1,4 @@
-import { JsonRpcSigner } from "@ethersproject/providers";
+import type { JsonRpcSigner } from "@ethersproject/providers";
 import { useState, useEffect } from "react";
 import { getCurrentlyBorrowing } from "~/lib/tender";
 import { cToken, Token } from "~/types/global";

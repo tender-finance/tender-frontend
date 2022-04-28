@@ -7,7 +7,7 @@ import clsx from "clsx";
 import toast from "react-hot-toast";
 import Max from "~/components/max";
 
-import { getCurrentlyBorrowing, borrow } from "~/lib/tender";
+import { borrow } from "~/lib/tender";
 import { useValidInput } from "~/hooks/use-valid-input";
 import BorrowBalance from "../fi-modal/borrow-balance";
 import { useProjectBorrowLimit } from "~/hooks/use-project-borrow-limit";

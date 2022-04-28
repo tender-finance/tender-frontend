@@ -9,7 +9,6 @@ import Withdraw from "~/components/deposit-flow/withdraw";
 
 import { useWalletBalance } from "~/hooks/use-wallet-balance";
 import { useBorrowLimit } from "~/hooks/use-borrow-limit";
-import { useBorrowedAmount } from "~/hooks/use-borrowed-amount";
 import { useTotalBorrowed } from "~/hooks/use-total-borrowed";
 import { useBorrowLimitUsed } from "~/hooks/use-borrow-limit-used";
 

@@ -1,7 +1,7 @@
-import { JsonRpcSigner } from "@ethersproject/providers";
+import type { JsonRpcSigner } from "@ethersproject/providers";
 import { useState, useEffect } from "react";
-import { getBorrowedAmount, getBorrowLimit } from "~/lib/tender";
-import { cToken } from "~/types/global";
+import { getBorrowedAmount } from "~/lib/tender";
+import type { cToken } from "~/types/global";
 
 export function useBorrowedAmount(
   signer: JsonRpcSigner | undefined,

@@ -10,7 +10,6 @@ import Max from "~/components/max";
 
 import { enable, repay, hasSufficientAllowance } from "~/lib/tender";
 import { useValidInput } from "~/hooks/use-valid-input";
-import BorrowLimit from "../fi-modal/borrow-limit";
 import BorrowBalance from "../fi-modal/borrow-balance";
 import { useCurrentlyBorrowing } from "~/hooks/use-currently-borrowing";
 import { useProjectBorrowLimit } from "~/hooks/use-project-borrow-limit";

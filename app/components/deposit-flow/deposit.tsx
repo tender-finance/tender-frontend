@@ -68,7 +68,7 @@ export default function Deposit({
         }
       }
     );
-  }, [signer, row.cToken, row.token, row.cToken]);
+  }, [signer, row.cToken, row.token]);
 
   // Highlights value input
   useEffect(() => {

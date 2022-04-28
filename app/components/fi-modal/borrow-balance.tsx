@@ -23,7 +23,7 @@ export default function BorrowBalance(props: BorrowBalanceProps) {
   return (
     <div>
       <div className="font-bold mr-3 border-b border-b-gray-600 w-full pb-5">
-        Borrow Balance
+        Borrow Limit
       </div>
 
       <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 py-5">
