@@ -1,7 +1,7 @@
-import { JsonRpcSigner } from "@ethersproject/providers";
+import type { JsonRpcSigner } from "@ethersproject/providers";
 import { useState, useEffect } from "react";
 import { getWalletBalance } from "~/lib/tender";
-import { Token } from "~/types/global";
+import type { Token } from "~/types/global";
 
 export function useWalletBalance(
   signer: JsonRpcSigner | undefined,
