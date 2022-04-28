@@ -6,7 +6,7 @@ export default function ConfirmingTransaction({
   stopWaitingOnConfirmation,
 }: Props) {
   return (
-    <div>
+    <div className="overflow-hidden">
       <div>
         <button
           onClick={() => stopWaitingOnConfirmation()}
@@ -14,7 +14,7 @@ export default function ConfirmingTransaction({
         >
           +
         </button>
-        <div className="flex w-full justify-center my-16">
+        <div className="flex w-full justify-center my-16 ml-4">
           <LineWave
             color="#54CE90"
             height={110}
