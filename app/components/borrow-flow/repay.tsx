@@ -11,6 +11,10 @@ import Max from "~/components/max";
 import { enable, repay, hasSufficientAllowance } from "~/lib/tender";
 import { useValidInput } from "~/hooks/use-valid-input";
 import BorrowLimit from "../fi-modal/borrow-limit";
+import BorrowBalance from "../fi-modal/borrow-balance";
+import { useCurrentlyBorrowing } from "~/hooks/use-currently-borrowing";
+import { useProjectBorrowLimit } from "~/hooks/use-project-borrow-limit";
+import { useBorrowLimitUsed } from "~/hooks/use-borrow-limit-used";
 
 interface Props {
   closeModal: Function;
@@ -23,6 +27,7 @@ interface Props {
   walletBalance: number;
   borrowLimit: number;
   tokenPairs: TokenPair[];
+  totalBorrowedAmount: number;
 }
 
 export default function Repay({
@@ -36,6 +41,7 @@ export default function Repay({
   walletBalance,
   borrowLimit,
   tokenPairs,
+  totalBorrowedAmount,
 }: Props) {
   let [isEnabled, setIsEnabled] = useState<boolean>(true);
   let [isEnabling, setIsEnabling] = useState<boolean>(false);
@@ -46,10 +52,20 @@ export default function Repay({
   let inputEl = useRef<HTMLInputElement>(null);
   let isValid = useValidInput(value, 0, walletBalance);
 
-  // For borrow limit
-  // TODO: Can I refactor this all into the same hook?
-  let [newBorrowLimit, setNewBorrowLimit] = useState<number>(0);
-  let [newBorrowLimitUsed, setNewBorrowLimitUsed] = useState<string>("0");
+  let currentlyBorrowing = useCurrentlyBorrowing(signer, row.cToken, row.token);
+
+  let newBorrowLimit = useProjectBorrowLimit(
+    signer,
+    row.comptrollerAddress,
+    tokenPairs,
+    row.cToken,
+    value
+  );
+
+  let newBorrowLimitUsed = useBorrowLimitUsed(
+    totalBorrowedAmount,
+    newBorrowLimit
+  );
 
   useEffect(() => {
     if (!signer) {
@@ -147,11 +163,11 @@ export default function Repay({
           <div>{marketData.borrowApy}</div>
         </div>
 
-        <BorrowLimit
+        <BorrowBalance
           value={value}
           isValid={isValid}
-          borrowLimit={borrowLimit}
-          newBorrowLimit={newBorrowLimit}
+          borrowBalance={currentlyBorrowing}
+          newBorrowBalance={currentlyBorrowing + +value}
           borrowLimitUsed={borrowLimitUsed}
           newBorrowLimitUsed={newBorrowLimitUsed}
         />

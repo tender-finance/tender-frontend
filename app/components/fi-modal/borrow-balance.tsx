@@ -49,7 +49,7 @@ export default function BorrowBalance(props: BorrowBalanceProps) {
           {(value == "0" || !isValid) && <>{borrowLimitUsed}%</>}
           {isValid && value != "0" && (
             <>
-              {borrowLimitUsed}% <span className="text-brand-green">→</span>
+              {borrowLimitUsed}% <span className="text-brand-green">→ </span>
               {newBorrowLimitUsed}%
             </>
           )}

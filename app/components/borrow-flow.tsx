@@ -48,6 +48,8 @@ export default function BorrowFlow({
       borrowLimitUsed={borrowLimitUsed}
       walletBalance={walletBalance}
       tokenPairs={tokenPairs}
+      borrowLimit={borrowLimit}
+      totalBorrowedAmount={totalBorrowedAmount}
     />
   ) : (
     <Borrow
