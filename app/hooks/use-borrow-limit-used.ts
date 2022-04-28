@@ -3,20 +3,19 @@ import { getBorrowLimitUsed } from "~/lib/tender";
 
 export function useBorrowLimitUsed(
   totalBorrowedAmount: number,
-  borrowLimit: number,
-  borrowedAmount: number
+  borrowLimit: number
 ): string {
   let [borrowLimitUsed, setBorrowLimitUsed] = useState<string>("");
 
   useEffect(() => {
-    if (!borrowedAmount || !borrowLimit) {
+    if (!borrowLimit) {
       return;
     }
 
     getBorrowLimitUsed(totalBorrowedAmount, borrowLimit).then((b) =>
       setBorrowLimitUsed(b)
     );
-  }, [totalBorrowedAmount, borrowLimit, borrowedAmount]);
+  }, [totalBorrowedAmount, borrowLimit]);
 
   return borrowLimitUsed;
 }

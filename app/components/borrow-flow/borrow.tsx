@@ -1,6 +1,6 @@
 import { ICON_SIZE } from "~/lib/constants";
 import type { SwapRow, SwapRowMarketDatum } from "~/types/global";
-import { useEffect, useState, useRef, isValidElement } from "react";
+import { useEffect, useState, useRef } from "react";
 import type { JsonRpcSigner } from "@ethersproject/providers";
 
 import clsx from "clsx";

@@ -1,5 +1,5 @@
 import type { SwapRow, SwapRowMarketDatum, TokenPair } from "~/types/global";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { hooks as Web3Hooks } from "~/connectors/meta-mask";
 
 import Repay from "~/components/borrow-flow/repay";

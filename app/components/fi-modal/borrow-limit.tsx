@@ -6,6 +6,11 @@ interface BorrowLimitProps {
   borrowLimitUsed: string;
   newBorrowLimitUsed: string;
 }
+
+const formatBorrowLimit = (v: number): string => {
+  return v.toFixed(2).toString();
+};
+
 export default function BorrowLimit(props: BorrowLimitProps) {
   const {
     value,
@@ -23,11 +28,12 @@ export default function BorrowLimit(props: BorrowLimitProps) {
       <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 py-5">
         <div className="flex-grow">Borrow Limit </div>
         <div>
-          {(value == "0" || !isValid) && <>${borrowLimit}</>}
+          {(value == "0" || !isValid) && <>${formatBorrowLimit(borrowLimit)}</>}
           {isValid && value != "0" && (
             <>
-              ${borrowLimit} <span className="text-brand-green">→</span> $
-              {newBorrowLimit}
+              ${formatBorrowLimit(borrowLimit)}{" "}
+              <span className="text-brand-green">→</span> $
+              {formatBorrowLimit(newBorrowLimit)}
             </>
           )}
           {}

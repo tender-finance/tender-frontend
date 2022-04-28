@@ -12,10 +12,11 @@ import {
   enable,
   deposit,
   hasSufficientAllowance,
-  projectBorrowLimit,
   getBorrowLimitUsed,
 } from "~/lib/tender";
 import BorrowLimit from "../fi-modal/borrow-limit";
+import { useProjectBorrowLimit } from "~/hooks/use-project-borrow-limit";
+import { useBorrowLimitUsed } from "~/hooks/use-borrow-limit-used";
 
 interface Props {
   closeModal: Function;
@@ -44,11 +45,22 @@ export default function Deposit({
   let [isEnabled, setIsEnabled] = useState<boolean>(true);
   let [isEnabling, setIsEnabling] = useState<boolean>(false);
   let [isDepositing, setIsDepositing] = useState<boolean>(false);
-  let [newBorrowLimit, setNewBorrowLimit] = useState<number>(0);
-  let [newBorrowLimitUsed, setNewBorrowLimitUsed] = useState<string>("0");
   let [value, setValue] = useState<string>("0");
   let inputEl = useRef<HTMLInputElement>(null);
   let isValid = useValidInput(value, 0, walletBalance);
+
+  let newBorrowLimit = useProjectBorrowLimit(
+    signer,
+    row.comptrollerAddress,
+    tokenPairs,
+    row.cToken,
+    value
+  );
+
+  let newBorrowLimitUsed = useBorrowLimitUsed(
+    totalBorrowedAmount,
+    newBorrowLimit
+  );
 
   useEffect(() => {
     if (!signer) {
@@ -61,29 +73,7 @@ export default function Deposit({
         }
       }
     );
-  }, [signer, row.cToken, row.token]);
-
-  useEffect(() => {
-    if (!signer) {
-      return;
-    }
-    projectBorrowLimit(
-      signer,
-      row.comptrollerAddress,
-      tokenPairs,
-      row.cToken,
-      parseFloat(value)
-    ).then((v) => setNewBorrowLimit(v));
-  }, [signer, row.comptrollerAddress, tokenPairs, value]);
-
-  useEffect(() => {
-    if (!signer) {
-      return;
-    }
-    getBorrowLimitUsed(totalBorrowedAmount, newBorrowLimit).then((v) =>
-      setNewBorrowLimitUsed(v)
-    );
-  }, [newBorrowLimit, totalBorrowedAmount]);
+  }, [signer, row.cToken, row.token, row.cToken]);
 
   // Highlights value input
   useEffect(() => {
@@ -173,7 +163,6 @@ export default function Deposit({
           <div className="flex-grow">Deposit APY</div>
           <div>{marketData.depositApy}</div>
         </div>
-
         <BorrowLimit
           value={value}
           isValid={isValid}
@@ -182,7 +171,6 @@ export default function Deposit({
           borrowLimitUsed={borrowLimitUsed}
           newBorrowLimitUsed={newBorrowLimitUsed}
         />
-
         <div className="mb-8">
           {!signer && <div>Connect wallet to get started</div>}
           {signer && !isEnabled && (
@@ -251,7 +239,6 @@ export default function Deposit({
             </button>
           )}
         </div>
-
         <div className="flex text-gray-500">
           <div className="flex-grow">Wallet Balance</div>
           <div>
