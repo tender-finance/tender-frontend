@@ -1,5 +1,5 @@
 import { ICON_SIZE } from "~/lib/constants";
-import type { SwapRow, SwapRowMarketDatum } from "~/types/global";
+import type { SwapRow, SwapRowMarketDatum, TokenPair } from "~/types/global";
 import { useEffect, useRef, useState } from "react";
 import type { JsonRpcSigner } from "@ethersproject/providers";
 
@@ -10,6 +10,10 @@ import Max from "~/components/max";
 
 import { enable, repay, hasSufficientAllowance } from "~/lib/tender";
 import { useValidInput } from "~/hooks/use-valid-input";
+import BorrowBalance from "../fi-modal/borrow-balance";
+import { useCurrentlyBorrowing } from "~/hooks/use-currently-borrowing";
+import { useProjectBorrowLimit } from "~/hooks/use-project-borrow-limit";
+import { useBorrowLimitUsed } from "~/hooks/use-borrow-limit-used";
 
 interface Props {
   closeModal: Function;
@@ -20,6 +24,9 @@ interface Props {
   formattedBorrowedAmount: string;
   borrowLimitUsed: string;
   walletBalance: number;
+  borrowLimit: number;
+  tokenPairs: TokenPair[];
+  totalBorrowedAmount: number;
 }
 
 export default function Repay({
@@ -31,6 +38,9 @@ export default function Repay({
   formattedBorrowedAmount,
   borrowLimitUsed,
   walletBalance,
+  borrowLimit,
+  tokenPairs,
+  totalBorrowedAmount,
 }: Props) {
   let [isEnabled, setIsEnabled] = useState<boolean>(true);
   let [isEnabling, setIsEnabling] = useState<boolean>(false);
@@ -40,6 +50,21 @@ export default function Repay({
 
   let inputEl = useRef<HTMLInputElement>(null);
   let isValid = useValidInput(value, 0, walletBalance);
+
+  let currentlyBorrowing = useCurrentlyBorrowing(signer, row.cToken, row.token);
+
+  let newBorrowLimit = useProjectBorrowLimit(
+    signer,
+    row.comptrollerAddress,
+    tokenPairs,
+    row.cToken,
+    value
+  );
+
+  let newBorrowLimitUsed = useBorrowLimitUsed(
+    totalBorrowedAmount,
+    newBorrowLimit
+  );
 
   useEffect(() => {
     if (!signer) {
@@ -137,27 +162,15 @@ export default function Repay({
           <div>{marketData.borrowApy}</div>
         </div>
 
-        <div>
-          <div className="font-bold mr-3 border-b border-b-gray-600 w-full pb-5">
-            Borrow Limit
-          </div>
-          <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 py-5">
-            <div className="flex-grow">Borrow Balance</div>
-            <div>
-              {formattedBorrowedAmount} {row.name}
-            </div>
-          </div>
+        <BorrowBalance
+          value={value}
+          isValid={isValid}
+          borrowBalance={currentlyBorrowing}
+          newBorrowBalance={currentlyBorrowing - +value}
+          borrowLimitUsed={borrowLimitUsed}
+          newBorrowLimitUsed={newBorrowLimitUsed}
+        />
 
-          {borrowLimitUsed && (
-            <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 py-5">
-              <div className="flex-grow">Borrow Limit Used</div>
-              <div>
-                0 <span className="text-brand-green">→</span>&nbsp;
-                {borrowLimitUsed}%
-              </div>
-            </div>
-          )}
-        </div>
         <div className="mb-8">
           {!signer && <div>Connect wallet to get started</div>}
           {signer && !isEnabled && (

@@ -15,13 +15,13 @@ export function useValidInput(
 
       let v: number = parseFloat(value);
 
-      if (v > floor && v < ciel) {
+      if (v > floor && v <= ciel) {
         setIsValid(true);
       } else {
         setIsValid(false);
       }
     } catch (e) {
-      console.error(`Invalid input`, e);
+      console.warn(`Invalid input`, e);
       setIsValid(false);
     }
   }, [value, floor, ciel]);

@@ -1,5 +1,5 @@
 import type { SwapRow, SwapRowMarketDatum, TokenPair } from "~/types/global";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { hooks as Web3Hooks } from "~/connectors/meta-mask";
 import { useWeb3Signer } from "~/hooks/use-web3-signer";
@@ -7,13 +7,10 @@ import { useWeb3Signer } from "~/hooks/use-web3-signer";
 import Deposit from "~/components/deposit-flow/deposit";
 import Withdraw from "~/components/deposit-flow/withdraw";
 
-import {
-  getWalletBalance,
-  getBorrowLimit,
-  getBorrowedAmount,
-  getBorrowLimitUsed,
-  getTotalBorrowed,
-} from "~/lib/tender";
+import { useWalletBalance } from "~/hooks/use-wallet-balance";
+import { useBorrowLimit } from "~/hooks/use-borrow-limit";
+import { useTotalBorrowed } from "~/hooks/use-total-borrowed";
+import { useBorrowLimitUsed } from "~/hooks/use-borrow-limit-used";
 
 interface Props {
   closeModal: Function;
@@ -29,43 +26,13 @@ export default function DepositFlow({
   tokenPairs,
 }: Props) {
   let [isSupplying, setIsSupplying] = useState<boolean>(true);
-  let [walletBalance, setWalletBalance] = useState<number>(0);
-  let [borrowLimit, setBorrowLimit] = useState<number>(0);
-  let [borrowLimitUsed, setBorrowLimitUsed] = useState<string>("");
-  let [borrowedAmount, setBorrowedAmount] = useState<number>(0);
-  let [totalBorrowedAmount, setTotalBorrowedAmount] = useState<number>(0);
 
   let provider = Web3Hooks.useProvider();
   const signer = useWeb3Signer(provider);
-
-  useEffect(() => {
-    if (!signer) {
-      // DO we need to reset signer if null here?
-      return;
-    }
-
-    if (signer && row.token) {
-      getWalletBalance(signer, row.token).then((b) => setWalletBalance(b));
-
-      getBorrowLimit(signer, row.comptrollerAddress, tokenPairs).then((b) =>
-        setBorrowLimit(b)
-      );
-      getBorrowedAmount(signer, row.cToken).then((b) => setBorrowedAmount(b));
-      getTotalBorrowed(signer, tokenPairs).then((b) =>
-        setTotalBorrowedAmount(b)
-      );
-    }
-  }, [signer, row.cToken, row.comptrollerAddress, row.token, tokenPairs]);
-
-  useEffect(() => {
-    if (!borrowedAmount || !borrowLimit) {
-      return;
-    }
-
-    getBorrowLimitUsed(totalBorrowedAmount, borrowLimit).then((b) =>
-      setBorrowLimitUsed(b)
-    );
-  }, [borrowedAmount, borrowLimit, totalBorrowedAmount]);
+  let walletBalance = useWalletBalance(signer, row.token);
+  let borrowLimit = useBorrowLimit(signer, row.comptrollerAddress, tokenPairs);
+  let totalBorrowedAmount = useTotalBorrowed(signer, tokenPairs);
+  let borrowLimitUsed = useBorrowLimitUsed(totalBorrowedAmount, borrowLimit);
 
   return isSupplying ? (
     <Deposit
@@ -77,6 +44,8 @@ export default function DepositFlow({
       borrowLimitUsed={borrowLimitUsed}
       signer={signer}
       walletBalance={walletBalance}
+      tokenPairs={tokenPairs}
+      totalBorrowedAmount={totalBorrowedAmount}
     />
   ) : (
     <Withdraw
@@ -88,6 +57,8 @@ export default function DepositFlow({
       borrowLimitUsed={borrowLimitUsed}
       signer={signer}
       walletBalance={walletBalance}
+      tokenPairs={tokenPairs}
+      totalBorrowedAmount={totalBorrowedAmount}
     />
   );
 }

@@ -1,14 +1,18 @@
 import { ICON_SIZE } from "~/lib/constants";
-import type { SwapRow, SwapRowMarketDatum } from "~/types/global";
-import { useEffect, useState, useRef, isValidElement } from "react";
+import type { SwapRow, SwapRowMarketDatum, TokenPair } from "~/types/global";
+import { useEffect, useState, useRef } from "react";
 import type { JsonRpcSigner } from "@ethersproject/providers";
 
 import clsx from "clsx";
 import toast from "react-hot-toast";
 import Max from "~/components/max";
 
-import { getCurrentlyBorrowing, borrow } from "~/lib/tender";
+import { borrow } from "~/lib/tender";
 import { useValidInput } from "~/hooks/use-valid-input";
+import BorrowBalance from "../fi-modal/borrow-balance";
+import { useProjectBorrowLimit } from "~/hooks/use-project-borrow-limit";
+import { useBorrowLimitUsed } from "~/hooks/use-borrow-limit-used";
+import { useCurrentlyBorrowing } from "~/hooks/use-currently-borrowing";
 
 interface Props {
   closeModal: Function;
@@ -16,10 +20,11 @@ interface Props {
   marketData: SwapRowMarketDatum;
   setIsRepaying: Function;
   signer: JsonRpcSigner | null | undefined;
-  formattedBorrowedAmount: string;
   borrowLimitUsed: string;
   borrowLimit: number;
   walletBalance: number;
+  tokenPairs: TokenPair[];
+  totalBorrowedAmount: number;
 }
 
 export default function Borrow({
@@ -28,24 +33,29 @@ export default function Borrow({
   marketData,
   setIsRepaying,
   signer,
-  formattedBorrowedAmount,
   borrowLimit,
   borrowLimitUsed,
+  tokenPairs,
+  totalBorrowedAmount,
 }: Props) {
   let [value, setValue] = useState<string>("");
-  let [currentlyBorrowing, setCurrentlyBorrowing] = useState<number>(0);
   let [isBorrowing, setIsBorrowing] = useState<boolean>(false);
   let inputEl = useRef<HTMLInputElement>(null);
-  let isValid = useValidInput(value, 0, currentlyBorrowing);
+  let currentlyBorrowing = useCurrentlyBorrowing(signer, row.cToken, row.token);
+  let isValid = useValidInput(value, 0, borrowLimit);
 
-  useEffect(() => {
-    if (!signer) {
-      return;
-    }
-    getCurrentlyBorrowing(signer, row.cToken, row.token).then((c: number) => {
-      setCurrentlyBorrowing(c);
-    });
-  }, [signer, row.cToken, row.token]);
+  let newBorrowLimit = useProjectBorrowLimit(
+    signer,
+    row.comptrollerAddress,
+    tokenPairs,
+    row.cToken,
+    `-${value}`
+  );
+
+  let newBorrowLimitUsed = useBorrowLimitUsed(
+    totalBorrowedAmount,
+    newBorrowLimit
+  );
 
   // Highlights value input
   useEffect(() => {
@@ -124,26 +134,15 @@ export default function Borrow({
               <div className="flex-grow">Borrow APY</div>
               <div>{marketData.borrowApy}</div>
             </div>
-            <div>
-              <div className="font-bold mr-3 border-b border-b-gray-600 w-full pb-5">
-                Borrow Limit
-              </div>
-              <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 py-5">
-                <div className="flex-grow">Borrow Balance</div>
-                <div>
-                  {formattedBorrowedAmount} {row.name}
-                </div>
-              </div>
-              {borrowLimitUsed && (
-                <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 py-5">
-                  <div className="flex-grow">Borrow Limit Used</div>
-                  <div>
-                    0 <span className="text-brand-green">→</span>&nbsp;
-                    {borrowLimitUsed}%
-                  </div>
-                </div>
-              )}
-            </div>
+
+            <BorrowBalance
+              value={value}
+              isValid={isValid}
+              borrowBalance={currentlyBorrowing}
+              newBorrowBalance={currentlyBorrowing + +value}
+              borrowLimitUsed={borrowLimitUsed}
+              newBorrowLimitUsed={newBorrowLimitUsed}
+            />
 
             <div className="mb-8">
               {!signer && <div>Connect wallet to get started</div>}
@@ -163,7 +162,6 @@ export default function Borrow({
                         return;
                       }
                       setIsBorrowing(true);
-                      // @ts-ignore existence of signer is gated above.
                       await borrow(value, signer, row.cToken, row.token);
                       //   setValue("");
                       toast.success("Borrow successful");

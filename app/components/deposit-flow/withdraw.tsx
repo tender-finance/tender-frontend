@@ -1,5 +1,5 @@
 import { ICON_SIZE } from "~/lib/constants";
-import type { SwapRow, SwapRowMarketDatum } from "~/types/global";
+import type { SwapRow, SwapRowMarketDatum, TokenPair } from "~/types/global";
 import { useEffect, useState, useRef } from "react";
 import type { JsonRpcSigner } from "@ethersproject/providers";
 import toast from "react-hot-toast";
@@ -9,6 +9,9 @@ import clsx from "clsx";
 
 import { redeem, getCurrentlySupplying } from "~/lib/tender";
 import { useValidInput } from "~/hooks/use-valid-input";
+import BorrowLimit from "../fi-modal/borrow-limit";
+import { useProjectBorrowLimit } from "~/hooks/use-project-borrow-limit";
+import { useBorrowLimitUsed } from "~/hooks/use-borrow-limit-used";
 
 interface Props {
   closeModal: Function;
@@ -19,6 +22,8 @@ interface Props {
   signer: JsonRpcSigner | null | undefined;
   borrowLimitUsed: string;
   walletBalance: number;
+  tokenPairs: TokenPair[];
+  totalBorrowedAmount: number;
 }
 export default function Withdraw({
   closeModal,
@@ -28,12 +33,27 @@ export default function Withdraw({
   borrowLimit,
   signer,
   borrowLimitUsed,
+  tokenPairs,
+  totalBorrowedAmount,
 }: Props) {
   let [value, setValue] = useState<string>("");
   let [isWithdrawing, setIsWithdrawing] = useState<boolean>(false);
   let [currentlySupplying, setCurrentlySupplying] = useState<number>(0);
   let inputEl = useRef<HTMLInputElement>(null);
   let isValid = useValidInput(value, 0, currentlySupplying);
+
+  let newBorrowLimit = useProjectBorrowLimit(
+    signer,
+    row.comptrollerAddress,
+    tokenPairs,
+    row.cToken,
+    `-${value}`
+  );
+
+  let newBorrowLimitUsed = useBorrowLimitUsed(
+    totalBorrowedAmount,
+    newBorrowLimit
+  );
 
   useEffect(() => {
     if (!signer) {
@@ -121,27 +141,14 @@ export default function Withdraw({
               <div>{marketData.depositApy}</div>
             </div>
 
-            <div>
-              <div className="font-bold mr-3 border-b border-b-gray-600 w-full pb-5">
-                Borrow Limit
-              </div>
-              <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 py-5">
-                <div className="flex-grow">Borrow Limit </div>
-                <div>
-                  $0 <span className="text-brand-green">→</span> ${borrowLimit}
-                </div>
-              </div>
-
-              {borrowLimitUsed && (
-                <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 py-5">
-                  <div className="flex-grow">Borrow Limit Used</div>
-                  <div>
-                    0 <span className="text-brand-green">→</span>&nbsp;
-                    {borrowLimitUsed}%
-                  </div>
-                </div>
-              )}
-            </div>
+            <BorrowLimit
+              value={value}
+              isValid={isValid}
+              borrowLimit={borrowLimit}
+              newBorrowLimit={newBorrowLimit}
+              borrowLimitUsed={borrowLimitUsed}
+              newBorrowLimitUsed={newBorrowLimitUsed}
+            />
 
             <div className="mb-8">
               {!signer && <div>Connect wallet to get started</div>}
