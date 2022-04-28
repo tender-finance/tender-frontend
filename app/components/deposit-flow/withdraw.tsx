@@ -12,6 +12,7 @@ import { useValidInput } from "~/hooks/use-valid-input";
 import BorrowLimit from "../fi-modal/borrow-limit";
 import { useProjectBorrowLimit } from "~/hooks/use-project-borrow-limit";
 import { useBorrowLimitUsed } from "~/hooks/use-borrow-limit-used";
+import ConfirmingTransaction from "../fi-modal/confirming-transition";
 
 interface Props {
   closeModal: Function;
@@ -36,6 +37,7 @@ export default function Withdraw({
   tokenPairs,
   totalBorrowedAmount,
 }: Props) {
+  let [isBlockChaining, setBlockChaining] = useState<boolean>(false);
   let [value, setValue] = useState<string>("");
   let [isWithdrawing, setIsWithdrawing] = useState<boolean>(false);
   let [currentlySupplying, setCurrentlySupplying] = useState<number>(0);
@@ -71,137 +73,152 @@ export default function Withdraw({
 
   return (
     <div>
-      <div>
-        <div className="py-8 bg-brand-black-light">
-          <div className="float-right">
-            <button
-              onClick={() => closeModal()}
-              className="text-4xl rotate-45 text-gray-400 mr-8"
-            >
-              +
-            </button>
-          </div>
-          <div className="flex align-middle justify-center items-center">
-            <img
-              src={row.icon}
-              style={{ width: ICON_SIZE }}
-              className="mr-3"
-              alt="icon"
-            />
-            <div>Withdraw {row.name}</div>
-          </div>
-
-          <div className="flex flex-col justify-center items-center overflow-hidden">
-            <input
-              ref={inputEl}
-              onChange={(e) => setValue(e.target.value)}
-              className="bg-transparent text-6xl text-white text-center outline-none"
-              defaultValue={0}
-            />
-            <Max
-              maxValue={currentlySupplying.toString()}
-              updateValue={() => {
-                if (!inputEl || !inputEl.current) return;
-                inputEl.current.focus();
-                inputEl.current.value = currentlySupplying.toString();
-                setValue(currentlySupplying.toString());
-              }}
-              maxValueLabel={row.name}
-            />
-          </div>
-        </div>
-        <div className="flex">
-          <button
-            className="flex-grow py-3"
-            onClick={() => setIsSupplying(true)}
-          >
-            Deposit
-          </button>
-          <button
-            className="flex-grow py-3 text-brand-green border-b-2 border-b-brand-green"
-            onClick={() => setIsSupplying(false)}
-          >
-            Withdraw
-          </button>
-        </div>
-        <div className="py-8" style={{ background: "#1C1E22" }}>
-          <div className="py-6 px-12" style={{ background: "#1C1E22" }}>
-            <div className="flex mb-4">
-              <span className="font-bold mr-3">Deposit Rates</span>{" "}
-              <img src="/images/box-arrow.svg" alt="box arrow" />
-            </div>
-            <div className="flex items-center mb-3 text-gray-400  pb-6">
-              <img
-                src={row.icon}
-                style={{ width: ICON_SIZE }}
-                className="mr-3"
-                alt="icon"
-              />
-              <div className="flex-grow">Deposit APY</div>
-              <div>{marketData.depositApy}</div>
-            </div>
-
-            <BorrowLimit
-              value={value}
-              isValid={isValid}
-              borrowLimit={borrowLimit}
-              newBorrowLimit={newBorrowLimit}
-              borrowLimitUsed={borrowLimitUsed}
-              newBorrowLimitUsed={newBorrowLimitUsed}
-            />
-
-            <div className="mb-8">
-              {!signer && <div>Connect wallet to get started</div>}
-              {signer && !isValid && (
-                <button className="py-4 text-center text-white font-bold rounded w-full bg-gray-200">
-                  Withdraw
-                </button>
-              )}
-              {signer && isValid && (
+      {isBlockChaining && (
+        <ConfirmingTransaction stopWaitingOnConfirmation={() => closeModal()} />
+      )}
+      {!isBlockChaining && (
+        <div>
+          <div>
+            <div className="py-8 bg-brand-black-light">
+              <div className="float-right">
                 <button
-                  onClick={async () => {
-                    try {
-                      if (!value) {
-                        toast("Please set a value", {
-                          icon: "⚠️",
-                        });
-                        return;
-                      }
-                      setIsWithdrawing(true);
-                      // @ts-ignore existence of signer is gated above.
-                      await redeem(value, signer, row.cToken, row.token);
-
-                      setValue("");
-                      toast.success("Withdraw successful");
-                      closeModal();
-                    } catch (e) {
-                      console.error(e);
-                    } finally {
-                      setIsWithdrawing(false);
-                    }
-                  }}
-                  className={clsx(
-                    "py-4 text-center text-white font-bold rounded bg-brand-green w-full",
-                    {
-                      "bg-brand-green": !isWithdrawing,
-                      "bg-gray-200": isWithdrawing,
-                    }
-                  )}
+                  onClick={() => closeModal()}
+                  className="text-4xl rotate-45 text-gray-400 mr-8"
                 >
-                  {isWithdrawing ? "Withdrawing..." : "Withdraw"}
+                  +
                 </button>
-              )}
-            </div>
+              </div>
+              <div className="flex align-middle justify-center items-center">
+                <img
+                  src={row.icon}
+                  style={{ width: ICON_SIZE }}
+                  className="mr-3"
+                  alt="icon"
+                />
+                <div>Withdraw {row.name}</div>
+              </div>
 
-            <div className="flex text-gray-500">
-              <div className="flex-grow">Currently Supplying</div>
-              <div>
-                {currentlySupplying} {row.name}
+              <div className="flex flex-col justify-center items-center overflow-hidden">
+                <input
+                  ref={inputEl}
+                  onChange={(e) => setValue(e.target.value)}
+                  className="bg-transparent text-6xl text-white text-center outline-none"
+                  defaultValue={0}
+                />
+                <Max
+                  maxValue={currentlySupplying.toString()}
+                  updateValue={() => {
+                    if (!inputEl || !inputEl.current) return;
+                    inputEl.current.focus();
+                    inputEl.current.value = currentlySupplying.toString();
+                    setValue(currentlySupplying.toString());
+                  }}
+                  maxValueLabel={row.name}
+                />
+              </div>
+            </div>
+            <div className="flex">
+              <button
+                className="flex-grow py-3"
+                onClick={() => setIsSupplying(true)}
+              >
+                Deposit
+              </button>
+              <button
+                className="flex-grow py-3 text-brand-green border-b-2 border-b-brand-green"
+                onClick={() => setIsSupplying(false)}
+              >
+                Withdraw
+              </button>
+            </div>
+            <div className="py-8" style={{ background: "#1C1E22" }}>
+              <div className="py-6 px-12" style={{ background: "#1C1E22" }}>
+                <div className="flex mb-4">
+                  <span className="font-bold mr-3">Deposit Rates</span>{" "}
+                  <img src="/images/box-arrow.svg" alt="box arrow" />
+                </div>
+                <div className="flex items-center mb-3 text-gray-400  pb-6">
+                  <img
+                    src={row.icon}
+                    style={{ width: ICON_SIZE }}
+                    className="mr-3"
+                    alt="icon"
+                  />
+                  <div className="flex-grow">Deposit APY</div>
+                  <div>{marketData.depositApy}</div>
+                </div>
+
+                <BorrowLimit
+                  value={value}
+                  isValid={isValid}
+                  borrowLimit={borrowLimit}
+                  newBorrowLimit={newBorrowLimit}
+                  borrowLimitUsed={borrowLimitUsed}
+                  newBorrowLimitUsed={newBorrowLimitUsed}
+                />
+
+                <div className="mb-8">
+                  {!signer && <div>Connect wallet to get started</div>}
+                  {signer && !isValid && (
+                    <button className="py-4 text-center text-white font-bold rounded w-full bg-gray-200">
+                      Withdraw
+                    </button>
+                  )}
+                  {signer && isValid && (
+                    <button
+                      onClick={async () => {
+                        try {
+                          if (!value) {
+                            toast("Please set a value", {
+                              icon: "⚠️",
+                            });
+                            return;
+                          }
+                          setIsWithdrawing(true);
+                          // @ts-ignore existence of signer is gated above.
+                          let txn = await redeem(
+                            value,
+                            signer,
+                            row.cToken,
+                            row.token
+                          );
+
+                          setBlockChaining(true);
+                          await txn.wait(); // TODO: error handle if transaction fails
+                          setBlockChaining(false);
+                          setValue("");
+                          toast.success("Withdraw successful");
+                          closeModal();
+                        } catch (e) {
+                          console.error(e);
+                        } finally {
+                          setIsWithdrawing(false);
+                        }
+                      }}
+                      className={clsx(
+                        "py-4 text-center text-white font-bold rounded bg-brand-green w-full",
+                        {
+                          "bg-brand-green": !isWithdrawing,
+                          "bg-gray-200": isWithdrawing,
+                        }
+                      )}
+                    >
+                      {isWithdrawing ? "Withdrawing..." : "Withdraw"}
+                    </button>
+                  )}
+                </div>
+
+                <div className="flex text-gray-500">
+                  <div className="flex-grow">Currently Supplying</div>
+                  <div>
+                    {currentlySupplying} {row.name}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
