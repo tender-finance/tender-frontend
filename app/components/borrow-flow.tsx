@@ -19,6 +19,7 @@ interface Props {
   marketData: SwapRowMarketDatum;
 }
 
+// TODO: move to tender.ts and do something more dynamic with 1e18
 const formattedAmount = (b: number): string => (b / 1e18).toFixed(2).toString();
 
 export default function BorrowFlow({
