@@ -74,7 +74,9 @@ async function deposit(
   signer: Signer,
   cToken: cToken,
   token: Token
-) {
+): Promise<{
+  wait: Function;
+}> {
   // if (isCEth) {
   //   console.log("supply() w/ cEth");
 
@@ -96,7 +98,7 @@ async function deposit(
   );
 
   let contract = new ethers.Contract(cToken.address, SampleCTokenAbi, signer);
-  await contract.mint(formattedValue);
+  return await contract.mint(formattedValue);
   // }
 }
 
@@ -111,7 +113,9 @@ async function redeem(
   signer: Signer,
   cToken: cToken,
   token: Token
-) {
+): Promise<{
+  wait: Function;
+}> {
   // if (isCEth) {
   //   console.log("redeem() with cEth");
 
@@ -132,7 +136,7 @@ async function redeem(
     SampleCTokenAbi,
     signer
   );
-  await cTokenContract.redeemUnderlying(formattedValue);
+  return await cTokenContract.redeemUnderlying(formattedValue);
   // }
 }
 
@@ -346,13 +350,15 @@ async function repay(
   signer: Signer,
   cToken: cToken,
   token: Token
-) {
+): Promise<{
+  wait: Function;
+}> {
   const formattedValue: BigNumber = ethers.utils.parseUnits(
     value,
     token.decimals
   );
   let contract = new ethers.Contract(cToken.address, SampleCTokenAbi, signer);
-  await contract.repayBorrow(formattedValue);
+  return await contract.repayBorrow(formattedValue);
 }
 
 /**
@@ -366,7 +372,9 @@ async function borrow(
   signer: Signer,
   cToken: cToken,
   token: Token
-) {
+): Promise<{
+  wait: Function;
+}> {
   //  if (isCEth) {
   //   console.log("borrow() with cEth");
 
@@ -383,7 +391,7 @@ async function borrow(
     token.decimals
   );
   let contract = new ethers.Contract(cToken.address, SampleCTokenAbi, signer);
-  await contract.borrow(formattedValue);
+  return await contract.borrow(formattedValue);
   // }
 }
 

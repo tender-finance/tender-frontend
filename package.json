@@ -44,6 +44,7 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-hot-toast": "^2.2.0",
+    "react-loader-spinner": "^6.0.0-0",
     "react-modal": "^3.14.4",
     "remix": "^1.2.3",
     "start-server-and-test": "^1.14.0",
