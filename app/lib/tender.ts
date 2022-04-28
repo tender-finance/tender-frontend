@@ -74,7 +74,9 @@ async function deposit(
   signer: Signer,
   cToken: cToken,
   token: Token
-) {
+): Promise<{
+  wait: Function;
+}> {
   // if (isCEth) {
   //   console.log("supply() w/ cEth");
 
@@ -96,7 +98,7 @@ async function deposit(
   );
 
   let contract = new ethers.Contract(cToken.address, SampleCTokenAbi, signer);
-  await contract.mint(formattedValue);
+  return await contract.mint(formattedValue);
   // }
 }
 
