@@ -421,6 +421,21 @@ async function hasSufficientAllowance(
   return allowance.gte(MINIMUM_REQUIRED_APPROVAL_BALANCE);
 }
 
+const getTotalSupplied = async (
+  signer: Signer,
+  tokenPairs: TokenPair[]
+): Promise<number> => {
+  let suppliedAmounts: number[] = await Promise.all(
+    tokenPairs.map(async (pair: TokenPair): Promise<number> => {
+      return await getCurrentlySupplying(signer, pair.cToken, pair.token);
+    })
+  );
+
+  return suppliedAmounts.reduce(
+    (acc: number, curr: number): number => acc + curr
+  );
+};
+
 export {
   enable,
   deposit,
@@ -438,4 +453,5 @@ export {
   hasSufficientAllowance,
   getTotalBorrowed,
   projectBorrowLimit,
+  getTotalSupplied,
 };
