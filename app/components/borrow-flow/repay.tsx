@@ -166,7 +166,7 @@ export default function Repay({
           value={value}
           isValid={isValid}
           borrowBalance={currentlyBorrowing}
-          newBorrowBalance={currentlyBorrowing + +value}
+          newBorrowBalance={currentlyBorrowing - +value}
           borrowLimitUsed={borrowLimitUsed}
           newBorrowLimitUsed={newBorrowLimitUsed}
         />
