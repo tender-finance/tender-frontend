@@ -37,7 +37,7 @@ export default function Withdraw({
   tokenPairs,
   totalBorrowedAmount,
 }: Props) {
-  let [isBlockChaining, setBlockChaining] = useState<boolean>(false);
+  let [isWaitingToBeMined, setIsWaitingToBeMined] = useState<boolean>(false);
   let [value, setValue] = useState<string>("");
   let [isWithdrawing, setIsWithdrawing] = useState<boolean>(false);
   let [currentlySupplying, setCurrentlySupplying] = useState<number>(0);
@@ -73,10 +73,10 @@ export default function Withdraw({
 
   return (
     <div>
-      {isBlockChaining && (
+      {isWaitingToBeMined && (
         <ConfirmingTransaction stopWaitingOnConfirmation={() => closeModal()} />
       )}
-      {!isBlockChaining && (
+      {!isWaitingToBeMined && (
         <div>
           <div>
             <div className="py-8 bg-brand-black-light">
@@ -183,9 +183,9 @@ export default function Withdraw({
                             row.token
                           );
 
-                          setBlockChaining(true);
+                          setIsWaitingToBeMined(true);
                           await txn.wait(); // TODO: error handle if transaction fails
-                          setBlockChaining(false);
+                          setIsWaitingToBeMined(false);
                           setValue("");
                           toast.success("Withdraw successful");
                           closeModal();

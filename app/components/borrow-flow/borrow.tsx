@@ -40,7 +40,7 @@ export default function Borrow({
   tokenPairs,
   totalBorrowedAmount,
 }: Props) {
-  let [isBlockChaining, setBlockChaining] = useState<boolean>(false);
+  let [isWaitingToBeMined, setIsWaitingToBeMined] = useState<boolean>(false);
   let [value, setValue] = useState<string>("");
   let [isBorrowing, setIsBorrowing] = useState<boolean>(false);
   let inputEl = useRef<HTMLInputElement>(null);
@@ -67,10 +67,10 @@ export default function Borrow({
 
   return (
     <div>
-      {isBlockChaining && (
+      {isWaitingToBeMined && (
         <ConfirmingTransaction stopWaitingOnConfirmation={() => closeModal()} />
       )}
-      {!isBlockChaining && (
+      {!isWaitingToBeMined && (
         <div>
           <div>
             <div className="py-8 bg-brand-black-light">
@@ -178,9 +178,9 @@ export default function Borrow({
                             row.token
                           );
 
-                          setBlockChaining(true);
+                          setIsWaitingToBeMined(true);
                           await txn.wait(); // TODO: error handle if transaction fails
-                          setBlockChaining(false);
+                          setIsWaitingToBeMined(false);
                           //   setValue("");
                           toast.success("Borrow successful");
                           closeModal();

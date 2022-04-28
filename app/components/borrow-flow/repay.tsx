@@ -44,7 +44,7 @@ export default function Repay({
   tokenPairs,
   totalBorrowedAmount,
 }: Props) {
-  let [isBlockChaining, setBlockChaining] = useState<boolean>(false);
+  let [isWaitingToBeMined, setIsWaitingToBeMined] = useState<boolean>(false);
   let [isEnabled, setIsEnabled] = useState<boolean>(true);
   let [isEnabling, setIsEnabling] = useState<boolean>(false);
 
@@ -89,11 +89,11 @@ export default function Repay({
 
   return (
     <div>
-      {isBlockChaining && (
+      {isWaitingToBeMined && (
         <ConfirmingTransaction stopWaitingOnConfirmation={() => closeModal()} />
       )}
 
-      {!isBlockChaining && (
+      {!isWaitingToBeMined && (
         <div>
           <div>
             <div className="py-8 bg-brand-black-light">
@@ -238,9 +238,9 @@ export default function Repay({
                           row.token
                         );
 
-                        setBlockChaining(true);
+                        setIsWaitingToBeMined(true);
                         await txn.wait(); // TODO: error handle if transaction fails
-                        setBlockChaining(false);
+                        setIsWaitingToBeMined(false);
 
                         setValue("");
                         toast.success("Repayment successful");

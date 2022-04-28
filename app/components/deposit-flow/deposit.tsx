@@ -37,7 +37,7 @@ export default function Deposit({
   tokenPairs,
   totalBorrowedAmount,
 }: Props) {
-  let [isBlockChaining, setBlockChaining] = useState<boolean>(false);
+  let [isWaitingToBeMined, setIsWaitingToBeMined] = useState<boolean>(false);
   let [isEnabled, setIsEnabled] = useState<boolean>(true);
   let [isEnabling, setIsEnabling] = useState<boolean>(false);
   let [isDepositing, setIsDepositing] = useState<boolean>(false);
@@ -78,10 +78,10 @@ export default function Deposit({
 
   return (
     <div>
-      {isBlockChaining && (
+      {isWaitingToBeMined && (
         <ConfirmingTransaction stopWaitingOnConfirmation={() => closeModal()} />
       )}
-      {!isBlockChaining && (
+      {!isWaitingToBeMined && (
         <div>
           <div className="py-8 bg-brand-black-light relative">
             <div className="float-right">
@@ -222,9 +222,9 @@ export default function Deposit({
                         row.cToken,
                         row.token
                       );
-                      setBlockChaining(true);
+                      setIsWaitingToBeMined(true);
                       await txn.wait();
-                      setBlockChaining(false);
+                      setIsWaitingToBeMined(false);
                       setValue("");
                       toast.success("Deposit successful");
                       closeModal();
