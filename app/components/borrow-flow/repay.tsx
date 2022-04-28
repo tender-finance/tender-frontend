@@ -1,5 +1,5 @@
 import { ICON_SIZE } from "~/lib/constants";
-import type { SwapRow, SwapRowMarketDatum } from "~/types/global";
+import type { SwapRow, SwapRowMarketDatum, TokenPair } from "~/types/global";
 import { useEffect, useRef, useState } from "react";
 import type { JsonRpcSigner } from "@ethersproject/providers";
 
@@ -22,6 +22,7 @@ interface Props {
   borrowLimitUsed: string;
   walletBalance: number;
   borrowLimit: number;
+  tokenPairs: TokenPair[];
 }
 
 export default function Repay({
@@ -34,6 +35,7 @@ export default function Repay({
   borrowLimitUsed,
   walletBalance,
   borrowLimit,
+  tokenPairs,
 }: Props) {
   let [isEnabled, setIsEnabled] = useState<boolean>(true);
   let [isEnabling, setIsEnabling] = useState<boolean>(false);

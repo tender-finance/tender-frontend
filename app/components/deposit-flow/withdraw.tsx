@@ -1,5 +1,5 @@
 import { ICON_SIZE } from "~/lib/constants";
-import type { SwapRow, SwapRowMarketDatum } from "~/types/global";
+import type { SwapRow, SwapRowMarketDatum, TokenPair } from "~/types/global";
 import { useEffect, useState, useRef } from "react";
 import type { JsonRpcSigner } from "@ethersproject/providers";
 import toast from "react-hot-toast";
@@ -10,6 +10,8 @@ import clsx from "clsx";
 import { redeem, getCurrentlySupplying } from "~/lib/tender";
 import { useValidInput } from "~/hooks/use-valid-input";
 import BorrowLimit from "../fi-modal/borrow-limit";
+import { useProjectBorrowLimit } from "~/hooks/use-project-borrow-limit";
+import { useBorrowLimitUsed } from "~/hooks/use-borrow-limit-used";
 
 interface Props {
   closeModal: Function;
@@ -20,6 +22,8 @@ interface Props {
   signer: JsonRpcSigner | null | undefined;
   borrowLimitUsed: string;
   walletBalance: number;
+  tokenPairs: TokenPair[];
+  totalBorrowedAmount: number;
 }
 export default function Withdraw({
   closeModal,
@@ -29,6 +33,8 @@ export default function Withdraw({
   borrowLimit,
   signer,
   borrowLimitUsed,
+  tokenPairs,
+  totalBorrowedAmount,
 }: Props) {
   let [value, setValue] = useState<string>("");
   let [isWithdrawing, setIsWithdrawing] = useState<boolean>(false);
@@ -36,10 +42,18 @@ export default function Withdraw({
   let inputEl = useRef<HTMLInputElement>(null);
   let isValid = useValidInput(value, 0, currentlySupplying);
 
-  // For borrow limit
-  // TODO: Can I refactor this all into the same hook?
-  let [newBorrowLimit, setNewBorrowLimit] = useState<number>(0);
-  let [newBorrowLimitUsed, setNewBorrowLimitUsed] = useState<string>("0");
+  let newBorrowLimit = useProjectBorrowLimit(
+    signer,
+    row.comptrollerAddress,
+    tokenPairs,
+    row.cToken,
+    `-${value}`
+  );
+
+  let newBorrowLimitUsed = useBorrowLimitUsed(
+    totalBorrowedAmount,
+    newBorrowLimit
+  );
 
   useEffect(() => {
     if (!signer) {

@@ -35,11 +35,7 @@ export default function BorrowFlow({
   let borrowLimit = useBorrowLimit(signer, row.comptrollerAddress, tokenPairs);
   let borrowedAmount = useBorrowedAmount(signer, row.cToken);
   let totalBorrowedAmount = useTotalBorrowed(signer, tokenPairs);
-  let borrowLimitUsed = useBorrowLimitUsed(
-    totalBorrowedAmount,
-    borrowLimit,
-    borrowedAmount
-  );
+  let borrowLimitUsed = useBorrowLimitUsed(totalBorrowedAmount, borrowLimit);
 
   return isRepaying ? (
     <Repay
@@ -49,9 +45,9 @@ export default function BorrowFlow({
       setIsRepaying={setIsRepaying}
       formattedBorrowedAmount={formattedAmount(borrowedAmount)}
       signer={signer}
-      borrowLimit={borrowLimit}
       borrowLimitUsed={borrowLimitUsed}
       walletBalance={walletBalance}
+      tokenPairs={tokenPairs}
     />
   ) : (
     <Borrow
@@ -59,11 +55,12 @@ export default function BorrowFlow({
       marketData={marketData}
       closeModal={closeModal}
       setIsRepaying={setIsRepaying}
-      formattedBorrowedAmount={formattedAmount(borrowedAmount)}
       signer={signer}
       borrowLimitUsed={borrowLimitUsed}
       borrowLimit={borrowLimit}
       walletBalance={walletBalance}
+      tokenPairs={tokenPairs}
+      totalBorrowedAmount={totalBorrowedAmount}
     />
   );
 }

@@ -8,12 +8,7 @@ import Max from "~/components/max";
 
 import clsx from "clsx";
 
-import {
-  enable,
-  deposit,
-  hasSufficientAllowance,
-  getBorrowLimitUsed,
-} from "~/lib/tender";
+import { enable, deposit, hasSufficientAllowance } from "~/lib/tender";
 import BorrowLimit from "../fi-modal/borrow-limit";
 import { useProjectBorrowLimit } from "~/hooks/use-project-borrow-limit";
 import { useBorrowLimitUsed } from "~/hooks/use-borrow-limit-used";

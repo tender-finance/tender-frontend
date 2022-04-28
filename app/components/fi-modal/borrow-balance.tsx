@@ -1,8 +1,8 @@
-interface BorrowLimitProps {
+interface BorrowBalanceProps {
   value: string;
   isValid: boolean;
-  borrowLimit: number;
-  newBorrowLimit: number;
+  borrowBalance: number;
+  newBorrowBalance: number;
   borrowLimitUsed: string;
   newBorrowLimitUsed: string;
 }
@@ -11,30 +11,32 @@ const formatBorrowLimit = (v: number): string => {
   return v.toFixed(2).toString();
 };
 
-export default function BorrowLimit(props: BorrowLimitProps) {
+export default function BorrowBalance(props: BorrowBalanceProps) {
   const {
     value,
     isValid,
-    borrowLimit,
-    newBorrowLimit,
+    borrowBalance,
+    newBorrowBalance,
     borrowLimitUsed,
     newBorrowLimitUsed,
   } = props;
   return (
     <div>
       <div className="font-bold mr-3 border-b border-b-gray-600 w-full pb-5">
-        Borrow Limit
+        Borrow Balance
       </div>
 
       <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 py-5">
-        <div className="flex-grow">Borrow Limit </div>
+        <div className="flex-grow">Borrow Balance</div>
         <div>
-          {(value == "0" || !isValid) && <>${formatBorrowLimit(borrowLimit)}</>}
+          {(value == "0" || !isValid) && (
+            <>${formatBorrowLimit(borrowBalance)}</>
+          )}
           {isValid && value != "0" && (
             <>
-              ${formatBorrowLimit(borrowLimit)}{" "}
+              ${formatBorrowLimit(borrowBalance)}{" "}
               <span className="text-brand-green">→</span> $
-              {formatBorrowLimit(newBorrowLimit)}
+              {formatBorrowLimit(newBorrowBalance)}
             </>
           )}
           {}

@@ -32,13 +32,8 @@ export default function DepositFlow({
   const signer = useWeb3Signer(provider);
   let walletBalance = useWalletBalance(signer, row.token);
   let borrowLimit = useBorrowLimit(signer, row.comptrollerAddress, tokenPairs);
-  let borrowedAmount = useBorrowedAmount(signer, row.cToken);
   let totalBorrowedAmount = useTotalBorrowed(signer, tokenPairs);
-  let borrowLimitUsed = useBorrowLimitUsed(
-    totalBorrowedAmount,
-    borrowLimit,
-    borrowedAmount
-  );
+  let borrowLimitUsed = useBorrowLimitUsed(totalBorrowedAmount, borrowLimit);
 
   return isSupplying ? (
     <Deposit
@@ -63,6 +58,8 @@ export default function DepositFlow({
       borrowLimitUsed={borrowLimitUsed}
       signer={signer}
       walletBalance={walletBalance}
+      tokenPairs={tokenPairs}
+      totalBorrowedAmount={totalBorrowedAmount}
     />
   );
 }

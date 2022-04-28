@@ -1,5 +1,5 @@
 import { ICON_SIZE } from "~/lib/constants";
-import type { SwapRow, SwapRowMarketDatum } from "~/types/global";
+import type { SwapRow, SwapRowMarketDatum, TokenPair } from "~/types/global";
 import { useEffect, useState, useRef } from "react";
 import type { JsonRpcSigner } from "@ethersproject/providers";
 
@@ -9,7 +9,10 @@ import Max from "~/components/max";
 
 import { getCurrentlyBorrowing, borrow } from "~/lib/tender";
 import { useValidInput } from "~/hooks/use-valid-input";
-import BorrowLimit from "../fi-modal/borrow-limit";
+import BorrowBalance from "../fi-modal/borrow-balance";
+import { useProjectBorrowLimit } from "~/hooks/use-project-borrow-limit";
+import { useBorrowLimitUsed } from "~/hooks/use-borrow-limit-used";
+import { useCurrentlyBorrowing } from "~/hooks/use-currently-borrowing";
 
 interface Props {
   closeModal: Function;
@@ -17,10 +20,11 @@ interface Props {
   marketData: SwapRowMarketDatum;
   setIsRepaying: Function;
   signer: JsonRpcSigner | null | undefined;
-  formattedBorrowedAmount: string;
   borrowLimitUsed: string;
   borrowLimit: number;
   walletBalance: number;
+  tokenPairs: TokenPair[];
+  totalBorrowedAmount: number;
 }
 
 export default function Borrow({
@@ -29,28 +33,29 @@ export default function Borrow({
   marketData,
   setIsRepaying,
   signer,
-  formattedBorrowedAmount,
   borrowLimit,
   borrowLimitUsed,
+  tokenPairs,
+  totalBorrowedAmount,
 }: Props) {
   let [value, setValue] = useState<string>("");
-  let [currentlyBorrowing, setCurrentlyBorrowing] = useState<number>(0);
   let [isBorrowing, setIsBorrowing] = useState<boolean>(false);
   let inputEl = useRef<HTMLInputElement>(null);
-  let isValid = useValidInput(value, 0, currentlyBorrowing);
+  let currentlyBorrowing = useCurrentlyBorrowing(signer, row.cToken, row.token);
+  let isValid = useValidInput(value, 0, borrowLimit);
 
-  // TODO: Can I refactor this all into the same hook?
-  let [newBorrowLimit, setNewBorrowLimit] = useState<number>(0);
-  let [newBorrowLimitUsed, setNewBorrowLimitUsed] = useState<string>("0");
+  let newBorrowLimit = useProjectBorrowLimit(
+    signer,
+    row.comptrollerAddress,
+    tokenPairs,
+    row.cToken,
+    `-${value}`
+  );
 
-  useEffect(() => {
-    if (!signer) {
-      return;
-    }
-    getCurrentlyBorrowing(signer, row.cToken, row.token).then((c: number) => {
-      setCurrentlyBorrowing(c);
-    });
-  }, [signer, row.cToken, row.token]);
+  let newBorrowLimitUsed = useBorrowLimitUsed(
+    totalBorrowedAmount,
+    newBorrowLimit
+  );
 
   // Highlights value input
   useEffect(() => {
@@ -130,11 +135,11 @@ export default function Borrow({
               <div>{marketData.borrowApy}</div>
             </div>
 
-            <BorrowLimit
+            <BorrowBalance
               value={value}
               isValid={isValid}
-              borrowLimit={borrowLimit}
-              newBorrowLimit={newBorrowLimit}
+              borrowBalance={currentlyBorrowing}
+              newBorrowBalance={currentlyBorrowing + +value}
               borrowLimitUsed={borrowLimitUsed}
               newBorrowLimitUsed={newBorrowLimitUsed}
             />
