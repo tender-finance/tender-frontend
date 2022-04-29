@@ -283,12 +283,18 @@ async function projectBorrowLimit(
  */
 async function getBorrowedAmount(
   signer: Signer,
-  cToken: cToken
+  cToken: cToken,
+  token: Token
 ): Promise<number> {
   let contract = new ethers.Contract(cToken.address, SampleCTokenAbi, signer);
   let address = await signer.getAddress();
-  let borrowedAmount: number = await contract.borrowBalanceStored(address);
-  return borrowedAmount;
+  let borrowedAmount: BigNumber = await contract.borrowBalanceStored(address);
+
+  let borrowed: number = parseFloat(
+    ethers.utils.formatUnits(borrowedAmount, token.decimals)
+  );
+
+  return borrowed;
 }
 
 /**

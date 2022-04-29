@@ -1,11 +1,12 @@
 import type { JsonRpcSigner } from "@ethersproject/providers";
 import { useState, useEffect } from "react";
 import { getBorrowedAmount } from "~/lib/tender";
-import type { cToken } from "~/types/global";
+import type { cToken, Token } from "~/types/global";
 
 export function useBorrowedAmount(
   signer: JsonRpcSigner | undefined,
-  cToken: cToken
+  cToken: cToken,
+  token: Token
 ): number {
   let [borrowedAmount, setBorrowedAmount] = useState<number>(0);
 
@@ -14,7 +15,7 @@ export function useBorrowedAmount(
       return;
     }
 
-    getBorrowedAmount(signer, cToken).then((b) => setBorrowedAmount(b));
+    getBorrowedAmount(signer, cToken, token).then((b) => setBorrowedAmount(b));
   }, [signer, cToken]);
 
   return borrowedAmount;

@@ -19,9 +19,6 @@ interface Props {
   marketData: SwapRowMarketDatum;
 }
 
-// TODO: move to tender.ts and do something more dynamic with 1e18
-const formattedAmount = (b: number): string => (b / 1e18).toFixed(2).toString();
-
 export default function BorrowFlow({
   closeModal,
   row,
@@ -34,7 +31,7 @@ export default function BorrowFlow({
   const signer = useWeb3Signer(provider);
   let walletBalance = useWalletBalance(signer, row.token);
   let borrowLimit = useBorrowLimit(signer, row.comptrollerAddress, tokenPairs);
-  let borrowedAmount = useBorrowedAmount(signer, row.cToken);
+  let borrowedAmount = useBorrowedAmount(signer, row.cToken, row.token);
   let totalBorrowedAmount = useTotalBorrowed(signer, tokenPairs);
   let borrowLimitUsed = useBorrowLimitUsed(totalBorrowedAmount, borrowLimit);
 
@@ -44,7 +41,7 @@ export default function BorrowFlow({
       marketData={marketData}
       closeModal={closeModal}
       setIsRepaying={setIsRepaying}
-      formattedBorrowedAmount={formattedAmount(borrowedAmount)}
+      formattedBorrowedAmount={borrowedAmount.toFixed(2)}
       signer={signer}
       borrowLimitUsed={borrowLimitUsed}
       walletBalance={walletBalance}
