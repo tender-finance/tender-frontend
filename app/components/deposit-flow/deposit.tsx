@@ -1,7 +1,15 @@
 import { ICON_SIZE } from "~/lib/constants";
-import type { SwapRow, SwapRowMarketDatum, TokenPair } from "~/types/global";
+import type {
+  ActualTransactionReceipt,
+  SwapRow,
+  SwapRowMarketDatum,
+  TokenPair,
+} from "~/types/global";
 import { useEffect, useRef, useState } from "react";
-import type { JsonRpcSigner } from "@ethersproject/providers";
+import type {
+  JsonRpcSigner,
+  TransactionReceipt,
+} from "@ethersproject/providers";
 import { useValidInput } from "~/hooks/use-valid-input";
 import toast from "react-hot-toast";
 import Max from "~/components/max";
@@ -12,6 +20,7 @@ import BorrowLimit from "../fi-modal/borrow-limit";
 import { useProjectBorrowLimit } from "~/hooks/use-project-borrow-limit";
 import { useBorrowLimitUsed } from "~/hooks/use-borrow-limit-used";
 import ConfirmingTransaction from "../fi-modal/confirming-transition";
+import TransactionHasErrors from "../fi-modal/transaction-has-errors";
 
 interface Props {
   closeModal: Function;
@@ -37,6 +46,7 @@ export default function Deposit({
   tokenPairs,
   totalBorrowedAmount,
 }: Props) {
+  let [transactionHasErrors, setTransactionErrors] = useState<boolean>(true);
   let [isWaitingToBeMined, setIsWaitingToBeMined] = useState<boolean>(false);
   let [isEnabled, setIsEnabled] = useState<boolean>(true);
   let [isEnabling, setIsEnabling] = useState<boolean>(false);
@@ -81,7 +91,12 @@ export default function Deposit({
       {isWaitingToBeMined && (
         <ConfirmingTransaction stopWaitingOnConfirmation={() => closeModal()} />
       )}
-      {!isWaitingToBeMined && (
+
+      {!isWaitingToBeMined && transactionHasErrors && (
+        <TransactionHasErrors close={() => closeModal()} />
+      )}
+
+      {!isWaitingToBeMined && !transactionHasErrors && (
         <div>
           <div className="py-8 bg-brand-black-light relative">
             <div className="float-right">
@@ -223,11 +238,18 @@ export default function Deposit({
                         row.token
                       );
                       setIsWaitingToBeMined(true);
-                      await txn.wait();
+                      let result =
+                        (await txn.wait()) as ActualTransactionReceipt;
+
                       setIsWaitingToBeMined(false);
                       setValue("");
-                      toast.success("Deposit successful");
-                      closeModal();
+
+                      if (result.events.some((e) => e.event === "Failure")) {
+                        setTransactionErrors(true);
+                      } else {
+                        toast.success("Deposit successful");
+                        closeModal();
+                      }
                     } catch (e) {
                       toast.error("Deposit unsuccessful");
                       console.error(e);

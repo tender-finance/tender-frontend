@@ -15,6 +15,8 @@ export function useValidInput(
 
       let v: number = parseFloat(value);
 
+      setIsValid(true);
+      return;
       if (v > floor && v <= ciel) {
         setIsValid(true);
       } else {

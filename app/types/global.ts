@@ -1,3 +1,6 @@
+import { TransactionReceipt } from "@ethersproject/providers";
+import { BigNumber } from "ethers";
+
 export interface SwapRow {
   icon: string;
   name: string;
@@ -99,4 +102,16 @@ export interface NetworkData {
 export interface TokenPair {
   token: Token;
   cToken: cToken;
+}
+
+export interface ActualTransactionReceipt extends TransactionReceipt {
+  events: {
+    args: BigNumber[];
+    decode: Function;
+    event: string;
+    eventSignature: string;
+  }[];
+  removeListener: Function;
+  getBlog: Function;
+  getTransactionRecipet: Function;
 }

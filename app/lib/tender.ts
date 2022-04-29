@@ -8,6 +8,7 @@ import SampleComptrollerAbi from "~/config/sample-comptroller-abi";
 
 import type { TokenPair } from "~/types/global";
 import { formatUnits } from "ethers/lib/utils";
+import { TransactionResponse } from "@ethersproject/providers";
 
 const MINIMUM_REQUIRED_APPROVAL_BALANCE = BigNumber.from("1");
 
@@ -74,9 +75,7 @@ async function deposit(
   signer: Signer,
   cToken: cToken,
   token: Token
-): Promise<{
-  wait: Function;
-}> {
+): Promise<TransactionResponse> {
   // if (isCEth) {
   //   console.log("supply() w/ cEth");
 
@@ -113,9 +112,7 @@ async function redeem(
   signer: Signer,
   cToken: cToken,
   token: Token
-): Promise<{
-  wait: Function;
-}> {
+): Promise<TransactionResponse> {
   // if (isCEth) {
   //   console.log("redeem() with cEth");
 
@@ -350,9 +347,7 @@ async function repay(
   signer: Signer,
   cToken: cToken,
   token: Token
-): Promise<{
-  wait: Function;
-}> {
+): Promise<TransactionResponse> {
   const formattedValue: BigNumber = ethers.utils.parseUnits(
     value,
     token.decimals
@@ -372,9 +367,7 @@ async function borrow(
   signer: Signer,
   cToken: cToken,
   token: Token
-): Promise<{
-  wait: Function;
-}> {
+): Promise<TransactionResponse> {
   //  if (isCEth) {
   //   console.log("borrow() with cEth");
 
