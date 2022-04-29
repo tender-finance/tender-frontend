@@ -1,7 +1,12 @@
-import { ethers } from "ethers";
+import { ethers, Signer } from "ethers";
 import sampleCTokenAbi from "~/config/sample-ctoken-abi";
-import type { Token, cToken } from "~/types/global";
+import type { Token, cToken, TokenPair } from "~/types/global";
 import type { JsonRpcSigner } from "@ethersproject/providers";
+import {
+  getBorrowedAmount,
+  getCurrentlySupplying,
+  getTotalSupplied,
+} from "./tender";
 
 function formatApy(apy: number): string {
   return `${apy.toFixed(2).toString()}%`;
@@ -90,4 +95,35 @@ async function formattedBorrowApy(
   return formatApy(apy);
 }
 
-export { formattedDepositApy, formattedBorrowApy };
+async function netApy(signer: JsonRpcSigner, tokenPairs: TokenPair[]) {
+  let weightedAmounts: number[] = await Promise.all(
+    tokenPairs.map(async (p: TokenPair): Promise<number> => {
+      let supplied: number = await getCurrentlySupplying(
+        signer,
+        p.cToken,
+        p.token
+      );
+      let supplyApy: number =
+        (await calculateDepositApy(p.token, p.cToken, signer)) * 0.01;
+
+      // TODO: get dollar amount conversion here
+
+      let borrowed: number = await getBorrowedAmount(signer, p.cToken, p.token);
+      let borrowApy: number =
+        (await calculateBorrowApy(p.token, p.cToken, signer)) * 0.01;
+
+      return supplied * supplyApy - borrowed * borrowApy;
+    })
+  );
+
+  let sum: number = weightedAmounts.reduce(
+    (acc: number, curr: number): number => acc + curr
+  );
+
+  let totalSupplied: number = await getTotalSupplied(signer, tokenPairs);
+
+  // This is a percent value, i.e., if the function returns 0.1 it's 0.1%;
+  return (sum / totalSupplied) * 100;
+}
+
+export { formattedDepositApy, formattedBorrowApy, netApy };
