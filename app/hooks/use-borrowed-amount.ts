@@ -16,7 +16,7 @@ export function useBorrowedAmount(
     }
 
     getBorrowedAmount(signer, cToken, token).then((b) => setBorrowedAmount(b));
-  }, [signer, cToken]);
+  }, [signer, cToken, token]);
 
   return borrowedAmount;
 }

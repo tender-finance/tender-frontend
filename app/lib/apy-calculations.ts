@@ -1,4 +1,4 @@
-import { ethers, Signer } from "ethers";
+import { ethers } from "ethers";
 import sampleCTokenAbi from "~/config/sample-ctoken-abi";
 import type { Token, cToken, TokenPair } from "~/types/global";
 import type { JsonRpcSigner } from "@ethersproject/providers";
@@ -95,30 +95,31 @@ async function formattedBorrowApy(
   return formatApy(apy);
 }
 
+async function getNetGainOrLoss(
+  s: JsonRpcSigner,
+  p: TokenPair
+): Promise<number> {
+  let supplied: number = await getCurrentlySupplying(s, p.cToken, p.token);
+  let supplyApy: number =
+    (await calculateDepositApy(p.token, p.cToken, s)) * 0.01;
+
+  // TODO: get dollar amount conversion here
+
+  let borrowed: number = await getBorrowedAmount(s, p.cToken, p.token);
+  let borrowApy: number =
+    (await calculateBorrowApy(p.token, p.cToken, s)) * 0.01;
+
+  return supplied * supplyApy - borrowed * borrowApy;
+}
+
 async function netApy(signer: JsonRpcSigner, tokenPairs: TokenPair[]) {
-  let weightedAmounts: number[] = await Promise.all(
-    tokenPairs.map(async (p: TokenPair): Promise<number> => {
-      let supplied: number = await getCurrentlySupplying(
-        signer,
-        p.cToken,
-        p.token
-      );
-      let supplyApy: number =
-        (await calculateDepositApy(p.token, p.cToken, signer)) * 0.01;
-
-      // TODO: get dollar amount conversion here
-
-      let borrowed: number = await getBorrowedAmount(signer, p.cToken, p.token);
-      let borrowApy: number =
-        (await calculateBorrowApy(p.token, p.cToken, signer)) * 0.01;
-
-      return supplied * supplyApy - borrowed * borrowApy;
-    })
+  let weightedValues: number[] = await Promise.all(
+    tokenPairs.map(
+      async (p): Promise<number> => await getNetGainOrLoss(signer, p)
+    )
   );
 
-  let sum: number = weightedAmounts.reduce(
-    (acc: number, curr: number): number => acc + curr
-  );
+  let sum: number = weightedValues.reduce((acc, curr) => acc + curr);
 
   let totalSupplied: number = await getTotalSupplied(signer, tokenPairs);
 
