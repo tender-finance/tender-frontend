@@ -287,12 +287,18 @@ async function projectBorrowLimit(
  */
 async function getBorrowedAmount(
   signer: Signer,
-  cToken: cToken
+  cToken: cToken,
+  token: Token
 ): Promise<number> {
   let contract = new ethers.Contract(cToken.address, SampleCTokenAbi, signer);
   let address = await signer.getAddress();
-  let borrowedAmount: number = await contract.borrowBalanceStored(address);
-  return borrowedAmount;
+  let borrowedAmount: BigNumber = await contract.borrowBalanceStored(address);
+
+  let borrowed: number = parseFloat(
+    ethers.utils.formatUnits(borrowedAmount, token.decimals)
+  );
+
+  return borrowed;
 }
 
 /**
@@ -429,6 +435,21 @@ async function hasSufficientAllowance(
   return allowance.gte(MINIMUM_REQUIRED_APPROVAL_BALANCE);
 }
 
+const getTotalSupplied = async (
+  signer: Signer,
+  tokenPairs: TokenPair[]
+): Promise<number> => {
+  let suppliedAmounts: number[] = await Promise.all(
+    tokenPairs.map(async (pair: TokenPair): Promise<number> => {
+      return await getCurrentlySupplying(signer, pair.cToken, pair.token);
+    })
+  );
+
+  return suppliedAmounts.reduce(
+    (acc: number, curr: number): number => acc + curr
+  );
+};
+
 export {
   enable,
   deposit,
@@ -446,4 +467,5 @@ export {
   hasSufficientAllowance,
   getTotalBorrowed,
   projectBorrowLimit,
+  getTotalSupplied,
 };
