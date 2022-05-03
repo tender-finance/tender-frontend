@@ -8,6 +8,7 @@ module.exports = {
           light: "#23262B",
           DEFAULT: "#080808",
         },
+        "brand-blue": "#29E5FF",
       },
     },
   },
