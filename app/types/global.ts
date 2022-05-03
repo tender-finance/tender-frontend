@@ -19,7 +19,17 @@ export interface cToken {
   decimals: number;
 }
 
-export interface Network {}
+// TODO: Consolidate Network & Network Data
+export interface NetworkData {
+  Contracts: {
+    Comptroller: string;
+  };
+
+  Tokens: any;
+  cTokens: any;
+}
+
+export interface Network extends NetworkData {}
 
 export interface Networks {
   mainnet: Network;
@@ -31,6 +41,17 @@ export interface Networks {
   metisTestnet: Network;
   metisMainnet: Network;
 }
+
+// TODO: Cleanup network type logic to be less repetitive
+export type NetworkString =
+  | "mainnet"
+  | "rinkeby"
+  | "ropsten"
+  | "auroraTestnet"
+  | "auroraMainnet"
+  | "auroraLocalnet"
+  | "metisTestnet"
+  | "metisMainnet";
 
 export enum TokenName {
   AAVE = "AAVE",
@@ -87,16 +108,12 @@ export interface SwapRowMarketDatum {
   totalBorrowedUsd: string;
 }
 
-export interface NetworkData {
-  Contracts: {
-    Comptroller: string;
-  };
-
-  Tokens: any;
-  cTokens: any;
-}
-
 export interface TokenPair {
   token: Token;
   cToken: cToken;
 }
+
+export type TenderContext = {
+  tokenPairs: TokenPair[];
+  networkData: NetworkData;
+};

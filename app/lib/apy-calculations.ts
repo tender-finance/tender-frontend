@@ -112,7 +112,10 @@ async function getNetGainOrLoss(
   return supplied * supplyApy - borrowed * borrowApy;
 }
 
-async function netApy(signer: JsonRpcSigner, tokenPairs: TokenPair[]) {
+async function netApy(
+  signer: JsonRpcSigner,
+  tokenPairs: TokenPair[]
+): Promise<number> {
   let weightedValues: number[] = await Promise.all(
     tokenPairs.map(
       async (p): Promise<number> => await getNetGainOrLoss(signer, p)

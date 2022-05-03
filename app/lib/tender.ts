@@ -450,6 +450,11 @@ const getTotalSupplied = async (
   );
 };
 
+async function getTotalSupplyBalanceInUsd(): Promise<number> {
+  // STUB
+  return 1111.42;
+}
+
 export {
   enable,
   deposit,
@@ -460,6 +465,7 @@ export {
   getBorrowLimit,
   getBorrowedAmount,
   getBorrowLimitUsed,
+  getTotalSupplyBalanceInUsd,
   repay,
   borrow,
   getMarketSizeUsd,
