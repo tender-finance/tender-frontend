@@ -11,7 +11,7 @@ export default function Header() {
       <div className="flex-grow">
         <a href="/">
           <img
-            src="/images/logo.svg"
+            src="/images/logo1.svg"
             alt="Tender Finance"
             style={{
               height: 30,

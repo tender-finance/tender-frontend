@@ -55,7 +55,14 @@ export default function AccountSummary() {
           </div>
         </div>
         <div className="w-1/3 flex justify-center">
-          <div className="bg-gray-800 rounded-full w-52 h-52  justify-start border-2 border-gray-500">
+          <div
+            style={{
+              background:
+                "linear-gradient(270deg, rgba(27, 214, 207, 0.4) 0%, rgba(0, 229, 175, 0.3) 100%), #111",
+              boxShadow: "0 0 100px rgba(27, 214, 207, 0.5)",
+            }}
+            className="bg-gray-800 rounded-full w-52 h-52  justify-start "
+          >
             <div className="flex flex-col h-full justify-center items-center">
               <div className="uppercase text-gray-400 text-sm">Net APY</div>
               <div className="text-5xl font-light">{netApy.toFixed(2)}%</div>
@@ -70,7 +77,13 @@ export default function AccountSummary() {
       <div className="flex text-xs justify-center items-center">
         <div className=" text-gray-400 mr-2">Borrow Limit</div>
         <div className="mr-2">0%</div>
-        <div className="bg-green-300 mr-2 h-0.5" ref={leftLineRef}></div>
+        <div
+          className="bg-green-300 mr-2 h-2 rounded-full"
+          style={{
+            background: "linear-gradient(270deg, #1BD6CF 0%, #00E5AF 100%)",
+          }}
+          ref={leftLineRef}
+        ></div>
         <div className="mr-2">{borrowLimitUsed}%</div>
         <div
           className="bg-gray-300 mr-2 h-0.5 flex-grow"
