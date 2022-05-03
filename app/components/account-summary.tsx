@@ -8,7 +8,7 @@ import { useTotalBorrowed } from "~/hooks/use-total-borrowed";
 import { useBorrowLimit } from "~/hooks/use-borrow-limit";
 import { useBorrowLimitUsed } from "~/hooks/use-borrow-limit-used";
 
-const formatCurrency = (v) => {
+const formatCurrency = (v: number): string => {
   return `$${v.toFixed(2)}`;
 };
 
@@ -54,7 +54,7 @@ export default function AccountSummary() {
             {formatCurrency(totalSupplyBalanceInUsd)}
           </div>
         </div>
-        <div className="w-1/3">
+        <div className="w-1/3 flex justify-center">
           <div className="bg-gray-800 rounded-full w-52 h-52  justify-start border-2 border-gray-500">
             <div className="flex flex-col h-full justify-center items-center">
               <div className="uppercase text-gray-400 text-sm">Net APY</div>
