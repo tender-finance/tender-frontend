@@ -314,6 +314,7 @@ async function getBorrowLimitUsed(
   return ((totalBorrowed / borrowedLimit) * 100).toFixed(2);
 }
 
+// TODO: Should this be returning dollars or token amounts?
 async function getTotalBorrowed(
   signer: Signer,
   tokenPairs: TokenPair[]
