@@ -26,7 +26,8 @@ import { getMarketSizeUsd, getTotalBorrowedUsd } from "~/lib/tender";
 import { useWeb3Signer } from "~/hooks/use-web3-signer";
 import { useOnSupportedNetwork } from "~/hooks/use-on-supported-network";
 
-const SUPPORTED_TOKENS = [
+// TODO: Move to config
+export const SUPPORTED_TOKENS = [
   TokenName.AAVE,
   TokenName.BAT,
   TokenName.DAI,
@@ -82,6 +83,7 @@ function generateSwapRows(
  * Calculating things like total deposits or borrow limits requires checking balances
  * across all tokens, so this function provides a list of all tokens paired with their cTokens.
  */
+// TODO: Replace this with token pairs from provider
 function generateTokenPairs(
   supportedRowTypes: TokenName[],
   networkName: string,
