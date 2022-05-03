@@ -435,6 +435,7 @@ async function hasSufficientAllowance(
   return allowance.gte(MINIMUM_REQUIRED_APPROVAL_BALANCE);
 }
 
+// TODO: This is token amounts, should this be covered to $ values?
 const getTotalSupplied = async (
   signer: Signer,
   tokenPairs: TokenPair[]
