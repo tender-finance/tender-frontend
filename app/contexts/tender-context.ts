@@ -1,12 +1,4 @@
 import { createContext } from "react";
-import { NetworkData, TokenPair } from "~/types/global";
+import type { TenderContext as TenderContextType } from "~/types/global";
 
-interface TenderContext {
-  tokenPairs: TokenPair[];
-  networkData: NetworkData;
-}
-
-export const TenderContext = createContext<TenderContext>({
-  tokenPairs: [],
-  networkData: null,
-});
+export const TenderContext = createContext<TenderContextType>(null);

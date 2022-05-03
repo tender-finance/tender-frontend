@@ -15,7 +15,11 @@ export default function AccountSummary() {
   let totalSupplyBalanceInUsd = useTotalSupplyBalanceInUsd();
   let netApy = useNetApy(signer, tokenPairs);
   let borrowbalance = useTotalBorrowed(signer, tokenPairs);
-  let borrowLimit = useBorrowLimit(signer, "99988888", tokenPairs);
+  let borrowLimit = useBorrowLimit(
+    signer,
+    networkData.Contracts.Comptroller,
+    tokenPairs
+  );
 
   return (
     <div>
