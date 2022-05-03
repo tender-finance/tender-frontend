@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { chainIdToNetwork } from "~/connectors";
-import { NetworkData, NetworkString } from "~/types/global";
+import type { NetworkData, NetworkString } from "~/types/global";
 import networks from "~/config/networks";
 
 export function useNetworkData(chainId: number | undefined) {

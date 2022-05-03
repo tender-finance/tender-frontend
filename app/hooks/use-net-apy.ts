@@ -1,7 +1,7 @@
-import { JsonRpcSigner } from "@ethersproject/providers";
+import type { JsonRpcSigner } from "@ethersproject/providers";
 import { useState, useEffect } from "react";
 import { netApy as netApyFn } from "~/lib/apy-calculations";
-import { TokenPair } from "~/types/global";
+import type { TokenPair } from "~/types/global";
 
 export function useNetApy(
   signer: JsonRpcSigner | undefined,
@@ -14,7 +14,7 @@ export function useNetApy(
       return;
     }
     netApyFn(signer, tokenPairs).then((n) => setNetApy(n));
-  }, []);
+  }, [signer, tokenPairs]);
 
   return netApy;
 }

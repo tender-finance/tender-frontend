@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { NetworkData, TenderContext, NetworkString } from "~/types/global";
+import type { TenderContext } from "~/types/global";
 import { hooks as Web3Hooks } from "~/connectors/meta-mask";
 import { useTokenPairs } from "./use-token-pairs";
 import { useOnSupportedNetwork } from "./use-on-supported-network";

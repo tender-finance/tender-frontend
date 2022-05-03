@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { NetworkData, TokenName, TokenPair } from "~/types/global";
+import type { NetworkData, TokenName, TokenPair } from "~/types/global";
 
 import { tokenMetaData } from "~/config/tokenMetaData";
 
