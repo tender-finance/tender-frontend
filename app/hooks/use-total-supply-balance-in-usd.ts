@@ -6,7 +6,7 @@ export function useTotalSupplyBalanceInUsd() {
     useState<number>(0);
 
   useEffect(() => {
-    getTotalSupplyBalanceInUsd().then(() => setTotalSupplyBalanceInUsd(0));
+    getTotalSupplyBalanceInUsd().then(() => setTotalSupplyBalanceInUsd(8899));
   }, []);
 
   return totalSupplyBalanceInUsd;

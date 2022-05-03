@@ -22,7 +22,7 @@ export default function AccountSummary() {
   );
 
   return (
-    <div>
+    <div className="hidden">
       <div>supply balance: {totalSupplyBalanceInUsd}</div>
       <div>net apy {netApy}</div>
       <div>borrow balance {borrowbalance}</div>

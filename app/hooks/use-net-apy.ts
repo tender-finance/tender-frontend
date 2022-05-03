@@ -7,7 +7,7 @@ export function useNetApy(
   signer: JsonRpcSigner | undefined,
   tokenPairs: TokenPair[]
 ) {
-  let [netApy, setNetApy] = useState<number>(0);
+  let [netApy, setNetApy] = useState<number>(999);
 
   useEffect(() => {
     if (!signer) {
