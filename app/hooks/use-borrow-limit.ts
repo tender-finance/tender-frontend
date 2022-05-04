@@ -11,7 +11,7 @@ export function useBorrowLimit(
   let [borrowLimit, setBorrowLimit] = useState<number>(0);
 
   useEffect(() => {
-    if (!signer) {
+    if (!signer || !tokenPairs) {
       return;
     }
 

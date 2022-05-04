@@ -125,12 +125,18 @@ export type TenderContext = {
 export type Market = {
   id: string;
   tokenMetaData: TokenMetaDatum;
+  tokenPair: TokenPair;
   marketData: {
     depositApy: string;
     borrowApy: string;
+    totalBorrowedUsd: string;
+    marketSizeUsd: string;
   };
   walletBalance: number;
   supplyBalance: number;
   borrowBalance: number;
+  borrowLimit: number;
   borrowLimitUsed: string;
+  totalBorrowedAmount: number;
+  comptrollerAddress: string;
 };

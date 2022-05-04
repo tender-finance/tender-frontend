@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { TenderContext } from "~/contexts/tender-context";
 import { Market } from "~/types/global";
+import MarketRow from "~/components/two-panes/market-row";
 const marketsWithBorrowOrSupply = (markets: Market[]) => {
   return markets.filter((m) => m.supplyBalance || m.borrowBalance);
 };
@@ -26,10 +27,7 @@ export default function TwoPanes() {
             <tbody>
               {marketsWithBorrowOrSupply(markets).map((m) => {
                 return (
-                  <tr
-                    key={m.id}
-                    className="text-gray-400 border-t border-t-gray-600"
-                  >
+                  <MarketRow market={m} key={m.id}>
                     <td className="flex px-8 py-6 text-left items-center">
                       <img className="w-9 mr-2" src={m.tokenMetaData.icon} />
                       {m.tokenMetaData.name}
@@ -38,7 +36,7 @@ export default function TwoPanes() {
                       {m.marketData.depositApy}
                     </td>
                     <td className="px-8 py-6 text-left">{m.walletBalance}</td>
-                  </tr>
+                  </MarketRow>
                 );
               })}
             </tbody>

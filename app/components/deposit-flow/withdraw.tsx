@@ -1,54 +1,52 @@
 import { ICON_SIZE } from "~/lib/constants";
-import type { SwapRow, SwapRowMarketDatum, TokenPair } from "~/types/global";
-import { useEffect, useState, useRef } from "react";
+import type { Market, TokenPair } from "~/types/global";
+import { useEffect, useState, useRef, useContext } from "react";
 import type { JsonRpcSigner } from "@ethersproject/providers";
 import toast from "react-hot-toast";
 import Max from "~/components/max";
 
 import clsx from "clsx";
 
-import { redeem, getCurrentlySupplying } from "~/lib/tender";
+import { redeem } from "~/lib/tender";
 import { useValidInput } from "~/hooks/use-valid-input";
 import BorrowLimit from "../fi-modal/borrow-limit";
 import { useProjectBorrowLimit } from "~/hooks/use-project-borrow-limit";
 import { useBorrowLimitUsed } from "~/hooks/use-borrow-limit-used";
 import ConfirmingTransaction from "../fi-modal/confirming-transition";
+import { TenderContext } from "~/contexts/tender-context";
 
 interface Props {
+  market: Market;
   closeModal: Function;
-  row: SwapRow;
-  marketData: SwapRowMarketDatum;
   setIsSupplying: Function;
   borrowLimit: number;
   signer: JsonRpcSigner | null | undefined;
   borrowLimitUsed: string;
   walletBalance: number;
-  tokenPairs: TokenPair[];
   totalBorrowedAmount: number;
 }
 export default function Withdraw({
+  market,
   closeModal,
-  row,
-  marketData,
   setIsSupplying,
   borrowLimit,
   signer,
   borrowLimitUsed,
-  tokenPairs,
   totalBorrowedAmount,
 }: Props) {
   let [isWaitingToBeMined, setBlockChaining] = useState<boolean>(false);
   let [value, setValue] = useState<string>("");
   let [isWithdrawing, setIsWithdrawing] = useState<boolean>(false);
-  let [currentlySupplying, setCurrentlySupplying] = useState<number>(0);
   let inputEl = useRef<HTMLInputElement>(null);
-  let isValid = useValidInput(value, 0, currentlySupplying);
+  let isValid = useValidInput(value, 0, market.supplyBalance);
+
+  let { tokenPairs } = useContext(TenderContext);
 
   let newBorrowLimit = useProjectBorrowLimit(
     signer,
-    row.comptrollerAddress,
+    market.comptrollerAddress,
     tokenPairs,
-    row.cToken,
+    market.tokenPair.cToken,
     `-${value}`
   );
 
@@ -56,15 +54,6 @@ export default function Withdraw({
     totalBorrowedAmount,
     newBorrowLimit
   );
-
-  useEffect(() => {
-    if (!signer) {
-      return;
-    }
-    getCurrentlySupplying(signer, row.cToken, row.token).then((c) =>
-      setCurrentlySupplying(c)
-    );
-  }, [signer, row.cToken, row.token]);
 
   // Highlights value input
   useEffect(() => {
@@ -90,12 +79,12 @@ export default function Withdraw({
               </div>
               <div className="flex align-middle justify-center items-center">
                 <img
-                  src={row.icon}
+                  src={market.tokenMetaData.icon}
                   style={{ width: ICON_SIZE }}
                   className="mr-3"
                   alt="icon"
                 />
-                <div>Withdraw {row.name}</div>
+                <div>Withdraw {market.tokenMetaData.name}</div>
               </div>
 
               <div className="flex flex-col justify-center items-center overflow-hidden">
@@ -106,14 +95,14 @@ export default function Withdraw({
                   defaultValue={0}
                 />
                 <Max
-                  maxValue={currentlySupplying.toString()}
+                  maxValue={market.supplyBalance.toString()}
                   updateValue={() => {
                     if (!inputEl || !inputEl.current) return;
                     inputEl.current.focus();
-                    inputEl.current.value = currentlySupplying.toString();
-                    setValue(currentlySupplying.toString());
+                    inputEl.current.value = market.supplyBalance.toString();
+                    setValue(market.supplyBalance.toString());
                   }}
-                  maxValueLabel={row.name}
+                  maxValueLabel={market.tokenMetaData.name}
                 />
               </div>
             </div>
@@ -139,13 +128,13 @@ export default function Withdraw({
                 </div>
                 <div className="flex items-center mb-3 text-gray-400  pb-6">
                   <img
-                    src={row.icon}
+                    src={market.tokenMetaData.icon}
                     style={{ width: ICON_SIZE }}
                     className="mr-3"
                     alt="icon"
                   />
                   <div className="flex-grow">Deposit APY</div>
-                  <div>{marketData.depositApy}</div>
+                  <div>{market.marketData.depositApy}</div>
                 </div>
 
                 <BorrowLimit
@@ -179,8 +168,8 @@ export default function Withdraw({
                           let txn = await redeem(
                             value,
                             signer,
-                            row.cToken,
-                            row.token
+                            market.tokenPair.cToken,
+                            market.tokenPair.token
                           );
 
                           setBlockChaining(true);
@@ -211,7 +200,7 @@ export default function Withdraw({
                 <div className="flex text-gray-500">
                   <div className="flex-grow">Currently Supplying</div>
                   <div>
-                    {currentlySupplying} {row.name}
+                    {market.supplyBalance} {market.tokenMetaData.name}
                   </div>
                 </div>
               </div>
