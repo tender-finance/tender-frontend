@@ -1,6 +1,6 @@
 import { TokenName } from "~/types/global";
 
-interface TokenMetaDatum {
+export interface TokenMetaDatum {
   icon: string;
   name: string;
   symbol: string;
