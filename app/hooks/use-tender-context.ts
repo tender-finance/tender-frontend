@@ -18,7 +18,10 @@ export function useTenderContext() {
     onSupportedNetwork
   );
 
-  let markets: Market[] = useMarkets(tokenPairs);
+  let markets: Market[] = useMarkets(
+    tokenPairs,
+    networkData?.Contracts?.Comptroller
+  );
 
   useEffect(() => {
     if (!chainId || !networkData) {

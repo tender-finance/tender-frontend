@@ -26,8 +26,8 @@ export default function TwoPanes() {
                   <img className="w-6" src={m.tokenMetaData.icon} />
                 </div>
                 <div>{m.tokenMetaData.name}</div>
-                <div>{m.marketData.borrowApy}</div>
-                <div>{m.marketData.depositApy}</div>
+                <div>dapy {m.marketData.depositApy} | </div>
+                <div>wb: {m.walletBalance}</div>
               </div>
             );
           })}
@@ -38,7 +38,24 @@ export default function TwoPanes() {
         <div className="pane mb-9 ">
           <div className="px-8 py-6 text-2xl text-brand-blue">Borrowing</div>
         </div>
-        <div className="pane">all markets borrowing</div>
+        <div className="pane">
+          <div>
+            <div>all markets borrowing</div>
+            {supplyMarkets.map((m) => {
+              return (
+                <div className="flex">
+                  <div>
+                    <img className="w-6" src={m.tokenMetaData.icon} />
+                  </div>
+                  <div>{m.tokenMetaData.name}</div>
+                  <div>bapy {m.marketData.borrowApy} |</div>
+                  <div>wb: {m.walletBalance}</div>
+                  <div>lq: ??</div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
     </div>
   );

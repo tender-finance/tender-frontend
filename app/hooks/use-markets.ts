@@ -8,6 +8,14 @@ import {
   formattedBorrowApy,
   formattedDepositApy,
 } from "~/lib/apy-calculations";
+import {
+  getBorrowLimit,
+  getBorrowLimitUsed,
+  getCurrentlyBorrowing,
+  getCurrentlySupplying,
+  getTotalBorrowed,
+  getWalletBalance,
+} from "~/lib/tender";
 
 const getMarketData = async (
   signer: JsonRpcSigner,
@@ -30,26 +38,41 @@ const getMarketData = async (
   };
 };
 
-export function useMarkets(supportedTokenPairs: TokenPair[]) {
+export function useMarkets(
+  supportedTokenPairs: TokenPair[],
+  comptrollerAddress: string | undefined
+) {
   let [markets, setMarkets] = useState<Market[]>([]);
 
   let provider = Web3Hooks.useProvider();
   const signer = useWeb3Signer(provider);
 
   useEffect(() => {
-    if (!signer) {
+    if (!signer || !comptrollerAddress) {
       return;
     }
 
     let newMarkets = supportedTokenPairs.map(async (tp): Promise<Market> => {
+      // TODO: optimize with parallelization
+      let totalBorrowed = await getTotalBorrowed(signer, supportedTokenPairs);
+      let borrowLimit = await getBorrowLimit(
+        signer,
+        comptrollerAddress,
+        supportedTokenPairs
+      );
+
       return {
         tokenMetaData: tokenMetaData[tp.token.symbol as TokenName],
         marketData: await getMarketData(signer, tp),
+        walletBalance: await getWalletBalance(signer, tp.token),
+        supplyBalance: await getCurrentlySupplying(signer, tp.cToken, tp.token),
+        borrowBalance: await getCurrentlyBorrowing(signer, tp.cToken, tp.token),
+        borrowLimitUsed: await getBorrowLimitUsed(totalBorrowed, borrowLimit),
       };
     });
 
     Promise.all(newMarkets).then((nm) => setMarkets(nm));
-  }, [supportedTokenPairs, signer]);
+  }, [supportedTokenPairs, signer, comptrollerAddress]);
 
   return markets;
 }

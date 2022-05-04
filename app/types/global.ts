@@ -128,4 +128,8 @@ export type Market = {
     depositApy: string;
     borrowApy: string;
   };
+  walletBalance: number;
+  supplyBalance: number;
+  borrowBalance: number;
+  borrowLimitUsed: string;
 };
