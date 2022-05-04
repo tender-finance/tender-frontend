@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
-import type { TenderContext } from "~/types/global";
+import type { Market, TenderContext } from "~/types/global";
 import { hooks as Web3Hooks } from "~/connectors/meta-mask";
 import { useTokenPairs } from "./use-token-pairs";
 import { useOnSupportedNetwork } from "./use-on-supported-network";
 import { useNetworkData } from "./use-network-data";
 import { SUPPORTED_TOKENS } from "../components/swap-table";
+import { useMarkets } from "./use-markets";
 
 export function useTenderContext() {
   let [tenderContext, setTenderContext] = useState<TenderContext | null>();
@@ -17,6 +18,8 @@ export function useTenderContext() {
     onSupportedNetwork
   );
 
+  let markets: Market[] = useMarkets(tokenPairs);
+
   useEffect(() => {
     if (!chainId || !networkData) {
       return;
@@ -25,8 +28,11 @@ export function useTenderContext() {
     setTenderContext({
       tokenPairs,
       networkData,
+
+      // all suppported tokens U tokens supported by current workwork?
+      supplyMarkets: markets,
     });
-  }, [chainId, tokenPairs, networkData]);
+  }, [chainId, tokenPairs, networkData, markets]);
 
   return tenderContext;
 }

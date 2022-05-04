@@ -1,4 +1,8 @@
+import { useContext } from "react";
+import { TenderContext } from "~/contexts/tender-context";
 export default function TwoPanes() {
+  let { supplyMarkets } = useContext(TenderContext);
+  console.log(supplyMarkets);
   return (
     <div className="grid grid-cols-2 gap-5">
       {/* Supply */}
@@ -12,7 +16,22 @@ export default function TwoPanes() {
           </div>
           <div>Row</div>
         </div>
-        <div className="pane">all markets Supply</div>
+        <div className="pane">
+          <div>all markets Supply</div>
+
+          {supplyMarkets.map((m) => {
+            return (
+              <div className="flex">
+                <div>
+                  <img className="w-6" src={m.tokenMetaData.icon} />
+                </div>
+                <div>{m.tokenMetaData.name}</div>
+                <div>{m.marketData.borrowApy}</div>
+                <div>{m.marketData.depositApy}</div>
+              </div>
+            );
+          })}
+        </div>
       </div>
       {/* Borrowing*/}
       <div>
