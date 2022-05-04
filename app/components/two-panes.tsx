@@ -1,10 +1,16 @@
 import { useContext } from "react";
 import { TenderContext } from "~/contexts/tender-context";
 import { Market } from "~/types/global";
-import MarketRow from "~/components/two-panes/market-row";
+import MarketSupplyRow from "~/components/two-panes/market-supply-row";
+import MarketBorrowRow from "~/components/two-panes/market-borrow-row";
 const marketsWithBorrowOrSupply = (markets: Market[]) => {
   return markets.filter((m) => m.supplyBalance || m.borrowBalance);
 };
+
+const marketsWithoutBorrowOrSupply = (markets: Market[]) => {
+  return markets.filter((m) => !(m.supplyBalance || m.borrowBalance));
+};
+
 export default function TwoPanes() {
   let { markets } = useContext(TenderContext);
   return (
@@ -27,7 +33,7 @@ export default function TwoPanes() {
             <tbody>
               {marketsWithBorrowOrSupply(markets).map((m) => {
                 return (
-                  <MarketRow market={m} key={m.id}>
+                  <MarketSupplyRow market={m} key={m.id}>
                     <td className="flex px-8 py-6 text-left items-center">
                       <img className="w-9 mr-2" src={m.tokenMetaData.icon} />
                       {m.tokenMetaData.name}
@@ -36,7 +42,7 @@ export default function TwoPanes() {
                       {m.marketData.depositApy}
                     </td>
                     <td className="px-8 py-6 text-left">{m.walletBalance}</td>
-                  </MarketRow>
+                  </MarketSupplyRow>
                 );
               })}
             </tbody>
@@ -54,7 +60,7 @@ export default function TwoPanes() {
             </thead>
 
             <tbody>
-              {markets.map((m) => {
+              {marketsWithoutBorrowOrSupply(markets).map((m) => {
                 return (
                   <tr
                     key={m.id}
@@ -94,10 +100,7 @@ export default function TwoPanes() {
             <tbody>
               {marketsWithBorrowOrSupply(markets).map((m) => {
                 return (
-                  <tr
-                    key={m.id}
-                    className="text-gray-400 border-t border-t-gray-600"
-                  >
+                  <MarketBorrowRow market={m} key={m.id}>
                     <td className="flex px-8 py-6 text-left items-center">
                       <img className="w-9 mr-2" src={m.tokenMetaData.icon} />
                       {m.tokenMetaData.name}
@@ -109,7 +112,7 @@ export default function TwoPanes() {
                     <td className="px-8 py-6 text-left text-brand-green font-bold">
                       {m.borrowLimitUsed}%
                     </td>
-                  </tr>
+                  </MarketBorrowRow>
                 );
               })}
             </tbody>
@@ -129,7 +132,7 @@ export default function TwoPanes() {
             </thead>
 
             <tbody>
-              {markets.map((m) => {
+              {marketsWithoutBorrowOrSupply(markets).map((m) => {
                 return (
                   <tr
                     key={m.id}

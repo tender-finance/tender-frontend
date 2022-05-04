@@ -7,11 +7,6 @@ import { useWeb3Signer } from "~/hooks/use-web3-signer";
 import Deposit from "~/components/deposit-flow/deposit";
 import Withdraw from "~/components/deposit-flow/withdraw";
 
-import { useWalletBalance } from "~/hooks/use-wallet-balance";
-import { useBorrowLimit } from "~/hooks/use-borrow-limit";
-import { useTotalBorrowed } from "~/hooks/use-total-borrowed";
-import { useBorrowLimitUsed } from "~/hooks/use-borrow-limit-used";
-
 interface Props {
   closeModal: Function;
   market: Market;

@@ -1,5 +1,5 @@
 import { ICON_SIZE } from "~/lib/constants";
-import type { SwapRow, SwapRowMarketDatum, TokenPair } from "~/types/global";
+import type { Market, TokenPair } from "~/types/global";
 import { useEffect, useRef, useState } from "react";
 import type { JsonRpcSigner } from "@ethersproject/providers";
 
@@ -11,7 +11,6 @@ import Max from "~/components/max";
 import { enable, repay, hasSufficientAllowance } from "~/lib/tender";
 import { useValidInput } from "~/hooks/use-valid-input";
 import BorrowBalance from "../fi-modal/borrow-balance";
-import { useCurrentlyBorrowing } from "~/hooks/use-currently-borrowing";
 import { useProjectBorrowLimit } from "~/hooks/use-project-borrow-limit";
 import { useBorrowLimitUsed } from "~/hooks/use-borrow-limit-used";
 
@@ -19,8 +18,6 @@ import ConfirmingTransaction from "../fi-modal/confirming-transition";
 
 interface Props {
   closeModal: Function;
-  row: SwapRow;
-  marketData: SwapRowMarketDatum;
   setIsRepaying: Function;
   signer: JsonRpcSigner | null | undefined;
   formattedBorrowedAmount: string;
@@ -29,18 +26,17 @@ interface Props {
   borrowLimit: number;
   tokenPairs: TokenPair[];
   totalBorrowedAmount: number;
+  market: Market;
 }
 
 export default function Repay({
+  market,
   closeModal,
-  row,
-  marketData,
   setIsRepaying,
   signer,
   formattedBorrowedAmount,
   borrowLimitUsed,
   walletBalance,
-  borrowLimit,
   tokenPairs,
   totalBorrowedAmount,
 }: Props) {
@@ -54,13 +50,11 @@ export default function Repay({
   let inputEl = useRef<HTMLInputElement>(null);
   let isValid = useValidInput(value, 0, walletBalance);
 
-  let currentlyBorrowing = useCurrentlyBorrowing(signer, row.cToken, row.token);
-
   let newBorrowLimit = useProjectBorrowLimit(
     signer,
-    row.comptrollerAddress,
+    market.comptrollerAddress,
     tokenPairs,
-    row.cToken,
+    market.tokenPair.cToken,
     value
   );
 
@@ -73,14 +67,16 @@ export default function Repay({
     if (!signer) {
       return;
     }
-    hasSufficientAllowance(signer, row.token, row.cToken).then(
-      (has: boolean) => {
-        if (!has) {
-          setIsEnabled(false);
-        }
+    hasSufficientAllowance(
+      signer,
+      market.tokenPair.token,
+      market.tokenPair.cToken
+    ).then((has: boolean) => {
+      if (!has) {
+        setIsEnabled(false);
       }
-    );
-  }, [signer, row.cToken, row.token]);
+    });
+  }, [signer, market.tokenPair.cToken, market.tokenPair.token]);
 
   // Highlights value input
   useEffect(() => {
@@ -107,19 +103,19 @@ export default function Repay({
               </div>
               <div className="flex align-middle justify-center items-center">
                 <img
-                  src={row.icon}
+                  src={market.tokenMetaData.icon}
                   style={{ width: ICON_SIZE }}
                   className="mr-3"
                   alt="icon"
                 />
-                <div>Repay {row.name}</div>
+                <div>Repay {market.tokenMetaData.name}</div>
               </div>
 
               {!isEnabled && (
                 <div>
                   <div className="max-w-sm text-center m-auto mt-5 mb-5 text-sm text-gray-400">
-                    To borrow or repay {row.name} to the Tender Protocol, you
-                    need to enable it first.
+                    To borrow or repay {market.tokenMetaData.name} to the Tender
+                    Protocol, you need to enable it first.
                   </div>
                 </div>
               )}
@@ -139,7 +135,7 @@ export default function Repay({
                       inputEl.current.value = formattedBorrowedAmount;
                       setValue(formattedBorrowedAmount);
                     }}
-                    maxValueLabel={row.name}
+                    maxValueLabel={market.tokenMetaData.name}
                   />
                 </div>
               )}
@@ -166,20 +162,20 @@ export default function Repay({
               </div>
               <div className="flex items-center mb-3 text-gray-400  pb-6">
                 <img
-                  src={row.icon}
+                  src={market.tokenMetaData.icon}
                   style={{ width: ICON_SIZE }}
                   className="mr-3"
                   alt="icon"
                 />
                 <div className="flex-grow">Borrow APY</div>
-                <div>{marketData.borrowApy}</div>
+                <div>{market.marketData.borrowApy}</div>
               </div>
 
               <BorrowBalance
                 value={value}
                 isValid={isValid}
-                borrowBalance={currentlyBorrowing}
-                newBorrowBalance={currentlyBorrowing - +value}
+                borrowBalance={market.supplyBalance}
+                newBorrowBalance={market.supplyBalance - +value}
                 borrowLimitUsed={borrowLimitUsed}
                 newBorrowLimitUsed={newBorrowLimitUsed}
               />
@@ -213,7 +209,7 @@ export default function Repay({
                 )}
 
                 {signer && isEnabled && !isValid && (
-                  <button className="py-4 text-center text-white font-bold rounded bg-brand-green w-full bg-gray-200">
+                  <button className="py-4 text-center text-white font-bold rounded  w-full bg-gray-200">
                     Deposit
                   </button>
                 )}
@@ -234,8 +230,8 @@ export default function Repay({
                         let txn = await repay(
                           value,
                           signer,
-                          row.cToken,
-                          row.token
+                          market.tokenPair.cToken,
+                          market.tokenPair.token
                         );
 
                         setIsWaitingToBeMined(true);
@@ -268,7 +264,7 @@ export default function Repay({
               <div className="flex text-gray-500">
                 <div className="flex-grow">Wallet Balance</div>
                 <div>
-                  {walletBalance} {row.name}
+                  {walletBalance} {market.tokenMetaData.name}
                 </div>
               </div>
             </div>
