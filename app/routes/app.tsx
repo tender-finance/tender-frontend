@@ -1,4 +1,3 @@
-import SwapTable from "~/components/swap-table";
 import AccountSummary from "~/components/account-summary";
 import { TenderContext } from "~/contexts/tender-context";
 import { useTenderContext } from "~/hooks/use-tender-context";
