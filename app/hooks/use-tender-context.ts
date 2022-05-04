@@ -33,7 +33,7 @@ export function useTenderContext() {
       networkData,
 
       // all suppported tokens U tokens supported by current workwork?
-      supplyMarkets: markets,
+      markets,
     });
   }, [chainId, tokenPairs, networkData, markets]);
 

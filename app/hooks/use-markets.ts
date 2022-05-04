@@ -62,6 +62,7 @@ export function useMarkets(
       );
 
       return {
+        id: tp.token.symbol,
         tokenMetaData: tokenMetaData[tp.token.symbol as TokenName],
         marketData: await getMarketData(signer, tp),
         walletBalance: await getWalletBalance(signer, tp.token),

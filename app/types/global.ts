@@ -119,10 +119,11 @@ export interface TokenPair {
 export type TenderContext = {
   tokenPairs: TokenPair[];
   networkData: NetworkData;
-  supplyMarkets: Market[];
+  markets: Market[];
 };
 
 export type Market = {
+  id: string;
   tokenMetaData: TokenMetaDatum;
   marketData: {
     depositApy: string;
