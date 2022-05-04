@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { TenderContext } from "~/contexts/tender-context";
-import { Market } from "~/types/global";
+import type { Market } from "~/types/global";
 import MarketSupplyRow from "~/components/two-panes/market-supply-row";
 import MarketBorrowRow from "~/components/two-panes/market-borrow-row";
 const marketsWithBorrowOrSupply = (markets: Market[]) => {
@@ -35,7 +35,11 @@ export default function TwoPanes() {
                 return (
                   <MarketSupplyRow market={m} key={m.id}>
                     <td className="flex px-8 py-6 text-left items-center">
-                      <img className="w-9 mr-2" src={m.tokenMetaData.icon} />
+                      <img
+                        className="w-9 mr-2"
+                        src={m.tokenMetaData.icon}
+                        alt={m.tokenMetaData.name}
+                      />
                       {m.tokenMetaData.name}
                     </td>
                     <td className="px-8 py-6 text-left">
@@ -67,7 +71,11 @@ export default function TwoPanes() {
                     className="text-gray-400 border-t border-t-gray-600"
                   >
                     <td className="flex px-8 py-6 text-left items-center">
-                      <img className="w-9 mr-2" src={m.tokenMetaData.icon} />
+                      <img
+                        className="w-9 mr-2"
+                        src={m.tokenMetaData.icon}
+                        alt={m.tokenMetaData.name}
+                      />
                       {m.tokenMetaData.name}
                     </td>
                     <td className="px-8 py-6 text-left">
@@ -102,7 +110,11 @@ export default function TwoPanes() {
                 return (
                   <MarketBorrowRow market={m} key={m.id}>
                     <td className="flex px-8 py-6 text-left items-center">
-                      <img className="w-9 mr-2" src={m.tokenMetaData.icon} />
+                      <img
+                        className="w-9 mr-2"
+                        src={m.tokenMetaData.icon}
+                        alt={m.tokenMetaData.name}
+                      />
                       {m.tokenMetaData.name}
                     </td>
                     <td className="px-8 py-6 text-left">
@@ -139,7 +151,11 @@ export default function TwoPanes() {
                     className="text-gray-400 border-t border-t-gray-600"
                   >
                     <td className="flex px-8 py-6 text-left items-center">
-                      <img className="w-9 mr-2" src={m.tokenMetaData.icon} />
+                      <img
+                        className="w-9 mr-2"
+                        src={m.tokenMetaData.icon}
+                        alt={m.tokenMetaData.name}
+                      />
                       {m.tokenMetaData.name}
                     </td>
                     <td className="px-8 py-6 text-left">

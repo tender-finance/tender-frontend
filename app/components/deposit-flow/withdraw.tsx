@@ -1,5 +1,5 @@
 import { ICON_SIZE } from "~/lib/constants";
-import type { Market, TokenPair } from "~/types/global";
+import type { Market } from "~/types/global";
 import { useEffect, useState, useRef, useContext } from "react";
 import type { JsonRpcSigner } from "@ethersproject/providers";
 import toast from "react-hot-toast";

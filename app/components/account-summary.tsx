@@ -43,7 +43,7 @@ export default function AccountSummary() {
       1
     );
     leftEl.style.width = `${w}px`;
-  }, [borrowLimitUsed]);
+  }, [borrowLimitUsed, borrowBalance]);
 
   return (
     <div className="max-w-4xl m-auto mb-24">

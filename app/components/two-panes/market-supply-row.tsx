@@ -1,7 +1,10 @@
 import { useState } from "react";
 import ReactModal from "react-modal";
-import { Market } from "~/types/global";
+import type { Market } from "~/types/global";
 import DepositFlow from "../deposit-flow";
+
+// TODO: Do I need to set this?
+// ReactModal.setAppElement("#m");
 
 export default function MarketRow(props: {
   market: Market;

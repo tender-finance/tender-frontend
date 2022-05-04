@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Market, TokenName, TokenPair } from "~/types/global";
+import type { Market, TokenName, TokenPair } from "~/types/global";
 import { tokenMetaData } from "~/config/tokenMetaData";
 import { JsonRpcSigner } from "@ethersproject/providers";
 import { hooks as Web3Hooks } from "~/connectors/meta-mask";

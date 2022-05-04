@@ -1,9 +1,6 @@
 import { Link } from "remix";
 import SubscribeToNewsletter from "~/components/subscribe-to-newsletter";
-import SwapTable from "~/components/swap-table";
-import TwoPanes from "~/components/two-panes";
 
-const useSwapTable = false;
 export default function Index() {
   const coinDetails = [
     {
@@ -63,10 +60,6 @@ export default function Index() {
         </div>
       </div>
 
-      <div className="c">
-        {useSwapTable && <SwapTable />}
-        {!useSwapTable && <TwoPanes />}
-      </div>
       <div className="c mb-96">
         <div className="flex">
           <div className="max-w-sm ">
