@@ -66,7 +66,10 @@ export default function AccountSummary() {
           >
             <div className="flex flex-col h-full justify-center items-center">
               <div className="uppercase text-gray-100 text-sm">Net APY</div>
-              <div className="text-5xl font-light">{netApy.toFixed(2)}%</div>
+              {netApy && (
+                <div className="text-5xl font-light">{netApy.toFixed(2)}%</div>
+              )}
+              {!netApy && <div className="text-5xl font-light">--</div>}
               <div className="absolute top-0 right-0">
                 <Ring
                   percent={
