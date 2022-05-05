@@ -314,6 +314,7 @@ async function getBorrowLimitUsed(
   return ((totalBorrowed / borrowedLimit) * 100).toFixed(2);
 }
 
+// TODO: Should this be returning dollars or token amounts?
 async function getTotalBorrowed(
   signer: Signer,
   tokenPairs: TokenPair[]
@@ -435,6 +436,7 @@ async function hasSufficientAllowance(
   return allowance.gte(MINIMUM_REQUIRED_APPROVAL_BALANCE);
 }
 
+// TODO: This is token amounts, should this be covered to $ values?
 const getTotalSupplied = async (
   signer: Signer,
   tokenPairs: TokenPair[]
