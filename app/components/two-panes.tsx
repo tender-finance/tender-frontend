@@ -14,7 +14,7 @@ const marketsWithoutBorrowOrSupply = (markets: Market[]) => {
 export default function TwoPanes() {
   let { markets } = useContext(TenderContext);
   return (
-    <div className="grid grid-cols-2 gap-5 mb-8">
+    <div className="grid grid-cols-2 gap-9 mb-14">
       {/* Supply */}
       <div>
         <div className="pane mb-9 ">
@@ -162,7 +162,7 @@ export default function TwoPanes() {
                       {m.marketData.borrowApy}
                     </td>
                     <td className="px-8 py-6 text-left">{m.walletBalance}</td>
-                    <td className="px-8 py-6 text-left">TODO</td>
+                    <td className="px-8 py-6 text-left">0</td>
                   </tr>
                 );
               })}
