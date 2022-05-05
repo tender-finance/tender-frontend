@@ -3,8 +3,7 @@ import ReactModal from "react-modal";
 import type { Market } from "~/types/global";
 import BorrowFlow from "../borrow-flow";
 
-// TODO: Do I need to set this?
-// ReactModal.setAppElement("#m");
+ReactModal.setAppElement("#m");
 
 export default function MarketRow(props: {
   market: Market;
