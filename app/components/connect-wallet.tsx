@@ -26,7 +26,10 @@ export default function ConnectWallet() {
             Connected as {truncateAccount(accounts)}
           </div>
           <button
-            className="bg-brand-green text-white py-2 px-4"
+            style={{
+              background: "linear-gradient(270deg, #1BD6CF 0%, #00E5AF 100%)",
+            }}
+            className="bg-brand-green text-gray-900 py-2 px-8 rounded-md"
             onClick={() => metaMask.deactivate()}
           >
             Disconnect
