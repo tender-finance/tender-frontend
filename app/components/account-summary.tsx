@@ -68,7 +68,12 @@ export default function AccountSummary() {
               <div className="uppercase text-gray-100 text-sm">Net APY</div>
               <div className="text-5xl font-light">{netApy.toFixed(2)}%</div>
               <div className="absolute top-0 right-0">
-                <Ring percent={100} />
+                <Ring
+                  percent={
+                    totalSupplyBalanceInUsd /
+                    (borrowBalance + totalSupplyBalanceInUsd)
+                  }
+                />
               </div>
             </div>
           </div>
@@ -80,7 +85,6 @@ export default function AccountSummary() {
       </div>
       <div className="flex text-xs justify-center items-center">
         <div className=" text-gray-400 mr-2">Borrow Limit</div>
-        <div className="mr-2">0%</div>
         <div
           className="bg-green-300 mr-2 h-2 rounded-full"
           style={{
@@ -93,7 +97,7 @@ export default function AccountSummary() {
           className="bg-gray-300 mr-2 h-0.5 flex-grow"
           ref={rightLineRef}
         ></div>
-        <div>{borrowLimit}</div>
+        <div>${borrowLimit}</div>
       </div>
     </div>
   );
