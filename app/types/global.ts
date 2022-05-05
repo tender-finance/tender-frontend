@@ -1,3 +1,5 @@
+import { TokenMetaDatum } from "~/config/tokenMetaData";
+
 export interface SwapRow {
   icon: string;
   name: string;
@@ -7,6 +9,7 @@ export interface SwapRow {
 }
 
 export interface Token {
+  symbol: TokenName;
   icon: string;
   name: string;
   decimals: number;
@@ -116,4 +119,24 @@ export interface TokenPair {
 export type TenderContext = {
   tokenPairs: TokenPair[];
   networkData: NetworkData;
+  markets: Market[];
+};
+
+export type Market = {
+  id: string;
+  tokenMetaData: TokenMetaDatum;
+  tokenPair: TokenPair;
+  marketData: {
+    depositApy: string;
+    borrowApy: string;
+    totalBorrowedUsd: string;
+    marketSizeUsd: string;
+  };
+  walletBalance: number;
+  supplyBalance: number;
+  borrowBalance: number;
+  borrowLimit: number;
+  borrowLimitUsed: string;
+  totalBorrowedAmount: number;
+  comptrollerAddress: string;
 };

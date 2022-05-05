@@ -1,4 +1,4 @@
-import type { SwapRow, SwapRowMarketDatum, TokenPair } from "~/types/global";
+import type { Market } from "~/types/global";
 import { useState } from "react";
 
 import { hooks as Web3Hooks } from "~/connectors/meta-mask";
@@ -7,58 +7,39 @@ import { useWeb3Signer } from "~/hooks/use-web3-signer";
 import Deposit from "~/components/deposit-flow/deposit";
 import Withdraw from "~/components/deposit-flow/withdraw";
 
-import { useWalletBalance } from "~/hooks/use-wallet-balance";
-import { useBorrowLimit } from "~/hooks/use-borrow-limit";
-import { useTotalBorrowed } from "~/hooks/use-total-borrowed";
-import { useBorrowLimitUsed } from "~/hooks/use-borrow-limit-used";
-
 interface Props {
   closeModal: Function;
-  row: SwapRow;
-  tokenPairs: TokenPair[];
-  marketData: SwapRowMarketDatum;
+  market: Market;
 }
 
-export default function DepositFlow({
-  closeModal,
-  row,
-  marketData,
-  tokenPairs,
-}: Props) {
+export default function DepositFlow({ closeModal, market }: Props) {
   let [isSupplying, setIsSupplying] = useState<boolean>(true);
 
   let provider = Web3Hooks.useProvider();
   const signer = useWeb3Signer(provider);
-  let walletBalance = useWalletBalance(signer, row.token);
-  let borrowLimit = useBorrowLimit(signer, row.comptrollerAddress, tokenPairs);
-  let totalBorrowedAmount = useTotalBorrowed(signer, tokenPairs);
-  let borrowLimitUsed = useBorrowLimitUsed(totalBorrowedAmount, borrowLimit);
 
   return isSupplying ? (
     <Deposit
-      row={row}
       closeModal={closeModal}
-      marketData={marketData}
+      market={market}
       setIsSupplying={setIsSupplying}
-      borrowLimit={borrowLimit}
-      borrowLimitUsed={borrowLimitUsed}
+      borrowLimit={market.borrowLimit}
+      borrowLimitUsed={market.borrowLimitUsed}
       signer={signer}
-      walletBalance={walletBalance}
-      tokenPairs={tokenPairs}
-      totalBorrowedAmount={totalBorrowedAmount}
+      walletBalance={market.walletBalance}
+      totalBorrowedAmount={market.totalBorrowedAmount}
+      comptrollerAddress={market.comptrollerAddress}
     />
   ) : (
     <Withdraw
-      row={row}
+      market={market}
       closeModal={closeModal}
-      marketData={marketData}
       setIsSupplying={setIsSupplying}
-      borrowLimit={borrowLimit}
-      borrowLimitUsed={borrowLimitUsed}
+      borrowLimit={market.borrowLimit}
+      borrowLimitUsed={market.borrowLimitUsed}
       signer={signer}
-      walletBalance={walletBalance}
-      tokenPairs={tokenPairs}
-      totalBorrowedAmount={totalBorrowedAmount}
+      walletBalance={market.walletBalance}
+      totalBorrowedAmount={market.totalBorrowedAmount}
     />
   );
 }

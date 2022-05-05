@@ -1,6 +1,6 @@
 import { ICON_SIZE } from "~/lib/constants";
-import type { SwapRow, SwapRowMarketDatum, TokenPair } from "~/types/global";
-import { useEffect, useRef, useState } from "react";
+import type { Market } from "~/types/global";
+import { useContext, useEffect, useRef, useState } from "react";
 import type { JsonRpcSigner } from "@ethersproject/providers";
 import { useValidInput } from "~/hooks/use-valid-input";
 import toast from "react-hot-toast";
@@ -12,30 +12,29 @@ import BorrowLimit from "../fi-modal/borrow-limit";
 import { useProjectBorrowLimit } from "~/hooks/use-project-borrow-limit";
 import { useBorrowLimitUsed } from "~/hooks/use-borrow-limit-used";
 import ConfirmingTransaction from "../fi-modal/confirming-transition";
+import { TenderContext } from "~/contexts/tender-context";
 
 interface Props {
   closeModal: Function;
-  row: SwapRow;
-  marketData: SwapRowMarketDatum;
+  market: Market;
   setIsSupplying: Function;
   borrowLimit: number;
   signer: JsonRpcSigner | null | undefined;
   borrowLimitUsed: string;
   walletBalance: number;
-  tokenPairs: TokenPair[];
   totalBorrowedAmount: number;
+  comptrollerAddress: string;
 }
 export default function Deposit({
   closeModal,
-  row,
-  marketData,
+  comptrollerAddress,
   setIsSupplying,
   borrowLimit,
   signer,
   borrowLimitUsed,
   walletBalance,
-  tokenPairs,
   totalBorrowedAmount,
+  market,
 }: Props) {
   let [isWaitingToBeMined, setIsWaitingToBeMined] = useState<boolean>(false);
   let [isEnabled, setIsEnabled] = useState<boolean>(true);
@@ -45,11 +44,13 @@ export default function Deposit({
   let inputEl = useRef<HTMLInputElement>(null);
   let isValid = useValidInput(value, 0, walletBalance);
 
+  let { tokenPairs } = useContext(TenderContext);
+
   let newBorrowLimit = useProjectBorrowLimit(
     signer,
-    row.comptrollerAddress,
+    comptrollerAddress,
     tokenPairs,
-    row.cToken,
+    market.tokenPair.cToken,
     value
   );
 
@@ -62,14 +63,16 @@ export default function Deposit({
     if (!signer) {
       return;
     }
-    hasSufficientAllowance(signer, row.token, row.cToken).then(
-      (has: boolean) => {
-        if (!has) {
-          setIsEnabled(false);
-        }
+    hasSufficientAllowance(
+      signer,
+      market.tokenPair.token,
+      market.tokenPair.cToken
+    ).then((has: boolean) => {
+      if (!has) {
+        setIsEnabled(false);
       }
-    );
-  }, [signer, row.cToken, row.token]);
+    });
+  }, [signer, market.tokenPair.cToken, market.tokenPair.token]);
 
   // Highlights value input
   useEffect(() => {
@@ -94,19 +97,19 @@ export default function Deposit({
             </div>
             <div className="flex align-middle justify-center items-center">
               <img
-                src={row.icon}
+                src={market.tokenMetaData.icon}
                 style={{ width: ICON_SIZE }}
                 className="mr-3"
                 alt="icon"
               />
-              <div>Deposit {row.name}</div>
+              <div>Deposit {market.tokenMetaData.name}</div>
             </div>
 
             {!isEnabled && (
               <div>
                 <div className="max-w-sm text-center m-auto mt-5 mb-5 text-sm text-gray-400">
-                  To deposit or repay {row.name} to the Tender Protocol, you
-                  need to enable it first.
+                  To deposit or repay {market.tokenMetaData.name} to the Tender
+                  Protocol, you need to enable it first.
                 </div>
               </div>
             )}
@@ -120,7 +123,7 @@ export default function Deposit({
                     inputEl.current.value = walletBalance.toString();
                     setValue(walletBalance.toString());
                   }}
-                  maxValueLabel={row.name}
+                  maxValueLabel={market.tokenMetaData.name}
                 />
                 <div className="flex flex-col justify-center items-center overflow-hidden">
                   <input
@@ -156,13 +159,13 @@ export default function Deposit({
             </div>
             <div className="flex items-center mb-3 text-gray-400  pb-6">
               <img
-                src={row.icon}
+                src={market.tokenMetaData.icon}
                 style={{ width: ICON_SIZE }}
                 className="mr-3"
                 alt="icon"
               />
               <div className="flex-grow">Deposit APY</div>
-              <div>{marketData.depositApy}</div>
+              <div>{market.marketData.depositApy}</div>
             </div>
             <BorrowLimit
               value={value}
@@ -219,8 +222,8 @@ export default function Deposit({
                       let txn = await deposit(
                         value,
                         signer,
-                        row.cToken,
-                        row.token
+                        market.tokenPair.cToken,
+                        market.tokenPair.token
                       );
                       setIsWaitingToBeMined(true);
                       await txn.wait();
@@ -250,7 +253,7 @@ export default function Deposit({
             <div className="flex text-gray-500">
               <div className="flex-grow">Wallet Balance</div>
               <div>
-                {walletBalance} {row.name}
+                {walletBalance} {market.tokenMetaData.name}
               </div>
             </div>
           </div>

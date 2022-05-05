@@ -1,66 +1,50 @@
-import type { SwapRow, SwapRowMarketDatum, TokenPair } from "~/types/global";
-import { useState } from "react";
+import type { Market } from "~/types/global";
+import { useContext, useState } from "react";
 import { hooks as Web3Hooks } from "~/connectors/meta-mask";
 
 import Repay from "~/components/borrow-flow/repay";
 import Borrow from "~/components/borrow-flow/borrow";
 
 import { useWeb3Signer } from "~/hooks/use-web3-signer";
-import { useWalletBalance } from "~/hooks/use-wallet-balance";
-import { useBorrowLimit } from "~/hooks/use-borrow-limit";
-import { useBorrowedAmount } from "~/hooks/use-borrowed-amount";
-import { useTotalBorrowed } from "~/hooks/use-total-borrowed";
-import { useBorrowLimitUsed } from "~/hooks/use-borrow-limit-used";
+import { TenderContext } from "~/contexts/tender-context";
 
 interface Props {
   closeModal: Function;
-  row: SwapRow;
-  tokenPairs: TokenPair[];
-  marketData: SwapRowMarketDatum;
+  market: Market;
 }
 
-export default function BorrowFlow({
-  closeModal,
-  row,
-  marketData,
-  tokenPairs,
-}: Props) {
+export default function BorrowFlow({ closeModal, market }: Props) {
   let [isRepaying, setIsRepaying] = useState<boolean>(false);
+
+  let { tokenPairs } = useContext(TenderContext);
 
   let provider = Web3Hooks.useProvider();
   const signer = useWeb3Signer(provider);
-  let walletBalance = useWalletBalance(signer, row.token);
-  let borrowLimit = useBorrowLimit(signer, row.comptrollerAddress, tokenPairs);
-  let borrowedAmount = useBorrowedAmount(signer, row.cToken, row.token);
-  let totalBorrowedAmount = useTotalBorrowed(signer, tokenPairs);
-  let borrowLimitUsed = useBorrowLimitUsed(totalBorrowedAmount, borrowLimit);
 
   return isRepaying ? (
     <Repay
-      row={row}
-      marketData={marketData}
+      market={market}
       closeModal={closeModal}
       setIsRepaying={setIsRepaying}
-      formattedBorrowedAmount={borrowedAmount.toFixed(2)}
+      formattedBorrowedAmount={market.totalBorrowedAmount.toFixed(2)}
       signer={signer}
-      borrowLimitUsed={borrowLimitUsed}
-      walletBalance={walletBalance}
+      borrowLimitUsed={market.borrowLimitUsed}
+      walletBalance={market.walletBalance}
       tokenPairs={tokenPairs}
-      borrowLimit={borrowLimit}
-      totalBorrowedAmount={totalBorrowedAmount}
+      borrowLimit={market.borrowLimit}
+      totalBorrowedAmount={market.totalBorrowedAmount}
     />
   ) : (
     <Borrow
-      row={row}
-      marketData={marketData}
+      market={market}
       closeModal={closeModal}
       setIsRepaying={setIsRepaying}
       signer={signer}
-      borrowLimitUsed={borrowLimitUsed}
-      borrowLimit={borrowLimit}
-      walletBalance={walletBalance}
+      borrowLimitUsed={market.borrowLimitUsed}
+      borrowLimit={market.borrowLimit}
+      walletBalance={market.walletBalance}
       tokenPairs={tokenPairs}
-      totalBorrowedAmount={totalBorrowedAmount}
+      totalBorrowedAmount={market.totalBorrowedAmount}
     />
   );
 }

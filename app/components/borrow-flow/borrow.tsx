@@ -1,5 +1,5 @@
 import { ICON_SIZE } from "~/lib/constants";
-import type { SwapRow, SwapRowMarketDatum, TokenPair } from "~/types/global";
+import type { Market, TokenPair } from "~/types/global";
 import { useEffect, useState, useRef } from "react";
 import type { JsonRpcSigner } from "@ethersproject/providers";
 
@@ -17,9 +17,8 @@ import { useCurrentlyBorrowing } from "~/hooks/use-currently-borrowing";
 import ConfirmingTransaction from "../fi-modal/confirming-transition";
 
 interface Props {
+  market: Market;
   closeModal: Function;
-  row: SwapRow;
-  marketData: SwapRowMarketDatum;
   setIsRepaying: Function;
   signer: JsonRpcSigner | null | undefined;
   borrowLimitUsed: string;
@@ -30,9 +29,8 @@ interface Props {
 }
 
 export default function Borrow({
+  market,
   closeModal,
-  row,
-  marketData,
   setIsRepaying,
   signer,
   borrowLimit,
@@ -44,14 +42,18 @@ export default function Borrow({
   let [value, setValue] = useState<string>("");
   let [isBorrowing, setIsBorrowing] = useState<boolean>(false);
   let inputEl = useRef<HTMLInputElement>(null);
-  let currentlyBorrowing = useCurrentlyBorrowing(signer, row.cToken, row.token);
+  let currentlyBorrowing = useCurrentlyBorrowing(
+    signer,
+    market.tokenPair.cToken,
+    market.tokenPair.token
+  );
   let isValid = useValidInput(value, 0, borrowLimit);
 
   let newBorrowLimit = useProjectBorrowLimit(
     signer,
-    row.comptrollerAddress,
+    market.comptrollerAddress,
     tokenPairs,
-    row.cToken,
+    market.tokenPair.cToken,
     `-${value}`
   );
 
@@ -84,12 +86,12 @@ export default function Borrow({
               </div>
               <div className="flex align-middle justify-center items-center">
                 <img
-                  src={row.icon}
+                  src={market.tokenMetaData.icon}
                   style={{ width: ICON_SIZE }}
                   className="mr-3"
                   alt="icon"
                 />
-                <div>Borrow {row.name}</div>
+                <div>Borrow {market.tokenMetaData.name}</div>
               </div>
 
               <div className="flex flex-col justify-center items-center overflow-hidden">
@@ -108,7 +110,7 @@ export default function Borrow({
                     inputEl.current.value = `${borrowLimit}`;
                     setValue(`${borrowLimit}`);
                   }}
-                  maxValueLabel={row.name}
+                  maxValueLabel={market.tokenMetaData.name}
                 />
               </div>
             </div>
@@ -134,13 +136,13 @@ export default function Borrow({
                 </div>
                 <div className="flex items-center mb-3 text-gray-400  pb-6">
                   <img
-                    src={row.icon}
+                    src={market.tokenMetaData.icon}
                     style={{ width: ICON_SIZE }}
                     className="mr-3"
                     alt="icon"
                   />
                   <div className="flex-grow">Borrow APY</div>
-                  <div>{marketData.borrowApy}</div>
+                  <div>{market.marketData.borrowApy}</div>
                 </div>
 
                 <BorrowBalance
@@ -155,7 +157,7 @@ export default function Borrow({
                 <div className="mb-8">
                   {!signer && <div>Connect wallet to get started</div>}
                   {signer && !isValid && (
-                    <button className="py-4 text-center text-white font-bold rounded bg-brand-green w-full bg-gray-200">
+                    <button className="py-4 text-center text-white font-bold rounded  w-full bg-gray-200">
                       Borrow
                     </button>
                   )}
@@ -174,8 +176,8 @@ export default function Borrow({
                           let txn = await borrow(
                             value,
                             signer,
-                            row.cToken,
-                            row.token
+                            market.tokenPair.cToken,
+                            market.tokenPair.token
                           );
 
                           setIsWaitingToBeMined(true);
@@ -206,7 +208,7 @@ export default function Borrow({
                 <div className="flex text-gray-500">
                   <div className="flex-grow">Currently Borrowing</div>
                   <div>
-                    {currentlyBorrowing} {row.name}
+                    {currentlyBorrowing} {market.tokenMetaData.name}
                   </div>
                 </div>
               </div>

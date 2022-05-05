@@ -1,7 +1,7 @@
-import SwapTable from "~/components/swap-table";
 import AccountSummary from "~/components/account-summary";
 import { TenderContext } from "~/contexts/tender-context";
 import { useTenderContext } from "~/hooks/use-tender-context";
+import TwoPanes from "~/components/two-panes";
 
 export default function App() {
   let tenderContextData = useTenderContext();
@@ -11,7 +11,7 @@ export default function App() {
       {tenderContextData && (
         <TenderContext.Provider value={tenderContextData}>
           <AccountSummary />
-          <SwapTable />
+          <TwoPanes />
         </TenderContext.Provider>
       )}
 
