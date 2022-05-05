@@ -20,7 +20,7 @@ export default function Ring({ percent }: { percent: number }) {
         style={{
           width: "208px",
           height: "208px",
-          transform: "rotate(80deg)",
+          transform: "rotate(80deg) scale(1.05)",
         }}
       >
         <svg viewBox="0 0 128 128">
