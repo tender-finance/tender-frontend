@@ -68,7 +68,7 @@ export default function AccountSummary() {
               <div className="uppercase text-gray-100 text-sm">Net APY</div>
               <div className="text-5xl font-light">{netApy.toFixed(2)}%</div>
               <div className="absolute top-0 right-0">
-                <Ring />
+                <Ring percent={30} />
               </div>
             </div>
           </div>

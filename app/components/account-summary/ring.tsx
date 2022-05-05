@@ -1,17 +1,26 @@
 import { useLayoutEffect, useState } from "react";
 
-export default function Ring() {
-  let [strokeOffset, setStrokeOffset] = useState<number>(400);
+const NEAR_ZERO_PERCENT = 385;
+const NEAR_HUNDRED_PERCENT = 760;
+
+export default function Ring({ percent }: { percent: number }) {
+  let [strokeOffset, setStrokeOffset] = useState<number>(NEAR_ZERO_PERCENT);
 
   useLayoutEffect(() => {
-    setTimeout(() => setStrokeOffset(0), 1000);
-  }, []);
+    if (!percent) {
+      return;
+    }
+    let offsetOffest =
+      (NEAR_HUNDRED_PERCENT - NEAR_ZERO_PERCENT) * (percent / 100);
+    setTimeout(() => setStrokeOffset(NEAR_ZERO_PERCENT + offsetOffest), 300);
+  }, [percent]);
   return (
     <div className="flex">
       <div
         style={{
           width: "208px",
           height: "208px",
+          transform: "rotate(80deg)",
         }}
       >
         <svg viewBox="0 0 128 128">
@@ -22,7 +31,7 @@ export default function Ring() {
               fill: "transparent",
               strokeWidth: 4,
               strokeLinecap: "round",
-              transition: "stroke-dashoffset 0.5s ease",
+              transition: "stroke-dashoffset 0.2s ease",
             }}
             stroke="rgba(14, 221, 191, 1)"
             cx="64"
