@@ -117,7 +117,7 @@ export default function TwoPanes() {
                       {m.tokenMetaData.name}
                     </td>
                     <td className="px-8 py-6 text-left">
-                      {m.marketData.depositApy}
+                      {m.marketData.borrowApy}
                     </td>
                     <td className="px-8 py-6 text-left">${m.borrowBalance}</td>
                     <td className="px-8 py-6 text-left text-brand-green font-bold">
