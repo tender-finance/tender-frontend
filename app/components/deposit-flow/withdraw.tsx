@@ -124,7 +124,6 @@ export default function Withdraw({
               <div className="py-6 px-12" style={{ background: "#1C1E22" }}>
                 <div className="flex mb-4">
                   <span className="font-bold mr-3">Deposit Rates</span>{" "}
-                  <img src="/images/box-arrow.svg" alt="box arrow" />
                 </div>
                 <div className="flex items-center mb-3 text-gray-400  pb-6">
                   <img
