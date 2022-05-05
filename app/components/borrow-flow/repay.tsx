@@ -209,7 +209,7 @@ export default function Repay({
 
                 {signer && isEnabled && !isValid && (
                   <button className="py-4 text-center text-white font-bold rounded  w-full bg-gray-200">
-                    Deposit
+                    Repay
                   </button>
                 )}
 
