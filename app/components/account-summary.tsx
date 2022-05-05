@@ -71,12 +71,17 @@ export default function AccountSummary() {
               )}
               {!netApy && <div className="text-5xl font-light">--</div>}
               <div className="absolute top-0 right-0">
-                <Ring
-                  percent={
-                    totalSupplyBalanceInUsd /
-                    (borrowBalance + totalSupplyBalanceInUsd)
-                  }
-                />
+                {}
+                {totalSupplyBalanceInUsd /
+                  (borrowBalance + totalSupplyBalanceInUsd) >
+                  0 && (
+                  <Ring
+                    percent={
+                      totalSupplyBalanceInUsd /
+                      (borrowBalance + totalSupplyBalanceInUsd)
+                    }
+                  />
+                )}
               </div>
             </div>
           </div>
