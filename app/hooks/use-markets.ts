@@ -35,7 +35,8 @@ const getMarketData = async (
     signer
   );
 
-  // TODO: don't think we're using these two fields
+  // TODO: don't think we're using these two fields,
+  // but we might when we build the individual market pages?
   let totalBorrowedUsd = await getTotalBorrowedUsd(signer, tp.cToken);
   let marketSizeUsd = await getMarketSizeUsd(signer, tp.cToken);
 

@@ -455,6 +455,24 @@ const getTotalSupplied = async (
   );
 };
 
+async function getAssetPriceInUsd(
+  signer: Signer,
+  priceOracleAddress: string
+): Promise<number> {
+  let contract = new ethers.Contract(
+    priceOracleAddress,
+    SamplePriceOracleAbi,
+    signer
+  );
+
+  let decimals = await contract.decimals();
+  let { answer }: { answer: BigNumber } = await contract.latestRoundData();
+
+  let priceInUsd = parseFloat(formatUnits(answer, decimals));
+
+  return priceInUsd;
+}
+
 async function getTotalSupplyBalanceInUsd(
   signer: Signer,
   tokenPairs: TokenPair[],
@@ -476,24 +494,6 @@ async function getTotalSupplyBalanceInUsd(
   );
 
   return suppliedAmounts.reduce((acc, curr) => acc + curr);
-}
-
-async function getAssetPriceInUsd(
-  signer: Signer,
-  priceOracleAddress: string
-): Promise<number> {
-  let contract = new ethers.Contract(
-    priceOracleAddress,
-    SamplePriceOracleAbi,
-    signer
-  );
-
-  let decimals = await contract.decimals();
-  let { answer }: { answer: BigNumber } = await contract.latestRoundData();
-
-  let priceInUsd = parseFloat(formatUnits(answer, decimals));
-
-  return priceInUsd;
 }
 
 // TODO: Very similar to getTotalBorrowed, which can likely go away now
