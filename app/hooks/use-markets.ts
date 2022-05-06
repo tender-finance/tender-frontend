@@ -9,7 +9,6 @@ import {
   formattedDepositApy,
 } from "~/lib/apy-calculations";
 import {
-  borrow,
   getAssetPriceInUsd,
   getBorrowLimit,
   getBorrowLimitUsed,
