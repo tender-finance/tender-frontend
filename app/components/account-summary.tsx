@@ -18,7 +18,7 @@ export default function AccountSummary() {
   const signer = useWeb3Signer(provider);
   let { tokenPairs, networkData } = useContext(TenderContext);
 
-  let totalSupplyBalanceInUsd = useTotalSupplyBalanceInUsd();
+  let totalSupplyBalanceInUsd = useTotalSupplyBalanceInUsd(signer, tokenPairs);
   let netApy = useNetApy(signer, tokenPairs);
   let borrowBalance = useTotalBorrowed(signer, tokenPairs);
   let borrowLimit = useBorrowLimit(

@@ -452,9 +452,12 @@ const getTotalSupplied = async (
   );
 };
 
-async function getTotalSupplyBalanceInUsd(): Promise<number> {
-  // STUB
-  return 1111.42;
+async function getTotalSupplyBalanceInUsd(
+  signer: Signer,
+  tokenPairs: TokenPair[]
+): Promise<number> {
+  // TODO: This should be $ amounts not token amounts
+  return await getTotalSupplied(signer, tokenPairs);
 }
 
 export {
