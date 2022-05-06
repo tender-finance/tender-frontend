@@ -439,22 +439,6 @@ async function hasSufficientAllowance(
   return allowance.gte(MINIMUM_REQUIRED_APPROVAL_BALANCE);
 }
 
-// TODO: This is token amounts, should this be covered to $ values?
-const getTotalSupplied = async (
-  signer: Signer,
-  tokenPairs: TokenPair[]
-): Promise<number> => {
-  let suppliedAmounts: number[] = await Promise.all(
-    tokenPairs.map(async (pair: TokenPair): Promise<number> => {
-      return await getCurrentlySupplying(signer, pair.cToken, pair.token);
-    })
-  );
-
-  return suppliedAmounts.reduce(
-    (acc: number, curr: number): number => acc + curr
-  );
-};
-
 async function getAssetPriceInUsd(
   signer: Signer,
   priceOracleAddress: string
@@ -538,7 +522,6 @@ export {
   hasSufficientAllowance,
   getTotalBorrowed,
   projectBorrowLimit,
-  getTotalSupplied,
   getAssetPriceInUsd,
   getTotalBorrowedInUsd,
 };
