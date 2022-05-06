@@ -1,12 +1,4 @@
-import { TokenMetaDatum } from "~/config/tokenMetaData";
-
-export interface SwapRow {
-  icon: string;
-  name: string;
-  token: Token;
-  cToken: cToken;
-  comptrollerAddress: string;
-}
+import type { TokenMetaDatum } from "~/config/tokenMetaData";
 
 export interface Token {
   symbol: TokenName;
@@ -97,18 +89,6 @@ export enum NetworkName {
   auroraTestnet = 1313161555,
   auroraMainnet = 1313161554,
   auroraLocalnet = 1313161556,
-}
-
-export interface SwapRowMarketData {
-  [id: string]: SwapRowMarketDatum;
-}
-
-export interface SwapRowMarketDatum {
-  id: string;
-  depositApy: string;
-  borrowApy: string;
-  marketSizeUsd: string;
-  totalBorrowedUsd: string;
 }
 
 export interface TokenPair {

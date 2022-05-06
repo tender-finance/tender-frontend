@@ -187,7 +187,11 @@ export default function Repay({
                       try {
                         setIsEnabling(true);
                         // @ts-ignore existence of signer is gated above.
-                        await enable(signer, row.token, row.cToken);
+                        await enable(
+                          signer,
+                          market.tokenPair.token,
+                          market.tokenPair.cToken
+                        );
                         setIsEnabled(true);
                       } catch (e) {
                         console.error(e);
