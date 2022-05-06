@@ -457,10 +457,25 @@ const getTotalSupplied = async (
 
 async function getTotalSupplyBalanceInUsd(
   signer: Signer,
-  tokenPairs: TokenPair[]
+  tokenPairs: TokenPair[],
+  priceOracles: NetworkData["PriceOracles"]
 ): Promise<number> {
-  // TODO: This should be $ amounts not token amounts
-  return await getTotalSupplied(signer, tokenPairs);
+  let suppliedAmounts = await Promise.all(
+    tokenPairs.map(async (tp: TokenPair): Promise<number> => {
+      let suppliedAmount: number = await getCurrentlySupplying(
+        signer,
+        tp.cToken,
+        tp.token
+      );
+
+      let priceOracleAddress = priceOracles[tp.token.symbol];
+      let priceInUsd = await getAssetPriceInUsd(signer, priceOracleAddress);
+
+      return suppliedAmount * priceInUsd;
+    })
+  );
+
+  return suppliedAmounts.reduce((acc, curr) => acc + curr);
 }
 
 async function getAssetPriceInUsd(
