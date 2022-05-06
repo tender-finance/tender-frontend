@@ -31,7 +31,11 @@ export default function Index() {
           <div className="mb-16">
             <Link to="/app">
               <button
-                className="text-white bg-brand-green py-4 px-16"
+                style={{
+                  background:
+                    "linear-gradient(270deg, #1BD6CF 0%, #00E5AF 100%)",
+                }}
+                className="bg-brand-green text-gray-900 py-4 px-16 rounded-md text-sm"
                 data-testid="enter-app"
               >
                 Enter App
