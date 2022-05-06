@@ -123,7 +123,9 @@ export default function TwoPanes() {
                     <td className="px-8 py-6 text-left">
                       {m.marketData.borrowApy}
                     </td>
-                    <td className="px-8 py-6 text-left">${m.borrowBalance}</td>
+                    <td className="px-8 py-6 text-left">
+                      ${m.borrowBalanceInUsd.toFixed(2)}
+                    </td>
                     <td className="px-8 py-6 text-left text-brand-green font-bold">
                       {m.borrowLimitUsed}%
                     </td>

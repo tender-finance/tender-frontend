@@ -479,19 +479,6 @@ async function getAssetPriceInUsd(
   return priceInUsd;
 }
 
-async function getBalanceInUsd(
-  signer: Signer,
-  balance: number,
-  priceOracleAddress: string
-): Promise<number> {
-  let assetPriceInUsd: number = await getAssetPriceInUsd(
-    signer,
-    priceOracleAddress
-  );
-
-  return balance * assetPriceInUsd;
-}
-
 export {
   enable,
   deposit,
@@ -511,5 +498,5 @@ export {
   getTotalBorrowed,
   projectBorrowLimit,
   getTotalSupplied,
-  getBalanceInUsd,
+  getAssetPriceInUsd,
 };

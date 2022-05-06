@@ -9,7 +9,8 @@ import {
   formattedDepositApy,
 } from "~/lib/apy-calculations";
 import {
-  getBalanceInUsd,
+  borrow,
+  getAssetPriceInUsd,
   getBorrowLimit,
   getBorrowLimitUsed,
   getCurrentlyBorrowing,
@@ -75,6 +76,10 @@ export function useMarkets(
       );
 
       let priceOracleAddress: string = priceOracles[tp.token.symbol];
+      let assetPriceInUsd: number = await getAssetPriceInUsd(
+        signer,
+        priceOracleAddress
+      );
 
       let supplyBalance = await getCurrentlySupplying(
         signer,
@@ -82,11 +87,14 @@ export function useMarkets(
         tp.token
       );
 
-      let supplyBalanceInUsd = await getBalanceInUsd(
+      let borrowBalance = await getCurrentlyBorrowing(
         signer,
-        supplyBalance,
-        priceOracleAddress
+        tp.cToken,
+        tp.token
       );
+
+      let supplyBalanceInUsd = supplyBalance * assetPriceInUsd;
+      let borrowBalanceInUsd = borrowBalance * assetPriceInUsd;
 
       return {
         id: tp.token.symbol,
@@ -94,9 +102,10 @@ export function useMarkets(
         tokenMetaData: tokenMetaData[tp.token.symbol as TokenName],
         marketData: await getMarketData(signer, tp),
         walletBalance: await getWalletBalance(signer, tp.token),
-        supplyBalance: supplyBalance,
-        supplyBalanceInUsd: supplyBalanceInUsd,
-        borrowBalance: await getCurrentlyBorrowing(signer, tp.cToken, tp.token),
+        supplyBalance,
+        supplyBalanceInUsd,
+        borrowBalance,
+        borrowBalanceInUsd,
         comptrollerAddress,
         borrowLimit,
         totalBorrowedAmount,

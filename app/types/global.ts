@@ -119,6 +119,7 @@ export type Market = {
   supplyBalance: number;
   supplyBalanceInUsd: number;
   borrowBalance: number;
+  borrowBalanceInUsd: number;
   borrowLimit: number;
   borrowLimitUsed: string;
   totalBorrowedAmount: number;
