@@ -1,4 +1,4 @@
-import { TokenMetaDatum } from "~/config/tokenMetaData";
+import type { TokenMetaDatum } from "~/config/tokenMetaData";
 
 export interface Token {
   symbol: TokenName;
