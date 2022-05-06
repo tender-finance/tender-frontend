@@ -45,7 +45,9 @@ export default function TwoPanes() {
                     <td className="px-8 py-6 text-left">
                       {m.marketData.depositApy}
                     </td>
-                    <td className="px-8 py-6 text-left">${m.supplyBalance}</td>
+                    <td className="px-8 py-6 text-left">
+                      ${m.supplyBalanceInUsd.toFixed(2)}
+                    </td>
                   </MarketSupplyRow>
                 );
               })}

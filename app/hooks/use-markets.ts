@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import type { Market, TokenName, TokenPair } from "~/types/global";
+import type { Market, NetworkData, TokenName, TokenPair } from "~/types/global";
 import { tokenMetaData } from "~/config/tokenMetaData";
 import type { JsonRpcSigner } from "@ethersproject/providers";
 import { hooks as Web3Hooks } from "~/connectors/meta-mask";
@@ -9,10 +9,12 @@ import {
   formattedDepositApy,
 } from "~/lib/apy-calculations";
 import {
+  getBalanceInUsd,
   getBorrowLimit,
   getBorrowLimitUsed,
   getCurrentlyBorrowing,
   getCurrentlySupplying,
+  getCurrentlySupplyingInUsd,
   getMarketSizeUsd,
   getTotalBorrowed,
   getTotalBorrowedUsd,
@@ -34,6 +36,7 @@ const getMarketData = async (
     signer
   );
 
+  // TODO: don't think we're using these two fields
   let totalBorrowedUsd = await getTotalBorrowedUsd(signer, tp.cToken);
   let marketSizeUsd = await getMarketSizeUsd(signer, tp.cToken);
 
@@ -47,7 +50,8 @@ const getMarketData = async (
 
 export function useMarkets(
   supportedTokenPairs: TokenPair[],
-  comptrollerAddress: string | undefined
+  comptrollerAddress: string | undefined,
+  priceOracles: NetworkData["PriceOracles"] | undefined
 ) {
   let [markets, setMarkets] = useState<Market[]>([]);
 
@@ -55,7 +59,7 @@ export function useMarkets(
   const signer = useWeb3Signer(provider);
 
   useEffect(() => {
-    if (!signer || !comptrollerAddress) {
+    if (!signer || !comptrollerAddress || !priceOracles) {
       return;
     }
 
@@ -71,13 +75,28 @@ export function useMarkets(
         supportedTokenPairs
       );
 
+      let priceOracleAddress: string = priceOracles[tp.token.symbol];
+
+      let supplyBalance = await getCurrentlySupplying(
+        signer,
+        tp.cToken,
+        tp.token
+      );
+
+      let supplyBalanceInUsd = await getBalanceInUsd(
+        signer,
+        supplyBalance,
+        priceOracleAddress
+      );
+
       return {
         id: tp.token.symbol,
         tokenPair: tp,
         tokenMetaData: tokenMetaData[tp.token.symbol as TokenName],
         marketData: await getMarketData(signer, tp),
         walletBalance: await getWalletBalance(signer, tp.token),
-        supplyBalance: await getCurrentlySupplying(signer, tp.cToken, tp.token),
+        supplyBalance: supplyBalance,
+        supplyBalanceInUsd: supplyBalanceInUsd,
         borrowBalance: await getCurrentlyBorrowing(signer, tp.cToken, tp.token),
         comptrollerAddress,
         borrowLimit,
@@ -90,7 +109,7 @@ export function useMarkets(
     });
 
     Promise.all(newMarkets).then((nm) => setMarkets(nm));
-  }, [supportedTokenPairs, signer, comptrollerAddress]);
+  }, [supportedTokenPairs, signer, comptrollerAddress, priceOracles]);
 
   return markets;
 }

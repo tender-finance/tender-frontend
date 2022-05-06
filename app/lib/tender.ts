@@ -1,10 +1,11 @@
-import type { cToken, Token } from "~/types/global";
+import type { cToken, PriceOracleData, Token } from "~/types/global";
 import type { Signer, Contract } from "ethers";
 import { ethers, BigNumber } from "ethers";
 
 import SampleCTokenAbi from "~/config/sample-ctoken-abi";
 import SampleErc20Abi from "~/config/sample-erc20-abi";
 import SampleComptrollerAbi from "~/config/sample-comptroller-abi";
+import SamplePriceOracleAbi from "~/config/sample-price-oracle-abi";
 
 import type { TokenPair } from "~/types/global";
 import { formatUnits } from "ethers/lib/utils";
@@ -460,6 +461,37 @@ async function getTotalSupplyBalanceInUsd(
   return await getTotalSupplied(signer, tokenPairs);
 }
 
+async function getAssetPriceInUsd(
+  signer: Signer,
+  priceOracleAddress: string
+): Promise<number> {
+  let contract = new ethers.Contract(
+    priceOracleAddress,
+    SamplePriceOracleAbi,
+    signer
+  );
+
+  let decimals = await contract.decimals();
+  let { answer }: { answer: BigNumber } = await contract.latestRoundData();
+
+  let priceInUsd = parseFloat(formatUnits(answer, decimals));
+
+  return priceInUsd;
+}
+
+async function getBalanceInUsd(
+  signer: Signer,
+  balance: number,
+  priceOracleAddress: string
+): Promise<number> {
+  let assetPriceInUsd: number = await getAssetPriceInUsd(
+    signer,
+    priceOracleAddress
+  );
+
+  return balance * assetPriceInUsd;
+}
+
 export {
   enable,
   deposit,
@@ -479,4 +511,5 @@ export {
   getTotalBorrowed,
   projectBorrowLimit,
   getTotalSupplied,
+  getBalanceInUsd,
 };
