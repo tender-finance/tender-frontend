@@ -14,7 +14,6 @@ import {
   getBorrowLimitUsed,
   getCurrentlyBorrowing,
   getCurrentlySupplying,
-  getCurrentlySupplyingInUsd,
   getMarketSizeUsd,
   getTotalBorrowed,
   getTotalBorrowedUsd,
