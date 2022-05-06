@@ -5,6 +5,7 @@ import { hooks as Web3Hooks } from "~/connectors/meta-mask";
 import { TenderContext } from "~/contexts/tender-context";
 import { useContext, useRef, useLayoutEffect } from "react";
 import { useTotalBorrowed } from "~/hooks/use-total-borrowed";
+import { useTotalBorrowedInUsd } from "~/hooks/use-total-borrowed-in-usd";
 import { useBorrowLimit } from "~/hooks/use-borrow-limit";
 import { useBorrowLimitUsed } from "~/hooks/use-borrow-limit-used";
 import Ring from "./account-summary/ring";
@@ -21,6 +22,11 @@ export default function AccountSummary() {
   let totalSupplyBalanceInUsd = useTotalSupplyBalanceInUsd(signer, tokenPairs);
   let netApy = useNetApy(signer, tokenPairs);
   let borrowBalance = useTotalBorrowed(signer, tokenPairs);
+  let totalBorrowBalanceInUsd = useTotalBorrowedInUsd(
+    signer,
+    tokenPairs,
+    networkData.PriceOracles
+  );
   let borrowLimit = useBorrowLimit(
     signer,
     networkData.Contracts.Comptroller,
@@ -88,7 +94,9 @@ export default function AccountSummary() {
         </div>
         <div className="w-1/3 text-right  flex flex-col justify-center items-center">
           <div className="text-brand-blue">Borrow Balance</div>{" "}
-          <div className="text-3xl">{formatCurrency(borrowBalance)}</div>
+          <div className="text-3xl">
+            {formatCurrency(totalBorrowBalanceInUsd)}
+          </div>
         </div>
       </div>
       <div className="flex text-xs justify-center items-center">

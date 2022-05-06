@@ -1,4 +1,4 @@
-import type { cToken, Token } from "~/types/global";
+import type { cToken, NetworkData, Token } from "~/types/global";
 import type { Signer, Contract } from "ethers";
 import { ethers, BigNumber } from "ethers";
 
@@ -170,6 +170,7 @@ async function getCurrentlySupplying(
  * @param cToken
  * @returns string
  */
+// TODO: this and getBorrowedAmount are basically the same, minus formatting.
 async function getCurrentlyBorrowing(
   signer: Signer,
   cToken: cToken,
@@ -286,6 +287,7 @@ async function projectBorrowLimit(
  * @param cToken
  * @returns
  */
+// TODO: this and getCurrentlyBorrowing are basically the same, minus formatting.
 async function getBorrowedAmount(
   signer: Signer,
   cToken: cToken,
@@ -479,6 +481,30 @@ async function getAssetPriceInUsd(
   return priceInUsd;
 }
 
+// TODO: Very similar to getTotalBorrowed, which can likely go away now
+async function getTotalBorrowedInUsd(
+  signer: Signer,
+  tokenPairs: TokenPair[],
+  priceOracles: NetworkData["PriceOracles"]
+): Promise<number> {
+  let borrowedAmounts = await Promise.all(
+    tokenPairs.map(async (tp: TokenPair): Promise<number> => {
+      let borrowedAmount: number = await getCurrentlyBorrowing(
+        signer,
+        tp.cToken,
+        tp.token
+      );
+
+      let priceOracleAddress = priceOracles[tp.token.symbol];
+      let priceInUsd = await getAssetPriceInUsd(signer, priceOracleAddress);
+
+      return borrowedAmount * priceInUsd;
+    })
+  );
+
+  return borrowedAmounts.reduce((acc, curr) => acc + curr);
+}
+
 export {
   enable,
   deposit,
@@ -499,4 +525,5 @@ export {
   projectBorrowLimit,
   getTotalSupplied,
   getAssetPriceInUsd,
+  getTotalBorrowedInUsd,
 };
