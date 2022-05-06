@@ -1,11 +1,12 @@
 import { ethers } from "ethers";
 import sampleCTokenAbi from "~/config/sample-ctoken-abi";
-import type { Token, cToken, TokenPair } from "~/types/global";
+import type { Token, cToken, TokenPair, NetworkData } from "~/types/global";
 import type { JsonRpcSigner } from "@ethersproject/providers";
 import {
+  getAssetPriceInUsd,
   getBorrowedAmount,
   getCurrentlySupplying,
-  getTotalSupplied,
+  getTotalSupplyBalanceInUsd,
 } from "./tender";
 
 function formatApy(apy: number): string {
@@ -97,34 +98,41 @@ async function formattedBorrowApy(
 
 async function getNetGainOrLoss(
   s: JsonRpcSigner,
-  p: TokenPair
+  p: TokenPair,
+  priceOracleAddress: string
 ): Promise<number> {
   let supplied: number = await getCurrentlySupplying(s, p.cToken, p.token);
   let supplyApy: number =
     (await calculateDepositApy(p.token, p.cToken, s)) * 0.01;
 
-  // TODO: get dollar amount conversion here
-
   let borrowed: number = await getBorrowedAmount(s, p.cToken, p.token);
   let borrowApy: number =
     (await calculateBorrowApy(p.token, p.cToken, s)) * 0.01;
 
-  return supplied * supplyApy - borrowed * borrowApy;
+  let priceInUsd: number = await getAssetPriceInUsd(s, priceOracleAddress);
+
+  return supplied * priceInUsd * supplyApy - borrowed * priceInUsd * borrowApy;
 }
 
 async function netApy(
   signer: JsonRpcSigner,
-  tokenPairs: TokenPair[]
+  tokenPairs: TokenPair[],
+  priceOracles: NetworkData["PriceOracles"]
 ): Promise<number | null> {
   let weightedValues: number[] = await Promise.all(
-    tokenPairs.map(
-      async (p): Promise<number> => await getNetGainOrLoss(signer, p)
-    )
+    tokenPairs.map(async (p): Promise<number> => {
+      let priceOracleAddress = priceOracles[p.token.symbol];
+      return await getNetGainOrLoss(signer, p, priceOracleAddress);
+    })
   );
 
   let sum: number = weightedValues.reduce((acc, curr) => acc + curr);
 
-  let totalSupplied: number = await getTotalSupplied(signer, tokenPairs);
+  let totalSupplied: number = await getTotalSupplyBalanceInUsd(
+    signer,
+    tokenPairs,
+    priceOracles
+  );
 
   // This is a percent value, i.e., if the function returns 0.1 it's 0.1%;
   let result = (sum / totalSupplied) * 100;

@@ -24,7 +24,7 @@ export default function AccountSummary() {
     tokenPairs,
     networkData.PriceOracles
   );
-  let netApy = useNetApy(signer, tokenPairs);
+  let netApy = useNetApy(signer, tokenPairs, networkData.PriceOracles);
   let borrowBalance = useTotalBorrowed(signer, tokenPairs);
   let totalBorrowBalanceInUsd = useTotalBorrowedInUsd(
     signer,
