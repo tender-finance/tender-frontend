@@ -7,18 +7,17 @@ function generateTokenPairs(
   networkData: NetworkData,
   supportedTokenNames: TokenName[]
 ): TokenPair[] {
-  return supportedTokenNames
-    .filter((tokenName) => {
-      return networkData.Tokens[tokenName];
-    })
-    .map((tokenName: TokenName): TokenPair => {
-      const tokenMetaDatum = tokenMetaData[tokenName];
+  // TODO: Would this be cleaner networkDAta.Tokens was an array?
+  let tokenSymbols: string[] = Object.keys(networkData.Tokens);
 
-      return {
-        token: networkData.Tokens[tokenMetaDatum.symbol],
-        cToken: networkData.cTokens[tokenMetaDatum.cTokenSymbol],
-      };
-    });
+  return tokenSymbols.map((symbol: string): TokenPair => {
+    const tokenMetaDatum = networkData.Tokens[symbol];
+
+    return {
+      token: networkData.Tokens[tokenMetaDatum.symbol],
+      cToken: networkData.cTokens[tokenMetaDatum.cTokenSymbol],
+    };
+  });
 }
 
 export function useTokenPairs(

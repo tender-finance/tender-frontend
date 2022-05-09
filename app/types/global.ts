@@ -1,17 +1,19 @@
 import type { TokenMetaDatum } from "~/config/tokenMetaData";
 
 export interface Token {
-  symbol: TokenName;
+  symbol: string;
   icon: string;
   name: string;
   decimals: number;
   address: string;
+  cTokenSymbol: string;
 }
 
 export interface cToken {
   name: string;
   address: string;
   decimals: number;
+  symbol: string;
 }
 
 // TODO: Consolidate Network & Network Data
@@ -20,7 +22,9 @@ export interface NetworkData {
     Comptroller: string;
   };
 
-  Tokens: any;
+  Tokens: {
+    [key: string]: Token;
+  };
   cTokens: any;
   PriceOracles: {
     [key: string]: string;
@@ -30,7 +34,7 @@ export interface NetworkData {
 export interface Network extends NetworkData {}
 
 export interface Networks {
-  ropsten: Network;
+  rinkeby: Network;
 }
 
 // TODO: Cleanup network type logic to be less repetitive
