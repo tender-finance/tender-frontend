@@ -23,18 +23,6 @@ export default function Header() {
         <div className="inline-block mr-3">
           <ConnectWallet />
         </div>
-        <div className="inline-block">
-          {location.pathname === "/" && chainId && (
-            <button
-              style={{
-                background: "linear-gradient(270deg, #1BD6CF 0%, #00E5AF 100%)",
-              }}
-              className="bg-brand-green text-gray-900 py-2 px-8 rounded-md text-sm"
-            >
-              <Link to="/app">Enter App</Link>
-            </button>
-          )}
-        </div>
       </div>
     </div>
   );

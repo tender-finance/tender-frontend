@@ -25,21 +25,15 @@ export default function ConnectWallet() {
           <div className=" py-2 px-4">
             Connected as {truncateAccount(accounts)}
           </div>
-          <button
-            style={{
-              background: "linear-gradient(270deg, #1BD6CF 0%, #00E5AF 100%)",
-            }}
-            className="bg-brand-green text-gray-900 py-2 px-8 rounded-md"
-            onClick={() => metaMask.deactivate()}
-          >
-            Disconnect
-          </button>
         </div>
       )}
       {!isActive && (
         <div className="text-sm">
           <button
-            className="bg-brand-green text-white py-2 px-4"
+            style={{
+              background: "linear-gradient(270deg, #1BD6CF 0%, #00E5AF 100%)",
+            }}
+            className="bg-brand-green text-gray-900 py-4 px-4 rounded-md text-sm"
             onClick={isActivating ? undefined : () => metaMask.activate()}
             disabled={isActivating}
           >
