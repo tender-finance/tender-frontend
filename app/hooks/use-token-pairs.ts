@@ -10,7 +10,7 @@ function generateTokenPairs(networkData: NetworkData): TokenPair[] {
       const tokenData: Token = networkData.Tokens[symbol];
 
       let token: Token = networkData.Tokens[tokenData.symbol];
-      let cToken: cToken = networkData.cTokens[tokenData.cTokenSymbol];
+      let cToken: cToken = token.cToken;
       let priceOracleAddress: string =
         networkData.PriceOracles[tokenData.symbol];
 
@@ -27,8 +27,8 @@ function generateTokenPairs(networkData: NetworkData): TokenPair[] {
       }
 
       return {
-        token: networkData.Tokens[tokenData.symbol],
-        cToken: networkData.cTokens[tokenData.cTokenSymbol],
+        token,
+        cToken,
       };
     }
   );

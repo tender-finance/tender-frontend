@@ -1,12 +1,3 @@
-export interface Token {
-  symbol: string;
-  icon: string;
-  name: string;
-  decimals: number;
-  address: string;
-  cTokenSymbol: string;
-}
-
 export interface cToken {
   name: string;
   address: string;
@@ -14,16 +5,23 @@ export interface cToken {
   symbol: string;
 }
 
+export interface Token {
+  symbol: string;
+  icon: string;
+  name: string;
+  decimals: number;
+  address: string;
+  cToken: cToken;
+}
+
 // TODO: Consolidate Network & Network Data
 export interface NetworkData {
   Contracts: {
     Comptroller: string;
   };
-
   Tokens: {
     [key: string]: Token;
   };
-  cTokens: any;
   PriceOracles: {
     [key: string]: string;
   };

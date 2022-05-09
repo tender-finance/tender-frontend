@@ -19,8 +19,6 @@ export function useTenderContext() {
     networkData?.PriceOracles
   );
 
-  console.log("markets", markets);
-
   useEffect(() => {
     if (!chainId || !networkData) {
       return;

@@ -15,7 +15,12 @@ export default {
       decimals: 18,
       address: "0x5592EC0cfb4dbc12D3aB100b257153436a1f0FEa",
       icon: "/images/coin-icons/dai.svg",
-      cTokenSymbol: "cDAI",
+      cToken: {
+        name: "Compound Dai 📈",
+        symbol: "cDAI",
+        decimals: 8,
+        address: "0x6D7F0754FFeb405d23C51CE938289d4835bE3b14",
+      },
     },
     BAT: {
       name: "Basic Attention Token",
@@ -23,7 +28,12 @@ export default {
       decimals: 18,
       address: "0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99",
       icon: "/images/coin-icons/bat.svg",
-      cTokenSymbol: "cBAT",
+      cToken: {
+        name: "Compound Basic Attention Token 📈",
+        symbol: "cBAT",
+        decimals: 8,
+        address: "0xEBf1A11532b93a529b5bC942B4bAA98647913002",
+      },
     },
     USDC: {
       description: "Standard",
@@ -32,7 +42,12 @@ export default {
       decimals: 6,
       address: "0x4DBCdF9B62e891a7cec5A2568C3F4FAF9E8Abe2b",
       icon: "/images/coin-icons/usdc.svg",
-      cTokenSymbol: "cUSDC",
+      cToken: {
+        name: "Compound USD Coin 📈",
+        symbol: "cUSDC",
+        decimals: 8,
+        address: "0x5B281A6DdA0B271e91ae35DE655Ad301C976edb1",
+      },
     },
     WBTC: {
       name: "Wrapped BTC",
@@ -40,39 +55,12 @@ export default {
       decimals: 8,
       address: "0x577D296678535e4903D59A4C929B718e1D575e0A",
       icon: "/images/coin-icons/bitcoin.svg",
-      cTokenSymbol: "cWBTC",
-    },
-  },
-  cTokens: {
-    cBAT: {
-      name: "Compound Basic Attention Token 📈",
-      symbol: "cBAT",
-      decimals: 8,
-      address: "0xEBf1A11532b93a529b5bC942B4bAA98647913002",
-    },
-    cDAI: {
-      name: "Compound Dai 📈",
-      symbol: "cDAI",
-      decimals: 8,
-      address: "0x6D7F0754FFeb405d23C51CE938289d4835bE3b14",
-    },
-    cUSDC: {
-      name: "Compound USD Coin 📈",
-      symbol: "cUSDC",
-      decimals: 8,
-      address: "0x5B281A6DdA0B271e91ae35DE655Ad301C976edb1",
-    },
-    cWBTC: {
-      name: "Compound Wrapped BTC 📈",
-      symbol: "cWBTC",
-      decimals: 8,
-      address: "0x0014F450B8Ae7708593F4A46F8fa6E5D50620F96",
-    },
-    cUSDT: {
-      name: "Compound USDT",
-      symbol: "cUSDT",
-      decimals: 8,
-      address: "0x2fB298BDbeF468638AD6653FF8376575ea41e768",
+      cToken: {
+        name: "Compound Wrapped BTC 📈",
+        symbol: "cWBTC",
+        decimals: 8,
+        address: "0x0014F450B8Ae7708593F4A46F8fa6E5D50620F96",
+      },
     },
   },
 };
