@@ -315,7 +315,6 @@ async function getBorrowLimitUsed(
 }
 
 // TODO: Should this be returning dollars or token amounts?
-// mct: ideally both, or just token amounts which we can multiply by tokenPrice at render-time
 async function getTotalBorrowed(
   signer: Signer,
   tokenPairs: TokenPair[]
