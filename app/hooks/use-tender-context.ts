@@ -7,21 +7,22 @@ import { useNetworkData } from "./use-network-data";
 import { useMarkets } from "./use-markets";
 
 // TODO: Move to config
+// These are the tokens that we have price oracles for on Rinkeby
 export const SUPPORTED_TOKENS = [
-  TokenName.AAVE,
+  // TokenName.AAVE,
   TokenName.BAT,
   TokenName.DAI,
   TokenName.ETH,
-  TokenName.LINK,
-  TokenName.PAX,
-  TokenName.SUSHI,
-  TokenName.TUSD,
-  TokenName.UNI,
+  // TokenName.LINK,
+  // TokenName.PAX,
+  // TokenName.SUSHI,
+  // TokenName.TUSD,
+  // TokenName.UNI,
   TokenName.USDC,
-  TokenName.USDT,
+  // TokenName.USDT,
   TokenName.WBTC,
-  TokenName.YFI,
-  TokenName.ZRX,
+  // TokenName.YFI,
+  // TokenName.ZRX,
 ];
 
 export function useTenderContext() {
@@ -37,7 +38,8 @@ export function useTenderContext() {
 
   let markets: Market[] = useMarkets(
     tokenPairs,
-    networkData?.Contracts?.Comptroller
+    networkData?.Contracts?.Comptroller,
+    networkData?.PriceOracles
   );
 
   useEffect(() => {

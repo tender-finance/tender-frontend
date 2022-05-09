@@ -1,10 +1,11 @@
-import type { cToken, Token } from "~/types/global";
+import type { cToken, NetworkData, Token } from "~/types/global";
 import type { Signer, Contract } from "ethers";
 import { ethers, BigNumber } from "ethers";
 
 import SampleCTokenAbi from "~/config/sample-ctoken-abi";
 import SampleErc20Abi from "~/config/sample-erc20-abi";
 import SampleComptrollerAbi from "~/config/sample-comptroller-abi";
+import SamplePriceOracleAbi from "~/config/sample-price-oracle-abi";
 
 import type { TokenPair } from "~/types/global";
 import { formatUnits } from "ethers/lib/utils";
@@ -169,6 +170,7 @@ async function getCurrentlySupplying(
  * @param cToken
  * @returns string
  */
+// TODO: this and getBorrowedAmount are basically the same, minus formatting.
 async function getCurrentlyBorrowing(
   signer: Signer,
   cToken: cToken,
@@ -285,6 +287,7 @@ async function projectBorrowLimit(
  * @param cToken
  * @returns
  */
+// TODO: this and getCurrentlyBorrowing are basically the same, minus formatting.
 async function getBorrowedAmount(
   signer: Signer,
   cToken: cToken,
@@ -436,28 +439,69 @@ async function hasSufficientAllowance(
   return allowance.gte(MINIMUM_REQUIRED_APPROVAL_BALANCE);
 }
 
-// TODO: This is token amounts, should this be covered to $ values?
-const getTotalSupplied = async (
+async function getAssetPriceInUsd(
   signer: Signer,
-  tokenPairs: TokenPair[]
-): Promise<number> => {
-  let suppliedAmounts: number[] = await Promise.all(
-    tokenPairs.map(async (pair: TokenPair): Promise<number> => {
-      return await getCurrentlySupplying(signer, pair.cToken, pair.token);
-    })
+  priceOracleAddress: string
+): Promise<number> {
+  let contract = new ethers.Contract(
+    priceOracleAddress,
+    SamplePriceOracleAbi,
+    signer
   );
 
-  return suppliedAmounts.reduce(
-    (acc: number, curr: number): number => acc + curr
-  );
-};
+  let decimals = await contract.decimals();
+  let { answer }: { answer: BigNumber } = await contract.latestRoundData();
+
+  let priceInUsd = parseFloat(formatUnits(answer, decimals));
+
+  return priceInUsd;
+}
 
 async function getTotalSupplyBalanceInUsd(
   signer: Signer,
-  tokenPairs: TokenPair[]
+  tokenPairs: TokenPair[],
+  priceOracles: NetworkData["PriceOracles"]
 ): Promise<number> {
-  // TODO: This should be $ amounts not token amounts
-  return await getTotalSupplied(signer, tokenPairs);
+  let suppliedAmounts = await Promise.all(
+    tokenPairs.map(async (tp: TokenPair): Promise<number> => {
+      let suppliedAmount: number = await getCurrentlySupplying(
+        signer,
+        tp.cToken,
+        tp.token
+      );
+
+      let priceOracleAddress = priceOracles[tp.token.symbol];
+      let priceInUsd = await getAssetPriceInUsd(signer, priceOracleAddress);
+
+      return suppliedAmount * priceInUsd;
+    })
+  );
+
+  return suppliedAmounts.reduce((acc, curr) => acc + curr);
+}
+
+// TODO: Very similar to getTotalBorrowed, which can likely go away now
+async function getTotalBorrowedInUsd(
+  signer: Signer,
+  tokenPairs: TokenPair[],
+  priceOracles: NetworkData["PriceOracles"]
+): Promise<number> {
+  let borrowedAmounts = await Promise.all(
+    tokenPairs.map(async (tp: TokenPair): Promise<number> => {
+      let borrowedAmount: number = await getCurrentlyBorrowing(
+        signer,
+        tp.cToken,
+        tp.token
+      );
+
+      let priceOracleAddress = priceOracles[tp.token.symbol];
+      let priceInUsd = await getAssetPriceInUsd(signer, priceOracleAddress);
+
+      return borrowedAmount * priceInUsd;
+    })
+  );
+
+  return borrowedAmounts.reduce((acc, curr) => acc + curr);
 }
 
 export {
@@ -478,5 +522,6 @@ export {
   hasSufficientAllowance,
   getTotalBorrowed,
   projectBorrowLimit,
-  getTotalSupplied,
+  getAssetPriceInUsd,
+  getTotalBorrowedInUsd,
 };

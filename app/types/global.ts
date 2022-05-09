@@ -22,6 +22,9 @@ export interface NetworkData {
 
   Tokens: any;
   cTokens: any;
+  PriceOracles: {
+    [key: string]: string;
+  };
 }
 
 export interface Network extends NetworkData {}
@@ -114,7 +117,9 @@ export type Market = {
   };
   walletBalance: number;
   supplyBalance: number;
+  supplyBalanceInUsd: number;
   borrowBalance: number;
+  borrowBalanceInUsd: number;
   borrowLimit: number;
   borrowLimitUsed: string;
   totalBorrowedAmount: number;
