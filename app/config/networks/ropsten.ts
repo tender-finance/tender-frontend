@@ -61,6 +61,7 @@ export default {
     ProxyAdmin: "0xD582eEcEF9e831daF4c2B5539156c8938914731E",
     ETH: "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
   },
+  PriceOracles: {},
   Blocks: {
     CompoundLens: 11279761,
     Base200bps_Slope2000bps_Jump20000bps_Kink90: 9727779,

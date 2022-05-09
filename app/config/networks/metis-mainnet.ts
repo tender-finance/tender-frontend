@@ -105,6 +105,7 @@ export default {
     IRM_USDC_Updateable: "0xD8EC56013EA119E7181d231E5048f90fBbe753c0",
     IRM_UNI_Updateable: "0xd88b94128ff2b8cf2d7886cd1c1e46757418ca2a",
   },
+  PriceOracles: {},
   Blocks: {
     cFEIDelegate: 12654137,
     cFEI: 13227624,
