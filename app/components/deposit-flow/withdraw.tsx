@@ -84,7 +84,7 @@ export default function Withdraw({
                   className="mr-3"
                   alt="icon"
                 />
-                <div>Withdraw {market.tokenPair.token.name}</div>
+                <div>Withdraw {market.tokenPair.token.symbol}</div>
               </div>
 
               <div className="flex flex-col justify-center items-center overflow-hidden">
@@ -102,7 +102,7 @@ export default function Withdraw({
                     inputEl.current.value = market.supplyBalance.toString();
                     setValue(market.supplyBalance.toString());
                   }}
-                  maxValueLabel={market.tokenPair.token.name}
+                  maxValueLabel={market.tokenPair.token.symbol}
                 />
               </div>
             </div>
@@ -199,7 +199,7 @@ export default function Withdraw({
                 <div className="flex text-gray-500">
                   <div className="flex-grow">Currently Supplying</div>
                   <div>
-                    {market.supplyBalance} {market.tokenPair.token.name}
+                    {market.supplyBalance} {market.tokenPair.token.symbol}
                   </div>
                 </div>
               </div>

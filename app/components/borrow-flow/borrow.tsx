@@ -91,7 +91,7 @@ export default function Borrow({
                   className="mr-3"
                   alt="icon"
                 />
-                <div>Borrow {market.tokenPair.token.name}</div>
+                <div>Borrow {market.tokenPair.token.symbol}</div>
               </div>
 
               <div className="flex flex-col justify-center items-center overflow-hidden">
@@ -110,7 +110,7 @@ export default function Borrow({
                     inputEl.current.value = `${borrowLimit}`;
                     setValue(`${borrowLimit}`);
                   }}
-                  maxValueLabel={market.tokenPair.token.name}
+                  maxValueLabel={market.tokenPair.token.symbol}
                 />
               </div>
             </div>
@@ -207,7 +207,7 @@ export default function Borrow({
                 <div className="flex text-gray-500">
                   <div className="flex-grow">Currently Borrowing</div>
                   <div>
-                    {currentlyBorrowing} {market.tokenPair.token.name}
+                    {currentlyBorrowing} {market.tokenPair.token.symbol}
                   </div>
                 </div>
               </div>

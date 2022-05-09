@@ -14,7 +14,6 @@ const marketsWithoutBorrowOrSupply = (markets: Market[]) => {
 export default function TwoPanes() {
   let { markets } = useContext(TenderContext);
 
-  console.log("markets 2", markets);
   return (
     <div className="grid grid-cols-2 gap-9 mb-14">
       {/* Supply */}
@@ -40,7 +39,7 @@ export default function TwoPanes() {
                       <img
                         className="w-9 mr-2"
                         src={m.tokenPair.token.icon}
-                        alt={m.tokenPair.token.name}
+                        alt={m.tokenPair.token.symbol}
                       />
                       {m.tokenPair.token.symbol}
                     </td>
@@ -75,7 +74,7 @@ export default function TwoPanes() {
                       <img
                         className="w-9 mr-2"
                         src={m.tokenPair.token.icon}
-                        alt={m.tokenPair.token.name}
+                        alt={m.tokenPair.token.symbol}
                       />
                       {m.tokenPair.token.symbol}
                     </td>
@@ -118,7 +117,7 @@ export default function TwoPanes() {
                       <img
                         className="w-9 mr-2"
                         src={m.tokenPair.token.icon}
-                        alt={m.tokenPair.token.name}
+                        alt={m.tokenPair.token.symbol}
                       />
                       {m.tokenPair.token.symbol}
                     </td>
@@ -160,7 +159,7 @@ export default function TwoPanes() {
                       <img
                         className="w-9 mr-2"
                         src={m.tokenPair.token.icon}
-                        alt={m.tokenPair.token.name}
+                        alt={m.tokenPair.token.symbol}
                       />
                       {m.tokenPair.token.symbol}
                     </td>

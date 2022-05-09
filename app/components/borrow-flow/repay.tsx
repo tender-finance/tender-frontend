@@ -108,13 +108,13 @@ export default function Repay({
                   className="mr-3"
                   alt="icon"
                 />
-                <div>Repay {market.tokenPair.token.name}</div>
+                <div>Repay {market.tokenPair.token.symbol}</div>
               </div>
 
               {!isEnabled && (
                 <div>
                   <div className="max-w-sm text-center m-auto mt-5 mb-5 text-sm text-gray-400">
-                    To borrow or repay {market.tokenPair.token.name} to the
+                    To borrow or repay {market.tokenPair.token.symbol} to the
                     Tender Protocol, you need to enable it first.
                   </div>
                 </div>
@@ -135,7 +135,7 @@ export default function Repay({
                       inputEl.current.value = formattedBorrowedAmount;
                       setValue(formattedBorrowedAmount);
                     }}
-                    maxValueLabel={market.tokenPair.token.name}
+                    maxValueLabel={market.tokenPair.token.symbol}
                   />
                 </div>
               )}
@@ -267,7 +267,7 @@ export default function Repay({
               <div className="flex text-gray-500">
                 <div className="flex-grow">Wallet Balance</div>
                 <div>
-                  {walletBalance} {market.tokenPair.token.name}
+                  {walletBalance} {market.tokenPair.token.symbol}
                 </div>
               </div>
             </div>
