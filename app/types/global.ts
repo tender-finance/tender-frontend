@@ -30,26 +30,11 @@ export interface NetworkData {
 export interface Network extends NetworkData {}
 
 export interface Networks {
-  mainnet: Network;
-  rinkeby: Network;
   ropsten: Network;
-  auroraTestnet: Network;
-  auroraMainnet: Network;
-  auroraLocalnet: Network;
-  metisTestnet: Network;
-  metisMainnet: Network;
 }
 
 // TODO: Cleanup network type logic to be less repetitive
-export type NetworkString =
-  | "mainnet"
-  | "rinkeby"
-  | "ropsten"
-  | "auroraTestnet"
-  | "auroraMainnet"
-  | "auroraLocalnet"
-  | "metisTestnet"
-  | "metisMainnet";
+export type NetworkString = "rinkeby";
 
 export enum TokenName {
   AAVE = "AAVE",
