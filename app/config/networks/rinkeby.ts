@@ -3,7 +3,6 @@ export default {
     Comptroller: "0x2EAa9D77AE4D8f9cdD9FAAcd44016E746485bddb",
   },
   PriceOracles: {
-    ETH: "0x8A753747A1Fa494EC906cE90E9f37563A8AF630e",
     DAI: "0x2bA49Aaa16E6afD2a993473cfB70Fa8559B523cF",
     USDC: "0xa24de01df22b63d23Ebc1882a5E3d4ec0d907bFB",
     WBTC: "0xECe365B379E1dD183B20fc5f022230C044d51404",
@@ -35,14 +34,6 @@ export default {
       icon: "/images/coin-icons/usdc.svg",
       cTokenSymbol: "cUSDC",
     },
-    USDT: {
-      name: "Compound USDT",
-      symbol: "USDT",
-      decimals: 18,
-      address: "0xD9BA894E0097f8cC2BBc9D24D308b98e36dc6D02",
-      icon: "/images/coin-icons/usdt.svg",
-      cTokenSymbol: "cUSDT",
-    },
     WBTC: {
       name: "Wrapped BTC",
       symbol: "WBTC",
@@ -51,22 +42,8 @@ export default {
       icon: "/images/coin-icons/bitcoin.svg",
       cTokenSymbol: "cWBTC",
     },
-    ZRX: {
-      name: "0x",
-      symbol: "ZRX",
-      decimals: 18,
-      address: "0xddea378A6dDC8AfeC82C36E9b0078826bf9e68B6",
-      icon: "/images/coin-icons/zrx.svg",
-      cTokenSymbol: "cZRX",
-    },
   },
   cTokens: {
-    cZRX: {
-      name: "Compound 0x 📈",
-      symbol: "cZRX",
-      decimals: 8,
-      address: "0x52201ff1720134bBbBB2f6BC97Bf3715490EC19B",
-    },
     cBAT: {
       name: "Compound Basic Attention Token 📈",
       symbol: "cBAT",
@@ -78,12 +55,6 @@ export default {
       symbol: "cDAI",
       decimals: 8,
       address: "0x6D7F0754FFeb405d23C51CE938289d4835bE3b14",
-    },
-    cREP: {
-      name: "Compound Augur 📈",
-      symbol: "cREP",
-      decimals: 8,
-      address: "0xEBe09eB3411D18F4FF8D859e096C533CAC5c6B60",
     },
     cUSDC: {
       name: "Compound USD Coin 📈",

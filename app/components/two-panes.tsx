@@ -42,7 +42,7 @@ export default function TwoPanes() {
                         src={m.tokenPair.token.icon}
                         alt={m.tokenPair.token.name}
                       />
-                      {m.tokenPair.token.name}
+                      {m.tokenPair.token.symbol}
                     </td>
                     <td className="px-8 py-6 text-left">
                       {m.marketData.depositApy}
@@ -77,7 +77,7 @@ export default function TwoPanes() {
                         src={m.tokenPair.token.icon}
                         alt={m.tokenPair.token.name}
                       />
-                      {m.tokenPair.token.name}
+                      {m.tokenPair.token.symbol}
                     </td>
                     <td className="px-8 py-6 text-left">
                       {m.marketData.depositApy}
@@ -120,7 +120,7 @@ export default function TwoPanes() {
                         src={m.tokenPair.token.icon}
                         alt={m.tokenPair.token.name}
                       />
-                      {m.tokenPair.token.name}
+                      {m.tokenPair.token.symbol}
                     </td>
                     <td className="px-8 py-6 text-left">
                       {m.marketData.borrowApy}
@@ -162,7 +162,7 @@ export default function TwoPanes() {
                         src={m.tokenPair.token.icon}
                         alt={m.tokenPair.token.name}
                       />
-                      {m.tokenPair.token.name}
+                      {m.tokenPair.token.symbol}
                     </td>
                     <td className="px-8 py-6 text-left">
                       {m.marketData.borrowApy}
