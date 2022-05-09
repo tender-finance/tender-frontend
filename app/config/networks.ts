@@ -17,7 +17,7 @@ const networks: Networks = {
   rinkeby,
   ropsten,
   metisTestnet,
-  metisMainnet
+  metisMainnet,
 };
 
 export default networks;

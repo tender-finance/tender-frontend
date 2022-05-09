@@ -23,7 +23,7 @@ export interface NetworkData {
   Tokens: any;
   cTokens: any;
   PriceOracles: {
-    [key in TokenName]?: string;
+    [key: string]: string;
   };
 }
 
