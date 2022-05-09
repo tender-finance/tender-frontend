@@ -1,5 +1,3 @@
-import type { TokenMetaDatum } from "~/config/tokenMetaData";
-
 export interface Token {
   symbol: string;
   icon: string;
@@ -37,25 +35,7 @@ export interface Networks {
   rinkeby: Network;
 }
 
-// TODO: Cleanup network type logic to be less repetitive
 export type NetworkString = "rinkeby";
-
-export enum TokenName {
-  AAVE = "AAVE",
-  BAT = "BAT",
-  DAI = "DAI",
-  ETH = "ETH",
-  LINK = "LINK",
-  PAX = "PAX",
-  SUSHI = "SUSHI",
-  TUSD = "TUSD",
-  UNI = "UNI",
-  USDC = "USDC",
-  USDT = "USDT",
-  WBTC = "WBTC",
-  YFI = "YFI",
-  ZRX = "ZRX",
-}
 
 export enum NetworkName {
   mainnet = 1,
@@ -96,7 +76,6 @@ export type TenderContext = {
 
 export type Market = {
   id: string;
-  tokenMetaData: TokenMetaDatum;
   tokenPair: TokenPair;
   marketData: {
     depositApy: string;

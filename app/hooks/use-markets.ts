@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import type { Market, NetworkData, TokenName, TokenPair } from "~/types/global";
-import { tokenMetaData } from "~/config/tokenMetaData";
+import type { Market, NetworkData, TokenPair } from "~/types/global";
 import type { JsonRpcSigner } from "@ethersproject/providers";
 import { hooks as Web3Hooks } from "~/connectors/meta-mask";
 import { useWeb3Signer } from "~/hooks/use-web3-signer";
@@ -99,7 +98,6 @@ export function useMarkets(
       return {
         id: tp.token.symbol,
         tokenPair: tp,
-        tokenMetaData: tokenMetaData[tp.token.symbol as TokenName],
         marketData: await getMarketData(signer, tp),
         walletBalance: await getWalletBalance(signer, tp.token),
         supplyBalance,

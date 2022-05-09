@@ -103,19 +103,19 @@ export default function Repay({
               </div>
               <div className="flex align-middle justify-center items-center">
                 <img
-                  src={market.tokenMetaData.icon}
+                  src={market.tokenPair.token.icon}
                   style={{ width: ICON_SIZE }}
                   className="mr-3"
                   alt="icon"
                 />
-                <div>Repay {market.tokenMetaData.name}</div>
+                <div>Repay {market.tokenPair.token.name}</div>
               </div>
 
               {!isEnabled && (
                 <div>
                   <div className="max-w-sm text-center m-auto mt-5 mb-5 text-sm text-gray-400">
-                    To borrow or repay {market.tokenMetaData.name} to the Tender
-                    Protocol, you need to enable it first.
+                    To borrow or repay {market.tokenPair.token.name} to the
+                    Tender Protocol, you need to enable it first.
                   </div>
                 </div>
               )}
@@ -135,7 +135,7 @@ export default function Repay({
                       inputEl.current.value = formattedBorrowedAmount;
                       setValue(formattedBorrowedAmount);
                     }}
-                    maxValueLabel={market.tokenMetaData.name}
+                    maxValueLabel={market.tokenPair.token.name}
                   />
                 </div>
               )}
@@ -161,7 +161,7 @@ export default function Repay({
               </div>
               <div className="flex items-center mb-3 text-gray-400  pb-6">
                 <img
-                  src={market.tokenMetaData.icon}
+                  src={market.tokenPair.token.icon}
                   style={{ width: ICON_SIZE }}
                   className="mr-3"
                   alt="icon"
@@ -267,7 +267,7 @@ export default function Repay({
               <div className="flex text-gray-500">
                 <div className="flex-grow">Wallet Balance</div>
                 <div>
-                  {walletBalance} {market.tokenMetaData.name}
+                  {walletBalance} {market.tokenPair.token.name}
                 </div>
               </div>
             </div>

@@ -1,28 +1,22 @@
 import { useState, useEffect } from "react";
-import type { NetworkData, TokenName, TokenPair } from "~/types/global";
+import type { NetworkData, Token, TokenPair } from "~/types/global";
 
-import { tokenMetaData } from "~/config/tokenMetaData";
-
-function generateTokenPairs(
-  networkData: NetworkData,
-  supportedTokenNames: TokenName[]
-): TokenPair[] {
-  // TODO: Would this be cleaner networkDAta.Tokens was an array?
+function generateTokenPairs(networkData: NetworkData): TokenPair[] {
+  // TODO: Would this be cleaner networkData.Tokens was an array?
   let tokenSymbols: string[] = Object.keys(networkData.Tokens);
 
   return tokenSymbols.map((symbol: string): TokenPair => {
-    const tokenMetaDatum = networkData.Tokens[symbol];
+    const tokenData: Token = networkData.Tokens[symbol];
 
     return {
-      token: networkData.Tokens[tokenMetaDatum.symbol],
-      cToken: networkData.cTokens[tokenMetaDatum.cTokenSymbol],
+      token: networkData.Tokens[tokenData.symbol],
+      cToken: networkData.cTokens[tokenData.cTokenSymbol],
     };
   });
 }
 
 export function useTokenPairs(
   networkData: NetworkData | null | undefined,
-  supportedTokens: TokenName[],
   onSupportedNetwork: boolean
 ) {
   let [tokenPairs, setTokenPairs] = useState<TokenPair[]>([]);
@@ -31,8 +25,8 @@ export function useTokenPairs(
     if (!onSupportedNetwork || !networkData) {
       return;
     }
-    setTokenPairs(generateTokenPairs(networkData, supportedTokens));
-  }, [onSupportedNetwork, networkData, supportedTokens]);
+    setTokenPairs(generateTokenPairs(networkData));
+  }, [onSupportedNetwork, networkData]);
 
   return tokenPairs;
 }

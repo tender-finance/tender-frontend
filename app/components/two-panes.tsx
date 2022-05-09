@@ -13,6 +13,8 @@ const marketsWithoutBorrowOrSupply = (markets: Market[]) => {
 
 export default function TwoPanes() {
   let { markets } = useContext(TenderContext);
+
+  console.log("markets 2", markets);
   return (
     <div className="grid grid-cols-2 gap-9 mb-14">
       {/* Supply */}
@@ -37,10 +39,10 @@ export default function TwoPanes() {
                     <td className="flex px-8 py-6 text-left items-center">
                       <img
                         className="w-9 mr-2"
-                        src={m.tokenMetaData.icon}
-                        alt={m.tokenMetaData.name}
+                        src={m.tokenPair.token.icon}
+                        alt={m.tokenPair.token.name}
                       />
-                      {m.tokenMetaData.name}
+                      {m.tokenPair.token.name}
                     </td>
                     <td className="px-8 py-6 text-left">
                       {m.marketData.depositApy}
@@ -72,16 +74,16 @@ export default function TwoPanes() {
                     <td className="flex px-8 py-6 text-left items-center">
                       <img
                         className="w-9 mr-2"
-                        src={m.tokenMetaData.icon}
-                        alt={m.tokenMetaData.name}
+                        src={m.tokenPair.token.icon}
+                        alt={m.tokenPair.token.name}
                       />
-                      {m.tokenMetaData.name}
+                      {m.tokenPair.token.name}
                     </td>
                     <td className="px-8 py-6 text-left">
                       {m.marketData.depositApy}
                     </td>
                     <td className="px-8 py-6 text-left">
-                      {m.walletBalance} {m.tokenMetaData.symbol}
+                      {m.walletBalance} {m.tokenPair.token.symbol}
                     </td>
                   </MarketSupplyRow>
                 );
@@ -115,10 +117,10 @@ export default function TwoPanes() {
                     <td className="flex px-8 py-6 text-left items-center">
                       <img
                         className="w-9 mr-2"
-                        src={m.tokenMetaData.icon}
-                        alt={m.tokenMetaData.name}
+                        src={m.tokenPair.token.icon}
+                        alt={m.tokenPair.token.name}
                       />
-                      {m.tokenMetaData.name}
+                      {m.tokenPair.token.name}
                     </td>
                     <td className="px-8 py-6 text-left">
                       {m.marketData.borrowApy}
@@ -157,16 +159,16 @@ export default function TwoPanes() {
                     <td className="flex px-8 py-6 text-left items-center">
                       <img
                         className="w-9 mr-2"
-                        src={m.tokenMetaData.icon}
-                        alt={m.tokenMetaData.name}
+                        src={m.tokenPair.token.icon}
+                        alt={m.tokenPair.token.name}
                       />
-                      {m.tokenMetaData.name}
+                      {m.tokenPair.token.name}
                     </td>
                     <td className="px-8 py-6 text-left">
                       {m.marketData.borrowApy}
                     </td>
                     <td className="px-8 py-6 text-left whitespace-nowrap">
-                      {m.walletBalance} {m.tokenMetaData.symbol}
+                      {m.walletBalance} {m.tokenPair.token.symbol}
                     </td>
                     <td className="px-8 py-6 text-left">0</td>
                   </MarketBorrowRow>
