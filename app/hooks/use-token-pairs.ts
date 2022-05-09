@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import type { NetworkData, Token, cToken, TokenPair } from "~/types/global";
 
 function generateTokenPairs(networkData: NetworkData): TokenPair[] {
-  // TODO: Would this be cleaner networkData.Tokens was an array?
   let tokenSymbols: string[] = Object.keys(networkData.Tokens);
 
   let tokenPairs: (TokenPair | null)[] = tokenSymbols.map(
