@@ -61,7 +61,13 @@ export default {
     ProxyAdmin: "0xD582eEcEF9e831daF4c2B5539156c8938914731E",
     ETH: "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
   },
-  PriceOracles: {},
+  PriceOracles: {
+    ETH: "0x8A753747A1Fa494EC906cE90E9f37563A8AF630e",
+    DAI: "0x2bA49Aaa16E6afD2a993473cfB70Fa8559B523cF",
+    USDC: "0xa24de01df22b63d23Ebc1882a5E3d4ec0d907bFB",
+    WBTC: "0xECe365B379E1dD183B20fc5f022230C044d51404",
+    BAT: "0x031dB56e01f82f20803059331DC6bEe9b17F7fC9",
+  },
   Blocks: {
     CompoundLens: 11279761,
     Base200bps_Slope2000bps_Jump20000bps_Kink90: 9727779,
