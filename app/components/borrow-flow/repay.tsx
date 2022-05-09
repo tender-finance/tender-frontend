@@ -20,7 +20,7 @@ interface Props {
   closeModal: Function;
   setIsRepaying: Function;
   signer: JsonRpcSigner | null | undefined;
-  formattedBorrowedAmount: string;
+  borrowedAmount: number;
   borrowLimitUsed: string;
   walletBalance: number;
   borrowLimit: number;
@@ -34,7 +34,7 @@ export default function Repay({
   closeModal,
   setIsRepaying,
   signer,
-  formattedBorrowedAmount,
+  borrowedAmount,
   borrowLimitUsed,
   walletBalance,
   tokenPairs,
@@ -47,8 +47,10 @@ export default function Repay({
   let [isRepayingTxn, setIsRepayingTxn] = useState<boolean>(false);
   let [value, setValue] = useState<string>("");
 
+  let maxRepayableAmount = Math.min(borrowedAmount, walletBalance).toFixed(2);
+
   let inputEl = useRef<HTMLInputElement>(null);
-  let isValid = useValidInput(value, 0, walletBalance);
+  let isValid = useValidInput(value, 0, walletBalance); // input bug
 
   let newBorrowLimit = useProjectBorrowLimit(
     signer,
@@ -128,12 +130,12 @@ export default function Repay({
                     defaultValue={0}
                   />
                   <Max
-                    maxValue={formattedBorrowedAmount}
+                    maxValue={maxRepayableAmount}
                     updateValue={() => {
                       if (!inputEl || !inputEl.current) return;
                       inputEl.current.focus();
-                      inputEl.current.value = formattedBorrowedAmount;
-                      setValue(formattedBorrowedAmount);
+                      inputEl.current.value = maxRepayableAmount;
+                      setValue(maxRepayableAmount);
                     }}
                     maxValueLabel={market.tokenMetaData.name}
                   />

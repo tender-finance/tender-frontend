@@ -318,17 +318,10 @@ async function getBorrowLimitUsed(
 // mct: ideally both, or just token amounts which we can multiply by tokenPrice at render-time
 async function getTotalBorrowed(
   signer: Signer,
-  tokenPairs: TokenPair[],
-  singleTokenPair: TokenPair | null
+  tokenPairs: TokenPair[]
 ): Promise<number> {
   let borrowedAmounts = await Promise.all(
     tokenPairs.map(async (tokenPair: TokenPair): Promise<number> => {
-      if (singleTokenPair) {
-        if (singleTokenPair.token !== tokenPair.token) {
-          return 0;
-        }
-      }
-
       let borrowedAmount: number = await getCurrentlyBorrowing(
         signer,
         tokenPair.cToken,
