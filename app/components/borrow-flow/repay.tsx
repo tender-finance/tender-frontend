@@ -47,10 +47,10 @@ export default function Repay({
   let [isRepayingTxn, setIsRepayingTxn] = useState<boolean>(false);
   let [value, setValue] = useState<string>("");
 
-  let maxRepayableAmount = Math.min(borrowedAmount, walletBalance).toFixed(2);
+  let maxRepayableAmount = Math.min(borrowedAmount, walletBalance);
 
   let inputEl = useRef<HTMLInputElement>(null);
-  let isValid = useValidInput(value, 0, walletBalance); // input bug
+  let isValid = useValidInput(value, 0, maxRepayableAmount);
 
   let newBorrowLimit = useProjectBorrowLimit(
     signer,
@@ -130,12 +130,12 @@ export default function Repay({
                     defaultValue={0}
                   />
                   <Max
-                    maxValue={maxRepayableAmount}
+                    maxValue={maxRepayableAmount.toFixed(2)}
                     updateValue={() => {
                       if (!inputEl || !inputEl.current) return;
                       inputEl.current.focus();
-                      inputEl.current.value = maxRepayableAmount;
-                      setValue(maxRepayableAmount);
+                      inputEl.current.value = maxRepayableAmount.toFixed(2);
+                      setValue(maxRepayableAmount.toFixed(2));
                     }}
                     maxValueLabel={market.tokenMetaData.name}
                   />
