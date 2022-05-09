@@ -63,7 +63,8 @@ export function useMarkets(
       // TODO: optimize with parallelization
       let totalBorrowedAmount = await getTotalBorrowed(
         signer,
-        supportedTokenPairs
+        supportedTokenPairs,
+        tp
       );
       let borrowLimit = await getBorrowLimit(
         signer,
