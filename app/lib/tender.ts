@@ -187,9 +187,6 @@ async function getCurrentlyBorrowing(
   return formatBigNumber(balance, token.decimals);
 }
 
-// TODO: This function should take into account which markets we've entered
-// as collateral. By default for now I believe the product spec says we want
-// to automatically enter markets upon depositing.
 async function availableCollateralToBorrowAgainst(
   signer: Signer,
   comptrollerContract: Contract,
@@ -201,6 +198,11 @@ async function availableCollateralToBorrowAgainst(
     tokenPair.token
   );
 
+  let assetPriceInUsd = await getAssetPriceInUsd(
+    signer,
+    tokenPair.token.priceOracleAddress
+  );
+
   let { 1: rawCollateralFactor } = await comptrollerContract.markets(
     tokenPair.cToken.address
   );
@@ -210,7 +212,7 @@ async function availableCollateralToBorrowAgainst(
     formatUnits(rawCollateralFactor, 18)
   );
 
-  let amount = suppliedAmount * collateralFactor;
+  let amount = suppliedAmount * assetPriceInUsd * collateralFactor;
 
   return parseFloat(amount.toFixed(2));
 }
@@ -221,6 +223,11 @@ async function availableCollateralToBorrowAgainst(
  * @param comptrollerAddress
  * @param cToken
  * @returns
+ *
+ * Each token has a max amount you can borrow against it.
+ * For example, DAI on Rinkeby has a 70% collateral factor, so you can borrow up to 70% of your supplied DAI.
+ *
+ * Summing all tokens you have supplied multiplied by their collateral limits gives the borrow limit.
  */
 async function getBorrowLimit(
   signer: Signer,
