@@ -1,4 +1,5 @@
 export default {
+  ChainId: 4,
   Contracts: {
     Comptroller: "0x2EAa9D77AE4D8f9cdD9FAAcd44016E746485bddb",
   },
