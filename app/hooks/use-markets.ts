@@ -67,7 +67,7 @@ export function useMarkets(
         signer,
         supportedTokenPairs
       );
-      let borrowLimit = await getAccountBorrowLimitInUsd(
+      let accountBorrowLimitInUsd = await getAccountBorrowLimitInUsd(
         signer,
         comptrollerAddress,
         supportedTokenPairs
@@ -103,11 +103,15 @@ export function useMarkets(
         borrowBalance,
         borrowBalanceInUsd,
         comptrollerAddress,
-        borrowLimit,
+        borrowLimit: accountBorrowLimitInUsd,
         totalBorrowedAmount,
+        borrowLimitUsedOfToken: await getBorrowLimitUsed(
+          borrowBalanceInUsd,
+          accountBorrowLimitInUsd
+        ),
         borrowLimitUsed: await getBorrowLimitUsed(
           totalBorrowedAmount,
-          borrowLimit
+          accountBorrowLimitInUsd
         ),
       };
     });

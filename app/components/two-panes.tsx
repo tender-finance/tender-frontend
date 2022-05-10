@@ -128,7 +128,7 @@ export default function TwoPanes() {
                       ${m.borrowBalanceInUsd.toFixed(2)}
                     </td>
                     <td className="px-8 py-6 text-left text-brand-green font-bold">
-                      {m.borrowLimitUsed}%
+                      {m.borrowLimitUsedOfToken}%
                     </td>
                   </MarketBorrowRow>
                 );
