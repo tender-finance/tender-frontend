@@ -1,12 +1,11 @@
 import type { JsonRpcSigner } from "@ethersproject/providers";
 import { useState, useEffect } from "react";
 import { getTotalSupplyBalanceInUsd } from "~/lib/tender";
-import type { NetworkData, TokenPair } from "~/types/global";
+import type { TokenPair } from "~/types/global";
 
 export function useTotalSupplyBalanceInUsd(
   signer: JsonRpcSigner | undefined,
-  tokenPairs: TokenPair[],
-  priceOracles: NetworkData["PriceOracles"]
+  tokenPairs: TokenPair[]
 ) {
   let [totalSupplyBalanceInUsd, setTotalSupplyBalanceInUsd] =
     useState<number>(0);
@@ -16,10 +15,10 @@ export function useTotalSupplyBalanceInUsd(
       return;
     }
 
-    getTotalSupplyBalanceInUsd(signer, tokenPairs, priceOracles).then((v) =>
+    getTotalSupplyBalanceInUsd(signer, tokenPairs).then((v) =>
       setTotalSupplyBalanceInUsd(v)
     );
-  }, [signer, tokenPairs, priceOracles]);
+  }, [signer, tokenPairs]);
 
   return totalSupplyBalanceInUsd;
 }

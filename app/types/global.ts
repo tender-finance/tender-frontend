@@ -12,6 +12,7 @@ export interface Token {
   decimals: number;
   address: string;
   cToken: cToken;
+  priceOracleAddress: string;
 }
 
 // TODO: Consolidate Network & Network Data
@@ -21,9 +22,6 @@ export interface NetworkData {
   };
   Tokens: {
     [key: string]: Token;
-  };
-  PriceOracles: {
-    [key: string]: string;
   };
 }
 

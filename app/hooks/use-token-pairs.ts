@@ -20,17 +20,15 @@ function validTokenConfigs(
 ): string[] {
   return tokenSymbols.filter((symbol) => {
     let token: Token = networkData.Tokens[symbol];
-    let cToken: cToken = token.cToken;
-    let priceOracleAddress: string = networkData.PriceOracles[symbol];
 
     // Useful logs to know when the config isn't right
-    if (!token || !cToken || !priceOracleAddress) {
+    if (!token || !token.cToken || !token.priceOracleAddress) {
       console.error(
         `Missing token, cToken, or priceOracleAddress in config for ${symbol}.`
       );
       console.error("token: ", token);
-      console.error("cToken: ", cToken);
-      console.error("priceOracleAddress: ", priceOracleAddress);
+      console.error("cToken: ", token.cToken);
+      console.error("priceOracleAddress: ", token.priceOracleAddress);
 
       return false;
     }

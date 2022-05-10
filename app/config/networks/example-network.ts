@@ -2,9 +2,6 @@ export default {
   Contracts: {
     Comptroller: "0x0...",
   },
-  PriceOracles: {
-    DAI: "0x0...",
-  },
   Tokens: {
     DAI: {
       name: "Dai",
@@ -12,6 +9,7 @@ export default {
       decimals: 18,
       address: "0x0...",
       icon: "/images/coin-icons/dai.svg",
+      priceOracleAddress: "0x0...",
       cToken: {
         name: "Compound Dai 📈",
         symbol: "cDAI",

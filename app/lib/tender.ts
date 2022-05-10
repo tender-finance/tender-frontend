@@ -459,8 +459,7 @@ async function getAssetPriceInUsd(
 
 async function getTotalSupplyBalanceInUsd(
   signer: Signer,
-  tokenPairs: TokenPair[],
-  priceOracles: NetworkData["PriceOracles"]
+  tokenPairs: TokenPair[]
 ): Promise<number> {
   let suppliedAmounts = await Promise.all(
     tokenPairs.map(async (tp: TokenPair): Promise<number> => {
@@ -470,8 +469,10 @@ async function getTotalSupplyBalanceInUsd(
         tp.token
       );
 
-      let priceOracleAddress = priceOracles[tp.token.symbol];
-      let priceInUsd = await getAssetPriceInUsd(signer, priceOracleAddress);
+      let priceInUsd = await getAssetPriceInUsd(
+        signer,
+        tp.token.priceOracleAddress
+      );
 
       return suppliedAmount * priceInUsd;
     })
@@ -483,8 +484,7 @@ async function getTotalSupplyBalanceInUsd(
 // TODO: Very similar to getTotalBorrowed, which can likely go away now
 async function getTotalBorrowedInUsd(
   signer: Signer,
-  tokenPairs: TokenPair[],
-  priceOracles: NetworkData["PriceOracles"]
+  tokenPairs: TokenPair[]
 ): Promise<number> {
   let borrowedAmounts = await Promise.all(
     tokenPairs.map(async (tp: TokenPair): Promise<number> => {
@@ -494,8 +494,10 @@ async function getTotalBorrowedInUsd(
         tp.token
       );
 
-      let priceOracleAddress = priceOracles[tp.token.symbol];
-      let priceInUsd = await getAssetPriceInUsd(signer, priceOracleAddress);
+      let priceInUsd = await getAssetPriceInUsd(
+        signer,
+        tp.token.priceOracleAddress
+      );
 
       return borrowedAmount * priceInUsd;
     })

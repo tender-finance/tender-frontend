@@ -116,13 +116,11 @@ async function getNetGainOrLoss(
 
 async function netApy(
   signer: JsonRpcSigner,
-  tokenPairs: TokenPair[],
-  priceOracles: NetworkData["PriceOracles"]
+  tokenPairs: TokenPair[]
 ): Promise<number | null> {
   let weightedValues: number[] = await Promise.all(
     tokenPairs.map(async (p): Promise<number> => {
-      let priceOracleAddress = priceOracles[p.token.symbol];
-      return await getNetGainOrLoss(signer, p, priceOracleAddress);
+      return await getNetGainOrLoss(signer, p, p.token.priceOracleAddress);
     })
   );
 
@@ -130,8 +128,7 @@ async function netApy(
 
   let totalSupplied: number = await getTotalSupplyBalanceInUsd(
     signer,
-    tokenPairs,
-    priceOracles
+    tokenPairs
   );
 
   // This is a percent value, i.e., if the function returns 0.1 it's 0.1%;

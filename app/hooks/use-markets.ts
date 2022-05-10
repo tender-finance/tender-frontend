@@ -49,8 +49,7 @@ const getMarketData = async (
 
 export function useMarkets(
   supportedTokenPairs: TokenPair[],
-  comptrollerAddress: string | undefined,
-  priceOracles: NetworkData["PriceOracles"] | undefined
+  comptrollerAddress: string | undefined
 ) {
   let [markets, setMarkets] = useState<Market[]>([]);
 
@@ -58,7 +57,7 @@ export function useMarkets(
   const signer = useWeb3Signer(provider);
 
   useEffect(() => {
-    if (!signer || !comptrollerAddress || !priceOracles) {
+    if (!signer || !comptrollerAddress) {
       return;
     }
 
@@ -74,10 +73,9 @@ export function useMarkets(
         supportedTokenPairs
       );
 
-      let priceOracleAddress: string = priceOracles[tp.token.symbol];
       let assetPriceInUsd: number = await getAssetPriceInUsd(
         signer,
-        priceOracleAddress
+        tp.token.priceOracleAddress
       );
 
       let supplyBalance = await getCurrentlySupplying(
@@ -115,7 +113,7 @@ export function useMarkets(
     });
 
     Promise.all(newMarkets).then((nm) => setMarkets(nm));
-  }, [supportedTokenPairs, signer, comptrollerAddress, priceOracles]);
+  }, [supportedTokenPairs, signer, comptrollerAddress]);
 
   return markets;
 }

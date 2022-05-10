@@ -15,8 +15,7 @@ export function useTenderContext() {
 
   let markets: Market[] = useMarkets(
     tokenPairs,
-    networkData?.Contracts?.Comptroller,
-    networkData?.PriceOracles
+    networkData?.Contracts?.Comptroller
   );
 
   useEffect(() => {
