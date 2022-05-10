@@ -1,4 +1,4 @@
-import type { cToken, NetworkData, Token } from "~/types/global";
+import type { cToken, Token } from "~/types/global";
 import type { Signer, Contract } from "ethers";
 import { ethers, BigNumber } from "ethers";
 

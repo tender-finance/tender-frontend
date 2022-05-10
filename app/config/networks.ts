@@ -1,4 +1,4 @@
-import { NetworkName, Networks } from "~/types/global";
+import { NetworkName, type Networks } from "~/types/global";
 
 import rinkeby from "./networks/rinkeby";
 import metisStartdust from "./networks/metisStardust";

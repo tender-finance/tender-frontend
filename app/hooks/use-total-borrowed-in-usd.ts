@@ -1,7 +1,7 @@
 import type { JsonRpcSigner } from "@ethersproject/providers";
 import { useState, useEffect } from "react";
 import { getTotalBorrowedInUsd } from "~/lib/tender";
-import type { NetworkData, TokenPair } from "~/types/global";
+import type { TokenPair } from "~/types/global";
 
 export function useTotalBorrowedInUsd(
   signer: JsonRpcSigner | undefined,

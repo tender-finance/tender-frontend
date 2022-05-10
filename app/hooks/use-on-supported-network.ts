@@ -1,10 +1,6 @@
-import { support } from "cypress/types/jquery";
-import { chain } from "cypress/types/lodash";
 import { useState, useEffect } from "react";
 import networks from "~/config/networks";
-import { NetworkName } from "~/types/global";
-
-// Reference ~/connectors/index.ts for chain mappings
+import { type NetworkName } from "~/types/global";
 
 function supportedChains(chainId: number): number[] {
   let networkNames: string[] = Object.keys(networks);

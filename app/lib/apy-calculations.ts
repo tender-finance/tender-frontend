@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 import sampleCTokenAbi from "~/config/sample-ctoken-abi";
-import type { Token, cToken, TokenPair, NetworkData } from "~/types/global";
+import type { Token, cToken, TokenPair } from "~/types/global";
 import type { JsonRpcSigner } from "@ethersproject/providers";
 import {
   getAssetPriceInUsd,

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import type { Market, NetworkData, TokenPair } from "~/types/global";
+import type { Market, TokenPair } from "~/types/global";
 import type { JsonRpcSigner } from "@ethersproject/providers";
 import { hooks as Web3Hooks } from "~/connectors/meta-mask";
 import { useWeb3Signer } from "~/hooks/use-web3-signer";
