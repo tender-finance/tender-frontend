@@ -250,9 +250,7 @@ async function getBorrowLimit(
     })
   );
 
-  let borrowLimit = tokenBalances.reduce(
-    (acc: number, curr: number): number => acc + curr
-  );
+  let borrowLimit = tokenBalances.reduce((acc, curr) => acc + curr);
 
   return borrowLimit;
 }
