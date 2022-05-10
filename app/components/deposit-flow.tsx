@@ -27,7 +27,7 @@ export default function DepositFlow({ closeModal, market }: Props) {
       borrowLimitUsed={market.borrowLimitUsed}
       signer={signer}
       walletBalance={market.walletBalance}
-      totalBorrowedAmount={market.totalBorrowedAmount}
+      borrowedAmount={market.borrowBalance}
       comptrollerAddress={market.comptrollerAddress}
     />
   ) : (
