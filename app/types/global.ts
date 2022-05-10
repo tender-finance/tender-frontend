@@ -63,6 +63,6 @@ export type Market = {
   borrowLimit: number;
   borrowLimitUsedOfToken: string;
   borrowLimitUsed: string;
-  totalBorrowedAmount: number;
+  totalBorrowedAmountInUsd: number;
   comptrollerAddress: string;
 };

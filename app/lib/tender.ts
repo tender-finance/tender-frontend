@@ -318,33 +318,6 @@ async function getBorrowLimitUsed(
   return ((borrowedAmount / borrowedLimit) * 100).toFixed(2);
 }
 
-// TODO: Should this be returning dollars or token amounts?
-// TODO: use dollars here for real yo
-async function getTotalBorrowed(
-  signer: Signer,
-  tokenPairs: TokenPair[]
-): Promise<number> {
-  let borrowedAmounts = await Promise.all(
-    tokenPairs.map(async (tokenPair: TokenPair): Promise<number> => {
-      let borrowedAmount: number = await getCurrentlyBorrowing(
-        signer,
-        tokenPair.cToken,
-        tokenPair.token
-      );
-      return borrowedAmount;
-    })
-  );
-
-  let totalBorrowed = borrowedAmounts.reduce(
-    (acc: number, curr: number): number => {
-      return acc + curr;
-    },
-    0
-  );
-
-  return totalBorrowed;
-}
-
 /**
  * -------------------------------
  * Withdraw Flow
@@ -524,7 +497,6 @@ export {
   getMarketSizeUsd,
   getTotalBorrowedUsd,
   hasSufficientAllowance,
-  getTotalBorrowed,
   projectBorrowLimit,
   getAssetPriceInUsd,
   getTotalBorrowedInUsd,

@@ -25,7 +25,7 @@ interface Props {
   borrowLimit: number;
   walletBalance: number;
   tokenPairs: TokenPair[];
-  totalBorrowedAmount: number;
+  totalBorrowedAmountInUsd: number;
 }
 
 export default function Borrow({
@@ -36,7 +36,7 @@ export default function Borrow({
   borrowLimit,
   borrowLimitUsed,
   tokenPairs,
-  totalBorrowedAmount,
+  totalBorrowedAmountInUsd,
 }: Props) {
   let [isWaitingToBeMined, setIsWaitingToBeMined] = useState<boolean>(false);
   let [value, setValue] = useState<string>("");
@@ -58,7 +58,7 @@ export default function Borrow({
   );
 
   let newBorrowLimitUsed = useBorrowLimitUsed(
-    totalBorrowedAmount,
+    totalBorrowedAmountInUsd,
     newBorrowLimit
   );
 
@@ -147,8 +147,8 @@ export default function Borrow({
                 <BorrowBalance
                   value={value}
                   isValid={isValid}
-                  borrowBalance={totalBorrowedAmount}
-                  newBorrowBalance={totalBorrowedAmount + +value}
+                  borrowBalance={totalBorrowedAmountInUsd}
+                  newBorrowBalance={totalBorrowedAmountInUsd + +value}
                   borrowLimitUsed={borrowLimitUsed}
                   newBorrowLimitUsed={newBorrowLimitUsed}
                 />

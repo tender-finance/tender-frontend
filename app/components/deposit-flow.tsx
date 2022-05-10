@@ -27,7 +27,7 @@ export default function DepositFlow({ closeModal, market }: Props) {
       borrowLimitUsed={market.borrowLimitUsed}
       signer={signer}
       walletBalance={market.walletBalance}
-      totalBorrowedAmount={market.totalBorrowedAmount}
+      totalBorrowedAmountInUsd={market.totalBorrowedAmountInUsd}
       comptrollerAddress={market.comptrollerAddress}
     />
   ) : (
@@ -39,7 +39,7 @@ export default function DepositFlow({ closeModal, market }: Props) {
       borrowLimitUsed={market.borrowLimitUsed}
       signer={signer}
       walletBalance={market.walletBalance}
-      totalBorrowedAmount={market.totalBorrowedAmount}
+      totalBorrowedAmountInUsd={market.totalBorrowedAmountInUsd}
     />
   );
 }

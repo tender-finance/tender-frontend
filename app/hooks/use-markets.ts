@@ -14,9 +14,9 @@ import {
   getCurrentlyBorrowing,
   getCurrentlySupplying,
   getMarketSizeUsd,
-  getTotalBorrowed,
   getTotalBorrowedUsd,
   getWalletBalance,
+  getTotalBorrowedInUsd,
 } from "~/lib/tender";
 
 const getMarketData = async (
@@ -63,7 +63,7 @@ export function useMarkets(
 
     let newMarkets = supportedTokenPairs.map(async (tp): Promise<Market> => {
       // TODO: optimize with parallelization
-      let totalBorrowedAmount = await getTotalBorrowed(
+      let totalBorrowedAmountInUsd = await getTotalBorrowedInUsd(
         signer,
         supportedTokenPairs
       );
@@ -104,13 +104,13 @@ export function useMarkets(
         borrowBalanceInUsd,
         comptrollerAddress,
         borrowLimit: accountBorrowLimitInUsd,
-        totalBorrowedAmount,
+        totalBorrowedAmountInUsd,
         borrowLimitUsedOfToken: await getBorrowLimitUsed(
           borrowBalanceInUsd,
           accountBorrowLimitInUsd
         ),
         borrowLimitUsed: await getBorrowLimitUsed(
-          totalBorrowedAmount,
+          totalBorrowedAmountInUsd,
           accountBorrowLimitInUsd
         ),
       };
