@@ -9,7 +9,7 @@ import {
 } from "~/lib/apy-calculations";
 import {
   getAssetPriceInUsd,
-  getBorrowLimit,
+  getAccountBorrowLimitInUsd,
   getBorrowLimitUsed,
   getCurrentlyBorrowing,
   getCurrentlySupplying,
@@ -67,7 +67,7 @@ export function useMarkets(
         signer,
         supportedTokenPairs
       );
-      let borrowLimit = await getBorrowLimit(
+      let borrowLimit = await getAccountBorrowLimitInUsd(
         signer,
         comptrollerAddress,
         supportedTokenPairs

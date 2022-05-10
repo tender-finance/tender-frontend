@@ -187,7 +187,7 @@ async function getCurrentlyBorrowing(
   return formatBigNumber(balance, token.decimals);
 }
 
-async function availableCollateralToBorrowAgainst(
+async function borrowLimitForTokenInUsd(
   signer: Signer,
   comptrollerContract: Contract,
   tokenPair: TokenPair
@@ -229,7 +229,7 @@ async function availableCollateralToBorrowAgainst(
  *
  * Summing all tokens you have supplied multiplied by their collateral limits gives the borrow limit.
  */
-async function getBorrowLimit(
+async function getAccountBorrowLimitInUsd(
   signer: Signer,
   comptrollerAddress: string,
   tokenPairs: TokenPair[]
@@ -240,17 +240,13 @@ async function getBorrowLimit(
     signer
   );
 
-  let tokenBalances = await Promise.all(
+  let tokenBalancesInUsd = await Promise.all(
     tokenPairs.map(async (tokenPair: TokenPair): Promise<number> => {
-      return availableCollateralToBorrowAgainst(
-        signer,
-        comptrollerContract,
-        tokenPair
-      );
+      return borrowLimitForTokenInUsd(signer, comptrollerContract, tokenPair);
     })
   );
 
-  let borrowLimit = tokenBalances.reduce((acc, curr) => acc + curr);
+  let borrowLimit = tokenBalancesInUsd.reduce((acc, curr) => acc + curr);
 
   return borrowLimit;
 }
@@ -262,7 +258,7 @@ async function projectBorrowLimit(
   cToken: cToken,
   value: number
 ): Promise<number> {
-  let borrowLimit = await getBorrowLimit(
+  let borrowLimit = await getAccountBorrowLimitInUsd(
     signer,
     comptrollerAddress,
     tokenPairs
@@ -316,10 +312,10 @@ async function getBorrowedAmount(
  * @returns
  */
 async function getBorrowLimitUsed(
-  totalBorrowed: number,
+  borrowedAmount: number,
   borrowedLimit: number
 ): Promise<string> {
-  return ((totalBorrowed / borrowedLimit) * 100).toFixed(2);
+  return ((borrowedAmount / borrowedLimit) * 100).toFixed(2);
 }
 
 // TODO: Should this be returning dollars or token amounts?
@@ -518,7 +514,7 @@ export {
   getWalletBalance,
   getCurrentlySupplying,
   getCurrentlyBorrowing,
-  getBorrowLimit,
+  getAccountBorrowLimitInUsd,
   getBorrowedAmount,
   getBorrowLimitUsed,
   getTotalSupplyBalanceInUsd,
