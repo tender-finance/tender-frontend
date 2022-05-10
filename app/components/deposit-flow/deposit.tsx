@@ -22,7 +22,7 @@ interface Props {
   signer: JsonRpcSigner | null | undefined;
   borrowLimitUsed: string;
   walletBalance: number;
-  borrowedAmount: number;
+  totalBorrowedAmount: number;
   comptrollerAddress: string;
 }
 export default function Deposit({
@@ -33,7 +33,7 @@ export default function Deposit({
   signer,
   borrowLimitUsed,
   walletBalance,
-  borrowedAmount,
+  totalBorrowedAmount,
   market,
 }: Props) {
   let [isWaitingToBeMined, setIsWaitingToBeMined] = useState<boolean>(false);
@@ -54,7 +54,10 @@ export default function Deposit({
     value
   );
 
-  let newBorrowLimitUsed = useBorrowLimitUsed(borrowedAmount, newBorrowLimit);
+  let newBorrowLimitUsed = useBorrowLimitUsed(
+    totalBorrowedAmount,
+    newBorrowLimit
+  );
 
   useEffect(() => {
     if (!signer) {
