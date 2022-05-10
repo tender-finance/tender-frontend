@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 
 // Reference ~/connectors/index.ts for chain mappings
+// TODO: Are all these still relevant after nuking the bad configs?
 const SUPPORTED_CHAINS: number[] = [1, 3, 4, 588, 1088];
 
 function checkIfNetworkIsSupported(chainId: number): boolean {

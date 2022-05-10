@@ -88,7 +88,7 @@ async function deposit(
   //   let tx = await contract.mint({ value: ethers.utils.parseEther(value) });
   // }
   // else {
-  console.log("supply() with cToken", cToken.name, cToken.address);
+  console.log("supply() with cToken", cToken.symbol, cToken.address);
 
   const formattedValue = ethers.utils.parseUnits(value, token.decimals);
   console.log(

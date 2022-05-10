@@ -1,17 +1,17 @@
-import type { TokenMetaDatum } from "~/config/tokenMetaData";
-
-export interface Token {
-  symbol: TokenName;
-  icon: string;
-  name: string;
-  decimals: number;
-  address: string;
-}
-
 export interface cToken {
   name: string;
   address: string;
   decimals: number;
+  symbol: string;
+}
+
+export interface Token {
+  symbol: string;
+  icon: string;
+  name: string;
+  decimals: number;
+  address: string;
+  cToken: cToken;
 }
 
 // TODO: Consolidate Network & Network Data
@@ -19,9 +19,9 @@ export interface NetworkData {
   Contracts: {
     Comptroller: string;
   };
-
-  Tokens: any;
-  cTokens: any;
+  Tokens: {
+    [key: string]: Token;
+  };
   PriceOracles: {
     [key: string]: string;
   };
@@ -30,43 +30,10 @@ export interface NetworkData {
 export interface Network extends NetworkData {}
 
 export interface Networks {
-  mainnet: Network;
   rinkeby: Network;
-  ropsten: Network;
-  auroraTestnet: Network;
-  auroraMainnet: Network;
-  auroraLocalnet: Network;
-  metisTestnet: Network;
-  metisMainnet: Network;
 }
 
-// TODO: Cleanup network type logic to be less repetitive
-export type NetworkString =
-  | "mainnet"
-  | "rinkeby"
-  | "ropsten"
-  | "auroraTestnet"
-  | "auroraMainnet"
-  | "auroraLocalnet"
-  | "metisTestnet"
-  | "metisMainnet";
-
-export enum TokenName {
-  AAVE = "AAVE",
-  BAT = "BAT",
-  DAI = "DAI",
-  ETH = "ETH",
-  LINK = "LINK",
-  PAX = "PAX",
-  SUSHI = "SUSHI",
-  TUSD = "TUSD",
-  UNI = "UNI",
-  USDC = "USDC",
-  USDT = "USDT",
-  WBTC = "WBTC",
-  YFI = "YFI",
-  ZRX = "ZRX",
-}
+export type NetworkString = "rinkeby";
 
 export enum NetworkName {
   mainnet = 1,
@@ -107,7 +74,6 @@ export type TenderContext = {
 
 export type Market = {
   id: string;
-  tokenMetaData: TokenMetaDatum;
   tokenPair: TokenPair;
   marketData: {
     depositApy: string;
