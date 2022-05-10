@@ -1,12 +1,11 @@
 import type { JsonRpcSigner } from "@ethersproject/providers";
 import { useState, useEffect } from "react";
 import { getTotalBorrowedInUsd } from "~/lib/tender";
-import type { NetworkData, TokenPair } from "~/types/global";
+import type { TokenPair } from "~/types/global";
 
 export function useTotalBorrowedInUsd(
   signer: JsonRpcSigner | undefined,
-  tokenPairs: TokenPair[],
-  priceOracles: NetworkData["PriceOracles"]
+  tokenPairs: TokenPair[]
 ): number {
   let [totalBorrowedAmountInUsd, setTotalBorrowedAmountInUsd] =
     useState<number>(0);
@@ -16,10 +15,10 @@ export function useTotalBorrowedInUsd(
       return;
     }
 
-    getTotalBorrowedInUsd(signer, tokenPairs, priceOracles).then((b) =>
+    getTotalBorrowedInUsd(signer, tokenPairs).then((b) =>
       setTotalBorrowedAmountInUsd(b)
     );
-  }, [signer, tokenPairs, priceOracles]);
+  }, [signer, tokenPairs]);
 
   return totalBorrowedAmountInUsd;
 }

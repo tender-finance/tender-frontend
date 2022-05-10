@@ -1,5 +1,5 @@
 export default {
-  ChainId: 0,
+  ChainId: 588,
   Contracts: {
     Comptroller: "0x0...",
   },

@@ -1,12 +1,11 @@
 import type { JsonRpcSigner } from "@ethersproject/providers";
 import { useState, useEffect } from "react";
 import { netApy as netApyFn } from "~/lib/apy-calculations";
-import type { NetworkData, TokenPair } from "~/types/global";
+import type { TokenPair } from "~/types/global";
 
 export function useNetApy(
   signer: JsonRpcSigner | undefined,
-  tokenPairs: TokenPair[],
-  priceOracles: NetworkData["PriceOracles"]
+  tokenPairs: TokenPair[]
 ) {
   let [netApy, setNetApy] = useState<number | null>(null);
 
@@ -14,8 +13,8 @@ export function useNetApy(
     if (!signer) {
       return;
     }
-    netApyFn(signer, tokenPairs, priceOracles).then((n) => setNetApy(n));
-  }, [signer, tokenPairs, priceOracles]);
+    netApyFn(signer, tokenPairs).then((n) => setNetApy(n));
+  }, [signer, tokenPairs]);
 
   return netApy;
 }

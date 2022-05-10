@@ -12,54 +12,28 @@ export interface Token {
   decimals: number;
   address: string;
   cToken: cToken;
+  priceOracleAddress: string;
 }
 
-// TODO: Consolidate Network & Network Data
 export interface NetworkData {
+  ChainId: number;
   Contracts: {
     Comptroller: string;
   };
   Tokens: {
     [key: string]: Token;
   };
-  PriceOracles: {
-    [key: string]: string;
-  };
 }
-
-export interface Network extends NetworkData {}
-
-export interface Networks {
-  rinkeby: Network;
-}
-
-export type NetworkString = "rinkeby";
 
 export enum NetworkName {
-  mainnet = 1,
-  ropsten = 3,
-  rinkeby = 4,
-  goerli = 5,
-  kovan = 42,
-  xdai = 100,
-  orchid = 30,
-  orchidTestnet = 31,
-  core = 99,
-  sokol = 77,
-  classic = 61,
-  ubiq = 8,
-  thundercore = 108,
-  thundercoreTestnet = 18,
-  lightstreams = 163,
-  fuse = 122,
-  matic = 137,
-  maticMumbai = 80001,
-  metisTestnet = 588,
-  metisMainnet = 1088,
-  auroraTestnet = 1313161555,
-  auroraMainnet = 1313161554,
-  auroraLocalnet = 1313161556,
+  rinkeby = "rinkeby",
+  metisStartdust = "metisStartdust",
+  metisMainnet = "metisMainnet",
 }
+
+export type Networks = {
+  [key in NetworkName]: NetworkData;
+};
 
 export interface TokenPair {
   token: Token;

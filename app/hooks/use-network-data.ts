@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import { chainIdToNetwork } from "~/connectors";
-import type { NetworkData, NetworkString } from "~/types/global";
+import type { NetworkData, NetworkName } from "~/types/global";
 import networks from "~/config/networks";
 
 export function useNetworkData(chainId: number | undefined) {
@@ -10,7 +9,11 @@ export function useNetworkData(chainId: number | undefined) {
       return;
     }
 
-    const networkName = chainIdToNetwork[chainId] as NetworkString;
+    let networkNames: string[] = Object.keys(networks);
+    let networkName: NetworkName = networkNames.find(
+      (name) => networks[name as NetworkName].ChainId === chainId
+    ) as NetworkName;
+
     const networkData: NetworkData = networks[networkName];
     setNetworkData(networkData);
   }, [chainId]);
