@@ -175,8 +175,8 @@ export default function Repay({
               <BorrowBalance
                 value={value}
                 isValid={isValid}
-                borrowBalance={market.borrowBalance}
-                newBorrowBalance={market.borrowBalance - +value}
+                borrowBalance={market.totalBorrowedAmount}
+                newBorrowBalance={market.totalBorrowedAmount - +value}
                 borrowLimitUsed={borrowLimitUsed}
                 newBorrowLimitUsed={newBorrowLimitUsed}
               />

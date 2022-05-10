@@ -147,8 +147,8 @@ export default function Borrow({
                 <BorrowBalance
                   value={value}
                   isValid={isValid}
-                  borrowBalance={currentlyBorrowing}
-                  newBorrowBalance={currentlyBorrowing + +value}
+                  borrowBalance={totalBorrowedAmount}
+                  newBorrowBalance={totalBorrowedAmount + +value}
                   borrowLimitUsed={borrowLimitUsed}
                   newBorrowLimitUsed={newBorrowLimitUsed}
                 />

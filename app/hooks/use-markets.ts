@@ -106,7 +106,7 @@ export function useMarkets(
         borrowLimit,
         totalBorrowedAmount,
         borrowLimitUsed: await getBorrowLimitUsed(
-          borrowBalanceInUsd,
+          totalBorrowedAmount,
           borrowLimit
         ),
       };

@@ -319,6 +319,7 @@ async function getBorrowLimitUsed(
 }
 
 // TODO: Should this be returning dollars or token amounts?
+// TODO: use dollars here for real yo
 async function getTotalBorrowed(
   signer: Signer,
   tokenPairs: TokenPair[]
