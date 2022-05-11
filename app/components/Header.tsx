@@ -1,11 +1,6 @@
-import { Link, useLocation } from "remix";
 import ConnectWallet from "./connect-wallet";
-import { hooks as Web3Hooks } from "~/connectors/meta-mask";
 
 export default function Header() {
-  const location = useLocation();
-  const chainId = Web3Hooks.useChainId();
-
   return (
     <div className="flex c mt-8">
       <div className="flex-grow">
