@@ -14,7 +14,7 @@ export function useTenderContext() {
   let networkData = useNetworkData(chainId);
   let onSupportedNetwork = useOnSupportedNetwork(chainId);
   let tokenPairs = useTokenPairs(networkData, onSupportedNetwork);
-  let pollingNonce = useInterval(10_000);
+  let pollingKey = useInterval(10_000);
 
   let markets: Market[] = useMarkets(
     tokenPairs,
@@ -35,7 +35,14 @@ export function useTenderContext() {
       currentTransaction,
       updateTransaction,
     });
-  }, [pollingNonce, chainId, tokenPairs, networkData, markets]);
+  }, [
+    pollingKey,
+    chainId,
+    tokenPairs,
+    networkData,
+    markets,
+    currentTransaction,
+  ]);
 
   return tenderContext;
 }

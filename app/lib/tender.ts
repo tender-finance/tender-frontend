@@ -9,7 +9,10 @@ import SamplePriceOracleAbi from "~/config/sample-price-oracle-abi";
 
 import type { TokenPair } from "~/types/global";
 import { formatUnits } from "ethers/lib/utils";
-import { TransactionReceipt, JsonRpcSigner } from "@ethersproject/providers";
+import type {
+  TransactionReceipt,
+  JsonRpcSigner,
+} from "@ethersproject/providers";
 
 const MINIMUM_REQUIRED_APPROVAL_BALANCE = BigNumber.from("1");
 

@@ -1,10 +1,7 @@
 import { ICON_SIZE } from "~/lib/constants";
 import type { Market } from "~/types/global";
 import { useContext, useEffect, useRef, useState } from "react";
-import type {
-  JsonRpcSigner,
-  TransactionReceipt,
-} from "@ethersproject/providers";
+import type { JsonRpcSigner } from "@ethersproject/providers";
 import { useValidInput } from "~/hooks/use-valid-input";
 import toast from "react-hot-toast";
 import Max from "~/components/max";
