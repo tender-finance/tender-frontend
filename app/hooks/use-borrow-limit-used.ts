@@ -1,11 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { TenderContext } from "~/contexts/tender-context";
 import { getBorrowLimitUsed } from "~/lib/tender";
+import { useInterval } from "./use-interval";
 
 export function useBorrowLimitUsed(
   borrowedAmount: number,
   borrowLimit: number
 ): string {
   let [borrowLimitUsed, setBorrowLimitUsed] = useState<string>("");
+
+  let { currentTransaction } = useContext(TenderContext);
+  let pollKey = useInterval(10_000);
 
   useEffect(() => {
     if (!borrowLimit) {
@@ -15,7 +20,7 @@ export function useBorrowLimitUsed(
     getBorrowLimitUsed(borrowedAmount, borrowLimit).then((b) =>
       setBorrowLimitUsed(b)
     );
-  }, [borrowedAmount, borrowLimit]);
+  }, [borrowedAmount, borrowLimit, currentTransaction, pollKey]);
 
   return borrowLimitUsed;
 }

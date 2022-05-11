@@ -1,6 +1,6 @@
 import { ICON_SIZE } from "~/lib/constants";
 import type { Market, TokenPair } from "~/types/global";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import type { JsonRpcSigner } from "@ethersproject/providers";
 
 import clsx from "clsx";
@@ -15,6 +15,7 @@ import { useProjectBorrowLimit } from "~/hooks/use-project-borrow-limit";
 import { useBorrowLimitUsed } from "~/hooks/use-borrow-limit-used";
 
 import ConfirmingTransaction from "../fi-modal/confirming-transition";
+import { TenderContext } from "~/contexts/tender-context";
 
 interface Props {
   closeModal: Function;
@@ -64,6 +65,8 @@ export default function Repay({
     totalBorrowedAmountInUsd,
     newBorrowLimit
   );
+
+  let { updateTransaction } = useContext(TenderContext);
 
   useEffect(() => {
     if (!signer) {
@@ -240,10 +243,10 @@ export default function Repay({
                         );
 
                         setIsWaitingToBeMined(true);
-                        await txn.wait(); // TODO: error handle if transaction fails
+                        let tr = await txn.wait(); // TODO: error handle if transaction fails
                         setIsWaitingToBeMined(false);
-
                         setValue("");
+                        updateTransaction(tr.blockHash);
                         toast.success("Repayment successful");
                         closeModal();
                       } catch (e) {

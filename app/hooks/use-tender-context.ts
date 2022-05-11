@@ -5,13 +5,16 @@ import { useTokenPairs } from "./use-token-pairs";
 import { useOnSupportedNetwork } from "./use-on-supported-network";
 import { useNetworkData } from "./use-network-data";
 import { useMarkets } from "./use-markets";
+import { useInterval } from "./use-interval";
 
 export function useTenderContext() {
+  let [currentTransaction, updateTransaction] = useState<string | null>(null);
   let [tenderContext, setTenderContext] = useState<TenderContext | null>();
   const chainId = Web3Hooks.useChainId();
   let networkData = useNetworkData(chainId);
   let onSupportedNetwork = useOnSupportedNetwork(chainId);
   let tokenPairs = useTokenPairs(networkData, onSupportedNetwork);
+  let pollingKey = useInterval(10_000);
 
   let markets: Market[] = useMarkets(
     tokenPairs,
@@ -27,8 +30,17 @@ export function useTenderContext() {
       tokenPairs,
       networkData,
       markets,
+      currentTransaction,
+      updateTransaction,
     });
-  }, [chainId, tokenPairs, networkData, markets]);
+  }, [
+    pollingKey,
+    chainId,
+    tokenPairs,
+    networkData,
+    markets,
+    currentTransaction,
+  ]);
 
   return tenderContext;
 }

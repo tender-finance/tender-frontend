@@ -44,7 +44,7 @@ export default function Deposit({
   let inputEl = useRef<HTMLInputElement>(null);
   let isValid = useValidInput(value, 0, walletBalance);
 
-  let { tokenPairs } = useContext(TenderContext);
+  let { tokenPairs, updateTransaction } = useContext(TenderContext);
 
   let newBorrowLimit = useProjectBorrowLimit(
     signer,
@@ -229,9 +229,10 @@ export default function Deposit({
                         market.tokenPair.token
                       );
                       setIsWaitingToBeMined(true);
-                      await txn.wait();
+                      let tr = await txn.wait();
                       setIsWaitingToBeMined(false);
                       setValue("");
+                      updateTransaction(tr.blockHash);
                       toast.success("Deposit successful");
                       closeModal();
                     } catch (e) {

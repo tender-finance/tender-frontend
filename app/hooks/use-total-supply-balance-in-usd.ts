@@ -1,7 +1,9 @@
 import type { JsonRpcSigner } from "@ethersproject/providers";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { TenderContext } from "~/contexts/tender-context";
 import { getTotalSupplyBalanceInUsd } from "~/lib/tender";
 import type { TokenPair } from "~/types/global";
+import { useInterval } from "./use-interval";
 
 export function useTotalSupplyBalanceInUsd(
   signer: JsonRpcSigner | undefined,
@@ -9,6 +11,8 @@ export function useTotalSupplyBalanceInUsd(
 ) {
   let [totalSupplyBalanceInUsd, setTotalSupplyBalanceInUsd] =
     useState<number>(0);
+  let { currentTransaction } = useContext(TenderContext);
+  let poll = useInterval(10_000);
 
   useEffect(() => {
     if (!signer || tokenPairs.length === 0) {
@@ -18,7 +22,7 @@ export function useTotalSupplyBalanceInUsd(
     getTotalSupplyBalanceInUsd(signer, tokenPairs).then((v) =>
       setTotalSupplyBalanceInUsd(v)
     );
-  }, [signer, tokenPairs]);
+  }, [signer, tokenPairs, poll, currentTransaction]);
 
   return totalSupplyBalanceInUsd;
 }

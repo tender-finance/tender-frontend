@@ -97,6 +97,8 @@ export default function AccountSummary() {
           className="bg-green-300 mr-2 h-2 rounded-full"
           style={{
             background: "linear-gradient(270deg, #1BD6CF 0%, #00E5AF 100%)",
+            width: 0,
+            transition: "width 1s ease-out",
           }}
           ref={leftLineRef}
         ></div>

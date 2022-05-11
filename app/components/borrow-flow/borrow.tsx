@@ -1,6 +1,6 @@
 import { ICON_SIZE } from "~/lib/constants";
 import type { Market, TokenPair } from "~/types/global";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useContext } from "react";
 import type { JsonRpcSigner } from "@ethersproject/providers";
 
 import clsx from "clsx";
@@ -16,6 +16,7 @@ import { useCurrentlyBorrowing } from "~/hooks/use-currently-borrowing";
 
 import ConfirmingTransaction from "../fi-modal/confirming-transition";
 import { useMaxBorrowAmountForToken } from "~/hooks/use-max-borrow-amount-for-token";
+import { TenderContext } from "~/contexts/tender-context";
 
 interface Props {
   market: Market;
@@ -49,6 +50,8 @@ export default function Borrow({
     market.tokenPair.token
   );
   let isValid = useValidInput(value, 0, borrowLimit);
+
+  let { updateTransaction } = useContext(TenderContext);
 
   let newBorrowLimit = useProjectBorrowLimit(
     signer,
@@ -189,9 +192,9 @@ export default function Borrow({
                           );
 
                           setIsWaitingToBeMined(true);
-                          await txn.wait(); // TODO: error handle if transaction fails
+                          let tr = await txn.wait(); // TODO: error handle if transaction fails
                           setIsWaitingToBeMined(false);
-                          //   setValue("");
+                          updateTransaction(tr.blockHash);
                           toast.success("Borrow successful");
                           closeModal();
                         } catch (e) {
