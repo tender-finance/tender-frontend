@@ -9,14 +9,14 @@ import {
 } from "~/lib/apy-calculations";
 import {
   getAssetPriceInUsd,
-  getBorrowLimit,
+  getAccountBorrowLimitInUsd,
   getBorrowLimitUsed,
   getCurrentlyBorrowing,
   getCurrentlySupplying,
   getMarketSizeUsd,
-  getTotalBorrowed,
   getTotalBorrowedUsd,
   getWalletBalance,
+  getTotalBorrowedInUsd,
 } from "~/lib/tender";
 
 const getMarketData = async (
@@ -63,11 +63,11 @@ export function useMarkets(
 
     let newMarkets = supportedTokenPairs.map(async (tp): Promise<Market> => {
       // TODO: optimize with parallelization
-      let totalBorrowedAmount = await getTotalBorrowed(
+      let totalBorrowedAmountInUsd = await getTotalBorrowedInUsd(
         signer,
         supportedTokenPairs
       );
-      let borrowLimit = await getBorrowLimit(
+      let accountBorrowLimitInUsd = await getAccountBorrowLimitInUsd(
         signer,
         comptrollerAddress,
         supportedTokenPairs
@@ -103,11 +103,15 @@ export function useMarkets(
         borrowBalance,
         borrowBalanceInUsd,
         comptrollerAddress,
-        borrowLimit,
-        totalBorrowedAmount,
+        borrowLimit: accountBorrowLimitInUsd,
+        totalBorrowedAmountInUsd,
+        borrowLimitUsedOfToken: await getBorrowLimitUsed(
+          borrowBalanceInUsd,
+          accountBorrowLimitInUsd
+        ),
         borrowLimitUsed: await getBorrowLimitUsed(
-          totalBorrowedAmount,
-          borrowLimit
+          totalBorrowedAmountInUsd,
+          accountBorrowLimitInUsd
         ),
       };
     });

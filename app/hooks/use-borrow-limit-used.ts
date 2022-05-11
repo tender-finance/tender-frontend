@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { getBorrowLimitUsed } from "~/lib/tender";
 
 export function useBorrowLimitUsed(
-  totalBorrowedAmount: number,
+  borrowedAmount: number,
   borrowLimit: number
 ): string {
   let [borrowLimitUsed, setBorrowLimitUsed] = useState<string>("");
@@ -12,10 +12,10 @@ export function useBorrowLimitUsed(
       return;
     }
 
-    getBorrowLimitUsed(totalBorrowedAmount, borrowLimit).then((b) =>
+    getBorrowLimitUsed(borrowedAmount, borrowLimit).then((b) =>
       setBorrowLimitUsed(b)
     );
-  }, [totalBorrowedAmount, borrowLimit]);
+  }, [borrowedAmount, borrowLimit]);
 
   return borrowLimitUsed;
 }

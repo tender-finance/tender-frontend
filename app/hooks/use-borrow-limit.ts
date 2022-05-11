@@ -1,6 +1,6 @@
 import type { JsonRpcSigner } from "@ethersproject/providers";
 import { useState, useEffect } from "react";
-import { getBorrowLimit } from "~/lib/tender";
+import { getAccountBorrowLimitInUsd } from "~/lib/tender";
 import type { TokenPair } from "~/types/global";
 
 export function useBorrowLimit(
@@ -15,8 +15,8 @@ export function useBorrowLimit(
       return;
     }
 
-    getBorrowLimit(signer, comptrollerAddress, tokenPairs).then((b) =>
-      setBorrowLimit(b)
+    getAccountBorrowLimitInUsd(signer, comptrollerAddress, tokenPairs).then(
+      (b) => setBorrowLimit(b)
     );
   }, [signer, comptrollerAddress, tokenPairs]);
 

@@ -23,7 +23,7 @@ interface Props {
   signer: JsonRpcSigner | null | undefined;
   borrowLimitUsed: string;
   walletBalance: number;
-  totalBorrowedAmount: number;
+  totalBorrowedAmountInUsd: number;
 }
 export default function Withdraw({
   market,
@@ -32,7 +32,7 @@ export default function Withdraw({
   borrowLimit,
   signer,
   borrowLimitUsed,
-  totalBorrowedAmount,
+  totalBorrowedAmountInUsd,
 }: Props) {
   let [isWaitingToBeMined, setBlockChaining] = useState<boolean>(false);
   let [value, setValue] = useState<string>("");
@@ -51,7 +51,7 @@ export default function Withdraw({
   );
 
   let newBorrowLimitUsed = useBorrowLimitUsed(
-    totalBorrowedAmount,
+    totalBorrowedAmountInUsd,
     newBorrowLimit
   );
 

@@ -4,7 +4,6 @@ import { useWeb3Signer } from "~/hooks/use-web3-signer";
 import { hooks as Web3Hooks } from "~/connectors/meta-mask";
 import { TenderContext } from "~/contexts/tender-context";
 import { useContext, useRef, useLayoutEffect } from "react";
-import { useTotalBorrowed } from "~/hooks/use-total-borrowed";
 import { useTotalBorrowedInUsd } from "~/hooks/use-total-borrowed-in-usd";
 import { useBorrowLimit } from "~/hooks/use-borrow-limit";
 import { useBorrowLimitUsed } from "~/hooks/use-borrow-limit-used";
@@ -21,21 +20,20 @@ export default function AccountSummary() {
 
   let totalSupplyBalanceInUsd = useTotalSupplyBalanceInUsd(signer, tokenPairs);
   let netApy = useNetApy(signer, tokenPairs);
-  let borrowBalance = useTotalBorrowed(signer, tokenPairs);
-  let totalBorrowBalanceInUsd = useTotalBorrowedInUsd(signer, tokenPairs);
+  let totalBorrowedInUsd = useTotalBorrowedInUsd(signer, tokenPairs);
   let borrowLimit = useBorrowLimit(
     signer,
     networkData.Contracts.Comptroller,
     tokenPairs
   );
-  let borrowLimitUsed = useBorrowLimitUsed(borrowBalance, borrowLimit);
+  let borrowLimitUsed = useBorrowLimitUsed(totalBorrowedInUsd, borrowLimit);
 
   let leftLineRef = useRef(null);
   let rightLineRef = useRef(null);
 
   // Size the neon green bar
   useLayoutEffect(() => {
-    if (!borrowBalance || !leftLineRef.current || !rightLineRef.current) {
+    if (!totalBorrowedInUsd || !leftLineRef.current || !rightLineRef.current) {
       return;
     }
 
@@ -46,7 +44,7 @@ export default function AccountSummary() {
       1
     );
     leftEl.style.width = `${w}px`;
-  }, [borrowLimitUsed, borrowBalance]);
+  }, [borrowLimitUsed, totalBorrowedInUsd]);
 
   return (
     <div className="max-w-4xl m-auto mb-24">
@@ -75,12 +73,12 @@ export default function AccountSummary() {
               <div className="absolute top-0 right-0">
                 {netApy &&
                   totalSupplyBalanceInUsd /
-                    (borrowBalance + totalSupplyBalanceInUsd) >
+                    (totalBorrowedInUsd + totalSupplyBalanceInUsd) >
                     0 && (
                     <Ring
                       percent={
                         totalSupplyBalanceInUsd /
-                        (borrowBalance + totalSupplyBalanceInUsd)
+                        (totalBorrowedInUsd + totalSupplyBalanceInUsd)
                       }
                     />
                   )}
@@ -90,9 +88,7 @@ export default function AccountSummary() {
         </div>
         <div className="w-1/3 text-right  flex flex-col justify-center items-center">
           <div className="text-brand-blue">Borrow Balance</div>{" "}
-          <div className="text-3xl">
-            {formatCurrency(totalBorrowBalanceInUsd)}
-          </div>
+          <div className="text-3xl">{formatCurrency(totalBorrowedInUsd)}</div>
         </div>
       </div>
       <div className="flex text-xs justify-center items-center">

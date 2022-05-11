@@ -32,7 +32,7 @@ export default function BorrowFlow({ closeModal, market }: Props) {
       walletBalance={market.walletBalance}
       tokenPairs={tokenPairs}
       borrowLimit={market.borrowLimit}
-      totalBorrowedAmount={market.totalBorrowedAmount}
+      totalBorrowedAmountInUsd={market.totalBorrowedAmountInUsd}
     />
   ) : (
     <Borrow
@@ -44,7 +44,7 @@ export default function BorrowFlow({ closeModal, market }: Props) {
       borrowLimit={market.borrowLimit}
       walletBalance={market.walletBalance}
       tokenPairs={tokenPairs}
-      totalBorrowedAmount={market.totalBorrowedAmount}
+      totalBorrowedAmountInUsd={market.totalBorrowedAmountInUsd}
     />
   );
 }
