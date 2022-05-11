@@ -105,7 +105,7 @@ export default function AccountSummary() {
           className="bg-gray-300 mr-2 h-0.5 flex-grow"
           ref={rightLineRef}
         ></div>
-        <div>${borrowLimit}</div>
+        <div>{formatCurrency(borrowLimit)}</div>
       </div>
     </div>
   );

@@ -12,6 +12,7 @@ import { useValidInput } from "~/hooks/use-valid-input";
 import BorrowLimit from "../fi-modal/borrow-limit";
 import { useProjectBorrowLimit } from "~/hooks/use-project-borrow-limit";
 import { useBorrowLimitUsed } from "~/hooks/use-borrow-limit-used";
+import { useMaxWithdrawAmountForToken } from "~/hooks/use-max-withdraw-amount-for-token";
 import ConfirmingTransaction from "../fi-modal/confirming-transition";
 import { TenderContext } from "~/contexts/tender-context";
 
@@ -55,6 +56,15 @@ export default function Withdraw({
     newBorrowLimit
   );
 
+  let formattedMaxWithdrawAmount: string = useMaxWithdrawAmountForToken(
+    signer,
+    market.supplyBalance,
+    borrowLimit,
+    totalBorrowedAmountInUsd,
+    market.comptrollerAddress,
+    market.tokenPair
+  ).toFixed(2);
+
   // Highlights value input
   useEffect(() => {
     inputEl && inputEl.current && inputEl.current.select();
@@ -95,12 +105,12 @@ export default function Withdraw({
                   defaultValue={0}
                 />
                 <Max
-                  maxValue={market.supplyBalance.toString()}
+                  maxValue={formattedMaxWithdrawAmount}
                   updateValue={() => {
                     if (!inputEl || !inputEl.current) return;
                     inputEl.current.focus();
-                    inputEl.current.value = market.supplyBalance.toString();
-                    setValue(market.supplyBalance.toString());
+                    inputEl.current.value = formattedMaxWithdrawAmount;
+                    setValue(formattedMaxWithdrawAmount);
                   }}
                   maxValueLabel={market.tokenPair.token.symbol}
                 />

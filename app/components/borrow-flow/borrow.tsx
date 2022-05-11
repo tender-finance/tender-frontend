@@ -15,6 +15,7 @@ import { useBorrowLimitUsed } from "~/hooks/use-borrow-limit-used";
 import { useCurrentlyBorrowing } from "~/hooks/use-currently-borrowing";
 
 import ConfirmingTransaction from "../fi-modal/confirming-transition";
+import { useMaxBorrowAmountForToken } from "~/hooks/use-max-borrow-amount-for-token";
 
 interface Props {
   market: Market;
@@ -62,6 +63,14 @@ export default function Borrow({
     newBorrowLimit
   );
 
+  let formattedMaxBorrowLimit: string = useMaxBorrowAmountForToken(
+    signer,
+    borrowLimit,
+    totalBorrowedAmountInUsd,
+    market.comptrollerAddress,
+    market.tokenPair
+  ).toFixed(2);
+
   // Highlights value input
   useEffect(() => {
     inputEl && inputEl.current && inputEl.current.select();
@@ -103,12 +112,12 @@ export default function Borrow({
                 />
 
                 <Max
-                  maxValue={`${borrowLimit}`}
+                  maxValue={`${formattedMaxBorrowLimit}`}
                   updateValue={() => {
                     if (!inputEl || !inputEl.current) return;
                     inputEl.current.focus();
-                    inputEl.current.value = `${borrowLimit}`;
-                    setValue(`${borrowLimit}`);
+                    inputEl.current.value = `${formattedMaxBorrowLimit}`;
+                    setValue(`${formattedMaxBorrowLimit}`);
                   }}
                   maxValueLabel={market.tokenPair.token.symbol}
                 />
