@@ -26,8 +26,6 @@ export function useTenderContext() {
       return;
     }
 
-    console.log(Date.now());
-
     setTenderContext({
       tokenPairs,
       networkData,
