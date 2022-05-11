@@ -1,7 +1,10 @@
 import { ICON_SIZE } from "~/lib/constants";
 import type { Market } from "~/types/global";
 import { useContext, useEffect, useRef, useState } from "react";
-import type { JsonRpcSigner } from "@ethersproject/providers";
+import type {
+  JsonRpcSigner,
+  TransactionReceipt,
+} from "@ethersproject/providers";
 import { useValidInput } from "~/hooks/use-valid-input";
 import toast from "react-hot-toast";
 import Max from "~/components/max";
@@ -44,7 +47,7 @@ export default function Deposit({
   let inputEl = useRef<HTMLInputElement>(null);
   let isValid = useValidInput(value, 0, walletBalance);
 
-  let { tokenPairs } = useContext(TenderContext);
+  let { tokenPairs, updateTransaction } = useContext(TenderContext);
 
   let newBorrowLimit = useProjectBorrowLimit(
     signer,
@@ -229,9 +232,10 @@ export default function Deposit({
                         market.tokenPair.token
                       );
                       setIsWaitingToBeMined(true);
-                      await txn.wait();
+                      let tr = await txn.wait();
                       setIsWaitingToBeMined(false);
                       setValue("");
+                      updateTransaction(tr.blockHash);
                       toast.success("Deposit successful");
                       closeModal();
                     } catch (e) {

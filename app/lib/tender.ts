@@ -9,7 +9,7 @@ import SamplePriceOracleAbi from "~/config/sample-price-oracle-abi";
 
 import type { TokenPair } from "~/types/global";
 import { formatUnits } from "ethers/lib/utils";
-import type { JsonRpcSigner } from "@ethersproject/providers";
+import { TransactionReceipt, JsonRpcSigner } from "@ethersproject/providers";
 
 const MINIMUM_REQUIRED_APPROVAL_BALANCE = BigNumber.from("1");
 
@@ -77,7 +77,7 @@ async function deposit(
   cToken: cToken,
   token: Token
 ): Promise<{
-  wait: Function;
+  wait: () => TransactionReceipt;
 }> {
   // if (isCEth) {
   //   console.log("supply() w/ cEth");
@@ -116,7 +116,7 @@ async function redeem(
   cToken: cToken,
   token: Token
 ): Promise<{
-  wait: Function;
+  wait: () => TransactionReceipt;
 }> {
   // if (isCEth) {
   //   console.log("redeem() with cEth");
@@ -351,7 +351,7 @@ async function repay(
   cToken: cToken,
   token: Token
 ): Promise<{
-  wait: Function;
+  wait: () => TransactionReceipt;
 }> {
   const formattedValue: BigNumber = ethers.utils.parseUnits(
     value,
@@ -373,7 +373,7 @@ async function borrow(
   cToken: cToken,
   token: Token
 ): Promise<{
-  wait: Function;
+  wait: () => TransactionReceipt;
 }> {
   //  if (isCEth) {
   //   console.log("borrow() with cEth");

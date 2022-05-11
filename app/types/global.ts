@@ -44,6 +44,8 @@ export type TenderContext = {
   tokenPairs: TokenPair[];
   networkData: NetworkData;
   markets: Market[];
+  currentTransaction: string | null;
+  updateTransaction: Function;
 };
 
 export type Market = {

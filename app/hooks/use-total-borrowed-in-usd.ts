@@ -1,7 +1,9 @@
 import type { JsonRpcSigner } from "@ethersproject/providers";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { TenderContext } from "~/contexts/tender-context";
 import { getTotalBorrowedInUsd } from "~/lib/tender";
 import type { TokenPair } from "~/types/global";
+import { useInterval } from "./use-interval";
 
 export function useTotalBorrowedInUsd(
   signer: JsonRpcSigner | undefined,
@@ -9,6 +11,9 @@ export function useTotalBorrowedInUsd(
 ): number {
   let [totalBorrowedAmountInUsd, setTotalBorrowedAmountInUsd] =
     useState<number>(0);
+
+  let poll = useInterval(10_000);
+  let { currentTransaction } = useContext(TenderContext);
 
   useEffect(() => {
     if (!signer) {
@@ -18,7 +23,7 @@ export function useTotalBorrowedInUsd(
     getTotalBorrowedInUsd(signer, tokenPairs).then((b) =>
       setTotalBorrowedAmountInUsd(b)
     );
-  }, [signer, tokenPairs]);
+  }, [signer, tokenPairs, poll, currentTransaction]);
 
   return totalBorrowedAmountInUsd;
 }
