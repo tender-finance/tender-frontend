@@ -30,6 +30,7 @@ export default function ConnectWallet() {
       {!isActive && (
         <div className="text-sm">
           <button
+            data-testid="connect-wallet"
             style={{
               background: "linear-gradient(270deg, #1BD6CF 0%, #00E5AF 100%)",
             }}
