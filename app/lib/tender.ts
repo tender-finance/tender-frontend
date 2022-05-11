@@ -471,7 +471,6 @@ async function getTotalSupplyBalanceInUsd(
   return suppliedAmounts.reduce((acc, curr) => acc + curr);
 }
 
-// TODO: Very similar to getTotalBorrowed, which can likely go away now
 async function getTotalBorrowedInUsd(
   signer: Signer,
   tokenPairs: TokenPair[]
