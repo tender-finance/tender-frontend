@@ -9,6 +9,7 @@ import SamplePriceOracleAbi from "~/config/sample-price-oracle-abi";
 
 import type { TokenPair } from "~/types/global";
 import { formatUnits } from "ethers/lib/utils";
+import { JsonRpcSigner } from "@ethersproject/providers";
 
 const MINIMUM_REQUIRED_APPROVAL_BALANCE = BigNumber.from("1");
 
@@ -187,6 +188,23 @@ async function getCurrentlyBorrowing(
   return formatBigNumber(balance, token.decimals);
 }
 
+async function collateralFactorForToken(
+  signer: Signer,
+  comptrollerContract: Contract,
+  tokenPair: TokenPair
+): Promise<number> {
+  let { 1: rawCollateralFactor } = await comptrollerContract.markets(
+    tokenPair.cToken.address
+  );
+
+  // Collateral factors are always 1e18
+  let collateralFactor: number = parseFloat(
+    formatUnits(rawCollateralFactor, 18)
+  );
+
+  return collateralFactor;
+}
+
 async function borrowLimitForTokenInUsd(
   signer: Signer,
   comptrollerContract: Contract,
@@ -203,13 +221,10 @@ async function borrowLimitForTokenInUsd(
     tokenPair.token.priceOracleAddress
   );
 
-  let { 1: rawCollateralFactor } = await comptrollerContract.markets(
-    tokenPair.cToken.address
-  );
-
-  // Collateral factors are always 1e18
-  let collateralFactor: number = parseFloat(
-    formatUnits(rawCollateralFactor, 18)
+  let collateralFactor: number = await collateralFactorForToken(
+    signer,
+    comptrollerContract,
+    tokenPair
   );
 
   let amount = suppliedAmount * assetPriceInUsd * collateralFactor;
@@ -481,6 +496,63 @@ async function getTotalBorrowedInUsd(
   return borrowedAmounts.reduce((acc, curr) => acc + curr);
 }
 
+function accountLiquidityInUsd(
+  borrowLimitInUsd: number,
+  totalBorrowedInUsd: number
+): number {
+  return borrowLimitInUsd - totalBorrowedInUsd;
+}
+
+async function maxWithdrawAmountForToken(
+  signer: JsonRpcSigner,
+  borrowLimit: number,
+  totalBorrowed: number,
+  comptrollerAddress: string,
+  tokenPair: TokenPair
+): Promise<number> {
+  let accountLiquidity: number = accountLiquidityInUsd(
+    borrowLimit,
+    totalBorrowed
+  );
+
+  let comptrollerContract = new ethers.Contract(
+    comptrollerAddress,
+    SampleComptrollerAbi,
+    signer
+  );
+
+  let collateralFactor: number = await collateralFactorForToken(
+    signer,
+    comptrollerContract,
+    tokenPair
+  );
+
+  let priceInUsd: number = await getAssetPriceInUsd(
+    signer,
+    tokenPair.token.priceOracleAddress
+  );
+
+  return (accountLiquidity / collateralFactor) * priceInUsd;
+}
+
+async function maxBorrowAmountForToken(
+  signer: Signer,
+  borrowLimit: number,
+  totalBorrowed: number,
+  tokenPair: TokenPair
+): Promise<number> {
+  let accountLiquidity: number = accountLiquidityInUsd(
+    borrowLimit,
+    totalBorrowed
+  );
+  let priceInUsd: number = await getAssetPriceInUsd(
+    signer,
+    tokenPair.token.priceOracleAddress
+  );
+
+  return accountLiquidity / priceInUsd;
+}
+
 export {
   enable,
   deposit,
@@ -500,4 +572,6 @@ export {
   projectBorrowLimit,
   getAssetPriceInUsd,
   getTotalBorrowedInUsd,
+  maxWithdrawAmountForToken,
+  maxBorrowAmountForToken,
 };
