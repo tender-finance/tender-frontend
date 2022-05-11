@@ -65,6 +65,8 @@ export default function Repay({
     newBorrowLimit
   );
 
+  let { updateTransaction } = useContext(TenderContext);
+
   useEffect(() => {
     if (!signer) {
       return;
@@ -240,10 +242,10 @@ export default function Repay({
                         );
 
                         setIsWaitingToBeMined(true);
-                        await txn.wait(); // TODO: error handle if transaction fails
+                        let tr = await txn.wait(); // TODO: error handle if transaction fails
                         setIsWaitingToBeMined(false);
-
                         setValue("");
+                        updateTransaction(tr.blockHash);
                         toast.success("Repayment successful");
                         closeModal();
                       } catch (e) {

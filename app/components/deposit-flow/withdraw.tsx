@@ -41,7 +41,7 @@ export default function Withdraw({
   let inputEl = useRef<HTMLInputElement>(null);
   let isValid = useValidInput(value, 0, market.supplyBalance);
 
-  let { tokenPairs } = useContext(TenderContext);
+  let { tokenPairs, updateTransaction } = useContext(TenderContext);
 
   let newBorrowLimit = useProjectBorrowLimit(
     signer,
@@ -182,9 +182,10 @@ export default function Withdraw({
                           );
 
                           setBlockChaining(true);
-                          await txn.wait(); // TODO: error handle if transaction fails
+                          let tr = await txn.wait(); // TODO: error handle if transaction fails
                           setBlockChaining(false);
                           setValue("");
+                          updateTransaction(tr);
                           toast.success("Withdraw successful");
                           closeModal();
                         } catch (e) {
