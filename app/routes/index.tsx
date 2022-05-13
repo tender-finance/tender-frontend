@@ -15,7 +15,7 @@ export default function App() {
         </TenderContext.Provider>
       )}
 
-      {!tenderContextData && <div>Loading</div>}
+      {!tenderContextData && <div className="py-12">Loading</div>}
     </div>
   );
 }
