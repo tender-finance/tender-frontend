@@ -5,78 +5,46 @@ export default function Footer() {
   }
   let productLinks: Link[] = [
     {
-      label: "Tender Protocol",
-      url: "#tender-protocol",
+      label: "Docs",
+      url: "https://tender-fi.gitbook.io/tender.fi-docs/introduction/what-is-tender.fi",
     },
     {
-      label: "Developers",
-      url: "#developers",
+      label: "GitHub",
+      url: "https://github.com/tender-finance/front-end",
     },
     {
-      label: "Security",
-      url: "#security",
-    },
-    {
-      label: "Tokens",
-      url: "#tokens",
-    },
-    {
-      label: "Bug Bounty",
-      url: "#bug-bounty",
-    },
-    {
-      label: "Flash Loans",
-      url: "#flash-loans",
+      label: "Support",
+      url: "mailto:support@tender.fi",
     },
   ];
 
   let resourceLinks: Link[] = [
     {
-      label: "Rate Switching",
-      url: "#rate-switching",
+      label: "Telegram",
+      url: "http://t.me/tender_fi",
     },
     {
-      label: "Whitepaper",
-      url: "#whitepaper",
+      label: "Twitter",
+      url: "https://twitter.com/tender_finance",
     },
     {
-      label: "Tokenomics",
-      url: "#tokenomic",
-    },
-    {
-      label: "Ecosystem",
-      url: "#ecosystem",
-    },
-    {
-      label: "Careers",
-      url: "#careers",
-    },
-    {
-      label: "Branding",
-      url: "#branding",
+      label: "Discord",
+      url: "https://discord.gg/CD2hKamT",
     },
   ];
-
+  
   let companyLinks: Link[] = [
     {
       label: "Blog",
-      url: "#blog",
+      url: "https://tender-finance.medium.com/",
     },
     {
-      label: "Terms of use",
-      url: "#terms-of-use",
+      label: "Youtube",
+      url: "https://www.youtube.com/channel/UCGMP8qwS9SoWRvsd-srnExg/",
     },
     {
-      label: "Contact",
-      url: "#contact",
-    },
-    {
-      label: "Privacy Policy",
-      url: "#privacy-policy",
-    },
-    {
-      label: "Cookie Policy",
-      url: "#cookie-policy",
+      label: "Careers",
+      url: "https://triplebyte.com/company/public/ang-sciences",
     },
   ];
   return (
