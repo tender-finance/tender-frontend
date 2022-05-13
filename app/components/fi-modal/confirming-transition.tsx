@@ -1,4 +1,7 @@
-import { LineWave } from "react-loader-spinner";
+import * as animationData from "~/lotties/loader-tender.json";
+// @ts-ignore NO types :(
+import Lottie from "react-lottie";
+
 interface Props {
   stopWaitingOnConfirmation: Function;
 }
@@ -14,12 +17,20 @@ export default function ConfirmingTransaction({
         >
           +
         </button>
-        <div className="flex w-full justify-center my-16 ml-4">
-          <LineWave
-            color="#54CE90"
-            height={110}
-            width={110}
-            ariaLabel="three-circles-rotating"
+        <div className="flex w-full justify-center my-16 ">
+          <Lottie
+            options={{
+              loop: true,
+              autoplay: true,
+              animationData: animationData,
+              rendererSettings: {
+                preserveAspectRatio: "xMidYMid slice",
+              },
+            }}
+            height={300}
+            width={300}
+            isStopped={false}
+            isPaused={false}
           />
         </div>
         <div className="uppercase text-center">Confirming transaction</div>
