@@ -8,7 +8,7 @@ export default function Disconnected() {
     <div>
       {!onSupportedChain && (
         <div className="bg-red-600 py-4 text-white text-center">
-          Warning! Wrong network
+          Warning! Unsupported network.
         </div>
       )}
     </div>

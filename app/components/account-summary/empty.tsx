@@ -1,6 +1,4 @@
-import { useWeb3Signer } from "~/hooks/use-web3-signer";
-import { hooks as Web3Hooks } from "~/connectors/meta-mask";
-import { useContext, useRef, useLayoutEffect } from "react";
+import { useRef } from "react";
 import Ring from "./ring";
 
 const formatCurrency = (v: number): string => {
@@ -37,22 +35,9 @@ export default function AccountSummary() {
           >
             <div className="flex flex-col h-full justify-center items-center">
               <div className="uppercase text-gray-100 text-sm">Net APY</div>
-              {netApy && (
-                <div className="text-5xl font-light">{netApy.toFixed(2)}%</div>
-              )}
-              {!netApy && <div className="text-5xl font-light">--</div>}
+              <div className="text-5xl font-light">--</div>
               <div className="absolute top-0 right-0">
-                {netApy &&
-                  totalSupplyBalanceInUsd /
-                    (totalBorrowedInUsd + totalSupplyBalanceInUsd) >
-                    0 && (
-                    <Ring
-                      percent={
-                        totalSupplyBalanceInUsd /
-                        (totalBorrowedInUsd + totalSupplyBalanceInUsd)
-                      }
-                    />
-                  )}
+                <Ring percent={0} />
               </div>
             </div>
           </div>
