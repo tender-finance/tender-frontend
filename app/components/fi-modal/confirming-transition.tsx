@@ -1,4 +1,5 @@
 import * as animationData from "~/lotties/loader-tender.json";
+// @ts-ignore NO types :(
 import Lottie from "react-lottie";
 
 interface Props {
