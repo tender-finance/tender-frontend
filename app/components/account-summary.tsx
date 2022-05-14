@@ -3,7 +3,7 @@ import { useNetApy } from "~/hooks/use-net-apy";
 import { useWeb3Signer } from "~/hooks/use-web3-signer";
 import { hooks as Web3Hooks } from "~/connectors/meta-mask";
 import { TenderContext } from "~/contexts/tender-context";
-import { useContext, useRef, useLayoutEffect } from "react";
+import { useContext } from "react";
 import { useTotalBorrowedInUsd } from "~/hooks/use-total-borrowed-in-usd";
 import { useBorrowLimit } from "~/hooks/use-borrow-limit";
 import { useBorrowLimitUsed } from "~/hooks/use-borrow-limit-used";
@@ -28,23 +28,7 @@ export default function AccountSummary() {
   );
   let borrowLimitUsed = useBorrowLimitUsed(totalBorrowedInUsd, borrowLimit);
 
-  let leftLineRef = useRef(null);
-  let rightLineRef = useRef(null);
-
-  // Size the neon green bar
-  useLayoutEffect(() => {
-    if (!totalBorrowedInUsd || !leftLineRef.current || !rightLineRef.current) {
-      return;
-    }
-
-    let leftEl = leftLineRef.current as HTMLDivElement;
-    let rightEl = rightLineRef.current as HTMLDivElement;
-
-    let w = (rightEl.clientWidth * (parseFloat(borrowLimitUsed) / 100)).toFixed(
-      1
-    );
-    leftEl.style.width = `${w}px`;
-  }, [borrowLimitUsed, totalBorrowedInUsd]);
+  let percentUsed = Math.min(parseFloat(borrowLimitUsed), 100);
 
   return (
     <div className="max-w-4xl m-auto mb-24">
@@ -97,15 +81,13 @@ export default function AccountSummary() {
           className="bg-green-300 mr-2 h-2 rounded-full"
           style={{
             background: "linear-gradient(270deg, #1BD6CF 0%, #00E5AF 100%)",
-            width: 0,
+            width: borrowLimitUsed === "" ? 0 : `${percentUsed}%`,
             transition: "width 1s ease-out",
           }}
-          ref={leftLineRef}
         ></div>
         <div className="mr-2">{borrowLimitUsed}%</div>
         <div
           className="bg-gray-300 mr-2 h-0.5 flex-grow"
-          ref={rightLineRef}
         ></div>
         <div>{formatCurrency(borrowLimit)}</div>
       </div>
