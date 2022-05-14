@@ -3,7 +3,7 @@ import { useNetApy } from "~/hooks/use-net-apy";
 import { useWeb3Signer } from "~/hooks/use-web3-signer";
 import { hooks as Web3Hooks } from "~/connectors/meta-mask";
 import { TenderContext } from "~/contexts/tender-context";
-import { useContext, useRef, useLayoutEffect } from "react";
+import { useContext } from "react";
 import { useTotalBorrowedInUsd } from "~/hooks/use-total-borrowed-in-usd";
 import { useBorrowLimit } from "~/hooks/use-borrow-limit";
 import { useBorrowLimitUsed } from "~/hooks/use-borrow-limit-used";
