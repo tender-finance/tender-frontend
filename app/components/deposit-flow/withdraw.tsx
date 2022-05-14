@@ -39,7 +39,6 @@ export default function Withdraw({
   let [value, setValue] = useState<string>("");
   let [isWithdrawing, setIsWithdrawing] = useState<boolean>(false);
   let inputEl = useRef<HTMLInputElement>(null);
-  let isValid = useValidInput(value, 0, market.supplyBalance);
 
   let { tokenPairs, updateTransaction } = useContext(TenderContext);
 
@@ -64,6 +63,8 @@ export default function Withdraw({
     market.comptrollerAddress,
     market.tokenPair
   ).toFixed(2);
+
+  let isValid = useValidInput(value, 0, parseFloat(formattedMaxWithdrawAmount));
 
   // Highlights value input
   useEffect(() => {
