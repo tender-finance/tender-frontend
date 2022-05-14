@@ -1,4 +1,5 @@
 import AccountSummary from "~/components/account-summary";
+import AccountSummaryEmpty from "~/components/account-summary/empty";
 import { TenderContext } from "~/contexts/tender-context";
 import { useTenderContext } from "~/hooks/use-tender-context";
 import TwoPanes from "~/components/two-panes";
@@ -15,7 +16,11 @@ export default function App() {
         </TenderContext.Provider>
       )}
 
-      {!tenderContextData && <div>Loading</div>}
+      {!tenderContextData && (
+        <div className="py-12">
+          <AccountSummaryEmpty />
+        </div>
+      )}
     </div>
   );
 }
