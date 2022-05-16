@@ -448,8 +448,8 @@ async function getAssetPriceInUsd(
   // let priceInUsd = parseFloat(formatUnits(answer, decimals));
 
   // return priceInUsd;
-
-  return 2.5;
+  // TODO add metis price oracle
+    return 2.5;
 }
 
 async function getTotalSupplyBalanceInUsd(
