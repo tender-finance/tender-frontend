@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import type { Market, TokenPair } from "~/types/global";
 import type { JsonRpcSigner } from "@ethersproject/providers";
 import { hooks as Web3Hooks } from "~/connectors/meta-mask";
@@ -18,6 +18,8 @@ import {
   getWalletBalance,
   getTotalBorrowedInUsd,
 } from "~/lib/tender";
+import { useInterval } from "./use-interval";
+import { TenderContext } from "~/contexts/tender-context";
 
 const getMarketData = async (
   signer: JsonRpcSigner,
@@ -55,6 +57,9 @@ export function useMarkets(
 
   let provider = Web3Hooks.useProvider();
   const signer = useWeb3Signer(provider);
+
+  let pollingKey = useInterval(10_000);
+  let { currentTransaction } = useContext(TenderContext);
 
   useEffect(() => {
     if (!signer || !comptrollerAddress) {
@@ -117,7 +122,13 @@ export function useMarkets(
     });
 
     Promise.all(newMarkets).then((nm) => setMarkets(nm));
-  }, [supportedTokenPairs, signer, comptrollerAddress]);
+  }, [
+    supportedTokenPairs,
+    signer,
+    comptrollerAddress,
+    pollingKey,
+    currentTransaction,
+  ]);
 
   return markets;
 }
