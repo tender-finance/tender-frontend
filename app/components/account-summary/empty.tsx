@@ -7,7 +7,6 @@ const formatCurrency = (v: number): string => {
 
 export default function AccountSummary() {
   let totalSupplyBalanceInUsd = 0;
-  let netApy = null;
   let totalBorrowedInUsd = 0;
   let borrowLimit = 0;
   let borrowLimitUsed = 0;
