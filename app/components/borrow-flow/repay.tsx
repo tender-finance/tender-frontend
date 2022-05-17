@@ -21,7 +21,7 @@ interface Props {
   closeModal: Function;
   setIsRepaying: Function;
   signer: JsonRpcSigner | null | undefined;
-  borrowedAmount: number;
+  borrowBalance: number;
   borrowLimitUsed: string;
   walletBalance: number;
   borrowLimit: number;
@@ -35,7 +35,7 @@ export default function Repay({
   closeModal,
   setIsRepaying,
   signer,
-  borrowedAmount,
+  borrowBalance,
   borrowLimitUsed,
   walletBalance,
   tokenPairs,
@@ -48,10 +48,14 @@ export default function Repay({
   let [isRepayingTxn, setIsRepayingTxn] = useState<boolean>(false);
   let [value, setValue] = useState<string>("");
 
-  let maxRepayableAmount = Math.min(borrowedAmount, walletBalance);
+  let maxRepayableAmount = Math.min(borrowBalance, walletBalance);
 
   let inputEl = useRef<HTMLInputElement>(null);
-  let isValid = useValidInput(value, 0, maxRepayableAmount);
+  let [isValid, validationDetails] = useValidInput(
+    value,
+    0,
+    maxRepayableAmount
+  );
 
   let newBorrowLimit = useProjectBorrowLimit(
     signer,
@@ -218,7 +222,7 @@ export default function Repay({
 
                 {signer && isEnabled && !isValid && (
                   <button className="py-4 text-center text-white font-bold rounded  w-full bg-gray-200">
-                    Repay
+                    {validationDetails?.label || "Repay"}
                   </button>
                 )}
 

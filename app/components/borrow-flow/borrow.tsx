@@ -78,7 +78,6 @@ export default function Borrow({
   useEffect(() => {
     inputEl && inputEl.current && inputEl.current.select();
   }, []);
-  console.log(validationDetails);
 
   return (
     <div>
