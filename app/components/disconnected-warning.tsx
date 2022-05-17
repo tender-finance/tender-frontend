@@ -1,33 +1,12 @@
 import { useOnSupportedNetwork } from "~/hooks/use-on-supported-network";
 import { hooks } from "~/connectors/meta-mask";
 import type { ProviderRpcError } from "@web3-react/types";
-import { useEffect } from "react";
 
 const { useIsActive } = hooks;
 
 export default function Disconnected() {
   let provider = hooks.useProvider();
   const isActive = useIsActive();
-
-  useEffect(() => {
-    // provider?.provider.request({
-    //   method: "wallet_addEthereumChain",
-    //   params: [
-    //     {
-    //       chainId: "0x89",
-    //       rpcUrls: ["https://rpc-mainnet.matic.network/"],
-    //       chainName: "Matic Mainnet",
-    //       nativeCurrency: {
-    //         name: "MATIC",
-    //         symbol: "MATIC",
-    //         decimals: 18,
-    //       },
-    //       blockExplorerUrls: ["https://polygonscan.com/"],
-    //     },
-    //   ],
-    // });
-  }, [provider]);
-
   const chainId = hooks.useChainId();
   let onSupportedChain = useOnSupportedNetwork(chainId);
 
