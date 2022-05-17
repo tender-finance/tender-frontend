@@ -49,7 +49,7 @@ export default function Borrow({
     market.tokenPair.cToken,
     market.tokenPair.token
   );
-  let isValid = useValidInput(value, 0, borrowLimit);
+  let [isValid, validationDetails] = useValidInput(value, 0, borrowLimit);
 
   let { updateTransaction } = useContext(TenderContext);
 
@@ -78,6 +78,7 @@ export default function Borrow({
   useEffect(() => {
     inputEl && inputEl.current && inputEl.current.select();
   }, []);
+  console.log(validationDetails);
 
   return (
     <div>
@@ -169,7 +170,7 @@ export default function Borrow({
                   {!signer && <div>Connect wallet to get started</div>}
                   {signer && !isValid && (
                     <button className="py-4 text-center text-white font-bold rounded  w-full bg-gray-200">
-                      Borrow
+                      {validationDetails?.label || "Borrow"}
                     </button>
                   )}
                   {signer && isValid && (
