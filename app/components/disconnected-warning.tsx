@@ -1,13 +1,13 @@
 import { useOnSupportedNetwork } from "~/hooks/use-on-supported-network";
-import { hooks as Web3Hooks } from "~/connectors/meta-mask";
-
-import { hooks as metaMaskHooks, metaMask } from "~/connectors/meta-mask";
-import { Provider } from "@web3-react/types";
+import { hooks } from "~/connectors/meta-mask";
+import type { ProviderRpcError } from "@web3-react/types";
 import { useEffect } from "react";
-import { utils } from "ethers";
+
+const { useIsActive } = hooks;
 
 export default function Disconnected() {
-  let provider = metaMaskHooks.useProvider();
+  let provider = hooks.useProvider();
+  const isActive = useIsActive();
 
   useEffect(() => {
     // provider?.provider.request({
@@ -27,7 +27,8 @@ export default function Disconnected() {
     //   ],
     // });
   }, [provider]);
-  const chainId = Web3Hooks.useChainId();
+
+  const chainId = hooks.useChainId();
   let onSupportedChain = useOnSupportedNetwork(chainId);
 
   let tryConnectingToMetis = async (p: typeof provider) => {
@@ -69,15 +70,31 @@ export default function Disconnected() {
   };
   return (
     <div>
-      {!onSupportedChain && (
-        <div className="bg-red-600 py-4 text-white text-center">
-          Warning! Unsupported network. Want to{" "}
+      {isActive && !onSupportedChain && (
+        <div
+          style={{
+            background: "linear-gradient(270deg, #1BD6CF 0%, #00E5AF 100%)",
+          }}
+          className="text-center bg-brand-green text-gray-900 py-4 px-4 rounded-md text-sm"
+        >
+          Warning! Unsupported network.{" "}
           <button
             className="underline"
             onClick={() => tryConnectingToMetis(provider)}
           >
-            try Metis?
+            Switch to Metis
           </button>
+        </div>
+      )}
+      {!isActive && (
+        <div
+          style={{
+            background: "linear-gradient(270deg, #1BD6CF 0%, #00E5AF 100%)",
+          }}
+          className="text-center bg-brand-green text-gray-900 py-4 px-4 rounded-md text-sm"
+        >
+          Warning: Unsupported network. Connect Wallet and we can help you
+          switch.
         </div>
       )}
     </div>
