@@ -4,7 +4,7 @@ interface MaxProps {
   maxValueLabel: string;
 }
 const formatMaxValue = (v: string): string => {
-  return parseFloat(v).toFixed(2);
+  return Math.max(0, parseFloat(v)).toFixed(2);
 };
 export default function Max(props: MaxProps) {
   return (
