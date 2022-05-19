@@ -15,6 +15,7 @@ import { useBorrowLimitUsed } from "~/hooks/use-borrow-limit-used";
 import { useSafeMaxWithdrawAmountForToken } from "~/hooks/use-safe-max-withdraw-amount-for-token";
 import ConfirmingTransaction from "../fi-modal/confirming-transition";
 import { TenderContext } from "~/contexts/tender-context";
+import { useMaxWithdrawAmount } from "~/hooks/use-max-withdraw-amount";
 
 interface Props {
   market: Market;
@@ -64,11 +65,16 @@ export default function Withdraw({
     market.tokenPair
   ).toFixed(2);
 
-  let [isValid, validationDetails] = useValidInput(
-    value,
-    0,
-    parseFloat(formattedSafeMaxWithdrawAmount)
+  let maxWithdrawAmount = useMaxWithdrawAmount(
+    signer,
+    market.comptrollerAddress,
+    market.supplyBalance,
+    borrowLimit,
+    totalBorrowedAmountInUsd,
+    market.tokenPair
   );
+
+  let [isValid, validationDetails] = useValidInput(value, 0, maxWithdrawAmount);
 
   // Highlights value input
   useEffect(() => {

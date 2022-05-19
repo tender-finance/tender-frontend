@@ -605,6 +605,39 @@ async function safeMaxBorrowAmountForToken(
   return amount;
 }
 
+async function getMaxWithdrawAmount(
+  signer: JsonRpcSigner,
+  comptrollerAddress: string,
+  supplyBalance: number,
+  borrowLimit: number,
+  totalBorrowed: number,
+  tokenPair: TokenPair
+): Promise<number> {
+  let priceInUsd: number = await getAssetPriceInUsd(
+    signer,
+    tokenPair.token.priceOracleAddress
+  );
+
+  let comptrollerContract = new ethers.Contract(
+    comptrollerAddress,
+    SampleComptrollerAbi,
+    signer
+  );
+
+  let collateralFactor = await collateralFactorForToken(
+    signer,
+    comptrollerContract,
+    tokenPair
+  );
+
+  let max: number = Math.min(
+    supplyBalance,
+    (borrowLimit - totalBorrowed) / priceInUsd / collateralFactor
+  );
+
+  return max;
+}
+
 export {
   enable,
   deposit,
@@ -626,4 +659,5 @@ export {
   getTotalBorrowedInUsd,
   safeMaxWithdrawAmountForToken,
   safeMaxBorrowAmountForToken,
+  getMaxWithdrawAmount,
 };
