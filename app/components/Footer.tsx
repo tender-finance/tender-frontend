@@ -6,7 +6,7 @@ export default function Footer() {
   let productLinks: Link[] = [
     {
       label: "Docs",
-      url: "https://tender-fi.gitbook.io/tender.fi-docs/introduction/what-is-tender.fi",
+      url: "https://docs.tender.fi",
     },
     {
       label: "GitHub",

@@ -42,7 +42,7 @@ export default function Deposit({
   let [isDepositing, setIsDepositing] = useState<boolean>(false);
   let [value, setValue] = useState<string>("0");
   let inputEl = useRef<HTMLInputElement>(null);
-  let isValid = useValidInput(value, 0, walletBalance);
+  let [isValid, validationDetails] = useValidInput(value, 0, walletBalance);
 
   let { tokenPairs, updateTransaction } = useContext(TenderContext);
 
@@ -50,7 +50,7 @@ export default function Deposit({
     signer,
     comptrollerAddress,
     tokenPairs,
-    market.tokenPair.cToken,
+    market.tokenPair,
     value
   );
 
@@ -208,9 +208,10 @@ export default function Deposit({
 
               {signer && isEnabled && !isValid && (
                 <button className="py-4 text-center text-white font-bold rounded  w-full bg-gray-200">
-                  Deposit
+                  {validationDetails?.label}
                 </button>
               )}
+
               {signer && isEnabled && isValid && (
                 <button
                   onClick={async () => {
@@ -231,7 +232,7 @@ export default function Deposit({
                       setIsWaitingToBeMined(true);
                       let tr = await txn.wait();
                       setIsWaitingToBeMined(false);
-                      setValue("");
+                      setValue("0");
                       updateTransaction(tr.blockHash);
                       toast.success("Deposit successful");
                       closeModal();

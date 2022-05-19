@@ -1,13 +1,13 @@
 import type { JsonRpcSigner } from "@ethersproject/providers";
 import { useState, useEffect } from "react";
 import { projectBorrowLimit } from "~/lib/tender";
-import type { TokenPair, cToken } from "~/types/global";
+import type { TokenPair } from "~/types/global";
 
 export function useProjectBorrowLimit(
   signer: JsonRpcSigner | undefined | null,
   comptrollerAddress: string,
   tokenPairs: TokenPair[],
-  cToken: cToken,
+  tokenPair: TokenPair,
   value: string
 ): number {
   let [newBorrowLimit, setNewBorrowLimit] = useState<number>(0);
@@ -21,10 +21,10 @@ export function useProjectBorrowLimit(
       signer,
       comptrollerAddress,
       tokenPairs,
-      cToken,
+      tokenPair,
       parseFloat(value)
     ).then((v) => setNewBorrowLimit(v));
-  }, [signer, comptrollerAddress, tokenPairs, cToken, value]);
+  }, [signer, comptrollerAddress, tokenPairs, tokenPair, value]);
 
   return newBorrowLimit;
 }

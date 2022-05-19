@@ -11,17 +11,17 @@ import Max from "~/components/max";
 import { enable, repay, hasSufficientAllowance } from "~/lib/tender";
 import { useValidInput } from "~/hooks/use-valid-input";
 import BorrowBalance from "../fi-modal/borrow-balance";
-import { useProjectBorrowLimit } from "~/hooks/use-project-borrow-limit";
 import { useBorrowLimitUsed } from "~/hooks/use-borrow-limit-used";
 
 import ConfirmingTransaction from "../fi-modal/confirming-transition";
 import { TenderContext } from "~/contexts/tender-context";
+import { useNewTotalBorrowedAmountInUsd } from "~/hooks/use-new-total-borrowed-amount-in-usd";
 
 interface Props {
   closeModal: Function;
   setIsRepaying: Function;
   signer: JsonRpcSigner | null | undefined;
-  borrowBalance: number;
+  borrowedAmount: number;
   borrowLimitUsed: string;
   walletBalance: number;
   borrowLimit: number;
@@ -35,10 +35,10 @@ export default function Repay({
   closeModal,
   setIsRepaying,
   signer,
-  borrowBalance,
+  borrowedAmount,
+  borrowLimit,
   borrowLimitUsed,
   walletBalance,
-  tokenPairs,
   totalBorrowedAmountInUsd,
 }: Props) {
   let [isWaitingToBeMined, setIsWaitingToBeMined] = useState<boolean>(false);
@@ -46,9 +46,9 @@ export default function Repay({
   let [isEnabling, setIsEnabling] = useState<boolean>(false);
 
   let [isRepayingTxn, setIsRepayingTxn] = useState<boolean>(false);
-  let [value, setValue] = useState<string>("");
+  let [value, setValue] = useState<string>("0");
 
-  let maxRepayableAmount = Math.min(borrowBalance, walletBalance);
+  let maxRepayableAmount = Math.min(borrowedAmount, walletBalance);
 
   let inputEl = useRef<HTMLInputElement>(null);
   let [isValid, validationDetails] = useValidInput(
@@ -57,17 +57,17 @@ export default function Repay({
     maxRepayableAmount
   );
 
-  let newBorrowLimit = useProjectBorrowLimit(
+  let newTotalBorrowedAmountInUsd = useNewTotalBorrowedAmountInUsd(
     signer,
-    market.comptrollerAddress,
-    tokenPairs,
-    market.tokenPair.cToken,
-    value
+    market.tokenPair,
+    totalBorrowedAmountInUsd,
+    // Value is negative because you're repaying which is reducing the $ amount that you have borrowed
+    -value
   );
 
   let newBorrowLimitUsed = useBorrowLimitUsed(
-    totalBorrowedAmountInUsd,
-    newBorrowLimit
+    newTotalBorrowedAmountInUsd,
+    borrowLimit
   );
 
   let { updateTransaction } = useContext(TenderContext);
@@ -183,7 +183,7 @@ export default function Repay({
                 value={value}
                 isValid={isValid}
                 borrowBalance={market.totalBorrowedAmountInUsd}
-                newBorrowBalance={market.totalBorrowedAmountInUsd - +value}
+                newBorrowBalance={newTotalBorrowedAmountInUsd}
                 borrowLimitUsed={borrowLimitUsed}
                 newBorrowLimitUsed={newBorrowLimitUsed}
               />
@@ -222,7 +222,7 @@ export default function Repay({
 
                 {signer && isEnabled && !isValid && (
                   <button className="py-4 text-center text-white font-bold rounded  w-full bg-gray-200">
-                    {validationDetails?.label || "Repay"}
+                    {validationDetails?.label}
                   </button>
                 )}
 

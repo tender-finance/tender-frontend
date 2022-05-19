@@ -36,7 +36,7 @@ export default function Withdraw({
   totalBorrowedAmountInUsd,
 }: Props) {
   let [isWaitingToBeMined, setBlockChaining] = useState<boolean>(false);
-  let [value, setValue] = useState<string>("");
+  let [value, setValue] = useState<string>("0");
   let [isWithdrawing, setIsWithdrawing] = useState<boolean>(false);
   let inputEl = useRef<HTMLInputElement>(null);
 
@@ -46,7 +46,7 @@ export default function Withdraw({
     signer,
     market.comptrollerAddress,
     tokenPairs,
-    market.tokenPair.cToken,
+    market.tokenPair,
     `-${value}`
   );
 
@@ -64,7 +64,11 @@ export default function Withdraw({
     market.tokenPair
   ).toFixed(2);
 
-  let isValid = useValidInput(value, 0, parseFloat(formattedMaxWithdrawAmount));
+  let [isValid, validationDetails] = useValidInput(
+    value,
+    0,
+    parseFloat(formattedMaxWithdrawAmount)
+  );
 
   // Highlights value input
   useEffect(() => {
@@ -160,7 +164,7 @@ export default function Withdraw({
                   {!signer && <div>Connect wallet to get started</div>}
                   {signer && !isValid && (
                     <button className="py-4 text-center text-white font-bold rounded w-full bg-gray-200">
-                      Withdraw
+                      {validationDetails?.label}
                     </button>
                   )}
                   {signer && isValid && (

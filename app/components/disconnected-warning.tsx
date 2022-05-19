@@ -1,37 +1,83 @@
 import { useOnSupportedNetwork } from "~/hooks/use-on-supported-network";
-import { hooks as Web3Hooks } from "~/connectors/meta-mask";
-import { useEffect, useRef } from "react";
+import { hooks } from "~/connectors/meta-mask";
+import type { ProviderRpcError } from "@web3-react/types";
+
+const { useIsActive } = hooks;
 
 export default function Disconnected() {
-  const chainId = Web3Hooks.useChainId();
+  let provider = hooks.useProvider();
+  const isActive = useIsActive();
+  const chainId = hooks.useChainId();
   let onSupportedChain = useOnSupportedNetwork(chainId);
 
-  let barRef = useRef(null);
+  let tryConnectingToMetis = async (p: typeof provider) => {
+    if (!p) {
+      return;
+    }
+    let targetNetworkId = 1088;
+    let targetNetworkIdHex = `0x${targetNetworkId.toString(16)}`;
 
-  useEffect(() => {
-    setInterval(() => {
-      let barEl = barRef.current as HTMLDivElement | null;
-
-      if (!barEl) {
-        return;
-      }
-
-      barEl.style.opacity = "100";
-    }, 500);
-  });
-
+    p?.provider?.request &&
+      p.provider
+        .request({
+          method: "wallet_switchEthereumChain",
+          params: [{ chainId: targetNetworkIdHex }],
+        })
+        .catch((error: ProviderRpcError) => {
+          if (error.code === 4902) {
+            // if we're here, we can try to add a new network
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            return (
+              p?.provider?.request &&
+              p.provider!.request({
+                method: "wallet_addEthereumChain",
+                params: [
+                  {
+                    chainName: "Metis Network",
+                    nativeCurrency: {
+                      name: "Metis",
+                      symbol: "METIS", // 2-6 characters long
+                      decimals: 18,
+                    },
+                    rpcUrls: ["https://andromeda.metis.io/?owner=1088"],
+                    blockExplorerUrls: ["https://andromeda-explorer.metis.io/"],
+                    chainId: targetNetworkIdHex,
+                  },
+                ],
+              })
+            );
+          } else {
+            throw error;
+          }
+        });
+  };
   return (
-    <div
-      ref={barRef}
-      style={{
-        height: "30px",
-        opacity: 0,
-        transition: "opacity 0.4s ease-in",
-      }}
-    >
-      {!onSupportedChain && (
-        <div className="bg-red-600 py-4 text-white text-center ">
-          Warning! Unsupported network.
+    <div>
+      {isActive && !onSupportedChain && (
+        <div
+          style={{
+            background: "linear-gradient(270deg, #1BD6CF 0%, #00E5AF 100%)",
+          }}
+          className="text-center bg-brand-green text-gray-900 py-4 px-4 rounded-md text-sm"
+        >
+          Warning! Unsupported network.{" "}
+          <button
+            className="underline"
+            onClick={() => tryConnectingToMetis(provider)}
+          >
+            Switch to Metis
+          </button>
+        </div>
+      )}
+      {!isActive && (
+        <div
+          style={{
+            background: "linear-gradient(270deg, #1BD6CF 0%, #00E5AF 100%)",
+          }}
+          className="text-center bg-brand-green text-gray-900 py-4 px-4 rounded-md text-sm"
+        >
+          Warning: Unsupported network. Connect Wallet and we can help you
+          switch.
         </div>
       )}
     </div>

@@ -273,10 +273,10 @@ async function projectBorrowLimit(
   signer: Signer,
   comptrollerAddress: string,
   tokenPairs: TokenPair[],
-  cToken: cToken,
-  value: number
+  tokenPair: TokenPair,
+  tokenAmount: number
 ): Promise<number> {
-  let borrowLimit = await getAccountBorrowLimitInUsd(
+  let currentBorrowLimitInUsd = await getAccountBorrowLimitInUsd(
     signer,
     comptrollerAddress,
     tokenPairs
@@ -288,16 +288,24 @@ async function projectBorrowLimit(
     signer
   );
 
-  let { 1: rawCollateralFactor } = await comptrollerContract.markets(
-    cToken.address
+  let collateralFactor: number = await collateralFactorForToken(
+    signer,
+    comptrollerContract,
+    tokenPair
   );
 
-  // Collateral factors are always 1e18
-  let collateralFactor: number = parseFloat(
-    formatUnits(rawCollateralFactor, 18)
+  let priceInUsd = await getAssetPriceInUsd(
+    signer,
+    tokenPair.token.priceOracleAddress
   );
 
-  return collateralFactor * value + borrowLimit;
+  // Borrow limit changes by the dollar amount of this amount of tokens
+  // times its collateral factor (what % of that dollar amount you can borrow against).
+  // `tokenAmount` might be a negative number and thus reduce the limit.
+  let borrowLimitChangeInUsd: number =
+    tokenAmount * priceInUsd * collateralFactor;
+
+  return currentBorrowLimitInUsd + borrowLimitChangeInUsd;
 }
 
 /**
@@ -436,20 +444,18 @@ async function getAssetPriceInUsd(
   signer: Signer,
   priceOracleAddress: string
 ): Promise<number> {
-  // let contract = new ethers.Contract(
-  //   priceOracleAddress,
-  //   SamplePriceOracleAbi,
-  //   signer
-  // );
+  let contract = new ethers.Contract(
+    priceOracleAddress,
+    SamplePriceOracleAbi,
+    signer
+  );
 
-  // let decimals = await contract.decimals();
-  // let { answer }: { answer: BigNumber } = await contract.latestRoundData();
+  let decimals = await contract.decimals();
+  let { answer }: { answer: BigNumber } = await contract.latestRoundData();
 
-  // let priceInUsd = parseFloat(formatUnits(answer, decimals));
+  let priceInUsd = parseFloat(formatUnits(answer, decimals));
 
-  // return priceInUsd;
-  // TODO add metis price oracle
-    return 2.5;
+  return priceInUsd;
 }
 
 async function getTotalSupplyBalanceInUsd(

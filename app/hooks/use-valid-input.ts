@@ -1,9 +1,24 @@
 import { useState, useEffect } from "react";
 
-interface Details {
+export interface Details {
   label: string;
   isNumeric: boolean;
 }
+
+const NON_NUMERIC_INPUT: Details = {
+  label: "Non-numeric input",
+  isNumeric: false,
+};
+
+const INSUFFICIENT_LIQUIDITY: Details = {
+  label: "Insufficient liquidity",
+  isNumeric: true,
+};
+
+const NEGATIVE_OR_ZERO: Details = {
+  label: "Please provide value",
+  isNumeric: true,
+};
 
 export function useValidInput(
   value: string,
@@ -19,10 +34,7 @@ export function useValidInput(
 
     try {
       if (isNaN(parseFloat(value))) {
-        reason = {
-          label: "Non-numeric input",
-          isNumeric: false,
-        };
+        setReason(NON_NUMERIC_INPUT);
         throw "NaN";
       }
 
@@ -32,17 +44,11 @@ export function useValidInput(
         setIsValid(true);
       } else {
         if (v <= floor) {
-          setReason({
-            label: "Insufficient liquidity",
-            isNumeric: true,
-          });
+          setReason(NEGATIVE_OR_ZERO);
         }
 
         if (v > ceil) {
-          setReason({
-            label: "Insufficient liquidity",
-            isNumeric: true,
-          });
+          setReason(INSUFFICIENT_LIQUIDITY);
         }
 
         setIsValid(false);
