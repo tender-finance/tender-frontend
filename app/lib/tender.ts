@@ -444,20 +444,18 @@ async function getAssetPriceInUsd(
   signer: Signer,
   priceOracleAddress: string
 ): Promise<number> {
-  // let contract = new ethers.Contract(
-  //   priceOracleAddress,
-  //   SamplePriceOracleAbi,
-  //   signer
-  // );
+  let contract = new ethers.Contract(
+    priceOracleAddress,
+    SamplePriceOracleAbi,
+    signer
+  );
 
-  // let decimals = await contract.decimals();
-  // let { answer }: { answer: BigNumber } = await contract.latestRoundData();
+  let decimals = await contract.decimals();
+  let { answer }: { answer: BigNumber } = await contract.latestRoundData();
 
-  // let priceInUsd = parseFloat(formatUnits(answer, decimals));
+  let priceInUsd = parseFloat(formatUnits(answer, decimals));
 
-  // return priceInUsd;
-  // TODO add metis price oracle
-    return 2.5;
+  return priceInUsd;
 }
 
 async function getTotalSupplyBalanceInUsd(
