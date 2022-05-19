@@ -56,8 +56,6 @@ export type Market = {
     borrowApy: string;
     totalBorrowedUsd: string;
     marketSizeUsd: string;
-    totalBorrowed: string;
-    marketSize: string;
   };
   walletBalance: number;
   supplyBalance: number;

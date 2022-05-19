@@ -398,7 +398,7 @@ async function borrow(
   // }
 }
 
-export async function getMarketSize(
+async function getMarketSizeUsd(
   signer: Signer,
   cToken: cToken
 ): Promise<string> {
@@ -406,34 +406,15 @@ export async function getMarketSize(
   let value = await contract.totalSupply();
 
   // TODO: better formatting here, test net number is super big. This should probably initially be millions?
-  return value;
-}
-
-async function getMarketSizeUsd(
-  signer: Signer,
-  cToken: cToken
-): Promise<string> {
-  let value = getMarketSize(signer, cToken);
-
-  // TODO: better formatting here, test net number is super big. This should probably initially be millions?
   return `${value.toString().slice(0, 3)}M`;
-}
-
-export async function getTotalBorrowed(
-  signer: Signer,
-  cToken: cToken
-): Promise<string> {
-  let contract = new ethers.Contract(cToken.address, SampleCTokenAbi, signer);
-  let value = await contract.totalBorrows();
-
-  return value;
 }
 
 async function getTotalBorrowedUsd(
   signer: Signer,
   cToken: cToken
 ): Promise<string> {
-  let value = await getTotalBorrowed(signer, cToken);
+  let contract = new ethers.Contract(cToken.address, SampleCTokenAbi, signer);
+  let value = await contract.totalBorrows();
 
   // TODO: better formatting here, test net number is super big. This should probably initially be millions?
   return `${value.toString().slice(0, 3)}M`;
