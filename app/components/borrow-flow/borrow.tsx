@@ -10,13 +10,13 @@ import Max from "~/components/max";
 import { borrow } from "~/lib/tender";
 import { useValidInput } from "~/hooks/use-valid-input";
 import BorrowBalance from "../fi-modal/borrow-balance";
-import { useProjectBorrowLimit } from "~/hooks/use-project-borrow-limit";
 import { useBorrowLimitUsed } from "~/hooks/use-borrow-limit-used";
 import { useCurrentlyBorrowing } from "~/hooks/use-currently-borrowing";
 
 import ConfirmingTransaction from "../fi-modal/confirming-transition";
 import { useMaxBorrowAmountForToken } from "~/hooks/use-max-borrow-amount-for-token";
 import { TenderContext } from "~/contexts/tender-context";
+import { useNewTotalBorrowedAmountInUsd } from "~/hooks/use-new-total-borrowed-amount-in-usd";
 
 interface Props {
   market: Market;
@@ -49,21 +49,22 @@ export default function Borrow({
     market.tokenPair.cToken,
     market.tokenPair.token
   );
+
+  // TODO: Should this be looking at newBorrowLimit if it exists?
   let [isValid, validationDetails] = useValidInput(value, 0, borrowLimit);
 
   let { updateTransaction } = useContext(TenderContext);
 
-  let newBorrowLimit = useProjectBorrowLimit(
+  let newTotalBorrowedAmountInUsd = useNewTotalBorrowedAmountInUsd(
     signer,
-    market.comptrollerAddress,
-    tokenPairs,
-    market.tokenPair.cToken,
-    `-${value}`
+    market.tokenPair,
+    totalBorrowedAmountInUsd,
+    +value
   );
 
   let newBorrowLimitUsed = useBorrowLimitUsed(
-    totalBorrowedAmountInUsd,
-    newBorrowLimit
+    newTotalBorrowedAmountInUsd,
+    borrowLimit
   );
 
   let formattedMaxBorrowLimit: string = useMaxBorrowAmountForToken(
@@ -161,7 +162,7 @@ export default function Borrow({
                   value={value}
                   isValid={isValid}
                   borrowBalance={totalBorrowedAmountInUsd}
-                  newBorrowBalance={totalBorrowedAmountInUsd + +value}
+                  newBorrowBalance={newTotalBorrowedAmountInUsd}
                   borrowLimitUsed={borrowLimitUsed}
                   newBorrowLimitUsed={newBorrowLimitUsed}
                 />

@@ -11,11 +11,11 @@ import Max from "~/components/max";
 import { enable, repay, hasSufficientAllowance } from "~/lib/tender";
 import { useValidInput } from "~/hooks/use-valid-input";
 import BorrowBalance from "../fi-modal/borrow-balance";
-import { useProjectBorrowLimit } from "~/hooks/use-project-borrow-limit";
 import { useBorrowLimitUsed } from "~/hooks/use-borrow-limit-used";
 
 import ConfirmingTransaction from "../fi-modal/confirming-transition";
 import { TenderContext } from "~/contexts/tender-context";
+import { useNewTotalBorrowedAmountInUsd } from "~/hooks/use-new-total-borrowed-amount-in-usd";
 
 interface Props {
   closeModal: Function;
@@ -36,9 +36,9 @@ export default function Repay({
   setIsRepaying,
   signer,
   borrowedAmount,
+  borrowLimit,
   borrowLimitUsed,
   walletBalance,
-  tokenPairs,
   totalBorrowedAmountInUsd,
 }: Props) {
   let [isWaitingToBeMined, setIsWaitingToBeMined] = useState<boolean>(false);
@@ -53,17 +53,17 @@ export default function Repay({
   let inputEl = useRef<HTMLInputElement>(null);
   let isValid = useValidInput(value, 0, maxRepayableAmount);
 
-  let newBorrowLimit = useProjectBorrowLimit(
+  let newTotalBorrowedAmountInUsd = useNewTotalBorrowedAmountInUsd(
     signer,
-    market.comptrollerAddress,
-    tokenPairs,
-    market.tokenPair.cToken,
-    value
+    market.tokenPair,
+    totalBorrowedAmountInUsd,
+    // Value is negative because you're repaying which is reducing the $ amount that you have borrowed
+    -value
   );
 
   let newBorrowLimitUsed = useBorrowLimitUsed(
-    totalBorrowedAmountInUsd,
-    newBorrowLimit
+    newTotalBorrowedAmountInUsd,
+    borrowLimit
   );
 
   let { updateTransaction } = useContext(TenderContext);
@@ -179,7 +179,7 @@ export default function Repay({
                 value={value}
                 isValid={isValid}
                 borrowBalance={market.totalBorrowedAmountInUsd}
-                newBorrowBalance={market.totalBorrowedAmountInUsd - +value}
+                newBorrowBalance={newTotalBorrowedAmountInUsd}
                 borrowLimitUsed={borrowLimitUsed}
                 newBorrowLimitUsed={newBorrowLimitUsed}
               />

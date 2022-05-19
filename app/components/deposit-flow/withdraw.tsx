@@ -46,7 +46,7 @@ export default function Withdraw({
     signer,
     market.comptrollerAddress,
     tokenPairs,
-    market.tokenPair.cToken,
+    market.tokenPair,
     `-${value}`
   );
 
