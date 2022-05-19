@@ -1,3 +1,5 @@
+import { Details } from "~/hooks/use-valid-input";
+
 interface BorrowLimitProps {
   value: string;
   isValid: boolean;
@@ -20,6 +22,7 @@ export default function BorrowLimit(props: BorrowLimitProps) {
     borrowLimitUsed,
     newBorrowLimitUsed,
   } = props;
+
   return (
     <div>
       <div className="font-bold mr-3 border-b border-b-gray-600 w-full pb-5">

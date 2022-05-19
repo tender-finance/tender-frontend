@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-interface Details {
+export interface Details {
   label: string;
   isNumeric: boolean;
 }
@@ -12,6 +12,11 @@ const NON_NUMERIC_INPUT: Details = {
 
 const INSUFFICIENT_LIQUIDITY: Details = {
   label: "Insufficient liquidity",
+  isNumeric: true,
+};
+
+const NEGATIVE_OR_ZERO: Details = {
+  label: "Please provide value",
   isNumeric: true,
 };
 
@@ -39,7 +44,7 @@ export function useValidInput(
         setIsValid(true);
       } else {
         if (v <= floor) {
-          setReason(INSUFFICIENT_LIQUIDITY);
+          setReason(NEGATIVE_OR_ZERO);
         }
 
         if (v > ciel) {
