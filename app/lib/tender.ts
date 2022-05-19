@@ -5,7 +5,6 @@ import { ethers, BigNumber } from "ethers";
 import SampleCTokenAbi from "~/config/sample-ctoken-abi";
 import SampleErc20Abi from "~/config/sample-erc20-abi";
 import SampleComptrollerAbi from "~/config/sample-comptroller-abi";
-import SamplePriceOracleAbi from "~/config/sample-price-oracle-abi";
 
 import type { TokenPair } from "~/types/global";
 import { formatUnits } from "ethers/lib/utils";
@@ -457,7 +456,7 @@ async function getAssetPriceInUsd(
 
   // return priceInUsd;
   // TODO add metis price oracle
-    return 2.5;
+  return 2.5;
 }
 
 async function getTotalSupplyBalanceInUsd(

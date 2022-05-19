@@ -5,6 +5,16 @@ interface Details {
   isNumeric: boolean;
 }
 
+const NON_NUMERIC_INPUT: Details = {
+  label: "Non-numeric input",
+  isNumeric: false,
+};
+
+const INSUFFICIENT_LIQUIDITY: Details = {
+  label: "Insufficient liquidity",
+  isNumeric: true,
+};
+
 export function useValidInput(
   value: string,
   floor: number,
@@ -19,10 +29,7 @@ export function useValidInput(
 
     try {
       if (isNaN(parseFloat(value))) {
-        reason = {
-          label: "Non-numeric input",
-          isNumeric: false,
-        };
+        setReason(NON_NUMERIC_INPUT);
         throw "NaN";
       }
 
@@ -32,17 +39,11 @@ export function useValidInput(
         setIsValid(true);
       } else {
         if (v <= floor) {
-          setReason({
-            label: "Insufficient liquidity",
-            isNumeric: true,
-          });
+          setReason(INSUFFICIENT_LIQUIDITY);
         }
 
         if (v > ciel) {
-          setReason({
-            label: "Insufficient liquidity",
-            isNumeric: true,
-          });
+          setReason(INSUFFICIENT_LIQUIDITY);
         }
 
         setIsValid(false);
