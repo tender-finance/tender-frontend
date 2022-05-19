@@ -16,6 +16,7 @@ import { useBorrowLimitUsed } from "~/hooks/use-borrow-limit-used";
 
 import ConfirmingTransaction from "../fi-modal/confirming-transition";
 import { TenderContext } from "~/contexts/tender-context";
+import { useNewTotalBorrowedAmountInUsd } from "~/hooks/use-new-total-borrowed-amount-in-usd";
 
 interface Props {
   closeModal: Function;
@@ -52,6 +53,13 @@ export default function Repay({
 
   let inputEl = useRef<HTMLInputElement>(null);
   let isValid = useValidInput(value, 0, maxRepayableAmount);
+
+  let newTotalBorrowedAmountInUsd = useNewTotalBorrowedAmountInUsd(
+    signer,
+    market.tokenPair,
+    totalBorrowedAmountInUsd,
+    -value
+  );
 
   let newBorrowLimit = useProjectBorrowLimit(
     signer,
@@ -179,7 +187,7 @@ export default function Repay({
                 value={value}
                 isValid={isValid}
                 borrowBalance={market.totalBorrowedAmountInUsd}
-                newBorrowBalance={market.totalBorrowedAmountInUsd - +value}
+                newBorrowBalance={newTotalBorrowedAmountInUsd}
                 borrowLimitUsed={borrowLimitUsed}
                 newBorrowLimitUsed={newBorrowLimitUsed}
               />
