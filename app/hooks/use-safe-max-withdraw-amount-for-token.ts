@@ -1,9 +1,9 @@
 import type { JsonRpcSigner } from "@ethersproject/providers";
 import { useState, useEffect } from "react";
-import { maxWithdrawAmountForToken } from "~/lib/tender";
+import { safeMaxWithdrawAmountForToken } from "~/lib/tender";
 import type { TokenPair } from "~/types/global";
 
-export function useMaxWithdrawAmountForToken(
+export function useSafeMaxWithdrawAmountForToken(
   signer: JsonRpcSigner | undefined | null,
   supplyBalance: number,
   borrowLimit: number,
@@ -11,14 +11,15 @@ export function useMaxWithdrawAmountForToken(
   comptrollerAddress: string,
   tokenPair: TokenPair
 ): number {
-  let [maxWithdrawAmount, setMaxWithdrawAmountForToken] = useState<number>(0);
+  let [safeMaxWithdrawAmount, setSafeMaxWithdrawAmountForToken] =
+    useState<number>(0);
 
   useEffect(() => {
     if (!signer) {
       return;
     }
 
-    maxWithdrawAmountForToken(
+    safeMaxWithdrawAmountForToken(
       signer,
       borrowLimit,
       totalBorrowed,
@@ -26,7 +27,7 @@ export function useMaxWithdrawAmountForToken(
       tokenPair
     ).then((v) => {
       let maxValue: number = Math.min(supplyBalance, v);
-      setMaxWithdrawAmountForToken(maxValue);
+      setSafeMaxWithdrawAmountForToken(maxValue);
     });
   }, [
     signer,
@@ -37,5 +38,5 @@ export function useMaxWithdrawAmountForToken(
     tokenPair,
   ]);
 
-  return maxWithdrawAmount;
+  return safeMaxWithdrawAmount;
 }

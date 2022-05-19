@@ -513,7 +513,16 @@ function accountLiquidityInUsd(
   return borrowLimitInUsd - totalBorrowedInUsd;
 }
 
-async function maxWithdrawAmountForToken(
+/**
+ *
+ * @param signer
+ * @param borrowLimit
+ * @param totalBorrowed
+ * @param comptrollerAddress
+ * @param tokenPair
+ * @returns  80% of your theoretical max withdraw
+ */
+async function safeMaxWithdrawAmountForToken(
   signer: JsonRpcSigner,
   borrowLimit: number,
   totalBorrowed: number,
@@ -542,7 +551,7 @@ async function maxWithdrawAmountForToken(
     tokenPair.token.priceOracleAddress
   );
 
-  return (accountLiquidity / collateralFactor) * priceInUsd;
+  return (accountLiquidity / collateralFactor) * priceInUsd * 0.8;
 }
 
 async function maxBorrowAmountForToken(
@@ -582,6 +591,6 @@ export {
   projectBorrowLimit,
   getAssetPriceInUsd,
   getTotalBorrowedInUsd,
-  maxWithdrawAmountForToken,
+  safeMaxWithdrawAmountForToken,
   maxBorrowAmountForToken,
 };

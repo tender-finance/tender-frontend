@@ -12,7 +12,7 @@ import { useValidInput } from "~/hooks/use-valid-input";
 import BorrowLimit from "../fi-modal/borrow-limit";
 import { useProjectBorrowLimit } from "~/hooks/use-project-borrow-limit";
 import { useBorrowLimitUsed } from "~/hooks/use-borrow-limit-used";
-import { useMaxWithdrawAmountForToken } from "~/hooks/use-max-withdraw-amount-for-token";
+import { useSafeMaxWithdrawAmountForToken } from "~/hooks/use-safe-max-withdraw-amount-for-token";
 import ConfirmingTransaction from "../fi-modal/confirming-transition";
 import { TenderContext } from "~/contexts/tender-context";
 
@@ -55,7 +55,7 @@ export default function Withdraw({
     newBorrowLimit
   );
 
-  let formattedMaxWithdrawAmount: string = useMaxWithdrawAmountForToken(
+  let formattedSafeMaxWithdrawAmount: string = useSafeMaxWithdrawAmountForToken(
     signer,
     market.supplyBalance,
     borrowLimit,
@@ -67,7 +67,7 @@ export default function Withdraw({
   let [isValid, validationDetails] = useValidInput(
     value,
     0,
-    parseFloat(formattedMaxWithdrawAmount)
+    parseFloat(formattedSafeMaxWithdrawAmount)
   );
 
   // Highlights value input
@@ -110,13 +110,16 @@ export default function Withdraw({
                   defaultValue={0}
                 />
                 <Max
-                  maxValue={formattedMaxWithdrawAmount}
+                  maxValue={`${
+                    parseFloat(formattedSafeMaxWithdrawAmount) * 0.8
+                  }`}
                   updateValue={() => {
                     if (!inputEl || !inputEl.current) return;
                     inputEl.current.focus();
-                    inputEl.current.value = formattedMaxWithdrawAmount;
-                    setValue(formattedMaxWithdrawAmount);
+                    inputEl.current.value = formattedSafeMaxWithdrawAmount;
+                    setValue(formattedSafeMaxWithdrawAmount);
                   }}
+                  label="80% Max"
                   maxValueLabel={market.tokenPair.token.symbol}
                 />
               </div>
