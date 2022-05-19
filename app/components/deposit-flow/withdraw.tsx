@@ -58,9 +58,9 @@ export default function Withdraw({
   let formattedSafeMaxWithdrawAmount: string = useSafeMaxWithdrawAmountForToken(
     signer,
     market.supplyBalance,
-    borrowLimit,
     totalBorrowedAmountInUsd,
     market.comptrollerAddress,
+    tokenPairs,
     market.tokenPair
   ).toFixed(2);
 
@@ -110,9 +110,7 @@ export default function Withdraw({
                   defaultValue={0}
                 />
                 <Max
-                  maxValue={`${
-                    parseFloat(formattedSafeMaxWithdrawAmount) * 0.8
-                  }`}
+                  maxValue={`${parseFloat(formattedSafeMaxWithdrawAmount)}`}
                   updateValue={() => {
                     if (!inputEl || !inputEl.current) return;
                     inputEl.current.focus();

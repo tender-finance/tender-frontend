@@ -6,9 +6,9 @@ import type { TokenPair } from "~/types/global";
 export function useSafeMaxWithdrawAmountForToken(
   signer: JsonRpcSigner | undefined | null,
   supplyBalance: number,
-  borrowLimit: number,
   totalBorrowed: number,
   comptrollerAddress: string,
+  tokenPairs: TokenPair[],
   tokenPair: TokenPair
 ): number {
   let [safeMaxWithdrawAmount, setSafeMaxWithdrawAmountForToken] =
@@ -21,9 +21,9 @@ export function useSafeMaxWithdrawAmountForToken(
 
     safeMaxWithdrawAmountForToken(
       signer,
-      borrowLimit,
       totalBorrowed,
       comptrollerAddress,
+      tokenPairs,
       tokenPair
     ).then((v) => {
       let maxValue: number = Math.min(supplyBalance, v);
@@ -32,9 +32,9 @@ export function useSafeMaxWithdrawAmountForToken(
   }, [
     signer,
     supplyBalance,
-    borrowLimit,
     totalBorrowed,
     comptrollerAddress,
+    tokenPairs,
     tokenPair,
   ]);
 

@@ -524,20 +524,34 @@ function accountLiquidityInUsd(
  */
 async function safeMaxWithdrawAmountForToken(
   signer: JsonRpcSigner,
-  borrowLimit: number,
   totalBorrowed: number,
   comptrollerAddress: string,
+  tokenPairs: TokenPair[],
   tokenPair: TokenPair
 ): Promise<number> {
-  let accountLiquidity: number = accountLiquidityInUsd(
-    borrowLimit,
-    totalBorrowed
-  );
-
   let comptrollerContract = new ethers.Contract(
     comptrollerAddress,
     SampleComptrollerAbi,
     signer
+  );
+
+  let otherTokenPairs: TokenPair[] = tokenPairs.filter(
+    (tp) => tp.token.symbol !== tokenPair.token.symbol
+  );
+
+  let borrowLimitsPerToken: number[] = await Promise.all(
+    otherTokenPairs.map(async (tp) => {
+      return await borrowLimitForTokenInUsd(signer, comptrollerContract, tp);
+    })
+  );
+
+  let totalBorrowLimitExceptThisToken: number = borrowLimitsPerToken.reduce(
+    (acc, curr) => acc + curr
+  );
+
+  let priceInUsd: number = await getAssetPriceInUsd(
+    signer,
+    tokenPair.token.priceOracleAddress
   );
 
   let collateralFactor: number = await collateralFactorForToken(
@@ -546,12 +560,22 @@ async function safeMaxWithdrawAmountForToken(
     tokenPair
   );
 
-  let priceInUsd: number = await getAssetPriceInUsd(
+  let currentlySupplying: number = await getCurrentlySupplying(
     signer,
-    tokenPair.token.priceOracleAddress
+    tokenPair.cToken,
+    tokenPair.token
   );
 
-  return (accountLiquidity / collateralFactor) * priceInUsd * 0.8; // NOTE: Should this be configurable && from contract?
+  // Finds the amount you can withdraw of a token that gives you 80% borrow limit upon doing it.
+  // Found reverse engineering from a spreadsheet, not sure how to make this make more sense.
+  // -(((borrowed_amount / 0.8) - sumOfAllOtherTokensBorrowLimit) / priceInUsd / collatFactor) + balance = withdrawAmount
+  let amount =
+    (-1 * (totalBorrowed / 0.8 - totalBorrowLimitExceptThisToken)) /
+      priceInUsd /
+      collateralFactor +
+    currentlySupplying;
+
+  return amount;
 }
 
 /**
