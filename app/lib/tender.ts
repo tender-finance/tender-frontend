@@ -592,16 +592,17 @@ async function safeMaxBorrowAmountForToken(
   totalBorrowed: number,
   tokenPair: TokenPair
 ): Promise<number> {
-  let accountLiquidity: number = accountLiquidityInUsd(
-    borrowLimit,
-    totalBorrowed
-  );
   let priceInUsd: number = await getAssetPriceInUsd(
     signer,
     tokenPair.token.priceOracleAddress
   );
 
-  return (accountLiquidity / priceInUsd) * 0.8; // NOTE: Should this be configurable && from contract?
+  // (borrowed_amount + x*priceInUsd) / borrow_limit = 0.8
+  // (borrowed_amount + x*priceInUsd) = 0.8 * borrow_limit
+  // x = ((0.8 * borrow_limit) - borrowed_amount) / priceInUsd
+  let amount = (0.8 * borrowLimit - totalBorrowed) / priceInUsd;
+
+  return amount;
 }
 
 export {
