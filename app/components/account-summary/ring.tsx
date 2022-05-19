@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const NEAR_ZERO_PERCENT = 385;
 const NEAR_HUNDRED_PERCENT = 760;
@@ -6,7 +6,7 @@ const NEAR_HUNDRED_PERCENT = 760;
 export default function Ring({ percent }: { percent: number }) {
   let [strokeOffset, setStrokeOffset] = useState<number>(NEAR_ZERO_PERCENT);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!percent) {
       return;
     }
