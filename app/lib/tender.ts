@@ -551,10 +551,18 @@ async function safeMaxWithdrawAmountForToken(
     tokenPair.token.priceOracleAddress
   );
 
-  return (accountLiquidity / collateralFactor) * priceInUsd * 0.8;
+  return (accountLiquidity / collateralFactor) * priceInUsd * 0.8; // NOTE: Should this be configurable && from contract?
 }
 
-async function maxBorrowAmountForToken(
+/**
+ *
+ * @param signer
+ * @param borrowLimit
+ * @param totalBorrowed
+ * @param tokenPair
+ * @returns theoretical max borrow limit with a saftey margin of 80%
+ */
+async function safeMaxBorrowAmountForToken(
   signer: Signer,
   borrowLimit: number,
   totalBorrowed: number,
@@ -569,7 +577,7 @@ async function maxBorrowAmountForToken(
     tokenPair.token.priceOracleAddress
   );
 
-  return accountLiquidity / priceInUsd;
+  return (accountLiquidity / priceInUsd) * 0.8; // NOTE: Should this be configurable && from contract?
 }
 
 export {
@@ -592,5 +600,5 @@ export {
   getAssetPriceInUsd,
   getTotalBorrowedInUsd,
   safeMaxWithdrawAmountForToken,
-  maxBorrowAmountForToken,
+  safeMaxBorrowAmountForToken,
 };
