@@ -79,8 +79,6 @@ export default function Deposit({
     inputEl && inputEl.current && inputEl.current.select();
   }, []);
 
-  console.log(validationDetails);
-
   return (
     <div>
       {isWaitingToBeMined && (
