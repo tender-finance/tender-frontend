@@ -26,7 +26,7 @@ export default function BorrowFlow({ closeModal, market }: Props) {
       market={market}
       closeModal={closeModal}
       setIsRepaying={setIsRepaying}
-      borrowBalance={market.borrowBalance}
+      borrowedAmount={market.borrowBalance}
       signer={signer}
       borrowLimitUsed={market.borrowLimitUsed}
       walletBalance={market.walletBalance}
