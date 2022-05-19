@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-interface Details {
+export interface Details {
   label: string;
   isNumeric: boolean;
 }

@@ -64,7 +64,11 @@ export default function Withdraw({
     market.tokenPair
   ).toFixed(2);
 
-  let isValid = useValidInput(value, 0, parseFloat(formattedMaxWithdrawAmount));
+  let [isValid, validationDetails] = useValidInput(
+    value,
+    0,
+    parseFloat(formattedMaxWithdrawAmount)
+  );
 
   // Highlights value input
   useEffect(() => {

@@ -17,35 +17,39 @@ export default function Disconnected() {
     let targetNetworkId = 1088;
     let targetNetworkIdHex = `0x${targetNetworkId.toString(16)}`;
 
-    p?.provider
-      .request({
-        method: "wallet_switchEthereumChain",
-        params: [{ chainId: targetNetworkIdHex }],
-      })
-      .catch((error: ProviderRpcError) => {
-        if (error.code === 4902) {
-          // if we're here, we can try to add a new network
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          return p?.provider!.request({
-            method: "wallet_addEthereumChain",
-            params: [
-              {
-                chainName: "Metis Network",
-                nativeCurrency: {
-                  name: "Metis",
-                  symbol: "METIS", // 2-6 characters long
-                  decimals: 18,
-                },
-                rpcUrls: ["https://andromeda.metis.io/?owner=1088"],
-                blockExplorerUrls: ["https://andromeda-explorer.metis.io/"],
-                chainId: targetNetworkIdHex,
-              },
-            ],
-          });
-        } else {
-          throw error;
-        }
-      });
+    p?.provider?.request &&
+      p.provider
+        .request({
+          method: "wallet_switchEthereumChain",
+          params: [{ chainId: targetNetworkIdHex }],
+        })
+        .catch((error: ProviderRpcError) => {
+          if (error.code === 4902) {
+            // if we're here, we can try to add a new network
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            return (
+              p?.provider?.request &&
+              p.provider!.request({
+                method: "wallet_addEthereumChain",
+                params: [
+                  {
+                    chainName: "Metis Network",
+                    nativeCurrency: {
+                      name: "Metis",
+                      symbol: "METIS", // 2-6 characters long
+                      decimals: 18,
+                    },
+                    rpcUrls: ["https://andromeda.metis.io/?owner=1088"],
+                    blockExplorerUrls: ["https://andromeda-explorer.metis.io/"],
+                    chainId: targetNetworkIdHex,
+                  },
+                ],
+              })
+            );
+          } else {
+            throw error;
+          }
+        });
   };
   return (
     <div>

@@ -42,7 +42,7 @@ export default function Deposit({
   let [isDepositing, setIsDepositing] = useState<boolean>(false);
   let [value, setValue] = useState<string>("0");
   let inputEl = useRef<HTMLInputElement>(null);
-  let isValid = useValidInput(value, 0, walletBalance);
+  let [isValid, validationDetails] = useValidInput(value, 0, walletBalance);
 
   let { tokenPairs, updateTransaction } = useContext(TenderContext);
 
