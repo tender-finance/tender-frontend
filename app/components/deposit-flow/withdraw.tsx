@@ -36,7 +36,7 @@ export default function Withdraw({
   totalBorrowedAmountInUsd,
 }: Props) {
   let [isWaitingToBeMined, setBlockChaining] = useState<boolean>(false);
-  let [value, setValue] = useState<string>("");
+  let [value, setValue] = useState<string>("0");
   let [isWithdrawing, setIsWithdrawing] = useState<boolean>(false);
   let inputEl = useRef<HTMLInputElement>(null);
 
@@ -164,7 +164,7 @@ export default function Withdraw({
                   {!signer && <div>Connect wallet to get started</div>}
                   {signer && !isValid && (
                     <button className="py-4 text-center text-white font-bold rounded w-full bg-gray-200">
-                      Withdraw
+                      {validationDetails?.label}
                     </button>
                   )}
                   {signer && isValid && (

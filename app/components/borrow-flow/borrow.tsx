@@ -41,7 +41,7 @@ export default function Borrow({
   totalBorrowedAmountInUsd,
 }: Props) {
   let [isWaitingToBeMined, setIsWaitingToBeMined] = useState<boolean>(false);
-  let [value, setValue] = useState<string>("");
+  let [value, setValue] = useState<string>("0");
   let [isBorrowing, setIsBorrowing] = useState<boolean>(false);
   let inputEl = useRef<HTMLInputElement>(null);
   let currentlyBorrowing = useCurrentlyBorrowing(

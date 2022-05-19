@@ -79,6 +79,8 @@ export default function Deposit({
     inputEl && inputEl.current && inputEl.current.select();
   }, []);
 
+  console.log(validationDetails);
+
   return (
     <div>
       {isWaitingToBeMined && (
@@ -208,9 +210,10 @@ export default function Deposit({
 
               {signer && isEnabled && !isValid && (
                 <button className="py-4 text-center text-white font-bold rounded  w-full bg-gray-200">
-                  Deposit
+                  {validationDetails?.label}
                 </button>
               )}
+
               {signer && isEnabled && isValid && (
                 <button
                   onClick={async () => {
@@ -231,7 +234,7 @@ export default function Deposit({
                       setIsWaitingToBeMined(true);
                       let tr = await txn.wait();
                       setIsWaitingToBeMined(false);
-                      setValue("");
+                      setValue("0");
                       updateTransaction(tr.blockHash);
                       toast.success("Deposit successful");
                       closeModal();

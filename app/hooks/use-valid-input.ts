@@ -15,6 +15,11 @@ const INSUFFICIENT_LIQUIDITY: Details = {
   isNumeric: true,
 };
 
+const NEGATIVE_OR_ZERO: Details = {
+  label: "Please provide value",
+  isNumeric: true,
+};
+
 export function useValidInput(
   value: string,
   floor: number,
@@ -39,7 +44,7 @@ export function useValidInput(
         setIsValid(true);
       } else {
         if (v <= floor) {
-          setReason(INSUFFICIENT_LIQUIDITY);
+          setReason(NEGATIVE_OR_ZERO);
         }
 
         if (v > ciel) {
