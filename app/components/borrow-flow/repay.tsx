@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 
 import Max from "~/components/max";
 
-import { enable, repay, hasSufficientAllowance } from "~/lib/tender";
+import { enable, repay, hasSufficientAllowance, borrow } from "~/lib/tender";
 import { useValidInput } from "~/hooks/use-valid-input";
 import BorrowBalance from "../fi-modal/borrow-balance";
 import { useProjectBorrowLimit } from "~/hooks/use-project-borrow-limit";
@@ -37,6 +37,7 @@ export default function Repay({
   setIsRepaying,
   signer,
   borrowedAmount,
+  borrowLimit,
   borrowLimitUsed,
   walletBalance,
   tokenPairs,
@@ -61,17 +62,9 @@ export default function Repay({
     -value
   );
 
-  let newBorrowLimit = useProjectBorrowLimit(
-    signer,
-    market.comptrollerAddress,
-    tokenPairs,
-    market.tokenPair,
-    value
-  );
-
   let newBorrowLimitUsed = useBorrowLimitUsed(
-    totalBorrowedAmountInUsd,
-    newBorrowLimit
+    newTotalBorrowedAmountInUsd,
+    borrowLimit
   );
 
   let { updateTransaction } = useContext(TenderContext);
