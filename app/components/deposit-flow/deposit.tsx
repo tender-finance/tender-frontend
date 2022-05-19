@@ -50,7 +50,7 @@ export default function Deposit({
     signer,
     comptrollerAddress,
     tokenPairs,
-    market.tokenPair.cToken,
+    market.tokenPair,
     value
   );
 

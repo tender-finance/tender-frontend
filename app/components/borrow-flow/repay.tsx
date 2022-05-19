@@ -57,7 +57,7 @@ export default function Repay({
     signer,
     market.comptrollerAddress,
     tokenPairs,
-    market.tokenPair.cToken,
+    market.tokenPair,
     value
   );
 
