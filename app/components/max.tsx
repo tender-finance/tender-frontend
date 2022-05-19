@@ -2,11 +2,14 @@ interface MaxProps {
   updateValue: Function;
   maxValue: string;
   maxValueLabel: string;
+  label?: string;
 }
 const formatMaxValue = (v: string): string => {
   return Math.max(0, parseFloat(v)).toFixed(2);
 };
 export default function Max(props: MaxProps) {
+  let label = props.label || "Max";
+
   return (
     <div className="absolute top right-0  text-right mr-10">
       <div className="text-gray-400 text-xs m-auto uppercase">
@@ -19,9 +22,9 @@ export default function Max(props: MaxProps) {
 
       <button
         onClick={() => props.updateValue()}
-        className="text-xs border-brand-green border-2 py-1 px-3 rounded-lg text-bg-brand-black-light uppercase text-green-300"
+        className="text-xs border-brand-green border-2 py-1 px-3 rounded-lg text-bg-brand-black-light uppercase text-brand-green"
       >
-        Max
+        {label}
       </button>
     </div>
   );

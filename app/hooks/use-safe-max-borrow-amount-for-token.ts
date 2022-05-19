@@ -1,26 +1,30 @@
 import type { JsonRpcSigner } from "@ethersproject/providers";
 import { useState, useEffect } from "react";
-import { maxBorrowAmountForToken } from "~/lib/tender";
+import { safeMaxBorrowAmountForToken } from "~/lib/tender";
 import type { TokenPair } from "~/types/global";
 
-export function useMaxBorrowAmountForToken(
+export function useSafeMaxBorrowAmountForToken(
   signer: JsonRpcSigner | undefined | null,
   borrowLimit: number,
   totalBorrowed: number,
   comptrollerAddress: string,
   tokenPair: TokenPair
 ): number {
-  let [maxBorrowAmount, setMaxBorrowAmountForToken] = useState<number>(0);
+  let [safeMaxBorrowAmount, setSafeMaxBorrowAmountForToken] =
+    useState<number>(0);
 
   useEffect(() => {
     if (!signer) {
       return;
     }
 
-    maxBorrowAmountForToken(signer, borrowLimit, totalBorrowed, tokenPair).then(
-      (v) => setMaxBorrowAmountForToken(v)
-    );
+    safeMaxBorrowAmountForToken(
+      signer,
+      borrowLimit,
+      totalBorrowed,
+      tokenPair
+    ).then((v) => setSafeMaxBorrowAmountForToken(v));
   }, [signer, borrowLimit, totalBorrowed, comptrollerAddress, tokenPair]);
 
-  return maxBorrowAmount;
+  return safeMaxBorrowAmount;
 }

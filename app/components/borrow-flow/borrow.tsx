@@ -14,7 +14,7 @@ import { useBorrowLimitUsed } from "~/hooks/use-borrow-limit-used";
 import { useCurrentlyBorrowing } from "~/hooks/use-currently-borrowing";
 
 import ConfirmingTransaction from "../fi-modal/confirming-transition";
-import { useMaxBorrowAmountForToken } from "~/hooks/use-max-borrow-amount-for-token";
+import { useSafeMaxBorrowAmountForToken } from "~/hooks/use-safe-max-borrow-amount-for-token";
 import { TenderContext } from "~/contexts/tender-context";
 import { useNewTotalBorrowedAmountInUsd } from "~/hooks/use-new-total-borrowed-amount-in-usd";
 
@@ -67,7 +67,7 @@ export default function Borrow({
     borrowLimit
   );
 
-  let formattedMaxBorrowLimit: string = useMaxBorrowAmountForToken(
+  let formattedMaxBorrowLimit: string = useSafeMaxBorrowAmountForToken(
     signer,
     borrowLimit,
     totalBorrowedAmountInUsd,
@@ -124,6 +124,7 @@ export default function Borrow({
                     setValue(`${formattedMaxBorrowLimit}`);
                   }}
                   maxValueLabel={market.tokenPair.token.symbol}
+                  label="80% Max"
                 />
               </div>
             </div>
