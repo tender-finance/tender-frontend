@@ -8,10 +8,9 @@ import toast from "react-hot-toast";
 
 import Max from "~/components/max";
 
-import { enable, repay, hasSufficientAllowance, borrow } from "~/lib/tender";
+import { enable, repay, hasSufficientAllowance } from "~/lib/tender";
 import { useValidInput } from "~/hooks/use-valid-input";
 import BorrowBalance from "../fi-modal/borrow-balance";
-import { useProjectBorrowLimit } from "~/hooks/use-project-borrow-limit";
 import { useBorrowLimitUsed } from "~/hooks/use-borrow-limit-used";
 
 import ConfirmingTransaction from "../fi-modal/confirming-transition";
@@ -40,7 +39,6 @@ export default function Repay({
   borrowLimit,
   borrowLimitUsed,
   walletBalance,
-  tokenPairs,
   totalBorrowedAmountInUsd,
 }: Props) {
   let [isWaitingToBeMined, setIsWaitingToBeMined] = useState<boolean>(false);
@@ -59,6 +57,7 @@ export default function Repay({
     signer,
     market.tokenPair,
     totalBorrowedAmountInUsd,
+    // Value is negative because you're repaying which is reducing the $ amount that you have borrowed
     -value
   );
 

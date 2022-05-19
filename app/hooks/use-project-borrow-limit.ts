@@ -1,7 +1,7 @@
 import type { JsonRpcSigner } from "@ethersproject/providers";
 import { useState, useEffect } from "react";
 import { projectBorrowLimit } from "~/lib/tender";
-import type { TokenPair, cToken } from "~/types/global";
+import type { TokenPair } from "~/types/global";
 
 export function useProjectBorrowLimit(
   signer: JsonRpcSigner | undefined | null,
