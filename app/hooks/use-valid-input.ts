@@ -1,32 +1,19 @@
 import { useState, useEffect } from "react";
 
-export interface Details {
-  label: string;
-  isNumeric: boolean;
+enum InputValidationDetail {
+  NON_NUMERIC_INPUT = "Non-numeric input",
+  INSUFFICIENT_LIQUIDITY = "Insufficient liquidity",
+  NEGATIVE_OR_ZERO = "Please provide value",
 }
-
-const NON_NUMERIC_INPUT: Details = {
-  label: "Non-numeric input",
-  isNumeric: false,
-};
-
-const INSUFFICIENT_LIQUIDITY: Details = {
-  label: "Insufficient liquidity",
-  isNumeric: true,
-};
-
-const NEGATIVE_OR_ZERO: Details = {
-  label: "Please provide value",
-  isNumeric: true,
-};
 
 export function useValidInput(
   value: string,
   floor: number,
-  ceil: number
-): [boolean, Details | null] {
+  ceil: number,
+  borrowLimitUsed: number
+): [boolean, InputValidationDetail | null] {
   let [isValid, setIsValid] = useState<boolean>(false);
-  let [reason, setReason] = useState<Details | null>(null);
+  let [reason, setReason] = useState<InputValidationDetail | null>(null);
 
   useEffect(() => {
     // Reset reason on each run
@@ -34,29 +21,28 @@ export function useValidInput(
 
     try {
       if (isNaN(parseFloat(value))) {
-        setReason(NON_NUMERIC_INPUT);
+        setReason(InputValidationDetail.NON_NUMERIC_INPUT);
         throw "NaN";
       }
 
       let v: number = parseFloat(value);
 
-      if (v > floor && v <= ceil) {
-        setIsValid(true);
-      } else {
-        if (v <= floor) {
-          setReason(NEGATIVE_OR_ZERO);
-        }
-
-        if (v > ceil) {
-          setReason(INSUFFICIENT_LIQUIDITY);
-        }
-
+      if (v <= floor) {
+        setReason(InputValidationDetail.NEGATIVE_OR_ZERO);
         setIsValid(false);
+      } else if (v > ceil) {
+        setReason(InputValidationDetail.INSUFFICIENT_LIQUIDITY);
+        setIsValid(false);
+      } else if (borrowLimitUsed >= 100) {
+        setReason(InputValidationDetail.INSUFFICIENT_LIQUIDITY);
+        setIsValid(false);
+      } else {
+        setIsValid(true);
       }
     } catch (e) {
       setIsValid(false);
     }
-  }, [value, floor, ceil]);
+  }, [value, floor, ceil, borrowLimitUsed]);
 
   return [isValid, reason];
 }

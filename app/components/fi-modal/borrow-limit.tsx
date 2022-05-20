@@ -1,5 +1,3 @@
-import { Details } from "~/hooks/use-valid-input";
-
 interface BorrowLimitProps {
   value: string;
   isValid: boolean;

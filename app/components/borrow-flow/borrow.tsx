@@ -17,6 +17,7 @@ import ConfirmingTransaction from "../fi-modal/confirming-transition";
 import { useSafeMaxBorrowAmountForToken } from "~/hooks/use-safe-max-borrow-amount-for-token";
 import { TenderContext } from "~/contexts/tender-context";
 import { useNewTotalBorrowedAmountInUsd } from "~/hooks/use-new-total-borrowed-amount-in-usd";
+import { useMaxBorrowAmount } from "~/hooks/use-max-borrow-amount";
 
 interface Props {
   market: Market;
@@ -37,7 +38,6 @@ export default function Borrow({
   signer,
   borrowLimit,
   borrowLimitUsed,
-  tokenPairs,
   totalBorrowedAmountInUsd,
 }: Props) {
   let [isWaitingToBeMined, setIsWaitingToBeMined] = useState<boolean>(false);
@@ -49,9 +49,6 @@ export default function Borrow({
     market.tokenPair.cToken,
     market.tokenPair.token
   );
-
-  // TODO: Should this be looking at newBorrowLimit if it exists?
-  let [isValid, validationDetails] = useValidInput(value, 0, borrowLimit);
 
   let { updateTransaction } = useContext(TenderContext);
 
@@ -74,6 +71,20 @@ export default function Borrow({
     market.comptrollerAddress,
     market.tokenPair
   ).toFixed(2);
+
+  let maxBorrowAmount = useMaxBorrowAmount(
+    signer,
+    borrowLimit,
+    totalBorrowedAmountInUsd,
+    market.tokenPair
+  );
+
+  let [isValid, validationDetail] = useValidInput(
+    value,
+    0,
+    maxBorrowAmount,
+    parseFloat(newBorrowLimitUsed)
+  );
 
   // Highlights value input
   useEffect(() => {
@@ -171,7 +182,7 @@ export default function Borrow({
                   {!signer && <div>Connect wallet to get started</div>}
                   {signer && !isValid && (
                     <button className="py-4 text-center text-white font-bold rounded  w-full bg-gray-200">
-                      {validationDetails?.label || "Borrow"}
+                      {validationDetail || "Borrow"}
                     </button>
                   )}
                   {signer && isValid && (

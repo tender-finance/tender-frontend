@@ -74,7 +74,12 @@ export default function Withdraw({
     market.tokenPair
   );
 
-  let [isValid, validationDetails] = useValidInput(value, 0, maxWithdrawAmount);
+  let [isValid, validationDetail] = useValidInput(
+    value,
+    0,
+    maxWithdrawAmount,
+    parseFloat(newBorrowLimitUsed)
+  );
 
   // Highlights value input
   useEffect(() => {
@@ -171,7 +176,7 @@ export default function Withdraw({
                   {!signer && <div>Connect wallet to get started</div>}
                   {signer && !isValid && (
                     <button className="py-4 text-center text-white font-bold rounded w-full bg-gray-200">
-                      {validationDetails?.label}
+                      {validationDetail}
                     </button>
                   )}
                   {signer && isValid && (
