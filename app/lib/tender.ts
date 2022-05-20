@@ -506,13 +506,6 @@ async function getTotalBorrowedInUsd(
   return borrowedAmounts.reduce((acc, curr) => acc + curr);
 }
 
-function accountLiquidityInUsd(
-  borrowLimitInUsd: number,
-  totalBorrowedInUsd: number
-): number {
-  return borrowLimitInUsd - totalBorrowedInUsd;
-}
-
 /**
  *
  * @param signer

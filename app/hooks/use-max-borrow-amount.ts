@@ -1,6 +1,6 @@
 import type { JsonRpcSigner } from "@ethersproject/providers";
 import { useState, useEffect } from "react";
-import { getMaxBorrowAmount, getMaxWithdrawAmount } from "~/lib/tender";
+import { getMaxBorrowAmount } from "~/lib/tender";
 import type { TokenPair } from "~/types/global";
 
 export function useMaxBorrowAmount(
