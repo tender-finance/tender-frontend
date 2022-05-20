@@ -17,6 +17,7 @@ import ConfirmingTransaction from "../fi-modal/confirming-transition";
 import { useSafeMaxBorrowAmountForToken } from "~/hooks/use-safe-max-borrow-amount-for-token";
 import { TenderContext } from "~/contexts/tender-context";
 import { useNewTotalBorrowedAmountInUsd } from "~/hooks/use-new-total-borrowed-amount-in-usd";
+import { useValidInputForBorrowLimitUsed } from "~/hooks/use-valid-input-for-borrow-limit-used";
 
 interface Props {
   market: Market;
@@ -50,9 +51,6 @@ export default function Borrow({
     market.tokenPair.token
   );
 
-  // TODO: Should this be looking at newBorrowLimit if it exists?
-  let [isValid, validationDetails] = useValidInput(value, 0, borrowLimit);
-
   let { updateTransaction } = useContext(TenderContext);
 
   let newTotalBorrowedAmountInUsd = useNewTotalBorrowedAmountInUsd(
@@ -74,6 +72,12 @@ export default function Borrow({
     market.comptrollerAddress,
     market.tokenPair
   ).toFixed(2);
+
+  let [isValid, validationDetails] = useValidInputForBorrowLimitUsed(
+    value,
+    0,
+    parseFloat(newBorrowLimitUsed)
+  );
 
   // Highlights value input
   useEffect(() => {
