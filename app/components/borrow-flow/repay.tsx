@@ -51,12 +51,6 @@ export default function Repay({
   let maxRepayableAmount = Math.min(borrowedAmount, walletBalance);
 
   let inputEl = useRef<HTMLInputElement>(null);
-  let [isValid, validationDetail] = useValidInput(
-    value,
-    0,
-    maxRepayableAmount,
-    parseFloat(borrowLimitUsed)
-  );
 
   let newTotalBorrowedAmountInUsd = useNewTotalBorrowedAmountInUsd(
     signer,
@@ -69,6 +63,13 @@ export default function Repay({
   let newBorrowLimitUsed = useBorrowLimitUsed(
     newTotalBorrowedAmountInUsd,
     borrowLimit
+  );
+
+  let [isValid, validationDetail] = useValidInput(
+    value,
+    0,
+    maxRepayableAmount,
+    parseFloat(newBorrowLimitUsed)
   );
 
   let { updateTransaction } = useContext(TenderContext);

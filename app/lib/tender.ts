@@ -638,6 +638,22 @@ async function getMaxWithdrawAmount(
   return max;
 }
 
+async function getMaxBorrowAmount(
+  signer: JsonRpcSigner,
+  borrowLimit: number,
+  totalBorrowed: number,
+  tokenPair: TokenPair
+): Promise<number> {
+  let borrowableAmountInUsd = borrowLimit - totalBorrowed;
+
+  let priceInUsd: number = await getAssetPriceInUsd(
+    signer,
+    tokenPair.token.priceOracleAddress
+  );
+
+  return borrowableAmountInUsd / priceInUsd;
+}
+
 export {
   enable,
   deposit,
@@ -660,4 +676,5 @@ export {
   safeMaxWithdrawAmountForToken,
   safeMaxBorrowAmountForToken,
   getMaxWithdrawAmount,
+  getMaxBorrowAmount,
 };
