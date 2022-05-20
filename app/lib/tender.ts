@@ -341,7 +341,8 @@ async function getBorrowLimitUsed(
   borrowedAmount: number,
   borrowedLimit: number
 ): Promise<string> {
-  return ((borrowedAmount / borrowedLimit) * 100).toFixed(2);
+  let borrowLimitUsed = ((borrowedAmount / borrowedLimit) * 100).toFixed(2);
+  return borrowLimitUsed === "NaN" ? "0" : borrowLimitUsed; // NaN safeguard for new wallets
 }
 
 /**
