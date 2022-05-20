@@ -42,7 +42,6 @@ export default function Deposit({
   let [isDepositing, setIsDepositing] = useState<boolean>(false);
   let [value, setValue] = useState<string>("0");
   let inputEl = useRef<HTMLInputElement>(null);
-  let [isValid, validationDetail] = useValidInput(value, 0, walletBalance);
 
   let { tokenPairs, updateTransaction } = useContext(TenderContext);
 
@@ -57,6 +56,13 @@ export default function Deposit({
   let newBorrowLimitUsed = useBorrowLimitUsed(
     totalBorrowedAmountInUsd,
     newBorrowLimit
+  );
+
+  let [isValid, validationDetail] = useValidInput(
+    value,
+    0,
+    walletBalance,
+    parseFloat(newBorrowLimitUsed)
   );
 
   useEffect(() => {

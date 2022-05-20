@@ -17,7 +17,6 @@ import ConfirmingTransaction from "../fi-modal/confirming-transition";
 import { useSafeMaxBorrowAmountForToken } from "~/hooks/use-safe-max-borrow-amount-for-token";
 import { TenderContext } from "~/contexts/tender-context";
 import { useNewTotalBorrowedAmountInUsd } from "~/hooks/use-new-total-borrowed-amount-in-usd";
-import { useValidInputForBorrowLimitUsed } from "~/hooks/use-valid-input-for-borrow-limit-used";
 
 interface Props {
   market: Market;
@@ -38,7 +37,6 @@ export default function Borrow({
   signer,
   borrowLimit,
   borrowLimitUsed,
-  tokenPairs,
   totalBorrowedAmountInUsd,
 }: Props) {
   let [isWaitingToBeMined, setIsWaitingToBeMined] = useState<boolean>(false);
@@ -73,9 +71,10 @@ export default function Borrow({
     market.tokenPair
   ).toFixed(2);
 
-  let [isValid, validationDetail] = useValidInputForBorrowLimitUsed(
+  let [isValid, validationDetail] = useValidInput(
     value,
     0,
+    parseFloat(newBorrowLimitUsed),
     parseFloat(newBorrowLimitUsed)
   );
 
