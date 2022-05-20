@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 
-import { InputValidationDetail } from "~/types/global";
+enum InputValidationDetail {
+  NON_NUMERIC_INPUT = "Non-numeric input",
+  INSUFFICIENT_LIQUIDITY = "Insufficient liquidity",
+  NEGATIVE_OR_ZERO = "Please provide value",
+}
 
 export function useValidInput(
   value: string,
