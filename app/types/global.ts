@@ -68,3 +68,9 @@ export type Market = {
   totalBorrowedAmountInUsd: number;
   comptrollerAddress: string;
 };
+
+export enum InputValidationDetail {
+  NON_NUMERIC_INPUT = "Non-numeric input",
+  INSUFFICIENT_LIQUIDITY = "Insufficient liquidity",
+  NEGATIVE_OR_ZERO = "Please provide value",
+}

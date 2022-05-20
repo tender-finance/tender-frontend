@@ -51,11 +51,7 @@ export default function Repay({
   let maxRepayableAmount = Math.min(borrowedAmount, walletBalance);
 
   let inputEl = useRef<HTMLInputElement>(null);
-  let [isValid, validationDetails] = useValidInput(
-    value,
-    0,
-    maxRepayableAmount
-  );
+  let [isValid, validationDetail] = useValidInput(value, 0, maxRepayableAmount);
 
   let newTotalBorrowedAmountInUsd = useNewTotalBorrowedAmountInUsd(
     signer,
@@ -222,7 +218,7 @@ export default function Repay({
 
                 {signer && isEnabled && !isValid && (
                   <button className="py-4 text-center text-white font-bold rounded  w-full bg-gray-200">
-                    {validationDetails?.label}
+                    {validationDetail}
                   </button>
                 )}
 

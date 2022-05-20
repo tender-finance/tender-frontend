@@ -73,7 +73,7 @@ export default function Borrow({
     market.tokenPair
   ).toFixed(2);
 
-  let [isValid, validationDetails] = useValidInputForBorrowLimitUsed(
+  let [isValid, validationDetail] = useValidInputForBorrowLimitUsed(
     value,
     0,
     parseFloat(newBorrowLimitUsed)
@@ -175,7 +175,7 @@ export default function Borrow({
                   {!signer && <div>Connect wallet to get started</div>}
                   {signer && !isValid && (
                     <button className="py-4 text-center text-white font-bold rounded  w-full bg-gray-200">
-                      {validationDetails?.label || "Borrow"}
+                      {validationDetail || "Borrow"}
                     </button>
                   )}
                   {signer && isValid && (

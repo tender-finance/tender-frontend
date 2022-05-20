@@ -1,32 +1,14 @@
 import { useState, useEffect } from "react";
 
-export interface Details {
-  label: string;
-  isNumeric: boolean;
-}
-
-const NON_NUMERIC_INPUT: Details = {
-  label: "Non-numeric input",
-  isNumeric: false,
-};
-
-const INSUFFICIENT_LIQUIDITY: Details = {
-  label: "Insufficient liquidity",
-  isNumeric: true,
-};
-
-const NEGATIVE_OR_ZERO: Details = {
-  label: "Please provide value",
-  isNumeric: true,
-};
+import { InputValidationDetail } from "~/types/global";
 
 export function useValidInput(
   value: string,
   floor: number,
   ceil: number
-): [boolean, Details | null] {
+): [boolean, InputValidationDetail | null] {
   let [isValid, setIsValid] = useState<boolean>(false);
-  let [reason, setReason] = useState<Details | null>(null);
+  let [reason, setReason] = useState<InputValidationDetail | null>(null);
 
   useEffect(() => {
     // Reset reason on each run
@@ -34,7 +16,7 @@ export function useValidInput(
 
     try {
       if (isNaN(parseFloat(value))) {
-        setReason(NON_NUMERIC_INPUT);
+        setReason(InputValidationDetail.NON_NUMERIC_INPUT);
         throw "NaN";
       }
 
@@ -44,11 +26,11 @@ export function useValidInput(
         setIsValid(true);
       } else {
         if (v <= floor) {
-          setReason(NEGATIVE_OR_ZERO);
+          setReason(InputValidationDetail.NEGATIVE_OR_ZERO);
         }
 
         if (v > ceil) {
-          setReason(INSUFFICIENT_LIQUIDITY);
+          setReason(InputValidationDetail.INSUFFICIENT_LIQUIDITY);
         }
 
         setIsValid(false);
