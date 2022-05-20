@@ -105,7 +105,9 @@ export default function TwoPanes() {
                   APY / Accrued
                 </th>
                 <th className="pb-4 px-8 text-left">Balance</th>
-                <th className="pb-4 px-8 text-left">% of Limit</th>
+                <th className="pb-4 px-8 text-left whitespace-nowrap">
+                  % of Limit
+                </th>
               </tr>
             </thead>
 
