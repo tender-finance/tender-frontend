@@ -15,6 +15,10 @@ import type {
 } from "@ethersproject/providers";
 
 const MINIMUM_REQUIRED_APPROVAL_BALANCE = BigNumber.from("1");
+interface Txn {
+  wait: () => TransactionReceipt;
+  hash: string;
+}
 
 function formatBigNumber(value: BigNumber, decimals: number): number {
   // formatUnits returns a string with the decimals in the appropriate place,
@@ -79,9 +83,7 @@ async function deposit(
   signer: Signer,
   cToken: cToken,
   token: Token
-): Promise<{
-  wait: () => TransactionReceipt;
-}> {
+): Promise<Txn> {
   // if (isCEth) {
   //   console.log("supply() w/ cEth");
 
@@ -118,9 +120,7 @@ async function redeem(
   signer: Signer,
   cToken: cToken,
   token: Token
-): Promise<{
-  wait: () => TransactionReceipt;
-}> {
+): Promise<Txn> {
   // if (isCEth) {
   //   console.log("redeem() with cEth");
 
@@ -362,9 +362,7 @@ async function repay(
   signer: Signer,
   cToken: cToken,
   token: Token
-): Promise<{
-  wait: () => TransactionReceipt;
-}> {
+): Promise<Txn> {
   const formattedValue: BigNumber = ethers.utils.parseUnits(
     value,
     token.decimals
@@ -384,9 +382,7 @@ async function borrow(
   signer: Signer,
   cToken: cToken,
   token: Token
-): Promise<{
-  wait: () => TransactionReceipt;
-}> {
+): Promise<Txn> {
   //  if (isCEth) {
   //   console.log("borrow() with cEth");
 
