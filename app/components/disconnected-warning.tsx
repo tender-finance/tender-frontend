@@ -58,7 +58,7 @@ export default function Disconnected() {
           style={{
             background: "linear-gradient(270deg, #1BD6CF 0%, #00E5AF 100%)",
           }}
-          className="text-center bg-brand-green text-gray-900 py-4 px-4 rounded-md text-sm"
+          className="text-center bg-brand-green text-gray-900 py-4 px-4 text-sm"
         >
           Warning! Unsupported network.{" "}
           <button
@@ -74,7 +74,7 @@ export default function Disconnected() {
           style={{
             background: "linear-gradient(270deg, #1BD6CF 0%, #00E5AF 100%)",
           }}
-          className="text-center bg-brand-green text-gray-900 py-4 px-4 rounded-md text-sm"
+          className="text-center bg-brand-green text-gray-900 py-4 px-4 text-sm"
         >
           Warning: Unsupported network. Connect Wallet and we can help you
           switch.
