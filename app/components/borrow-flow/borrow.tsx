@@ -43,6 +43,8 @@ export default function Borrow({
   let [isWaitingToBeMined, setIsWaitingToBeMined] = useState<boolean>(false);
   let [value, setValue] = useState<string>("0");
   let [isBorrowing, setIsBorrowing] = useState<boolean>(false);
+  let [txnHash, setTxnHash] = useState<string>("");
+
   let inputEl = useRef<HTMLInputElement>(null);
   let currentlyBorrowing = useCurrentlyBorrowing(
     signer,
@@ -94,7 +96,10 @@ export default function Borrow({
   return (
     <div>
       {isWaitingToBeMined && (
-        <ConfirmingTransaction stopWaitingOnConfirmation={() => closeModal()} />
+        <ConfirmingTransaction
+          txnHash={txnHash}
+          stopWaitingOnConfirmation={() => closeModal()}
+        />
       )}
       {!isWaitingToBeMined && (
         <div>
@@ -204,6 +209,7 @@ export default function Borrow({
                             market.tokenPair.token
                           );
 
+                          setTxnHash(txn.hash);
                           setIsWaitingToBeMined(true);
                           let tr = await txn.wait(); // TODO: error handle if transaction fails
                           setIsWaitingToBeMined(false);

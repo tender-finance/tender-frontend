@@ -47,6 +47,7 @@ export default function Repay({
 
   let [isRepayingTxn, setIsRepayingTxn] = useState<boolean>(false);
   let [value, setValue] = useState<string>("0");
+  let [txnHash, setTxnHash] = useState<string>("");
 
   let maxRepayableAmount = Math.min(borrowedAmount, walletBalance);
 
@@ -97,7 +98,10 @@ export default function Repay({
   return (
     <div>
       {isWaitingToBeMined && (
-        <ConfirmingTransaction stopWaitingOnConfirmation={() => closeModal()} />
+        <ConfirmingTransaction
+          txnHash={txnHash}
+          stopWaitingOnConfirmation={() => closeModal()}
+        />
       )}
 
       {!isWaitingToBeMined && (
@@ -247,6 +251,7 @@ export default function Repay({
                           market.tokenPair.cToken,
                           market.tokenPair.token
                         );
+                        setTxnHash(txn.hash);
 
                         setIsWaitingToBeMined(true);
                         let tr = await txn.wait(); // TODO: error handle if transaction fails

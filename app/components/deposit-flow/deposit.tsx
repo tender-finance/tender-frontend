@@ -41,6 +41,8 @@ export default function Deposit({
   let [isEnabling, setIsEnabling] = useState<boolean>(false);
   let [isDepositing, setIsDepositing] = useState<boolean>(false);
   let [value, setValue] = useState<string>("0");
+  let [txnHash, setTxnHash] = useState<string>("");
+
   let inputEl = useRef<HTMLInputElement>(null);
 
   let { tokenPairs, updateTransaction } = useContext(TenderContext);
@@ -88,7 +90,10 @@ export default function Deposit({
   return (
     <div>
       {isWaitingToBeMined && (
-        <ConfirmingTransaction stopWaitingOnConfirmation={() => closeModal()} />
+        <ConfirmingTransaction
+          txnHash={txnHash}
+          stopWaitingOnConfirmation={() => closeModal()}
+        />
       )}
       {!isWaitingToBeMined && (
         <div>
@@ -235,6 +240,7 @@ export default function Deposit({
                         market.tokenPair.cToken,
                         market.tokenPair.token
                       );
+                      setTxnHash(txn.hash);
                       setIsWaitingToBeMined(true);
                       let tr = await txn.wait();
                       setIsWaitingToBeMined(false);
