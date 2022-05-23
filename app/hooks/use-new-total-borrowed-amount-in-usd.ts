@@ -1,10 +1,8 @@
 import type { JsonRpcSigner } from "@ethersproject/providers";
 import { useState, useEffect } from "react";
-import { getAssetPriceInUsd } from "~/lib/tender";
 import type { TokenPair } from "~/types/global";
 
 export function useNewTotalBorrowedAmountInUsd(
-  signer: JsonRpcSigner | null | undefined,
   tokenPair: TokenPair,
   currentTotalBorrowedInUsd: number,
   newTokenBorrowAmount: number
@@ -13,20 +11,17 @@ export function useNewTotalBorrowedAmountInUsd(
     useState<number>(0);
 
   useEffect(() => {
-    if (!signer || !tokenPair) {
+    if (!tokenPair) {
       return;
     }
 
-    getAssetPriceInUsd(signer, tokenPair.token.priceOracleAddress).then(
-      (priceInUsd) => {
-        let newBorrowAmountInUsd: number = newTokenBorrowAmount * priceInUsd;
+    let newBorrowAmountInUsd: number =
+      newTokenBorrowAmount * tokenPair.token.priceInUsd;
 
-        setNewTotalBorrowedAmountInUsd(
-          currentTotalBorrowedInUsd + newBorrowAmountInUsd
-        );
-      }
+    setNewTotalBorrowedAmountInUsd(
+      currentTotalBorrowedInUsd + newBorrowAmountInUsd
     );
-  }, [signer, tokenPair, currentTotalBorrowedInUsd, newTokenBorrowAmount]);
+  }, [tokenPair, currentTotalBorrowedInUsd, newTokenBorrowAmount]);
 
   return newTotalBorrowedAmountInUsd;
 }

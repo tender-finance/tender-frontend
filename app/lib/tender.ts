@@ -211,26 +211,21 @@ async function collateralFactorForToken(
 async function borrowLimitForTokenInUsd(
   signer: Signer,
   comptrollerContract: Contract,
-  tokenPair: TokenPair
+  tp: TokenPair
 ): Promise<number> {
   let suppliedAmount: number = await getCurrentlySupplying(
     signer,
-    tokenPair.cToken,
-    tokenPair.token
-  );
-
-  let assetPriceInUsd = await getAssetPriceInUsd(
-    signer,
-    tokenPair.token.priceOracleAddress
+    tp.cToken,
+    tp.token
   );
 
   let collateralFactor: number = await collateralFactorForToken(
     signer,
     comptrollerContract,
-    tokenPair
+    tp
   );
 
-  let amount = suppliedAmount * assetPriceInUsd * collateralFactor;
+  let amount = suppliedAmount * tp.token.priceInUsd * collateralFactor;
 
   return parseFloat(amount.toFixed(2));
 }
@@ -273,7 +268,7 @@ async function projectBorrowLimit(
   signer: Signer,
   comptrollerAddress: string,
   tokenPairs: TokenPair[],
-  tokenPair: TokenPair,
+  tp: TokenPair,
   tokenAmount: number
 ): Promise<number> {
   let currentBorrowLimitInUsd = await getAccountBorrowLimitInUsd(
@@ -291,19 +286,14 @@ async function projectBorrowLimit(
   let collateralFactor: number = await collateralFactorForToken(
     signer,
     comptrollerContract,
-    tokenPair
-  );
-
-  let priceInUsd = await getAssetPriceInUsd(
-    signer,
-    tokenPair.token.priceOracleAddress
+    tp
   );
 
   // Borrow limit changes by the dollar amount of this amount of tokens
   // times its collateral factor (what % of that dollar amount you can borrow against).
   // `tokenAmount` might be a negative number and thus reduce the limit.
   let borrowLimitChangeInUsd: number =
-    tokenAmount * priceInUsd * collateralFactor;
+    tokenAmount * tp.token.priceInUsd * collateralFactor;
 
   return currentBorrowLimitInUsd + borrowLimitChangeInUsd;
 }
@@ -471,12 +461,7 @@ async function getTotalSupplyBalanceInUsd(
         tp.token
       );
 
-      let priceInUsd = await getAssetPriceInUsd(
-        signer,
-        tp.token.priceOracleAddress
-      );
-
-      return suppliedAmount * priceInUsd;
+      return suppliedAmount * tp.token.priceInUsd;
     })
   );
 
@@ -495,12 +480,7 @@ async function getTotalBorrowedInUsd(
         tp.token
       );
 
-      let priceInUsd = await getAssetPriceInUsd(
-        signer,
-        tp.token.priceOracleAddress
-      );
-
-      return borrowedAmount * priceInUsd;
+      return borrowedAmount * tp.token.priceInUsd;
     })
   );
 
@@ -513,7 +493,7 @@ async function getTotalBorrowedInUsd(
  * @param borrowLimit
  * @param totalBorrowed
  * @param comptrollerAddress
- * @param tokenPair
+ * @param tp
  * @returns  80% of your theoretical max withdraw
  */
 async function safeMaxWithdrawAmountForToken(
@@ -521,7 +501,7 @@ async function safeMaxWithdrawAmountForToken(
   totalBorrowed: number,
   comptrollerAddress: string,
   tokenPairs: TokenPair[],
-  tokenPair: TokenPair
+  tp: TokenPair
 ): Promise<number> {
   let comptrollerContract = new ethers.Contract(
     comptrollerAddress,
@@ -530,7 +510,7 @@ async function safeMaxWithdrawAmountForToken(
   );
 
   let otherTokenPairs: TokenPair[] = tokenPairs.filter(
-    (tp) => tp.token.symbol !== tokenPair.token.symbol
+    (tp) => tp.token.symbol !== tp.token.symbol
   );
 
   let borrowLimitsPerToken: number[] = await Promise.all(
@@ -543,21 +523,16 @@ async function safeMaxWithdrawAmountForToken(
     (acc, curr) => acc + curr
   );
 
-  let priceInUsd: number = await getAssetPriceInUsd(
-    signer,
-    tokenPair.token.priceOracleAddress
-  );
-
   let collateralFactor: number = await collateralFactorForToken(
     signer,
     comptrollerContract,
-    tokenPair
+    tp
   );
 
   let currentlySupplying: number = await getCurrentlySupplying(
     signer,
-    tokenPair.cToken,
-    tokenPair.token
+    tp.cToken,
+    tp.token
   );
 
   // Finds the amount you can withdraw of a token that gives you 80% borrow limit upon doing it.
@@ -565,7 +540,7 @@ async function safeMaxWithdrawAmountForToken(
   // -(((borrowed_amount / 0.8) - sumOfAllOtherTokensBorrowLimit) / priceInUsd / collatFactor) + balance = withdrawAmount
   let amount =
     (-1 * (totalBorrowed / 0.8 - totalBorrowLimitExceptThisToken)) /
-      priceInUsd /
+      tp.token.priceInUsd /
       collateralFactor +
     currentlySupplying;
 
@@ -577,24 +552,18 @@ async function safeMaxWithdrawAmountForToken(
  * @param signer
  * @param borrowLimit
  * @param totalBorrowed
- * @param tokenPair
+ * @param tp
  * @returns theoretical max borrow limit with a saftey margin of 80%
  */
 async function safeMaxBorrowAmountForToken(
-  signer: Signer,
   borrowLimit: number,
   totalBorrowed: number,
-  tokenPair: TokenPair
+  tp: TokenPair
 ): Promise<number> {
-  let priceInUsd: number = await getAssetPriceInUsd(
-    signer,
-    tokenPair.token.priceOracleAddress
-  );
-
   // (borrowed_amount + x*priceInUsd) / borrow_limit = 0.8
   // (borrowed_amount + x*priceInUsd) = 0.8 * borrow_limit
   // x = ((0.8 * borrow_limit) - borrowed_amount) / priceInUsd
-  let amount = (0.8 * borrowLimit - totalBorrowed) / priceInUsd;
+  let amount = (0.8 * borrowLimit - totalBorrowed) / tp.token.priceInUsd;
 
   return amount;
 }
@@ -605,13 +574,8 @@ async function getMaxWithdrawAmount(
   supplyBalance: number,
   borrowLimit: number,
   totalBorrowed: number,
-  tokenPair: TokenPair
+  tp: TokenPair
 ): Promise<number> {
-  let priceInUsd: number = await getAssetPriceInUsd(
-    signer,
-    tokenPair.token.priceOracleAddress
-  );
-
   let comptrollerContract = new ethers.Contract(
     comptrollerAddress,
     SampleComptrollerAbi,
@@ -621,31 +585,25 @@ async function getMaxWithdrawAmount(
   let collateralFactor = await collateralFactorForToken(
     signer,
     comptrollerContract,
-    tokenPair
+    tp
   );
 
   let max: number = Math.min(
     supplyBalance,
-    (borrowLimit - totalBorrowed) / priceInUsd / collateralFactor
+    (borrowLimit - totalBorrowed) / tp.token.priceInUsd / collateralFactor
   );
 
   return max;
 }
 
 async function getMaxBorrowAmount(
-  signer: JsonRpcSigner,
   borrowLimit: number,
   totalBorrowed: number,
-  tokenPair: TokenPair
+  tp: TokenPair
 ): Promise<number> {
   let borrowableAmountInUsd = borrowLimit - totalBorrowed;
 
-  let priceInUsd: number = await getAssetPriceInUsd(
-    signer,
-    tokenPair.token.priceOracleAddress
-  );
-
-  return borrowableAmountInUsd / priceInUsd;
+  return borrowableAmountInUsd / tp.token.priceInUsd;
 }
 
 export {

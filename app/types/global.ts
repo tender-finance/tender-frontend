@@ -12,6 +12,7 @@ export interface Token {
   decimals: number;
   address: string;
   cToken: cToken;
+  priceInUsd: number;
   priceOracleAddress: string;
 }
 
