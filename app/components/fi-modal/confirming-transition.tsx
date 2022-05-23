@@ -42,6 +42,7 @@ export default function ConfirmingTransaction({
           <div className="flex justify-center">
             <a
               href={`${blockExplorerUrl}/${txnHash}`}
+              rel="noreferrer"
               target="_blank"
               style={{
                 background: "linear-gradient(270deg, #1BD6CF 0%, #00E5AF 100%)",
