@@ -20,7 +20,9 @@ export function useValidInput(
     setReason(null);
 
     try {
-      if (isNaN(parseFloat(value))) {
+      let isNaNValue: boolean = isNaN(parseFloat(value));
+      let isCoerced = parseFloat(value).toString() !== value;
+      if (isNaNValue || isCoerced) {
         setReason(InputValidationDetail.NON_NUMERIC_INPUT);
         throw "NaN";
       }
