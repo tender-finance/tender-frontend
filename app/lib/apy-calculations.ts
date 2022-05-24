@@ -124,7 +124,7 @@ async function netApy(
     })
   );
 
-  let sum: number = weightedValues.reduce((acc, curr) => acc + curr);
+  let sum: number = weightedValues.reduce((acc, curr) => acc + curr, 0);
 
   let totalSupplied: number = await getTotalSupplyBalanceInUsd(
     signer,

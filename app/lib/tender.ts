@@ -259,7 +259,7 @@ async function getAccountBorrowLimitInUsd(
     })
   );
 
-  let borrowLimit = tokenBalancesInUsd.reduce((acc, curr) => acc + curr);
+  let borrowLimit = tokenBalancesInUsd.reduce((acc, curr) => acc + curr, 0);
 
   return borrowLimit;
 }
@@ -465,7 +465,7 @@ async function getTotalSupplyBalanceInUsd(
     })
   );
 
-  return suppliedAmounts.reduce((acc, curr) => acc + curr);
+  return suppliedAmounts.reduce((acc, curr) => acc + curr, 0);
 }
 
 async function getTotalBorrowedInUsd(
@@ -484,7 +484,7 @@ async function getTotalBorrowedInUsd(
     })
   );
 
-  return borrowedAmounts.reduce((acc, curr) => acc + curr);
+  return borrowedAmounts.reduce((acc, curr) => acc + curr, 0);
 }
 
 /**
