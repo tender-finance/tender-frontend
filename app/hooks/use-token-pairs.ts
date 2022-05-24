@@ -1,4 +1,4 @@
-import { JsonRpcSigner } from "@ethersproject/providers";
+import { type JsonRpcSigner } from "@ethersproject/providers";
 import { useState, useEffect } from "react";
 import { getAssetPriceInUsd } from "~/lib/tender";
 import type { NetworkData, Token, cToken, TokenPair } from "~/types/global";

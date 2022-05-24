@@ -1,4 +1,3 @@
-import type { JsonRpcSigner } from "@ethersproject/providers";
 import { useState, useEffect } from "react";
 import type { TokenPair } from "~/types/global";
 

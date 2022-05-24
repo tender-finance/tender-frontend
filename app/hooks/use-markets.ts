@@ -115,7 +115,6 @@ export function useMarkets(
   }, [
     signer,
     supportedTokenPairs,
-    signer,
     comptrollerAddress,
     pollingKey,
     currentTransaction,

@@ -493,7 +493,7 @@ async function getTotalBorrowedInUsd(
  * @param borrowLimit
  * @param totalBorrowed
  * @param comptrollerAddress
- * @param tp
+ * @param tokenPair
  * @returns  80% of your theoretical max withdraw
  */
 async function safeMaxWithdrawAmountForToken(
@@ -501,7 +501,7 @@ async function safeMaxWithdrawAmountForToken(
   totalBorrowed: number,
   comptrollerAddress: string,
   tokenPairs: TokenPair[],
-  tp: TokenPair
+  tokenPair: TokenPair
 ): Promise<number> {
   let comptrollerContract = new ethers.Contract(
     comptrollerAddress,
@@ -510,7 +510,7 @@ async function safeMaxWithdrawAmountForToken(
   );
 
   let otherTokenPairs: TokenPair[] = tokenPairs.filter(
-    (tp) => tp.token.symbol !== tp.token.symbol
+    (tp) => tp.token.symbol !== tokenPair.token.symbol
   );
 
   let borrowLimitsPerToken: number[] = await Promise.all(
@@ -526,13 +526,13 @@ async function safeMaxWithdrawAmountForToken(
   let collateralFactor: number = await collateralFactorForToken(
     signer,
     comptrollerContract,
-    tp
+    tokenPair
   );
 
   let currentlySupplying: number = await getCurrentlySupplying(
     signer,
-    tp.cToken,
-    tp.token
+    tokenPair.cToken,
+    tokenPair.token
   );
 
   // Finds the amount you can withdraw of a token that gives you 80% borrow limit upon doing it.
@@ -540,7 +540,7 @@ async function safeMaxWithdrawAmountForToken(
   // -(((borrowed_amount / 0.8) - sumOfAllOtherTokensBorrowLimit) / priceInUsd / collatFactor) + balance = withdrawAmount
   let amount =
     (-1 * (totalBorrowed / 0.8 - totalBorrowLimitExceptThisToken)) /
-      tp.token.priceInUsd /
+      tokenPair.token.priceInUsd /
       collateralFactor +
     currentlySupplying;
 
