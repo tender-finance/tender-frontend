@@ -96,6 +96,7 @@ async function formattedBorrowApy(
   return formatApy(apy);
 }
 
+// TODO: If we passed in the market here we wouldn't have to re-query supply and borrow amounts
 async function getNetGainOrLoss(
   s: JsonRpcSigner,
   p: TokenPair
