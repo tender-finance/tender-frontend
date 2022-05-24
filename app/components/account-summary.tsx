@@ -50,12 +50,12 @@ export default function AccountSummary() {
           >
             <div className="flex flex-col h-full justify-center items-center">
               <div className="uppercase text-gray-100 text-sm">Net APY</div>
-              {netApy && (
+              {netApy != null && (
                 <div className="text-5xl font-light">{netApy.toFixed(2)}%</div>
               )}
-              {!netApy && <div className="text-5xl font-light">--</div>}
+              {netApy == null && <div className="text-5xl font-light">--</div>}
               <div className="absolute top-0 right-0">
-                {netApy &&
+                {netApy != null &&
                   totalSupplyBalanceInUsd /
                     (totalBorrowedInUsd + totalSupplyBalanceInUsd) >
                     0 && (
@@ -86,9 +86,7 @@ export default function AccountSummary() {
           }}
         ></div>
         <div className="mr-2">{borrowLimitUsed}%</div>
-        <div
-          className="bg-gray-300 mr-2 h-0.5 flex-grow"
-        ></div>
+        <div className="bg-gray-300 mr-2 h-0.5 flex-grow"></div>
         <div>{formatCurrency(borrowLimit)}</div>
       </div>
     </div>
