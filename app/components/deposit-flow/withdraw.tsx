@@ -39,6 +39,7 @@ export default function Withdraw({
   let [isWaitingToBeMined, setBlockChaining] = useState<boolean>(false);
   let [value, setValue] = useState<string>("0");
   let [isWithdrawing, setIsWithdrawing] = useState<boolean>(false);
+  let [txnHash, setTxnHash] = useState<string>("");
   let inputEl = useRef<HTMLInputElement>(null);
 
   let { tokenPairs, updateTransaction } = useContext(TenderContext);
@@ -89,7 +90,10 @@ export default function Withdraw({
   return (
     <div>
       {isWaitingToBeMined && (
-        <ConfirmingTransaction stopWaitingOnConfirmation={() => closeModal()} />
+        <ConfirmingTransaction
+          txnHash={txnHash}
+          stopWaitingOnConfirmation={() => closeModal()}
+        />
       )}
       {!isWaitingToBeMined && (
         <div>
@@ -197,6 +201,7 @@ export default function Withdraw({
                             market.tokenPair.cToken,
                             market.tokenPair.token
                           );
+                          setTxnHash(txn.hash);
 
                           setBlockChaining(true);
                           let tr = await txn.wait(); // TODO: error handle if transaction fails

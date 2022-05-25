@@ -44,4 +44,5 @@ body {
   width: 550px;
   padding: 0 !important;
   margin: auto;
+  max-height: 850px;
 }

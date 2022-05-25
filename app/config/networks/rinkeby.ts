@@ -1,5 +1,7 @@
 export default {
   ChainId: 4,
+  blockExplorerName: "Etherscan (Rinkeby)",
+  blockExplorerUrl: "https://rinkeby.etherscan.io/tx",
   Contracts: {
     Comptroller: "0x2EAa9D77AE4D8f9cdD9FAAcd44016E746485bddb",
   },
