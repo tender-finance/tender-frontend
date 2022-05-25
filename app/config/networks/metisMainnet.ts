@@ -1,5 +1,7 @@
 export default {
   ChainId: 1088,
+  blockExplorerName: "Metis Andromeda Explorer",
+  blockExplorerUrl: "https://andromeda-explorer.metis.io/tx",
   Contracts: {
     Comptroller: "0x0...",
   },
