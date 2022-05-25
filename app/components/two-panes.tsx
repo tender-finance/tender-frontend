@@ -1,6 +1,5 @@
 import { useContext } from "react";
 import { TenderContext } from "~/contexts/tender-context";
-import type { Market } from "~/types/global";
 import MarketSupplyRow from "~/components/two-panes/market-supply-row";
 import MarketBorrowRow from "~/components/two-panes/market-borrow-row";
 
