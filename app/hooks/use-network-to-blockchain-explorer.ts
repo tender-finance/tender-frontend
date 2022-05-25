@@ -11,17 +11,11 @@ export function useBlockchainExplorer(): {
 
   let { networkData } = useContext(TenderContext);
 
-  let chainId = Web3Hooks.useChainId();
-
   useEffect(() => {
-    if (!chainId) {
-      return;
-    }
-
     let { blockExplorerUrl, blockExplorerName } = networkData;
     setBlockExplorerName(blockExplorerName);
     setBlockExplorerUrl(blockExplorerUrl);
-  }, [chainId]);
+  }, [networkData]);
 
   return {
     blockExplorerUrl,
