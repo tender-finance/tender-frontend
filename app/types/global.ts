@@ -5,15 +5,8 @@ export interface cToken {
   symbol: string;
 }
 
-export interface Token {
-  symbol: string;
-  icon: string;
-  name: string;
-  decimals: number;
-  address: string;
-  cToken: cToken;
+export interface Token extends TokenConfig {
   priceInUsd: number;
-  priceOracleAddress: string;
 }
 
 export interface TokenConfig {
