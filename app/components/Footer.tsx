@@ -25,7 +25,7 @@ export default function Footer() {
     },
     {
       label: "Twitter",
-      url: "https://twitter.com/tender_finance",
+      url: "https://twitter.com/tender_fi",
     },
     {
       label: "Discord",
