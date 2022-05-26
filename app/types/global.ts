@@ -16,13 +16,23 @@ export interface Token {
   priceOracleAddress: string;
 }
 
+export interface TokenConfig {
+  symbol: string;
+  icon: string;
+  name: string;
+  decimals: number;
+  address: string;
+  cToken: cToken;
+  priceOracleAddress: string;
+}
+
 export interface NetworkData {
   ChainId: number;
   Contracts: {
     Comptroller: string;
   };
   Tokens: {
-    [key: string]: Token;
+    [key: string]: TokenConfig;
   };
 }
 

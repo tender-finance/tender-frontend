@@ -1,14 +1,19 @@
 import { type JsonRpcSigner } from "@ethersproject/providers";
 import { useState, useEffect } from "react";
 import { getAssetPriceInUsd } from "~/lib/tender";
-import type { NetworkData, Token, cToken, TokenPair } from "~/types/global";
+import type {
+  NetworkData,
+  cToken,
+  TokenPair,
+  TokenConfig,
+} from "~/types/global";
 
 async function generateTokenPair(
   signer: JsonRpcSigner,
   networkData: NetworkData,
   symbol: string
 ): Promise<TokenPair> {
-  let token: Token = networkData.Tokens[symbol];
+  let token: TokenConfig = networkData.Tokens[symbol];
   let cToken: cToken = token.cToken;
 
   let priceInUsd = await getAssetPriceInUsd(signer, token.priceOracleAddress);
@@ -27,7 +32,7 @@ function validTokenConfigs(
   tokenSymbols: string[]
 ): string[] {
   return tokenSymbols.filter((symbol) => {
-    let token: Token = networkData.Tokens[symbol];
+    let token: TokenConfig = networkData.Tokens[symbol];
 
     // Useful logs to know when the config isn't right
     if (!token || !token.cToken || !token.priceOracleAddress) {
