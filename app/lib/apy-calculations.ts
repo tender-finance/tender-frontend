@@ -3,7 +3,6 @@ import sampleCTokenAbi from "~/config/sample-ctoken-abi";
 import type { Token, cToken, TokenPair } from "~/types/global";
 import type { JsonRpcSigner } from "@ethersproject/providers";
 import {
-  getAssetPriceInUsd,
   getBorrowedAmount,
   getCurrentlySupplying,
   getTotalSupplyBalanceInUsd,
@@ -96,10 +95,10 @@ async function formattedBorrowApy(
   return formatApy(apy);
 }
 
+// TODO: If we passed in the market here we wouldn't have to re-query supply and borrow amounts
 async function getNetGainOrLoss(
   s: JsonRpcSigner,
-  p: TokenPair,
-  priceOracleAddress: string
+  p: TokenPair
 ): Promise<number> {
   let supplied: number = await getCurrentlySupplying(s, p.cToken, p.token);
   let supplyApy: number =
@@ -109,9 +108,10 @@ async function getNetGainOrLoss(
   let borrowApy: number =
     (await calculateBorrowApy(p.token, p.cToken, s)) * 0.01;
 
-  let priceInUsd: number = await getAssetPriceInUsd(s, priceOracleAddress);
-
-  return supplied * priceInUsd * supplyApy - borrowed * priceInUsd * borrowApy;
+  return (
+    supplied * p.token.priceInUsd * supplyApy -
+    borrowed * p.token.priceInUsd * borrowApy
+  );
 }
 
 async function netApy(
@@ -120,11 +120,11 @@ async function netApy(
 ): Promise<number | null> {
   let weightedValues: number[] = await Promise.all(
     tokenPairs.map(async (p): Promise<number> => {
-      return await getNetGainOrLoss(signer, p, p.token.priceOracleAddress);
+      return await getNetGainOrLoss(signer, p);
     })
   );
 
-  let sum: number = weightedValues.reduce((acc, curr) => acc + curr);
+  let sum: number = weightedValues.reduce((acc, curr) => acc + curr, 0);
 
   let totalSupplied: number = await getTotalSupplyBalanceInUsd(
     signer,

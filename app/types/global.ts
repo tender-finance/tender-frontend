@@ -5,7 +5,11 @@ export interface cToken {
   symbol: string;
 }
 
-export interface Token {
+export interface Token extends TokenConfig {
+  priceInUsd: number;
+}
+
+export interface TokenConfig {
   symbol: string;
   icon: string;
   name: string;
@@ -23,7 +27,7 @@ export interface NetworkData {
     Comptroller: string;
   };
   Tokens: {
-    [key: string]: Token;
+    [key: string]: TokenConfig;
   };
 }
 

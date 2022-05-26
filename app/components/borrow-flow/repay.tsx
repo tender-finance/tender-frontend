@@ -54,7 +54,6 @@ export default function Repay({
   let inputEl = useRef<HTMLInputElement>(null);
 
   let newTotalBorrowedAmountInUsd = useNewTotalBorrowedAmountInUsd(
-    signer,
     market.tokenPair,
     totalBorrowedAmountInUsd,
     // Value is negative because you're repaying which is reducing the $ amount that you have borrowed

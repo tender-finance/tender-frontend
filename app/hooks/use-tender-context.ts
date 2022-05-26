@@ -6,23 +6,29 @@ import { useOnSupportedNetwork } from "./use-on-supported-network";
 import { useNetworkData } from "./use-network-data";
 import { useMarkets } from "./use-markets";
 import { useInterval } from "./use-interval";
+import { useWeb3Signer } from "./use-web3-signer";
 
 export function useTenderContext() {
   let [currentTransaction, updateTransaction] = useState<string | null>(null);
   let [tenderContext, setTenderContext] = useState<TenderContext | null>();
   const chainId = Web3Hooks.useChainId();
+  let provider = Web3Hooks.useProvider();
+  const signer = useWeb3Signer(provider);
+
   let networkData = useNetworkData(chainId);
   let onSupportedNetwork = useOnSupportedNetwork(chainId);
-  let tokenPairs = useTokenPairs(networkData, onSupportedNetwork);
+
+  let tokenPairs = useTokenPairs(signer, networkData, onSupportedNetwork);
   let pollingKey = useInterval(10_000);
 
   let markets: Market[] = useMarkets(
+    signer,
     tokenPairs,
     networkData?.Contracts?.Comptroller
   );
 
   useEffect(() => {
-    if (!chainId || !networkData) {
+    if (!signer || !chainId || !networkData) {
       return;
     }
 
@@ -34,6 +40,7 @@ export function useTenderContext() {
       updateTransaction,
     });
   }, [
+    signer,
     pollingKey,
     chainId,
     tokenPairs,

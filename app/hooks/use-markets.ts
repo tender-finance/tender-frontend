@@ -1,14 +1,11 @@
 import { useState, useEffect, useContext } from "react";
 import type { Market, TokenPair } from "~/types/global";
 import type { JsonRpcSigner } from "@ethersproject/providers";
-import { hooks as Web3Hooks } from "~/connectors/meta-mask";
-import { useWeb3Signer } from "~/hooks/use-web3-signer";
 import {
   formattedBorrowApy,
   formattedDepositApy,
 } from "~/lib/apy-calculations";
 import {
-  getAssetPriceInUsd,
   getAccountBorrowLimitInUsd,
   getBorrowLimitUsed,
   getCurrentlyBorrowing,
@@ -50,13 +47,11 @@ const getMarketData = async (
 };
 
 export function useMarkets(
+  signer: JsonRpcSigner | null | undefined,
   supportedTokenPairs: TokenPair[],
   comptrollerAddress: string | undefined
 ) {
   let [markets, setMarkets] = useState<Market[]>([]);
-
-  let provider = Web3Hooks.useProvider();
-  const signer = useWeb3Signer(provider);
 
   let pollingKey = useInterval(10_000);
   let { currentTransaction } = useContext(TenderContext);
@@ -78,11 +73,6 @@ export function useMarkets(
         supportedTokenPairs
       );
 
-      let assetPriceInUsd: number = await getAssetPriceInUsd(
-        signer,
-        tp.token.priceOracleAddress
-      );
-
       let supplyBalance = await getCurrentlySupplying(
         signer,
         tp.cToken,
@@ -95,8 +85,8 @@ export function useMarkets(
         tp.token
       );
 
-      let supplyBalanceInUsd = supplyBalance * assetPriceInUsd;
-      let borrowBalanceInUsd = borrowBalance * assetPriceInUsd;
+      let supplyBalanceInUsd = supplyBalance * tp.token.priceInUsd;
+      let borrowBalanceInUsd = borrowBalance * tp.token.priceInUsd;
 
       return {
         id: tp.token.symbol,
@@ -123,8 +113,8 @@ export function useMarkets(
 
     Promise.all(newMarkets).then((nm) => setMarkets(nm));
   }, [
-    supportedTokenPairs,
     signer,
+    supportedTokenPairs,
     comptrollerAddress,
     pollingKey,
     currentTransaction,
