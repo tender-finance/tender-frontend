@@ -1,5 +1,4 @@
 import { useState, useEffect, useContext } from "react";
-import { hooks as Web3Hooks } from "~/connectors/meta-mask";
 import { TenderContext } from "~/contexts/tender-context";
 
 export function useBlockchainExplorer(): {
