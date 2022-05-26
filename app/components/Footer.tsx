@@ -87,7 +87,7 @@ export default function Footer() {
             We want to hear from you. Find us on social media
           </div>
           <div className="flex">
-            <a href="https://twitter.com/tender_finance" className="mr-3">
+            <a href="https://twitter.com/tender_fi" className="mr-3">
               <img src="/images/twitter-icon.svg" alt="Link to twitter" />
             </a>
             <a
