@@ -53,7 +53,6 @@ export default function Borrow({
   let { updateTransaction } = useContext(TenderContext);
 
   let newTotalBorrowedAmountInUsd = useNewTotalBorrowedAmountInUsd(
-    signer,
     market.tokenPair,
     totalBorrowedAmountInUsd,
     +value
@@ -65,7 +64,6 @@ export default function Borrow({
   );
 
   let formattedMaxBorrowLimit: string = useSafeMaxBorrowAmountForToken(
-    signer,
     borrowLimit,
     totalBorrowedAmountInUsd,
     market.comptrollerAddress,
@@ -73,7 +71,6 @@ export default function Borrow({
   ).toFixed(2);
 
   let maxBorrowAmount = useMaxBorrowAmount(
-    signer,
     borrowLimit,
     totalBorrowedAmountInUsd,
     market.tokenPair
