@@ -13,6 +13,7 @@ import { useProjectBorrowLimit } from "~/hooks/use-project-borrow-limit";
 import { useBorrowLimitUsed } from "~/hooks/use-borrow-limit-used";
 import ConfirmingTransaction from "../fi-modal/confirming-transition";
 import { TenderContext } from "~/contexts/tender-context";
+import { useShrinkyInput } from "~/hooks/use-shrinky-input";
 
 interface Props {
   closeModal: Function;
@@ -42,6 +43,7 @@ export default function Deposit({
   let [isDepositing, setIsDepositing] = useState<boolean>(false);
   let [value, setValue] = useState<string>("0");
   let [txnHash, setTxnHash] = useState<string>("");
+  let inputTextClass = useShrinkyInput(value.length);
 
   let inputEl = useRef<HTMLInputElement>(null);
 
@@ -140,7 +142,8 @@ export default function Deposit({
                   <input
                     ref={inputEl}
                     onChange={(e) => setValue(e.target.value)}
-                    className="bg-transparent text-6xl text-white text-center outline-none"
+                    style={{ minHeight: 90 }}
+                    className={`w-full bg-transparent  text-white text-center outline-none ${inputTextClass}`}
                     defaultValue={0}
                   />
                 </div>

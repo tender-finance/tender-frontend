@@ -16,6 +16,7 @@ import { useBorrowLimitUsed } from "~/hooks/use-borrow-limit-used";
 import ConfirmingTransaction from "../fi-modal/confirming-transition";
 import { TenderContext } from "~/contexts/tender-context";
 import { useNewTotalBorrowedAmountInUsd } from "~/hooks/use-new-total-borrowed-amount-in-usd";
+import { useShrinkyInput } from "~/hooks/use-shrinky-input";
 
 interface Props {
   closeModal: Function;
@@ -52,6 +53,7 @@ export default function Repay({
   let maxRepayableAmount = Math.min(borrowedAmount, walletBalance);
 
   let inputEl = useRef<HTMLInputElement>(null);
+  let inputTextClass = useShrinkyInput(value.length);
 
   let newTotalBorrowedAmountInUsd = useNewTotalBorrowedAmountInUsd(
     market.tokenPair,
@@ -138,7 +140,8 @@ export default function Repay({
                   <input
                     ref={inputEl}
                     onChange={(e) => setValue(e.target.value)}
-                    className="bg-transparent text-6xl text-white text-center outline-none"
+                    style={{ minHeight: 90 }}
+                    className={`w-full bg-transparent text-white text-center outline-none ${inputTextClass}`}
                     defaultValue={0}
                   />
                   <Max
