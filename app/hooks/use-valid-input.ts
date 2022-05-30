@@ -7,7 +7,7 @@ enum InputValidationDetail {
 }
 
 export function useValidInput(
-  value: string,
+  inputValue: string,
   floor: number,
   ceil: number,
   borrowLimitUsed: number
@@ -20,6 +20,9 @@ export function useValidInput(
     setReason(null);
 
     try {
+      // Remove insignificant 0's
+      let value = inputValue.replace(/^0+|0+$/g, "");
+
       // 0 pad values leading with a `.` to simplify checking for
       // value coercion while parsing later in this function
       value = value.indexOf(".") === 0 ? `0${value}` : value;
@@ -48,7 +51,7 @@ export function useValidInput(
     } catch (e) {
       setIsValid(false);
     }
-  }, [value, floor, ceil, borrowLimitUsed]);
+  }, [inputValue, floor, ceil, borrowLimitUsed]);
 
   return [isValid, reason];
 }
