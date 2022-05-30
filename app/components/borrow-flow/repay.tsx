@@ -16,7 +16,6 @@ import { useBorrowLimitUsed } from "~/hooks/use-borrow-limit-used";
 import ConfirmingTransaction from "../fi-modal/confirming-transition";
 import { TenderContext } from "~/contexts/tender-context";
 import { useNewTotalBorrowedAmountInUsd } from "~/hooks/use-new-total-borrowed-amount-in-usd";
-import { useShrinkyInput } from "~/hooks/use-shrinky-input";
 
 interface Props {
   closeModal: Function;
@@ -53,7 +52,7 @@ export default function Repay({
   let maxRepayableAmount = Math.min(borrowedAmount, walletBalance);
 
   let inputEl = useRef<HTMLInputElement>(null);
-  let inputTextClass = useShrinkyInput(value.length);
+  let inputTextClass = shrinkyInputClass(value.length);
 
   let newTotalBorrowedAmountInUsd = useNewTotalBorrowedAmountInUsd(
     market.tokenPair,

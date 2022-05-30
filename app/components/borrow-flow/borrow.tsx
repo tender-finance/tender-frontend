@@ -18,7 +18,7 @@ import { useSafeMaxBorrowAmountForToken } from "~/hooks/use-safe-max-borrow-amou
 import { TenderContext } from "~/contexts/tender-context";
 import { useNewTotalBorrowedAmountInUsd } from "~/hooks/use-new-total-borrowed-amount-in-usd";
 import { useMaxBorrowAmount } from "~/hooks/use-max-borrow-amount";
-import { useShrinkyInput } from "~/hooks/use-shrinky-input";
+import { shrinkyInputClass } from "~/lib/ui";
 
 interface Props {
   market: Market;
@@ -86,7 +86,7 @@ export default function Borrow({
     parseFloat(newBorrowLimitUsed)
   );
 
-  let inputTextClass = useShrinkyInput(value.length);
+  let inputTextClass = shrinkyInputClass(value.length);
 
   // Highlights value input
   useEffect(() => {

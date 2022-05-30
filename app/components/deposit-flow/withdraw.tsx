@@ -16,7 +16,7 @@ import { useSafeMaxWithdrawAmountForToken } from "~/hooks/use-safe-max-withdraw-
 import ConfirmingTransaction from "../fi-modal/confirming-transition";
 import { TenderContext } from "~/contexts/tender-context";
 import { useMaxWithdrawAmount } from "~/hooks/use-max-withdraw-amount";
-import { useShrinkyInput } from "~/hooks/use-shrinky-input";
+import { shrinkyInputClass } from "~/lib/ui";
 
 interface Props {
   market: Market;
@@ -83,7 +83,7 @@ export default function Withdraw({
     parseFloat(newBorrowLimitUsed)
   );
 
-  let inputTextClass = useShrinkyInput(value.length);
+  let inputTextClass = shrinkyInputClass(value.length);
 
   // Highlights value input
   useEffect(() => {
