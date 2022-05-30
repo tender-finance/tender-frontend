@@ -16,6 +16,7 @@ import { useSafeMaxWithdrawAmountForToken } from "~/hooks/use-safe-max-withdraw-
 import ConfirmingTransaction from "../fi-modal/confirming-transition";
 import { TenderContext } from "~/contexts/tender-context";
 import { useMaxWithdrawAmount } from "~/hooks/use-max-withdraw-amount";
+import { shrinkyInputClass } from "~/lib/ui";
 
 interface Props {
   market: Market;
@@ -82,6 +83,8 @@ export default function Withdraw({
     parseFloat(newBorrowLimitUsed)
   );
 
+  let inputTextClass = shrinkyInputClass(value.length);
+
   // Highlights value input
   useEffect(() => {
     inputEl && inputEl.current && inputEl.current.select();
@@ -120,8 +123,9 @@ export default function Withdraw({
               <div className="flex flex-col justify-center items-center overflow-hidden">
                 <input
                   ref={inputEl}
+                  style={{ minHeight: 90 }}
                   onChange={(e) => setValue(e.target.value)}
-                  className="bg-transparent text-6xl text-white text-center outline-none"
+                  className={`w-full bg-transparent text-white text-center outline-none ${inputTextClass}`}
                   defaultValue={0}
                 />
                 <Max

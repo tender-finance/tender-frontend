@@ -18,6 +18,7 @@ import { useSafeMaxBorrowAmountForToken } from "~/hooks/use-safe-max-borrow-amou
 import { TenderContext } from "~/contexts/tender-context";
 import { useNewTotalBorrowedAmountInUsd } from "~/hooks/use-new-total-borrowed-amount-in-usd";
 import { useMaxBorrowAmount } from "~/hooks/use-max-borrow-amount";
+import { shrinkyInputClass } from "~/lib/ui";
 
 interface Props {
   market: Market;
@@ -85,6 +86,8 @@ export default function Borrow({
     parseFloat(newBorrowLimitUsed)
   );
 
+  let inputTextClass = shrinkyInputClass(value.length);
+
   // Highlights value input
   useEffect(() => {
     inputEl && inputEl.current && inputEl.current.select();
@@ -124,7 +127,8 @@ export default function Borrow({
                 <input
                   ref={inputEl}
                   onChange={(e) => setValue(e.target.value)}
-                  className="bg-transparent text-6xl text-white text-center outline-none"
+                  style={{ minHeight: 90 }}
+                  className={`w-full bg-transparent text-white text-center outline-none ${inputTextClass}`}
                   defaultValue={0}
                 />
 
