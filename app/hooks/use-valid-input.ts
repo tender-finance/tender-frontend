@@ -7,7 +7,7 @@ enum InputValidationDetail {
 }
 
 export function useValidInput(
-  value: string,
+  inputValue: string,
   floor: number,
   ceil: number,
   borrowLimitUsed: number
@@ -22,7 +22,7 @@ export function useValidInput(
     try {
       // 0 pad values leading with a `.` to simplify checking for
       // value coercion while parsing later in this function
-      value = value.indexOf(".") === 0 ? `0${value}` : value;
+      let value = inputValue.indexOf(".") === 0 ? `0${inputValue}` : inputValue;
 
       let isNaNValue: boolean = isNaN(parseFloat(value));
       let isCoerced = parseFloat(value).toString() !== value;
