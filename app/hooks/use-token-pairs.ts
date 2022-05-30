@@ -16,7 +16,11 @@ async function generateTokenPair(
   let token: TokenConfig = networkData.Tokens[symbol];
   let cToken: cToken = token.cToken;
 
-  let priceInUsd = await getAssetPriceInUsd(signer, token.priceOracleAddress);
+  let priceInUsd = await getAssetPriceInUsd(
+    signer,
+    networkData.Contracts.PriceOracle,
+    token.cToken
+  );
 
   return {
     token: {
@@ -35,13 +39,10 @@ function validTokenConfigs(
     let token: TokenConfig = networkData.Tokens[symbol];
 
     // Useful logs to know when the config isn't right
-    if (!token || !token.cToken || !token.priceOracleAddress) {
-      console.error(
-        `Missing token, cToken, or priceOracleAddress in config for ${symbol}.`
-      );
+    if (!token || !token.cToken) {
+      console.error(`Missing token or cToken in config for ${symbol}.`);
       console.error("token: ", token);
       console.error("cToken: ", token.cToken);
-      console.error("priceOracleAddress: ", token.priceOracleAddress);
 
       return false;
     }
@@ -54,6 +55,11 @@ async function generateTokenPairs(
   signer: JsonRpcSigner,
   networkData: NetworkData
 ): Promise<TokenPair[]> {
+  if (!networkData.Contracts.PriceOracle) {
+    console.error("Missing PriceOracle address in config");
+    return [];
+  }
+
   let tokenSymbols: string[] = Object.keys(networkData.Tokens);
 
   let validTokenSymbols: string[] = validTokenConfigs(

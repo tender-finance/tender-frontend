@@ -4,6 +4,7 @@ export default {
   blockExplorerUrl: "https://stardust-explorer.metis.io/tx",
   Contracts: {
     Comptroller: "0x0...",
+    PriceOracle: "0x0...",
   },
   Tokens: {
     DAI: {
@@ -12,7 +13,6 @@ export default {
       decimals: 18,
       address: "0x0...",
       icon: "/images/coin-icons/dai.svg",
-      priceOracleAddress: "0x0...",
       cToken: {
         name: "Compound Dai 📈",
         symbol: "cDAI",

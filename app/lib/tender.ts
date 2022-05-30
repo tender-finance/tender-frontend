@@ -429,7 +429,8 @@ async function hasSufficientAllowance(
 
 async function getAssetPriceInUsd(
   signer: Signer,
-  priceOracleAddress: string
+  priceOracleAddress: string,
+  cToken: cToken
 ): Promise<number> {
   let contract = new ethers.Contract(
     priceOracleAddress,
@@ -437,10 +438,12 @@ async function getAssetPriceInUsd(
     signer
   );
 
-  let decimals = await contract.decimals();
-  let { answer }: { answer: BigNumber } = await contract.latestRoundData();
+  let answer: BigNumber = await contract.getUnderlyingPrice(cToken.address);
 
-  let priceInUsd = parseFloat(formatUnits(answer, decimals));
+  // Price always stored with 18 0's
+  let priceInUsd = parseFloat(formatUnits(answer, 18));
+
+  console.log(priceInUsd, cToken.name, cToken.address);
 
   return priceInUsd;
 }

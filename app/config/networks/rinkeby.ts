@@ -4,6 +4,7 @@ export default {
   blockExplorerUrl: "https://rinkeby.etherscan.io/tx",
   Contracts: {
     Comptroller: "0x2EAa9D77AE4D8f9cdD9FAAcd44016E746485bddb",
+    PriceOracle: "0xE465d3F3832EF48DF3e663Cf986dfA03c50DE790",
   },
   Tokens: {
     DAI: {
@@ -12,7 +13,6 @@ export default {
       decimals: 18,
       address: "0x5592EC0cfb4dbc12D3aB100b257153436a1f0FEa",
       icon: "/images/coin-icons/dai.svg",
-      priceOracleAddress: "0x2bA49Aaa16E6afD2a993473cfB70Fa8559B523cF",
       cToken: {
         name: "Compound Dai 📈",
         symbol: "cDAI",
@@ -26,7 +26,6 @@ export default {
       decimals: 18,
       address: "0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99",
       icon: "/images/coin-icons/bat.svg",
-      priceOracleAddress: "0x031dB56e01f82f20803059331DC6bEe9b17F7fC9",
       cToken: {
         name: "Compound Basic Attention Token 📈",
         symbol: "cBAT",
@@ -41,7 +40,6 @@ export default {
       decimals: 6,
       address: "0x4DBCdF9B62e891a7cec5A2568C3F4FAF9E8Abe2b",
       icon: "/images/coin-icons/usdc.svg",
-      priceOracleAddress: "0xa24de01df22b63d23Ebc1882a5E3d4ec0d907bFB",
       cToken: {
         name: "Compound USD Coin 📈",
         symbol: "cUSDC",
@@ -55,7 +53,6 @@ export default {
       decimals: 8,
       address: "0x577D296678535e4903D59A4C929B718e1D575e0A",
       icon: "/images/coin-icons/bitcoin.svg",
-      priceOracleAddress: "0xECe365B379E1dD183B20fc5f022230C044d51404",
       cToken: {
         name: "Compound Wrapped BTC 📈",
         symbol: "cWBTC",
