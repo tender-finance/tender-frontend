@@ -183,7 +183,7 @@ export default function Borrow({
                 <div className="mb-8">
                   {!signer && <div>Connect wallet to get started</div>}
                   {signer && !isValid && (
-                    <button className="py-4 text-center text-white font-bold rounded  w-full bg-gray-200">
+                    <button className="py-4 text-center  font-bold rounded  w-full bg-gray-600 ">
                       {validationDetail || "Borrow"}
                     </button>
                   )}
@@ -220,10 +220,10 @@ export default function Borrow({
                         }
                       }}
                       className={clsx(
-                        "py-4 text-center text-white font-bold rounded bg-brand-green w-full",
+                        "py-4 text-center  font-bold rounded w-full text-white",
                         {
-                          "bg-brand-green": !isBorrowing,
-                          "bg-gray-200": isBorrowing,
+                          "bg-brand-green ": !isBorrowing,
+                          "bg-gray-600": isBorrowing,
                         }
                       )}
                     >

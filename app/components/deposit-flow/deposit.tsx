@@ -218,7 +218,7 @@ export default function Deposit({
               )}
 
               {signer && isEnabled && !isValid && (
-                <button className="py-4 text-center text-white font-bold rounded  w-full bg-gray-200">
+                <button className="py-4 text-center font-bold rounded  w-full bg-gray-600">
                   {validationDetail}
                 </button>
               )}
@@ -256,10 +256,10 @@ export default function Deposit({
                     }
                   }}
                   className={clsx(
-                    "py-4 text-center text-white font-bold rounded bg-brand-green w-full",
+                    "py-4 text-center font-bold rounded w-full text-white",
                     {
                       "bg-brand-green": !isDepositing,
-                      "bg-gray-200": isDepositing,
+                      "bg-gray-600": isDepositing,
                     }
                   )}
                 >
