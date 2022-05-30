@@ -20,9 +20,12 @@ export function useValidInput(
     setReason(null);
 
     try {
+      // Remove insignificant 0's
+      let value = inputValue.replace(/^0+|0+$/g, "");
+
       // 0 pad values leading with a `.` to simplify checking for
       // value coercion while parsing later in this function
-      let value = inputValue.indexOf(".") === 0 ? `0${inputValue}` : inputValue;
+      value = value.indexOf(".") === 0 ? `0${value}` : value;
 
       let isNaNValue: boolean = isNaN(parseFloat(value));
       let isCoerced = parseFloat(value).toString() !== value;
