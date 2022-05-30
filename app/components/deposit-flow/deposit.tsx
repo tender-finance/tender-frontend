@@ -258,7 +258,7 @@ export default function Deposit({
                   className={clsx(
                     "py-4 text-center font-bold rounded w-full text-white",
                     {
-                      "bg-brand-green ": !isDepositing,
+                      "bg-brand-green": !isDepositing,
                       "bg-gray-600": isDepositing,
                     }
                   )}
