@@ -48,7 +48,7 @@ export function useValidInput(
     } catch (e) {
       setIsValid(false);
     }
-  }, [value, floor, ceil, borrowLimitUsed]);
+  }, [inputValue, floor, ceil, borrowLimitUsed]);
 
   return [isValid, reason];
 }
