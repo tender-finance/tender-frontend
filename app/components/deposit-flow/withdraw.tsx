@@ -179,7 +179,7 @@ export default function Withdraw({
                 <div className="mb-8">
                   {!signer && <div>Connect wallet to get started</div>}
                   {signer && !isValid && (
-                    <button className="py-4 text-center text-white font-bold rounded w-full bg-gray-200">
+                    <button className="py-4 text-center text-white font-bold rounded w-full bg-gray-600">
                       {validationDetail}
                     </button>
                   )}
@@ -217,10 +217,10 @@ export default function Withdraw({
                         }
                       }}
                       className={clsx(
-                        "py-4 text-center text-white font-bold rounded bg-brand-green w-full",
+                        "py-4 text-center text-white font-bold rounded w-full",
                         {
                           "bg-brand-green": !isWithdrawing,
-                          "bg-gray-200": isWithdrawing,
+                          "bg-gray-600": isWithdrawing,
                         }
                       )}
                     >
