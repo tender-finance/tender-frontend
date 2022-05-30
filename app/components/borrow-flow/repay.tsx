@@ -214,10 +214,10 @@ export default function Repay({
                       }
                     }}
                     className={clsx(
-                      "py-4 text-center font-bold rounded w-full",
+                      "py-4 text-center font-bold rounded w-full text-white",
                       {
-                        "bg-brand-green text-white ": !isEnabling,
-                        "bg-gray-200 text-gray-700": isEnabling,
+                        "bg-brand-green": !isEnabling,
+                        "text-gray-600": isEnabling,
                       }
                     )}
                   >
