@@ -16,7 +16,6 @@ export interface TokenConfig {
   decimals: number;
   address: string;
   cToken: cToken;
-  priceOracleAddress: string;
 }
 
 export interface NetworkData {
@@ -25,6 +24,7 @@ export interface NetworkData {
   blockExplorerUrl: string;
   Contracts: {
     Comptroller: string;
+    PriceOracle: string;
   };
   Tokens: {
     [key: string]: TokenConfig;
