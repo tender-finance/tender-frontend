@@ -12,7 +12,7 @@ export default {
       symbol: "tMETIS",
       decimals: 18,
       address: "0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000",
-      icon: "/images/coin-icons/bat.svg",
+      icon: "/images/coin-icons/metis.png",
       cToken: {
         name: "tMetis 📈",
         symbol: "tMetis",
