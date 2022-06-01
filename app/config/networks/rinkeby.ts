@@ -20,19 +20,19 @@ export default {
         address: "0x6D7F0754FFeb405d23C51CE938289d4835bE3b14",
       },
     },
-    BAT: {
-      name: "Basic Attention Token",
-      symbol: "BAT",
-      decimals: 18,
-      address: "0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99",
-      icon: "/images/coin-icons/bat.svg",
-      cToken: {
-        name: "Compound Basic Attention Token 📈",
-        symbol: "cBAT",
-        decimals: 8,
-        address: "0xEBf1A11532b93a529b5bC942B4bAA98647913002",
-      },
-    },
+    // BAT: {
+    //   name: "Basic Attention Token",
+    //   symbol: "BAT",
+    //   decimals: 18,
+    //   address: "0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99",
+    //   icon: "/images/coin-icons/bat.svg",
+    //   cToken: {
+    //     name: "Compound Basic Attention Token 📈",
+    //     symbol: "cBAT",
+    //     decimals: 8,
+    //     address: "0xEBf1A11532b93a529b5bC942B4bAA98647913002",
+    //   },
+    // },
     USDC: {
       description: "Standard",
       name: "USD Coin",
