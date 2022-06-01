@@ -88,6 +88,8 @@ export function useMarkets(
       let supplyBalanceInUsd = supplyBalance * tp.token.priceInUsd;
       let borrowBalanceInUsd = borrowBalance * tp.token.priceInUsd;
 
+      let maxBorrowLiquidity = await getMaxBorrowLiquidity(signer, tp.cToken);
+
       return {
         id: tp.token.symbol,
         tokenPair: tp,
@@ -108,6 +110,7 @@ export function useMarkets(
           totalBorrowedAmountInUsd,
           accountBorrowLimitInUsd
         ),
+        maxBorrowLiquidity,
       };
     });
 

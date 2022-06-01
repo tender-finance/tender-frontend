@@ -605,6 +605,22 @@ async function getMaxBorrowAmount(
   return borrowableAmountInUsd / tp.token.priceInUsd;
 }
 
+async function getMaxBorrowLiquidity(
+  signer: JsonRpcSigner,
+  cToken: cToken
+): Promise<number> {
+  let cTokenContract = new ethers.Contract(
+    cToken.address,
+    SampleCTokenAbi,
+    signer
+  );
+
+  let totalSupply: BigNumber = await cTokenContract.totalSupply();
+  let totalReserve: BigNumber = await cTokenContract.totalReserve();
+
+  return await cTokenContract.redeemUnderlying(formattedValue);
+}
+
 export {
   enable,
   deposit,
