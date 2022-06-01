@@ -246,7 +246,6 @@ export default function Deposit({
                       setTxnHash(txn.hash);
                       setIsWaitingToBeMined(true);
                       let tr = await txn.wait();
-                      setIsWaitingToBeMined(false);
                       setValue("0");
                       updateTransaction(tr.blockHash);
                       toast.success("Deposit successful");
@@ -255,6 +254,7 @@ export default function Deposit({
                       toast.error("Deposit unsuccessful");
                       console.error(e);
                     } finally {
+                      setIsWaitingToBeMined(false);
                       setIsDepositing(false);
                     }
                   }}
