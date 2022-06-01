@@ -213,13 +213,14 @@ export default function Borrow({
                           setTxnHash(txn.hash);
                           setIsWaitingToBeMined(true);
                           let tr = await txn.wait(); // TODO: error handle if transaction fails
-                          setIsWaitingToBeMined(false);
                           updateTransaction(tr.blockHash);
                           toast.success("Borrow successful");
                           closeModal();
                         } catch (e) {
+                          toast.error("Borrow unsuccessful");
                           console.error(e);
                         } finally {
+                          setIsWaitingToBeMined(false);
                           setIsBorrowing(false);
                         }
                       }}

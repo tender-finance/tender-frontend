@@ -37,7 +37,7 @@ export default function Withdraw({
   borrowLimitUsed,
   totalBorrowedAmountInUsd,
 }: Props) {
-  let [isWaitingToBeMined, setBlockChaining] = useState<boolean>(false);
+  let [isWaitingToBeMined, setIsWaitingToBeMined] = useState<boolean>(false);
   let [value, setValue] = useState<string>("0");
   let [isWithdrawing, setIsWithdrawing] = useState<boolean>(false);
   let [txnHash, setTxnHash] = useState<string>("");
@@ -207,16 +207,17 @@ export default function Withdraw({
                           );
                           setTxnHash(txn.hash);
 
-                          setBlockChaining(true);
+                          setIsWaitingToBeMined(true);
                           let tr = await txn.wait(); // TODO: error handle if transaction fails
-                          setBlockChaining(false);
                           setValue("");
                           updateTransaction(tr);
                           toast.success("Withdraw successful");
                           closeModal();
                         } catch (e) {
+                          toast.error("Withdraw unsuccessful");
                           console.error(e);
                         } finally {
+                          setIsWaitingToBeMined(false);
                           setIsWithdrawing(false);
                         }
                       }}

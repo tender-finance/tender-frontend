@@ -257,7 +257,6 @@ export default function Repay({
 
                         setIsWaitingToBeMined(true);
                         let tr = await txn.wait(); // TODO: error handle if transaction fails
-                        setIsWaitingToBeMined(false);
                         setValue("");
                         updateTransaction(tr.blockHash);
                         toast.success("Repayment successful");
@@ -266,6 +265,7 @@ export default function Repay({
                         toast.error("Repayment unsuccessful");
                         console.error(e);
                       } finally {
+                        setIsWaitingToBeMined(false);
                         setIsRepayingTxn(false);
                       }
                     }}
