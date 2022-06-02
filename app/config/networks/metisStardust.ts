@@ -8,8 +8,8 @@ export default {
   },
   Tokens: {
     tMETIS: {
-      name: "tMetis",
-      symbol: "tMETIS",
+      name: "Metis",
+      symbol: "METIS",
       decimals: 18,
       address: "0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000",
       icon: "/images/coin-icons/metis.png",
