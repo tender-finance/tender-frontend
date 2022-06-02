@@ -607,21 +607,17 @@ async function getMaxBorrowAmount(
 
 async function getMaxBorrowLiquidity(
   signer: JsonRpcSigner,
-  cToken: cToken
+  tp: TokenPair
 ): Promise<number> {
   let cTokenContract = new ethers.Contract(
-    cToken.address,
+    tp.cToken.address,
     SampleCTokenAbi,
     signer
   );
 
-  let totalSupply: BigNumber = await cTokenContract.totalSupply();
-  let totalReserves: BigNumber = await cTokenContract.totalReserves();
-  let totalBorrows: BigNumber = await cTokenContract.totalBorrows();
+  let balance: BigNumber = await cTokenContract.getCash();
 
-  let sum: BigNumber = totalSupply.add(totalReserves).sub(totalBorrows);
-
-  return parseFloat(utils.formatUnits(sum, 18));
+  return parseFloat(utils.formatUnits(balance, tp.token.decimals));
 }
 
 export {
