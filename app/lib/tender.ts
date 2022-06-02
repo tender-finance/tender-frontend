@@ -1,5 +1,5 @@
 import type { cToken, Token } from "~/types/global";
-import { Signer, Contract, utils } from "ethers";
+import { type Signer, type Contract, utils } from "ethers";
 import { ethers, BigNumber } from "ethers";
 
 import SampleCTokenAbi from "~/config/sample-ctoken-abi";
