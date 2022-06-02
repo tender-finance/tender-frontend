@@ -86,9 +86,7 @@ export default function Borrow({
     parseFloat(newBorrowLimitUsed)
   );
 
-  let maxBorrowLiquidity = market.maxBorrowLiquidity;
-
-  inputTextClass = shrinkyInputClass(value.length);
+  let inputTextClass = shrinkyInputClass(value.length);
 
   // Highlights value input
   useEffect(() => {
@@ -245,9 +243,10 @@ export default function Borrow({
                   </div>
                 </div>
                 <div className="flex text-gray-500">
-                  <div className="flex-grow">Borrow Liquidity</div>
+                  <div className="flex-grow">Market Liquidity</div>
                   <div>
-                    {maxBorrowLiquidity} {market.tokenPair.token.symbol}
+                    {market.maxBorrowLiquidity.toFixed(2)}{" "}
+                    {market.tokenPair.token.symbol}
                   </div>
                 </div>
               </div>

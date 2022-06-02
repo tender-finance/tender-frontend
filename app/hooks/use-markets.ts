@@ -14,6 +14,7 @@ import {
   getTotalBorrowedUsd,
   getWalletBalance,
   getTotalBorrowedInUsd,
+  getMaxBorrowLiquidity,
 } from "~/lib/tender";
 import { useInterval } from "./use-interval";
 import { TenderContext } from "~/contexts/tender-context";

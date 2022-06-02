@@ -1,5 +1,5 @@
 import type { cToken, Token } from "~/types/global";
-import type { Signer, Contract } from "ethers";
+import { Signer, Contract, utils } from "ethers";
 import { ethers, BigNumber } from "ethers";
 
 import SampleCTokenAbi from "~/config/sample-ctoken-abi";
@@ -616,9 +616,12 @@ async function getMaxBorrowLiquidity(
   );
 
   let totalSupply: BigNumber = await cTokenContract.totalSupply();
-  let totalReserve: BigNumber = await cTokenContract.totalReserve();
+  let totalReserves: BigNumber = await cTokenContract.totalReserves();
+  let totalBorrows: BigNumber = await cTokenContract.totalBorrows();
 
-  return await cTokenContract.redeemUnderlying(formattedValue);
+  let sum: BigNumber = totalSupply.add(totalReserves).sub(totalBorrows);
+
+  return parseFloat(utils.formatUnits(sum, 18));
 }
 
 export {
@@ -644,4 +647,5 @@ export {
   safeMaxBorrowAmountForToken,
   getMaxWithdrawAmount,
   getMaxBorrowAmount,
+  getMaxBorrowLiquidity,
 };
