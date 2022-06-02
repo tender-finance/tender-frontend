@@ -132,17 +132,19 @@ export default function Borrow({
                   defaultValue={0}
                 />
 
-                <Max
-                  maxValue={`${formattedMaxBorrowLimit}`}
-                  updateValue={() => {
-                    if (!inputEl || !inputEl.current) return;
-                    inputEl.current.focus();
-                    inputEl.current.value = `${formattedMaxBorrowLimit}`;
-                    setValue(`${formattedMaxBorrowLimit}`);
-                  }}
-                  maxValueLabel={market.tokenPair.token.symbol}
-                  label="80% Max"
-                />
+                {parseFloat(borrowLimitUsed) < 80 && (
+                  <Max
+                    maxValue={`${formattedMaxBorrowLimit}`}
+                    updateValue={() => {
+                      if (!inputEl || !inputEl.current) return;
+                      inputEl.current.focus();
+                      inputEl.current.value = `${formattedMaxBorrowLimit}`;
+                      setValue(`${formattedMaxBorrowLimit}`);
+                    }}
+                    maxValueLabel={market.tokenPair.token.symbol}
+                    label="80% Max"
+                  />
+                )}
               </div>
             </div>
             <div className="flex">
