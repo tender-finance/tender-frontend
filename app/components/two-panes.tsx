@@ -175,7 +175,7 @@ export default function TwoPanes() {
                   <th className="pb-4 px-8 text-left whitespace-nowrap">
                     APY / Accrued
                   </th>
-                  <th className="pb-4 px-8 text-left">Wallet</th>
+                  <th className="pb-4 px-8 text-left">Liquidity</th>
                 </tr>
               </thead>
 
@@ -195,7 +195,7 @@ export default function TwoPanes() {
                         {m.marketData.borrowApy}
                       </td>
                       <td className="px-8 py-6 text-left whitespace-nowrap">
-                        {m.walletBalance} {m.tokenPair.token.symbol}
+                        {m.maxBorrowLiquidity} {m.tokenPair.token.symbol}
                       </td>
                     </MarketBorrowRow>
                   );
