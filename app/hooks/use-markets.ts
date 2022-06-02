@@ -14,6 +14,7 @@ import {
   getTotalBorrowedUsd,
   getWalletBalance,
   getTotalBorrowedInUsd,
+  getMaxBorrowLiquidity,
 } from "~/lib/tender";
 import { useInterval } from "./use-interval";
 import { TenderContext } from "~/contexts/tender-context";
@@ -88,6 +89,8 @@ export function useMarkets(
       let supplyBalanceInUsd = supplyBalance * tp.token.priceInUsd;
       let borrowBalanceInUsd = borrowBalance * tp.token.priceInUsd;
 
+      let maxBorrowLiquidity = await getMaxBorrowLiquidity(signer, tp);
+
       return {
         id: tp.token.symbol,
         tokenPair: tp,
@@ -108,6 +111,7 @@ export function useMarkets(
           totalBorrowedAmountInUsd,
           accountBorrowLimitInUsd
         ),
+        maxBorrowLiquidity,
       };
     });
 

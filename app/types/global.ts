@@ -73,4 +73,5 @@ export type Market = {
   borrowLimitUsed: string;
   totalBorrowedAmountInUsd: number;
   comptrollerAddress: string;
+  maxBorrowLiquidity: number;
 };

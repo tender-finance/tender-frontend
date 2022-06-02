@@ -239,10 +239,17 @@ export default function Borrow({
                   )}
                 </div>
 
-                <div className="flex text-gray-500">
+                <div className="flex text-gray-500 mb-2">
                   <div className="flex-grow">Currently Borrowing</div>
                   <div>
                     {currentlyBorrowing} {market.tokenPair.token.symbol}
+                  </div>
+                </div>
+                <div className="flex text-gray-500">
+                  <div className="flex-grow">Market Liquidity</div>
+                  <div>
+                    {market.maxBorrowLiquidity.toFixed(2)}{" "}
+                    {market.tokenPair.token.symbol}
                   </div>
                 </div>
               </div>

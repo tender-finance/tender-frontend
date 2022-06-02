@@ -1,5 +1,5 @@
 import type { cToken, Token } from "~/types/global";
-import type { Signer, Contract } from "ethers";
+import { type Signer, type Contract, utils } from "ethers";
 import { ethers, BigNumber } from "ethers";
 
 import SampleCTokenAbi from "~/config/sample-ctoken-abi";
@@ -605,6 +605,21 @@ async function getMaxBorrowAmount(
   return borrowableAmountInUsd / tp.token.priceInUsd;
 }
 
+async function getMaxBorrowLiquidity(
+  signer: JsonRpcSigner,
+  tp: TokenPair
+): Promise<number> {
+  let cTokenContract = new ethers.Contract(
+    tp.cToken.address,
+    SampleCTokenAbi,
+    signer
+  );
+
+  let balance: BigNumber = await cTokenContract.getCash();
+
+  return parseFloat(utils.formatUnits(balance, tp.token.decimals));
+}
+
 export {
   enable,
   deposit,
@@ -628,4 +643,5 @@ export {
   safeMaxBorrowAmountForToken,
   getMaxWithdrawAmount,
   getMaxBorrowAmount,
+  getMaxBorrowLiquidity,
 };
