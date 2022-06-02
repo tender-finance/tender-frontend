@@ -54,7 +54,7 @@ export default function TwoPanes() {
                       </td>
                       <td className="px-8 py-6 text-left">
                         <div>${m.supplyBalanceInUsd.toFixed(2)}</div>
-                        <div className="bg-black rounded-lg text-xs text-gray-300 text-center py-1 px-2 inline-block">
+                        <div className="bg-black rounded-lg text-xs text-gray-300 text-center py-1 px-2 inline-block whitespace-nowrap">
                           {m.supplyBalance} {m.tokenPair.token.symbol}
                         </div>
                       </td>
@@ -148,7 +148,7 @@ export default function TwoPanes() {
                       <td className="px-8 py-6 text-left">
                         <div>${m.borrowBalanceInUsd.toFixed(2)}</div>
 
-                        <div className="bg-black rounded-lg text-xs text-gray-300 text-center py-1 px-2 inline-block">
+                        <div className="bg-black rounded-lg text-xs text-gray-300 text-center py-1 px-2 inline-block whitespace-nowrap">
                           {m.borrowBalance} {m.tokenPair.token.symbol}
                         </div>
                       </td>
