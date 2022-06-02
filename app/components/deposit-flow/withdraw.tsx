@@ -128,17 +128,20 @@ export default function Withdraw({
                   className={`w-full bg-transparent text-white text-center outline-none ${inputTextClass}`}
                   defaultValue={0}
                 />
-                <Max
-                  maxValue={`${parseFloat(formattedSafeMaxWithdrawAmount)}`}
-                  updateValue={() => {
-                    if (!inputEl || !inputEl.current) return;
-                    inputEl.current.focus();
-                    inputEl.current.value = formattedSafeMaxWithdrawAmount;
-                    setValue(formattedSafeMaxWithdrawAmount);
-                  }}
-                  label="80% Max"
-                  maxValueLabel={market.tokenPair.token.symbol}
-                />
+
+                {parseFloat(borrowLimitUsed) < 80 && (
+                  <Max
+                    maxValue={`${parseFloat(formattedSafeMaxWithdrawAmount)}`}
+                    updateValue={() => {
+                      if (!inputEl || !inputEl.current) return;
+                      inputEl.current.focus();
+                      inputEl.current.value = formattedSafeMaxWithdrawAmount;
+                      setValue(formattedSafeMaxWithdrawAmount);
+                    }}
+                    label="80% Max"
+                    maxValueLabel={market.tokenPair.token.symbol}
+                  />
+                )}
               </div>
             </div>
             <div className="flex">
