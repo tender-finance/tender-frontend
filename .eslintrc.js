@@ -1,4 +1,4 @@
 module.exports = {
-  extends: ["@remix-run/eslint-config"],
-  ignorePatterns: ["**/*.js"],
+  extends: ["@remix-run/eslint-config", "plugin:storybook/recommended"],
+  ignorePatterns: ["**/*.js"]
 };
