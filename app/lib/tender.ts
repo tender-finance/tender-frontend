@@ -25,7 +25,10 @@ function formatBigNumber(value: BigNumber, decimals: number): number {
   // and it needs to be made a float.
   // toFixed(2) rounds the float to two decimals, and returns a string,
   // so we need to make it a float again. :(
-  return parseFloat(parseFloat(formatUnits(value, decimals)).toFixed(2));
+  let formattedUnit = formatUnits(value, decimals);
+  let val = parseFloat(formattedUnit);
+
+  return val > 1 ? parseFloat(val.toFixed(2)) : parseFloat(val.toFixed(6));
 }
 
 /**

@@ -2,7 +2,9 @@ import { useContext } from "react";
 import { TenderContext } from "~/contexts/tender-context";
 import MarketSupplyRow from "~/components/two-panes/market-supply-row";
 import MarketBorrowRow from "~/components/two-panes/market-borrow-row";
+import * as HRNumbers from "human-readable-numbers";
 
+const A_BIG_NUMBER = 10000;
 export default function TwoPanes() {
   let { markets } = useContext(TenderContext);
 
@@ -95,7 +97,10 @@ export default function TwoPanes() {
                         {m.marketData.depositApy}
                       </td>
                       <td className="px-8 py-6 text-left">
-                        {m.walletBalance} {m.tokenPair.token.symbol}
+                        {m.walletBalance > A_BIG_NUMBER
+                          ? HRNumbers.toHumanString(m.walletBalance)
+                          : m.walletBalance}{" "}
+                        {m.tokenPair.token.symbol}
                       </td>
                     </MarketSupplyRow>
                   );
@@ -195,7 +200,10 @@ export default function TwoPanes() {
                         {m.marketData.borrowApy}
                       </td>
                       <td className="px-8 py-6 text-left whitespace-nowrap">
-                        {m.maxBorrowLiquidity} {m.tokenPair.token.symbol}
+                        {m.maxBorrowLiquidity > A_BIG_NUMBER
+                          ? HRNumbers.toHumanString(m.maxBorrowLiquidity)
+                          : m.maxBorrowLiquidity}{" "}
+                        {m.tokenPair.token.symbol}
                       </td>
                     </MarketBorrowRow>
                   );
