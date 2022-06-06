@@ -27,10 +27,10 @@ export default function BorrowBalance(props: BorrowBalanceProps) {
       <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 py-5">
         <div className="flex-grow">Borrow Balance</div>
         <div>
-          {(value == "0" || !isValid) && <>${toMoneyString(borrowBalance)}</>}
+          {(value == "0" || !isValid) && <>{toMoneyString(borrowBalance)}</>}
           {isValid && value != "0" && (
             <>
-              ${toMoneyString(borrowBalance)}{" "}
+              {toMoneyString(borrowBalance)}{" "}
               <span className="text-brand-green">→</span> $
               {toMoneyString(newBorrowBalance)}
             </>

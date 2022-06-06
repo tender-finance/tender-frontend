@@ -38,7 +38,10 @@ export const toMoneyString = (
   withPrefix: boolean = true
 ): string => {
   let roundedNumber = parseFloat(v.toFixed(2));
-  let s = `${roundedNumber.toLocaleString("en-US")}`;
+  let s = `${roundedNumber.toLocaleString("en-US", {
+    style: "currency",
+    currency: "USD",
+  })}`;
   return withPrefix ? s : s.substring(1);
 };
 

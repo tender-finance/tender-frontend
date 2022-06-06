@@ -1,3 +1,5 @@
+import { toMoneyString } from "~/lib/ui";
+
 interface MaxProps {
   updateValue: Function;
   maxValue: string;
@@ -5,7 +7,7 @@ interface MaxProps {
   label?: string;
 }
 const formatMaxValue = (v: string): string => {
-  return Math.max(0, parseFloat(v)).toFixed(2);
+  return toMoneyString(Math.max(0, parseFloat(v)), false);
 };
 export default function Max(props: MaxProps) {
   let label = props.label || "Max";

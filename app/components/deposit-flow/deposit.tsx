@@ -13,9 +13,9 @@ import { useProjectBorrowLimit } from "~/hooks/use-project-borrow-limit";
 import { useBorrowLimitUsed } from "~/hooks/use-borrow-limit-used";
 import ConfirmingTransaction from "../fi-modal/confirming-transition";
 import { TenderContext } from "~/contexts/tender-context";
-import { shrinkyInputClass } from "~/lib/ui";
+import { shrinkyInputClass, toMoneyString } from "~/lib/ui";
 
-interface Props {
+export interface DepositProps {
   closeModal: Function;
   market: Market;
   setIsSupplying: Function;
@@ -36,7 +36,7 @@ export default function Deposit({
   walletBalance,
   totalBorrowedAmountInUsd,
   market,
-}: Props) {
+}: DepositProps) {
   let [isWaitingToBeMined, setIsWaitingToBeMined] = useState<boolean>(false);
   let [isEnabled, setIsEnabled] = useState<boolean>(true);
   let [isEnabling, setIsEnabling] = useState<boolean>(false);
@@ -273,7 +273,7 @@ export default function Deposit({
             <div className="flex text-gray-500">
               <div className="flex-grow">Wallet Balance</div>
               <div>
-                {walletBalance} {market.tokenPair.token.symbol}
+                {toMoneyString(walletBalance)} {market.tokenPair.token.symbol}
               </div>
             </div>
           </div>
