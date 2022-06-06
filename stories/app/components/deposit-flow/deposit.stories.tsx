@@ -1,9 +1,13 @@
-import { Market, Token, TokenPair, cToken as cTokenType } from "~/types/global";
-import React from "react";
+import type {
+  Market,
+  Token,
+  TokenPair,
+  cToken as cTokenType,
+} from "~/types/global";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
 import Deposit, {
-  DepositProps,
+  type DepositProps,
 } from "../../../../app/components/deposit-flow/deposit";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export

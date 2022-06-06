@@ -1,9 +1,13 @@
-// import Borrow from "../../../../app/components/borrow-flow/borrow";
-import { Market, Token, TokenPair, cToken as cTokenType } from "~/types/global";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import type {
+  Market,
+  Token,
+  TokenPair,
+  cToken as cTokenType,
+} from "~/types/global";
+import type { ComponentStory, ComponentMeta } from "@storybook/react";
 
 import Borrow, {
-  BorrowProps,
+  type BorrowProps,
 } from "../../../../app/components/borrow-flow/borrow";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
