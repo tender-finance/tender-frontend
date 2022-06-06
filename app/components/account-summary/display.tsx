@@ -1,4 +1,5 @@
 import Ring from "./ring";
+import { Money, Currencies } from "ts-money";
 interface props {
   totalSupplyBalanceInUsd: number;
   totalBorrowedInUsd: number;
@@ -9,7 +10,8 @@ interface props {
 }
 
 const formatCurrency = (v: number): string => {
-  return `$${v.toFixed(2)}`;
+  let roundedNumber = parseFloat(v.toFixed(2));
+  return `$${roundedNumber.toLocaleString()}`;
 };
 
 export default function Display({

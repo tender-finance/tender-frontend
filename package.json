@@ -41,7 +41,6 @@
     "binode": "^1.0.5",
     "c8": "^7.11.2",
     "clsx": "^1.1.1",
-    "currency.js": "^2.0.4",
     "cypress": "^9.5.4",
     "ethers": "^5.6.1",
     "human-readable-numbers": "^0.9.5",

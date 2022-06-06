@@ -31,6 +31,9 @@ export default function AccountSummary() {
       totalSupplyBalanceInUsd={totalSupplyBalanceInUsd}
       totalBorrowedInUsd={totalBorrowedInUsd}
       netApy={netApy}
+      borrowLimitUsed={borrowLimitUsed}
+      percentUsed={percentUsed}
+      borrowLimit={borrowLimit}
     />
   );
 }
