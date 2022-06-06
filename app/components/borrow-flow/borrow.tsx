@@ -39,7 +39,7 @@ export default function Borrow({
   borrowLimit,
   borrowLimitUsed,
   totalBorrowedAmountInUsd,
-}: Props) {
+}: BorrowProps) {
   let [isWaitingToBeMined, setIsWaitingToBeMined] = useState<boolean>(false);
   let [value, setValue] = useState<string>("0");
   let [isBorrowing, setIsBorrowing] = useState<boolean>(false);
