@@ -1,5 +1,4 @@
 import Ring from "./ring";
-import { Money, Currencies } from "ts-money";
 interface props {
   totalSupplyBalanceInUsd: number;
   totalBorrowedInUsd: number;
