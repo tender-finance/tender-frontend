@@ -1,23 +1,25 @@
-// import Borrow from "../../../../app/components/borrow-flow/borrow";
 import { Market, Token, TokenPair, cToken as cTokenType } from "~/types/global";
+import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import Borrow, {
-  BorrowProps,
-} from "../../../../app/components/borrow-flow/borrow";
+import Withdraw, {
+  WithdrawProps,
+} from "../../../../app/components/deposit-flow/withdraw";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-  title: "Tender/ModalFlows/Borrow",
-  component: Borrow,
+  title: "Tender/ModalFlows/Withdraw",
+  component: Withdraw,
   // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
   argTypes: {
     backgroundColor: { control: "color" },
   },
-} as ComponentMeta<typeof Borrow>;
+} as ComponentMeta<typeof Withdraw>;
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof Borrow> = (args) => <Borrow {...args} />;
+const Template: ComponentStory<typeof Withdraw> = (args) => (
+  <Withdraw {...args} />
+);
 
 export const Primary = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
@@ -69,11 +71,12 @@ let tokenPairs: TokenPair[] = [tokenPair];
 Primary.args = {
   market,
   closeModal: () => {},
-  setIsRepaying: () => {},
+  setIsSupplying: () => {},
   signer: null,
-  borrowLimitUsed: market.borrowLimitUsed,
   borrowLimit: market.borrowLimit,
+  borrowLimitUsed: market.borrowLimitUsed,
   walletBalance: market.walletBalance,
   tokenPairs,
-  totalBorrowedAmountInUsd: market.borrowBalanceInUsd,
-} as BorrowProps;
+  totalBorrowedAmountInUsd: market.totalBorrowedAmountInUsd,
+  comptrollerAddress: market.comptrollerAddress,
+} as WithdrawProps;

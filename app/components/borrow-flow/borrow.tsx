@@ -19,7 +19,7 @@ import { useNewTotalBorrowedAmountInUsd } from "~/hooks/use-new-total-borrowed-a
 import { useMaxBorrowAmount } from "~/hooks/use-max-borrow-amount";
 import { shrinkyInputClass, toMoneyString } from "~/lib/ui";
 
-interface Props {
+export interface BorrowProps {
   market: Market;
   closeModal: Function;
   setIsRepaying: Function;
