@@ -1,3 +1,5 @@
+import { toMoneyString } from "~/lib/ui";
+
 interface BorrowBalanceProps {
   value: string;
   isValid: boolean;
@@ -6,10 +8,6 @@ interface BorrowBalanceProps {
   borrowLimitUsed: string;
   newBorrowLimitUsed: string;
 }
-
-const formatBorrowLimit = (v: number): string => {
-  return v.toFixed(2).toString();
-};
 
 export default function BorrowBalance(props: BorrowBalanceProps) {
   const {
@@ -29,14 +27,12 @@ export default function BorrowBalance(props: BorrowBalanceProps) {
       <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 py-5">
         <div className="flex-grow">Borrow Balance</div>
         <div>
-          {(value == "0" || !isValid) && (
-            <>${formatBorrowLimit(borrowBalance)}</>
-          )}
+          {(value == "0" || !isValid) && <>${toMoneyString(borrowBalance)}</>}
           {isValid && value != "0" && (
             <>
-              ${formatBorrowLimit(borrowBalance)}{" "}
+              ${toMoneyString(borrowBalance)}{" "}
               <span className="text-brand-green">→</span> $
-              {formatBorrowLimit(newBorrowBalance)}
+              {toMoneyString(newBorrowBalance)}
             </>
           )}
           {}

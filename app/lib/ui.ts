@@ -26,4 +26,20 @@ const shrinkyInputClass = (len: number): string => {
   }
   return className;
 };
+
+/**
+ *
+ * @param v Number to round
+ * @param withPrefix Indicates weather to include currency prefix (i.e. $)
+ * @returns A number that's rounded and localized
+ */
+export const toMoneyString = (
+  v: number,
+  withPrefix: boolean = true
+): string => {
+  let roundedNumber = parseFloat(v.toFixed(2));
+  let s = `${roundedNumber.toLocaleString("en-US")}`;
+  return withPrefix ? s : s.substring(1);
+};
+
 export { shrinkyInputClass };
