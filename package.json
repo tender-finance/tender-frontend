@@ -21,7 +21,9 @@
     "pretest:e2e:run": "npm run build",
     "test:e2e:run": "export PORT=8811; start-server-and-test dev http://localhost:8811 \"cypress run\"",
     "typecheck": "tsc -b && tsc -b cypress",
-    "validate": "run-p \"test -- --run\" lint typecheck test:e2e:run"
+    "validate": "run-p \"test -- --run\" lint typecheck test:e2e:run",
+    "storybook": "export NODE_OPTIONS=--openssl-legacy-provider; start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "dependencies": {
     "@ethersproject/providers": "^5.6.1",
@@ -60,14 +62,25 @@
     "/public/build"
   ],
   "devDependencies": {
+    "@babel/core": "^7.18.2",
     "@remix-run/dev": "^1.2.3",
     "@remix-run/eslint-config": "^1.2.3",
     "@remix-run/serve": "^1.2.3",
+    "@storybook/addon-actions": "^6.5.6",
+    "@storybook/addon-essentials": "^6.5.6",
+    "@storybook/addon-interactions": "^6.5.6",
+    "@storybook/addon-links": "^6.5.6",
+    "@storybook/builder-webpack4": "^6.5.6",
+    "@storybook/manager-webpack4": "^6.5.6",
+    "@storybook/react": "^6.5.6",
+    "@storybook/testing-library": "^0.0.11",
     "@types/react": "^17.0.24",
     "@types/react-dom": "^17.0.9",
     "@types/react-modal": "^3.13.1",
+    "babel-loader": "^8.2.5",
     "cross-env": "^7.0.3",
     "eslint": "^8.9.0",
+    "eslint-plugin-storybook": "^0.5.12",
     "happy-dom": "^2.55.0",
     "msw": "^0.39.2",
     "npm-run-all": "^4.1.5",
