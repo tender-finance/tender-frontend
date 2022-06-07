@@ -1,3 +1,4 @@
+import * as HRNumbers from "human-readable-numbers";
 const DEFAULT_TEXT_CLASS = "text-6xl";
 
 /**
@@ -39,6 +40,15 @@ export const toFiatString = (v: number): string => {
     style: "currency",
     currency: "USD",
   })}`;
+};
+
+const A_BIG_NUMBER = 100000;
+export const toShortFiatString = (v: number): string => {
+  return `${v > A_BIG_NUMBER ? HRNumbers.toHumanString(v) : toFiatString(v)}`;
+};
+
+export const toShortCryptoString = (v: number): string => {
+  return `${v > A_BIG_NUMBER ? HRNumbers.toHumanString(v) : toCryptoString(v)}`;
 };
 
 /**
