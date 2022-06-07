@@ -1,4 +1,4 @@
-import { toMoneyString } from "~/lib/ui";
+import { toFiatString } from "~/lib/ui";
 
 interface BorrowBalanceProps {
   value: string;
@@ -27,12 +27,12 @@ export default function BorrowBalance(props: BorrowBalanceProps) {
       <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 py-5">
         <div className="flex-grow">Borrow Balance</div>
         <div>
-          {(value == "0" || !isValid) && <>{toMoneyString(borrowBalance)}</>}
+          {(value == "0" || !isValid) && <>{toFiatString(borrowBalance)}</>}
           {isValid && value != "0" && (
             <>
-              {toMoneyString(borrowBalance)}{" "}
+              {toFiatString(borrowBalance)}{" "}
               <span className="text-brand-green">→</span> $
-              {toMoneyString(newBorrowBalance)}
+              {toFiatString(newBorrowBalance)}
             </>
           )}
           {}

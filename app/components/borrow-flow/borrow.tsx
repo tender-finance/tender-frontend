@@ -17,7 +17,7 @@ import { useSafeMaxBorrowAmountForToken } from "~/hooks/use-safe-max-borrow-amou
 import { TenderContext } from "~/contexts/tender-context";
 import { useNewTotalBorrowedAmountInUsd } from "~/hooks/use-new-total-borrowed-amount-in-usd";
 import { useMaxBorrowAmount } from "~/hooks/use-max-borrow-amount";
-import { shrinkyInputClass, toMoneyString } from "~/lib/ui";
+import { shrinkyInputClass, toCryptoString, toFiatString } from "~/lib/ui";
 
 export interface BorrowProps {
   market: Market;
@@ -236,14 +236,14 @@ export default function Borrow({
                 <div className="flex text-gray-500 mb-2">
                   <div className="flex-grow">Currently Borrowing</div>
                   <div>
-                    {toMoneyString(market.borrowBalance)}{" "}
+                    {toCryptoString(market.borrowBalance)}{" "}
                     {market.tokenPair.token.symbol}
                   </div>
                 </div>
                 <div className="flex text-gray-500">
                   <div className="flex-grow">Market Liquidity</div>
                   <div>
-                    {toMoneyString(market.maxBorrowLiquidity)}{" "}
+                    {toCryptoString(market.maxBorrowLiquidity)}{" "}
                     {market.tokenPair.token.symbol}
                   </div>
                 </div>

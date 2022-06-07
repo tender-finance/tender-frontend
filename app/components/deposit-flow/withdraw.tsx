@@ -16,7 +16,7 @@ import { useSafeMaxWithdrawAmountForToken } from "~/hooks/use-safe-max-withdraw-
 import ConfirmingTransaction from "../fi-modal/confirming-transition";
 import { TenderContext } from "~/contexts/tender-context";
 import { useMaxWithdrawAmount } from "~/hooks/use-max-withdraw-amount";
-import { shrinkyInputClass, toMoneyString } from "~/lib/ui";
+import { shrinkyInputClass, toFiatString } from "~/lib/ui";
 
 export interface WithdrawProps {
   market: Market;
@@ -240,7 +240,7 @@ export default function Withdraw({
                 <div className="flex text-gray-500">
                   <div className="flex-grow">Currently Supplying</div>
                   <div>
-                    {toMoneyString(market.supplyBalance)}{" "}
+                    {toFiatString(market.supplyBalance)}{" "}
                     {market.tokenPair.token.symbol}
                   </div>
                 </div>

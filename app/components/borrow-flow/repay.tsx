@@ -16,7 +16,7 @@ import { useBorrowLimitUsed } from "~/hooks/use-borrow-limit-used";
 import ConfirmingTransaction from "../fi-modal/confirming-transition";
 import { TenderContext } from "~/contexts/tender-context";
 import { useNewTotalBorrowedAmountInUsd } from "~/hooks/use-new-total-borrowed-amount-in-usd";
-import { shrinkyInputClass, toMoneyString } from "~/lib/ui";
+import { shrinkyInputClass, toFiatString } from "~/lib/ui";
 
 export interface RepayProps {
   closeModal: Function;
@@ -285,7 +285,7 @@ export default function Repay({
               <div className="flex text-gray-500">
                 <div className="flex-grow">Wallet Balance</div>
                 <div>
-                  {toMoneyString(walletBalance, false)}{" "}
+                  {toFiatString(walletBalance, false)}{" "}
                   {market.tokenPair.token.symbol}
                 </div>
               </div>

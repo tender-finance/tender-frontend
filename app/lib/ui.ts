@@ -33,16 +33,30 @@ const shrinkyInputClass = (len: number): string => {
  * @param withPrefix Indicates weather to include currency prefix (i.e. $)
  * @returns A number that's rounded and localized
  */
-export const toMoneyString = (
-  v: number,
-  withPrefix: boolean = true
-): string => {
+export const toFiatString = (v: number): string => {
   let roundedNumber = parseFloat(v.toFixed(2));
-  let s = `${roundedNumber.toLocaleString("en-US", {
+  return `${roundedNumber.toLocaleString("en-US", {
     style: "currency",
     currency: "USD",
   })}`;
-  return withPrefix ? s : s.substring(1);
+};
+
+/**
+ *
+ * @param v Crypto value
+ * @returns A human readable string for this value
+ */
+export const toCryptoString = (v: number): string => {
+  let s: string;
+  if (v > 1) {
+    // Applies commas to large numbers
+    s = toFiatString(v).substring(1);
+  } else {
+    s = v
+      .toFixed(6) // round to 6 places
+      .replace(/(?<=\d)0*$/g, ""); // remove traliing 0's, leaving at least one left
+  }
+  return s;
 };
 
 export { shrinkyInputClass };

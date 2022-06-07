@@ -1,4 +1,4 @@
-import { toMoneyString } from "~/lib/ui";
+import { toFiatString } from "~/lib/ui";
 
 interface BorrowLimitProps {
   value: string;
@@ -28,12 +28,12 @@ export default function BorrowLimit(props: BorrowLimitProps) {
       <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 py-5">
         <div className="flex-grow">Borrow Limit </div>
         <div>
-          {(value == "0" || !isValid) && <>{toMoneyString(borrowLimit)}</>}
+          {(value == "0" || !isValid) && <>{toFiatString(borrowLimit)}</>}
           {isValid && value != "0" && (
             <>
-              {toMoneyString(borrowLimit)}{" "}
+              {toFiatString(borrowLimit)}{" "}
               <span className="text-brand-green">→</span> $
-              {toMoneyString(newBorrowLimit)}
+              {toFiatString(newBorrowLimit)}
             </>
           )}
           {}

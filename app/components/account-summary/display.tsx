@@ -1,4 +1,4 @@
-import { toMoneyString } from "~/lib/ui";
+import { toFiatString } from "~/lib/ui";
 import Ring from "./ring";
 interface props {
   totalSupplyBalanceInUsd: number;
@@ -23,7 +23,7 @@ export default function Display({
         <div className="w-1/3 flex flex-col justify-center items-center">
           <div className="text-brand-green">Supply Balance</div>{" "}
           <div className="text-3xl">
-            {toMoneyString(totalSupplyBalanceInUsd)}
+            {toFiatString(totalSupplyBalanceInUsd)}
           </div>
         </div>
         <div className="w-1/3 flex justify-center">
@@ -59,7 +59,7 @@ export default function Display({
         </div>
         <div className="w-1/3 text-right  flex flex-col justify-center items-center">
           <div className="text-brand-blue">Borrow Balance</div>{" "}
-          <div className="text-3xl">{toMoneyString(totalBorrowedInUsd)}</div>
+          <div className="text-3xl">{toFiatString(totalBorrowedInUsd)}</div>
         </div>
       </div>
       <div className="flex text-xs justify-center items-center">
@@ -74,7 +74,7 @@ export default function Display({
         ></div>
         <div className="mr-2">{borrowLimitUsed}%</div>
         <div className="bg-gray-300 mr-2 h-0.5 flex-grow"></div>
-        <div>{toMoneyString(borrowLimit)}</div>
+        <div>{toFiatString(borrowLimit)}</div>
       </div>
     </div>
   );
