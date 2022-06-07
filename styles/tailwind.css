@@ -20,6 +20,8 @@
     );
     box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.07);
 
+    overflow-x: hidden;
+
     @apply rounded-2xl;
   }
 }
