@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { safeMaxBorrowAmountForToken } from "~/lib/tender";
-import type { Market, TokenPair } from "~/types/global";
+import type { TokenPair } from "~/types/global";
 
 export function useSafeMaxBorrowAmountForToken(
   borrowLimit: number,
@@ -19,7 +19,13 @@ export function useSafeMaxBorrowAmountForToken(
         setSafeMaxBorrowAmountForToken(max);
       }
     );
-  }, [borrowLimit, totalBorrowed, comptrollerAddress, tokenPair]);
+  }, [
+    borrowLimit,
+    totalBorrowed,
+    comptrollerAddress,
+    tokenPair,
+    maxBorrowLiquidity,
+  ]);
 
   return safeMaxBorrowAmount;
 }
