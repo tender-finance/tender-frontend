@@ -494,66 +494,6 @@ async function getTotalBorrowedInUsd(
  * @param signer
  * @param borrowLimit
  * @param totalBorrowed
- * @param comptrollerAddress
- * @param tokenPair
- * @returns  80% of your theoretical max withdraw
- */
-async function safeMaxWithdrawAmountForToken(
-  signer: JsonRpcSigner,
-  totalBorrowed: number,
-  comptrollerAddress: string,
-  tokenPairs: TokenPair[],
-  tokenPair: TokenPair
-): Promise<number> {
-  let comptrollerContract = new ethers.Contract(
-    comptrollerAddress,
-    SampleComptrollerAbi,
-    signer
-  );
-
-  let otherTokenPairs: TokenPair[] = tokenPairs.filter(
-    (tp) => tp.token.symbol !== tokenPair.token.symbol
-  );
-
-  let borrowLimitsPerToken: number[] = await Promise.all(
-    otherTokenPairs.map(async (tp) => {
-      return await borrowLimitForTokenInUsd(signer, comptrollerContract, tp);
-    })
-  );
-
-  let totalBorrowLimitExceptThisToken: number = borrowLimitsPerToken.reduce(
-    (acc, curr) => acc + curr
-  );
-
-  let collateralFactor: number = await collateralFactorForToken(
-    signer,
-    comptrollerContract,
-    tokenPair
-  );
-
-  let currentlySupplying: number = await getCurrentlySupplying(
-    signer,
-    tokenPair.cToken,
-    tokenPair.token
-  );
-
-  // Finds the amount you can withdraw of a token that gives you 80% borrow limit upon doing it.
-  // Found reverse engineering from a spreadsheet, not sure how to make this make more sense.
-  // -(((borrowed_amount / 0.8) - sumOfAllOtherTokensBorrowLimit) / priceInUsd / collatFactor) + balance = withdrawAmount
-  let amount =
-    (-1 * (totalBorrowed / 0.8 - totalBorrowLimitExceptThisToken)) /
-      tokenPair.token.priceInUsd /
-      collateralFactor +
-    currentlySupplying;
-
-  return amount;
-}
-
-/**
- *
- * @param signer
- * @param borrowLimit
- * @param totalBorrowed
  * @param tp
  * @returns theoretical max borrow limit with a saftey margin of 80%
  */
@@ -568,34 +508,6 @@ async function safeMaxBorrowAmountForToken(
   let amount = (0.8 * borrowLimit - totalBorrowed) / tp.token.priceInUsd;
 
   return amount;
-}
-
-async function getMaxWithdrawAmount(
-  signer: JsonRpcSigner,
-  comptrollerAddress: string,
-  supplyBalance: number,
-  borrowLimit: number,
-  totalBorrowed: number,
-  tp: TokenPair
-): Promise<number> {
-  let comptrollerContract = new ethers.Contract(
-    comptrollerAddress,
-    SampleComptrollerAbi,
-    signer
-  );
-
-  let collateralFactor = await collateralFactorForToken(
-    signer,
-    comptrollerContract,
-    tp
-  );
-
-  let max: number = Math.min(
-    supplyBalance,
-    (borrowLimit - totalBorrowed) / tp.token.priceInUsd / collateralFactor
-  );
-
-  return max;
 }
 
 async function getMaxBorrowAmount(
@@ -642,9 +554,7 @@ export {
   projectBorrowLimit,
   getAssetPriceInUsd,
   getTotalBorrowedInUsd,
-  safeMaxWithdrawAmountForToken,
   safeMaxBorrowAmountForToken,
-  getMaxWithdrawAmount,
   getMaxBorrowAmount,
   getMaxBorrowLiquidity,
 };

@@ -12,10 +12,8 @@ import { useValidInput } from "~/hooks/use-valid-input";
 import BorrowLimit from "../fi-modal/borrow-limit";
 import { useProjectBorrowLimit } from "~/hooks/use-project-borrow-limit";
 import { useBorrowLimitUsed } from "~/hooks/use-borrow-limit-used";
-import { useSafeMaxWithdrawAmountForToken } from "~/hooks/use-safe-max-withdraw-amount-for-token";
 import ConfirmingTransaction from "../fi-modal/confirming-transition";
 import { TenderContext } from "~/contexts/tender-context";
-import { useMaxWithdrawAmount } from "~/hooks/use-max-withdraw-amount";
 import { shrinkyInputClass, toCryptoString } from "~/lib/ui";
 
 export interface WithdrawProps {
@@ -58,23 +56,7 @@ export default function Withdraw({
     newBorrowLimit
   );
 
-  let formattedSafeMaxWithdrawAmount: string = useSafeMaxWithdrawAmountForToken(
-    signer,
-    market.supplyBalance,
-    totalBorrowedAmountInUsd,
-    market.comptrollerAddress,
-    tokenPairs,
-    market.tokenPair
-  ).toFixed(2);
-
-  let maxWithdrawAmount = useMaxWithdrawAmount(
-    signer,
-    market.comptrollerAddress,
-    market.supplyBalance,
-    borrowLimit,
-    totalBorrowedAmountInUsd,
-    market.tokenPair
-  );
+  let maxWithdrawAmount: number = market.supplyBalance;
 
   let [isValid, validationDetail] = useValidInput(
     value,
@@ -131,14 +113,14 @@ export default function Withdraw({
 
                 {parseFloat(borrowLimitUsed) < 80 && (
                   <Max
-                    maxValue={`${parseFloat(formattedSafeMaxWithdrawAmount)}`}
+                    maxValue={maxWithdrawAmount.toString()}
                     updateValue={() => {
                       if (!inputEl || !inputEl.current) return;
                       inputEl.current.focus();
-                      inputEl.current.value = formattedSafeMaxWithdrawAmount;
-                      setValue(formattedSafeMaxWithdrawAmount);
+                      inputEl.current.value = maxWithdrawAmount.toString();
+                      setValue(maxWithdrawAmount.toString());
                     }}
-                    label="80% Max"
+                    label="Max"
                     maxValueLabel={market.tokenPair.token.symbol}
                   />
                 )}
