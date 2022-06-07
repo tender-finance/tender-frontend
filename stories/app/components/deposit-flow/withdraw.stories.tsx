@@ -26,6 +26,7 @@ const Template: ComponentStory<typeof Withdraw> = (args) => (
 );
 
 export const Primary = Template.bind({});
+export const SmallNumbers = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 let cToken: cTokenType = {
   name: "cTok",
@@ -83,4 +84,39 @@ Primary.args = {
   tokenPairs,
   totalBorrowedAmountInUsd: market.totalBorrowedAmountInUsd,
   comptrollerAddress: market.comptrollerAddress,
+} as WithdrawProps;
+
+let smallMarket: Market = {
+  id: "000",
+  tokenPair,
+  marketData: {
+    depositApy: "99.99%",
+    borrowApy: "66.66%",
+    totalBorrowedUsd: "200000000",
+    marketSizeUsd: "3000000000000000",
+  },
+  walletBalance: 0.0000004,
+  supplyBalance: 0.00005,
+  supplyBalanceInUsd: 0.00002,
+  borrowBalance: 0.0000008,
+  borrowBalanceInUsd: 0.16,
+  borrowLimit: 0.9,
+  borrowLimitUsedOfToken: "0.00001",
+  borrowLimitUsed: "0.3",
+  totalBorrowedAmountInUsd: 0.0002,
+  comptrollerAddress: "0x03",
+  maxBorrowLiquidity: 0.004,
+};
+
+SmallNumbers.args = {
+  market,
+  closeModal: () => {},
+  setIsSupplying: () => {},
+  signer: null,
+  borrowLimit: smallMarket.borrowLimit,
+  borrowLimitUsed: smallMarket.borrowLimitUsed,
+  walletBalance: smallMarket.walletBalance,
+  tokenPairs,
+  totalBorrowedAmountInUsd: smallMarket.totalBorrowedAmountInUsd,
+  comptrollerAddress: smallMarket.comptrollerAddress,
 } as WithdrawProps;
