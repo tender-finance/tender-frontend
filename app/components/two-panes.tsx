@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { TenderContext } from "~/contexts/tender-context";
 import MarketSupplyRow from "~/components/two-panes/market-supply-row";
 import MarketBorrowRow from "~/components/two-panes/market-borrow-row";
-import { toFiatString, toShortFiatString, toShortCryptoString } from "~/lib/ui";
+import { toShortFiatString, toShortCryptoString } from "~/lib/ui";
 
 export default function TwoPanes() {
   let { markets } = useContext(TenderContext);

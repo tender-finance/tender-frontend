@@ -1,5 +1,5 @@
-const DEFAULT_TEXT_CLASS = "text-6xl";
 import * as HRNumbers from "human-readable-numbers";
+const DEFAULT_TEXT_CLASS = "text-6xl";
 
 /**
  * Used on deposit, withdraw, borrow, and repay modals
