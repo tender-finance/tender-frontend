@@ -1,3 +1,5 @@
+import { toFiatString } from "~/lib/ui";
+
 interface BorrowLimitProps {
   value: string;
   isValid: boolean;
@@ -6,10 +8,6 @@ interface BorrowLimitProps {
   borrowLimitUsed: string;
   newBorrowLimitUsed: string;
 }
-
-const formatBorrowLimit = (v: number): string => {
-  return v.toFixed(2).toString();
-};
 
 export default function BorrowLimit(props: BorrowLimitProps) {
   const {
@@ -30,12 +28,12 @@ export default function BorrowLimit(props: BorrowLimitProps) {
       <div className="flex items-center mb-3 text-gray-400 border-b border-b-gray-600 py-5">
         <div className="flex-grow">Borrow Limit </div>
         <div>
-          {(value == "0" || !isValid) && <>${formatBorrowLimit(borrowLimit)}</>}
+          {(value == "0" || !isValid) && <>{toFiatString(borrowLimit)}</>}
           {isValid && value != "0" && (
             <>
-              ${formatBorrowLimit(borrowLimit)}{" "}
+              {toFiatString(borrowLimit)}{" "}
               <span className="text-brand-green">→</span> $
-              {formatBorrowLimit(newBorrowLimit)}
+              {toFiatString(newBorrowLimit)}
             </>
           )}
           {}

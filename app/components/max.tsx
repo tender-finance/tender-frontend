@@ -1,3 +1,5 @@
+import { toCryptoString } from "~/lib/ui";
+
 interface MaxProps {
   updateValue: Function;
   maxValue: string;
@@ -5,7 +7,8 @@ interface MaxProps {
   label?: string;
 }
 const formatMaxValue = (v: string): string => {
-  return Math.max(0, parseFloat(v)).toFixed(2);
+  console.log(v);
+  return toCryptoString(Math.max(0, parseFloat(v)));
 };
 export default function Max(props: MaxProps) {
   let label = props.label || "Max";

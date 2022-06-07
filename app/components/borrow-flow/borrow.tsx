@@ -11,16 +11,15 @@ import { borrow } from "~/lib/tender";
 import { useValidInput } from "~/hooks/use-valid-input";
 import BorrowBalance from "../fi-modal/borrow-balance";
 import { useBorrowLimitUsed } from "~/hooks/use-borrow-limit-used";
-import { useCurrentlyBorrowing } from "~/hooks/use-currently-borrowing";
 
 import ConfirmingTransaction from "../fi-modal/confirming-transition";
 import { useSafeMaxBorrowAmountForToken } from "~/hooks/use-safe-max-borrow-amount-for-token";
 import { TenderContext } from "~/contexts/tender-context";
 import { useNewTotalBorrowedAmountInUsd } from "~/hooks/use-new-total-borrowed-amount-in-usd";
 import { useMaxBorrowAmount } from "~/hooks/use-max-borrow-amount";
-import { shrinkyInputClass } from "~/lib/ui";
+import { shrinkyInputClass, toCryptoString } from "~/lib/ui";
 
-interface Props {
+export interface BorrowProps {
   market: Market;
   closeModal: Function;
   setIsRepaying: Function;
@@ -40,18 +39,13 @@ export default function Borrow({
   borrowLimit,
   borrowLimitUsed,
   totalBorrowedAmountInUsd,
-}: Props) {
+}: BorrowProps) {
   let [isWaitingToBeMined, setIsWaitingToBeMined] = useState<boolean>(false);
   let [value, setValue] = useState<string>("0");
   let [isBorrowing, setIsBorrowing] = useState<boolean>(false);
   let [txnHash, setTxnHash] = useState<string>("");
 
   let inputEl = useRef<HTMLInputElement>(null);
-  let currentlyBorrowing = useCurrentlyBorrowing(
-    signer,
-    market.tokenPair.cToken,
-    market.tokenPair.token
-  );
 
   let { updateTransaction } = useContext(TenderContext);
 
@@ -242,13 +236,14 @@ export default function Borrow({
                 <div className="flex text-gray-500 mb-2">
                   <div className="flex-grow">Currently Borrowing</div>
                   <div>
-                    {currentlyBorrowing} {market.tokenPair.token.symbol}
+                    {toCryptoString(market.borrowBalance)}{" "}
+                    {market.tokenPair.token.symbol}
                   </div>
                 </div>
                 <div className="flex text-gray-500">
                   <div className="flex-grow">Market Liquidity</div>
                   <div>
-                    {market.maxBorrowLiquidity.toFixed(2)}{" "}
+                    {toCryptoString(market.maxBorrowLiquidity)}{" "}
                     {market.tokenPair.token.symbol}
                   </div>
                 </div>

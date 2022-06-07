@@ -16,9 +16,9 @@ import { useBorrowLimitUsed } from "~/hooks/use-borrow-limit-used";
 import ConfirmingTransaction from "../fi-modal/confirming-transition";
 import { TenderContext } from "~/contexts/tender-context";
 import { useNewTotalBorrowedAmountInUsd } from "~/hooks/use-new-total-borrowed-amount-in-usd";
-import { shrinkyInputClass } from "~/lib/ui";
+import { shrinkyInputClass, toCryptoString } from "~/lib/ui";
 
-interface Props {
+export interface RepayProps {
   closeModal: Function;
   setIsRepaying: Function;
   signer: JsonRpcSigner | null | undefined;
@@ -41,7 +41,7 @@ export default function Repay({
   borrowLimitUsed,
   walletBalance,
   totalBorrowedAmountInUsd,
-}: Props) {
+}: RepayProps) {
   let [isWaitingToBeMined, setIsWaitingToBeMined] = useState<boolean>(false);
   let [isEnabled, setIsEnabled] = useState<boolean>(true);
   let [isEnabling, setIsEnabling] = useState<boolean>(false);
@@ -285,7 +285,8 @@ export default function Repay({
               <div className="flex text-gray-500">
                 <div className="flex-grow">Wallet Balance</div>
                 <div>
-                  {walletBalance} {market.tokenPair.token.symbol}
+                  {toCryptoString(walletBalance)}{" "}
+                  {market.tokenPair.token.symbol}
                 </div>
               </div>
             </div>
