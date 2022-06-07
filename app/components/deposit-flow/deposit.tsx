@@ -13,7 +13,7 @@ import { useProjectBorrowLimit } from "~/hooks/use-project-borrow-limit";
 import { useBorrowLimitUsed } from "~/hooks/use-borrow-limit-used";
 import ConfirmingTransaction from "../fi-modal/confirming-transition";
 import { TenderContext } from "~/contexts/tender-context";
-import { shrinkyInputClass, toFiatString } from "~/lib/ui";
+import { shrinkyInputClass, toFiatString, toCryptoString } from "~/lib/ui";
 
 export interface DepositProps {
   closeModal: Function;
@@ -273,7 +273,7 @@ export default function Deposit({
             <div className="flex text-gray-500">
               <div className="flex-grow">Wallet Balance</div>
               <div>
-                {toFiatString(walletBalance)} {market.tokenPair.token.symbol}
+                {toCryptoString(walletBalance)} {market.tokenPair.token.symbol}
               </div>
             </div>
           </div>
