@@ -64,7 +64,8 @@ export default function Borrow({
     borrowLimit,
     totalBorrowedAmountInUsd,
     market.comptrollerAddress,
-    market.tokenPair
+    market.tokenPair,
+    market.maxBorrowLiquidity
   ).toFixed(2);
 
   let maxBorrowAmount = useMaxBorrowAmount(
