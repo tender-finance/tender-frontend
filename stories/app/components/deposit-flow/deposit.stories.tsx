@@ -4,7 +4,7 @@ import type {
   TokenPair,
   cToken as cTokenType,
 } from "~/types/global";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import type { ComponentStory, ComponentMeta } from "@storybook/react";
 
 import Deposit, {
   type DepositProps,

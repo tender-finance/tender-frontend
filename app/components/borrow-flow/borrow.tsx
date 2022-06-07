@@ -17,7 +17,7 @@ import { useSafeMaxBorrowAmountForToken } from "~/hooks/use-safe-max-borrow-amou
 import { TenderContext } from "~/contexts/tender-context";
 import { useNewTotalBorrowedAmountInUsd } from "~/hooks/use-new-total-borrowed-amount-in-usd";
 import { useMaxBorrowAmount } from "~/hooks/use-max-borrow-amount";
-import { shrinkyInputClass, toCryptoString, toFiatString } from "~/lib/ui";
+import { shrinkyInputClass, toCryptoString } from "~/lib/ui";
 
 export interface BorrowProps {
   market: Market;
