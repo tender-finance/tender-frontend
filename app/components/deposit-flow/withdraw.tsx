@@ -213,7 +213,7 @@ export default function Withdraw({
                           setIsWaitingToBeMined(true);
                           let tr = await txn.wait(); // TODO: error handle if transaction fails
                           setValue("");
-                          updateTransaction(tr);
+                          updateTransaction(tr.blockHash);
                           toast.success("Withdraw successful");
                           closeModal();
                         } catch (e) {
