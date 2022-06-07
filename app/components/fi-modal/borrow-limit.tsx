@@ -32,7 +32,7 @@ export default function BorrowLimit(props: BorrowLimitProps) {
           {isValid && value != "0" && (
             <>
               {toFiatString(borrowLimit)}{" "}
-              <span className="text-brand-green">→</span> $
+              <span className="text-brand-green">→</span>
               {toFiatString(newBorrowLimit)}
             </>
           )}
