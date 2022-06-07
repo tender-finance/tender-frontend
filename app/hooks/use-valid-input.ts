@@ -27,6 +27,12 @@ export function useValidInput(
       // value coercion while parsing later in this function
       value = value.indexOf(".") === 0 ? `0${value}` : value;
 
+      // If trailing decimal, remove
+      value =
+        value.indexOf(".") === value.length - 1
+          ? value.substring(0, value.length - 1)
+          : value;
+
       let isNaNValue: boolean = isNaN(parseFloat(value));
       let isCoerced = parseFloat(value).toString() !== value;
       if (isNaNValue || isCoerced) {
