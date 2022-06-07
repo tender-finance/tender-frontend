@@ -2,9 +2,8 @@ import { useContext } from "react";
 import { TenderContext } from "~/contexts/tender-context";
 import MarketSupplyRow from "~/components/two-panes/market-supply-row";
 import MarketBorrowRow from "~/components/two-panes/market-borrow-row";
-import * as HRNumbers from "human-readable-numbers";
+import { toFiatString, toShortFiatString, toShortCryptoString } from "~/lib/ui";
 
-const A_BIG_NUMBER = 10000;
 export default function TwoPanes() {
   let { markets } = useContext(TenderContext);
 
@@ -97,10 +96,16 @@ export default function TwoPanes() {
                         {m.marketData.depositApy}
                       </td>
                       <td className="px-8 py-6 text-left">
-                        {m.walletBalance > A_BIG_NUMBER
-                          ? HRNumbers.toHumanString(m.walletBalance)
-                          : m.walletBalance}{" "}
-                        {m.tokenPair.token.symbol}
+                        <div>
+                          {toShortCryptoString(m.walletBalance)}{" "}
+                          {m.tokenPair.token.symbol}
+                        </div>
+                        <div className="bg-black rounded-lg text-xs text-gray-300 text-center py-1 px-2 inline-block whitespace-nowrap">
+                          {toShortFiatString(
+                            m.walletBalance * m.tokenPair.token.priceInUsd
+                          )}{" "}
+                          USD
+                        </div>
                       </td>
                     </MarketSupplyRow>
                   );
@@ -200,10 +205,16 @@ export default function TwoPanes() {
                         {m.marketData.borrowApy}
                       </td>
                       <td className="px-8 py-6 text-left whitespace-nowrap">
-                        {m.maxBorrowLiquidity > A_BIG_NUMBER
-                          ? HRNumbers.toHumanString(m.maxBorrowLiquidity)
-                          : m.maxBorrowLiquidity}{" "}
-                        {m.tokenPair.token.symbol}
+                        <div>
+                          {toShortCryptoString(m.maxBorrowLiquidity)}{" "}
+                          {m.tokenPair.token.symbol}
+                        </div>
+                        <div className="bg-black rounded-lg text-xs text-gray-300 text-center py-1 px-2 inline-block whitespace-nowrap">
+                          {toShortFiatString(
+                            m.maxBorrowLiquidity * m.tokenPair.token.priceInUsd
+                          )}{" "}
+                          USD
+                        </div>
                       </td>
                     </MarketBorrowRow>
                   );
