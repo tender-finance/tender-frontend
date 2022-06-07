@@ -24,6 +24,7 @@ export default {
 const Template: ComponentStory<typeof Repay> = (args) => <Repay {...args} />;
 
 export const Primary = Template.bind({});
+export const SmallNumbers = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 let cToken: cTokenType = {
   name: "cTok",
@@ -81,4 +82,38 @@ Primary.args = {
   tokenPairs,
   borrowLimitUsed: market.borrowLimitUsed,
   totalBorrowedAmountInUsd: market.totalBorrowedAmountInUsd,
+} as RepayProps;
+
+let smallMarket: Market = {
+  id: "000",
+  tokenPair,
+  marketData: {
+    depositApy: "99.99%",
+    borrowApy: "0.06%",
+    totalBorrowedUsd: "0.01",
+    marketSizeUsd: "0.02",
+  },
+  walletBalance: 0.000001,
+  supplyBalance: 0.000002,
+  supplyBalanceInUsd: 0.01,
+  borrowBalance: 0.02,
+  borrowBalanceInUsd: 0.1,
+  borrowLimit: 2,
+  borrowLimitUsedOfToken: "0.1",
+  borrowLimitUsed: "0.2",
+  totalBorrowedAmountInUsd: 0.01,
+  comptrollerAddress: "0x03",
+  maxBorrowLiquidity: 0.8,
+};
+SmallNumbers.args = {
+  market: smallMarket,
+  closeModal: () => {},
+  setIsRepaying: () => {},
+  signer: null,
+  borrowLimit: smallMarket.borrowLimit,
+  borrowedAmount: smallMarket.borrowBalance,
+  walletBalance: smallMarket.walletBalance,
+  tokenPairs,
+  borrowLimitUsed: smallMarket.borrowLimitUsed,
+  totalBorrowedAmountInUsd: smallMarket.totalBorrowedAmountInUsd,
 } as RepayProps;
