@@ -29,7 +29,7 @@ export default function TwoPanes() {
             <div className="px-8 py-6 text-brand-green text-2xl border-b border-b-gray-600 mb-4">
               Supply
             </div>
-            <table className="w-full h-full">
+            <table className="w-full h-full table-fixed">
               <thead>
                 <tr className="text-xs text-gray-400 ">
                   <th className="pb-4 px-8 text-left">Asset</th>
@@ -71,7 +71,7 @@ export default function TwoPanes() {
         )}
         {marketsWithoutSupply.length > 0 && (
           <div className="pane py-6">
-            <table className="w-full h-full">
+            <table className="w-full h-full table-fixed">
               <thead>
                 <tr className="text-xs text-gray-400 ">
                   <th className="pb-4 px-8 text-left">Asset</th>
@@ -126,7 +126,7 @@ export default function TwoPanes() {
             <div className="px-8 py-6 text-brand-blue text-2xl border-b border-b-gray-600 mb-4">
               Borrowing
             </div>
-            <table className="w-full h-full">
+            <table className="w-full h-full table-fixed">
               <thead>
                 <tr className="text-xs text-gray-400 ">
                   <th className="pb-4 px-8 text-left">Assets</th>
@@ -178,7 +178,7 @@ export default function TwoPanes() {
         )}
         {marketsWithoutBorrow.length > 0 && (
           <div className="pane py-6">
-            <table className="w-full h-full">
+            <table className="w-full h-full table-fixed">
               <thead>
                 <tr className="text-xs text-gray-400 ">
                   <th className="pb-4 px-8 text-left">Asset</th>
