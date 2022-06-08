@@ -10,7 +10,7 @@ export default {
     USDC: {
       name: "USDC",
       symbol: "USDC",
-      decimals: 6,
+      decimals: 18,
       address: "0xEA32A96608495e54156Ae48931A7c20f0dcc1a21",
       icon: "/images/coin-icons/usdc.svg",
       cToken: {
