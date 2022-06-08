@@ -4,7 +4,7 @@ export default {
   blockExplorerUrl: "https://andromeda-explorer.metis.io/tx",
   Contracts: {
     Comptroller: "0x798752C2cd661b3eA4B7A5b45041fA95AcE3fc02",
-    PriceOracle: "0xA825839f183999aF8cBDF0452a4eE8105a0b462E",
+    PriceOracle: "0x628cf7F1e248a86913Dc2eBa4599300243eeaf5F",
   },
   Tokens: {
     USDC: {
