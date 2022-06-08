@@ -145,12 +145,12 @@ export default function Repay({
                     defaultValue={0}
                   />
                   <Max
-                    maxValue={maxRepayableAmount.toFixed(2)}
+                    maxValue={maxRepayableAmount.toString()}
                     updateValue={() => {
                       if (!inputEl || !inputEl.current) return;
                       inputEl.current.focus();
-                      inputEl.current.value = maxRepayableAmount.toFixed(2);
-                      setValue(maxRepayableAmount.toFixed(2));
+                      inputEl.current.value = maxRepayableAmount.toString();
+                      setValue(maxRepayableAmount.toString());
                     }}
                     maxValueLabel={market.tokenPair.token.symbol}
                   />
