@@ -64,19 +64,21 @@ export default function Display({
       </div>
       <div className="flex text-xs justify-center items-center">
         <div className=" text-gray-400 mr-2">Borrow Limit</div>
-        <div
-          className="bg-green-300 mr-2 h-2 rounded-full"
-          style={{
-            background:
-              percentUsed > 79
-                ? "linear-gradient(270deg, rgba(255, 0, 0.5) 0%, rgba(255, 0, 0, 1) 100%)"
-                : "linear-gradient(270deg, #1BD6CF 0%, #00E5AF 100%)",
-            width: borrowLimitUsed === "" ? 0 : `${percentUsed}%`,
-            transition: "width 1s ease-out",
-          }}
-        ></div>
-        <div className="mr-2">{borrowLimitUsed}%</div>
-        <div className="bg-gray-300 mr-2 h-0.5 flex-grow"></div>
+        <div className="w-full flex">
+          <div
+            className="bg-green-300 mr-2 h-2 rounded-full"
+            style={{
+              background:
+                percentUsed > 79
+                  ? "linear-gradient(270deg, rgba(255, 0, 0.5) 0%, rgba(255, 0, 0, 1) 100%)"
+                  : "linear-gradient(270deg, #1BD6CF 0%, #00E5AF 100%)",
+              width: borrowLimitUsed === "" ? 0 : `${percentUsed}%`,
+              transition: "width 1s ease-out",
+            }}
+          ></div>
+          <div className="mr-2">{borrowLimitUsed}%</div>
+          <div className="bg-gray-300 mr-2 h-0.5 flex-grow"></div>
+        </div>
         <div>{toFiatString(borrowLimit)}</div>
       </div>
     </div>
