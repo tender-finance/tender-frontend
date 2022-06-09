@@ -2,8 +2,8 @@ import ConnectWallet from "./connect-wallet";
 
 export default function Header() {
   return (
-    <div className="flex c mt-8">
-      <div className="flex-grow">
+    <div className="flex c mt-8 justify-between">
+      <div>
         <a href="/">
           <img
             src="/images/logo1.svg"
