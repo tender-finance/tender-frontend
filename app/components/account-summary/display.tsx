@@ -67,7 +67,10 @@ export default function Display({
         <div
           className="bg-green-300 mr-2 h-2 rounded-full"
           style={{
-            background: "linear-gradient(270deg, #1BD6CF 0%, #00E5AF 100%)",
+            background:
+              percentUsed > 79
+                ? "linear-gradient(270deg, rgba(255, 0, 0.5) 0%, rgba(255, 0, 0, 1) 100%)"
+                : "linear-gradient(270deg, #1BD6CF 0%, #00E5AF 100%)",
             width: borrowLimitUsed === "" ? 0 : `${percentUsed}%`,
             transition: "width 1s ease-out",
           }}
