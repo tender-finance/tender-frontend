@@ -13,6 +13,7 @@ export default {
       decimals: 18,
       address: "0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000",
       icon: "/images/coin-icons/metis.png",
+      priceDecimals: 18,
       cToken: {
         name: "tMetis 📈",
         symbol: "tMetis",
@@ -26,6 +27,7 @@ export default {
       decimals: 18,
       address: "0x5197487406336229a37D724710380278A1dca6b2",
       icon: "/images/coin-icons/dai.svg",
+      priceDecimals: 18,
       cToken: {
         name: "tTestDAI 📈",
         symbol: "tTestDAI",
@@ -39,6 +41,7 @@ export default {
       decimals: 18,
       address: "0xaD26Cc863cb1aaba691469246B4B4D65D951188e",
       icon: "/images/coin-icons/ethereum.svg",
+      priceDecimals: 18,
       cToken: {
         name: "tTestETH 📈",
         symbol: "tTestETH",
@@ -52,6 +55,7 @@ export default {
       decimals: 18,
       address: "0xAE745689b84ed533580610504Fe4baf38BEfc2C8",
       icon: "/images/coin-icons/bitcoin.svg",
+      priceDecimals: 18,
       cToken: {
         name: "tTestBTC 📈",
         symbol: "tTestBTC",
