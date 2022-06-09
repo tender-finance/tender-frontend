@@ -13,6 +13,7 @@ export default {
       decimals: 18,
       address: "0x5592EC0cfb4dbc12D3aB100b257153436a1f0FEa",
       icon: "/images/coin-icons/dai.svg",
+      priceDecimals: 18,
       cToken: {
         name: "Compound Dai 📈",
         symbol: "cDAI",
@@ -26,6 +27,7 @@ export default {
     //   decimals: 18,
     //   address: "0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99",
     //   icon: "/images/coin-icons/bat.svg",
+    //   priceDecimals: 18,
     //   cToken: {
     //     name: "Compound Basic Attention Token 📈",
     //     symbol: "cBAT",
@@ -40,6 +42,7 @@ export default {
       decimals: 6,
       address: "0x4DBCdF9B62e891a7cec5A2568C3F4FAF9E8Abe2b",
       icon: "/images/coin-icons/usdc.svg",
+      priceDecimals: 18,
       cToken: {
         name: "Compound USD Coin 📈",
         symbol: "cUSDC",
@@ -53,6 +56,7 @@ export default {
       decimals: 8,
       address: "0x577D296678535e4903D59A4C929B718e1D575e0A",
       icon: "/images/coin-icons/bitcoin.svg",
+      priceDecimals: 18,
       cToken: {
         name: "Compound Wrapped BTC 📈",
         symbol: "cWBTC",

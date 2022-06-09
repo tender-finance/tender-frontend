@@ -6,6 +6,7 @@ import type {
   cToken,
   TokenPair,
   TokenConfig,
+  Token,
 } from "~/types/global";
 
 async function generateTokenPair(
@@ -19,7 +20,8 @@ async function generateTokenPair(
   let priceInUsd = await getAssetPriceInUsd(
     signer,
     networkData.Contracts.PriceOracle,
-    token.cToken
+    token.cToken,
+    token as Token
   );
 
   return {

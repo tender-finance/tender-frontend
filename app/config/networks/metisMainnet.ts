@@ -13,6 +13,7 @@ export default {
       decimals: 18,
       address: "0xEA32A96608495e54156Ae48931A7c20f0dcc1a21",
       icon: "/images/coin-icons/usdc.svg",
+      priceDecimals: 18,
       cToken: {
         name: "tUSDC",
         symbol: "tUSDC",
@@ -26,6 +27,7 @@ export default {
       decimals: 18,
       address: "0x420000000000000000000000000000000000000a",
       icon: "/images/coin-icons/ethereum.svg",
+      priceDecimals: 18,
       cToken: {
         name: "tETH",
         symbol: "tETH",
@@ -39,6 +41,7 @@ export default {
       decimals: 18,
       address: "0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000",
       icon: "/images/coin-icons/metis.png",
+      priceDecimals: 18,
       cToken: {
         name: "tMETIS",
         symbol: "tMETIS",
@@ -52,6 +55,7 @@ export default {
       decimals: 8,
       address: "0xa5B55ab1dAF0F8e1EFc0eB1931a957fd89B918f4",
       icon: "/images/coin-icons/bitcoin.svg",
+      priceDecimals: 18,
       cToken: {
         name: "tWBTC",
         symbol: "tWBTC",
@@ -65,6 +69,7 @@ export default {
       decimals: 18,
       address: "0x4651B38e7ec14BB3db731369BFE5B08F2466Bd0A",
       icon: "/images/coin-icons/dai.svg",
+      priceDecimals: 18,
       cToken: {
         name: "tDAI",
         symbol: "tDAI",
@@ -78,6 +83,7 @@ export default {
       decimals: 6,
       address: "0xbB06DCA3AE6887fAbF931640f67cab3e3a16F4dC",
       icon: "/images/coin-icons/usdt.svg",
+      priceDecimals: 18,
       cToken: {
         name: "tUSDT",
         symbol: "tUSDT",
