@@ -13,7 +13,7 @@ export default {
       decimals: 6,
       address: "0xEA32A96608495e54156Ae48931A7c20f0dcc1a21",
       icon: "/images/coin-icons/usdc.svg",
-      priceDecimals: 28,
+      priceDecimals: 30,
       cToken: {
         name: "tUSDC",
         symbol: "tUSDC",
