@@ -55,7 +55,7 @@ export default {
       decimals: 8,
       address: "0xa5B55ab1dAF0F8e1EFc0eB1931a957fd89B918f4",
       icon: "/images/coin-icons/bitcoin.svg",
-      priceDecimals: 24,
+      priceDecimals: 30,
       cToken: {
         name: "tWBTC",
         symbol: "tWBTC",
