@@ -8,7 +8,7 @@ export default function App() {
   let tenderContextData = useTenderContext();
 
   return (
-    <div className="c mt-32">
+    <div className="c mt-32" data-testid="app-frame">
       {tenderContextData && (
         <TenderContext.Provider value={tenderContextData}>
           <AccountSummary />
