@@ -10,10 +10,10 @@ export default {
     USDC: {
       name: "USDC",
       symbol: "USDC",
-      decimals: 18,
+      decimals: 6,
       address: "0xEA32A96608495e54156Ae48931A7c20f0dcc1a21",
       icon: "/images/coin-icons/usdc.svg",
-      priceDecimals: 18,
+      priceDecimals: 30,
       cToken: {
         name: "tUSDC",
         symbol: "tUSDC",
@@ -55,7 +55,7 @@ export default {
       decimals: 8,
       address: "0xa5B55ab1dAF0F8e1EFc0eB1931a957fd89B918f4",
       icon: "/images/coin-icons/bitcoin.svg",
-      priceDecimals: 18,
+      priceDecimals: 28,
       cToken: {
         name: "tWBTC",
         symbol: "tWBTC",
