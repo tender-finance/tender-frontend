@@ -27,7 +27,16 @@ export default function ConnectWallet() {
           </div>
         </div>
       )}
-      {!isActive && (
+      {typeof window !== "undefined" && !window.ethereum && (
+        <a
+          className="border border-brand-green text-brand-green py-4 px-4 rounded-md text-sm"
+          target="_blank"
+          href="https://metamask.io/"
+        >
+          Install MetaMask to get started
+        </a>
+      )}
+      {typeof window !== "undefined" && window.ethereum && !isActive && (
         <div className="text-sm">
           <button
             data-testid="connect-wallet"
