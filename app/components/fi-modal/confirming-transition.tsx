@@ -1,6 +1,6 @@
 import * as animationData from "~/lotties/loader-tender.json";
 // @ts-ignore NO types :(
-import Lottie from "react-lottie";
+import Lottie from "lottie-react";
 import { useBlockchainExplorer } from "~/hooks/use-network-to-blockchain-explorer";
 
 interface Props {
@@ -21,20 +21,16 @@ export default function ConfirmingTransaction({
         >
           +
         </button>
-        <div className="flex w-full justify-center my-16 ">
+        <div
+          className="flex w-full justify-center my-16"
+          style={{ maxWidth: "100%" }}
+        >
           <Lottie
-            options={{
-              loop: true,
-              autoplay: true,
-              animationData: animationData,
-              rendererSettings: {
-                preserveAspectRatio: "xMidYMid slice",
-              },
+            animationData={animationData}
+            style={{
+              height: "250px",
+              width: "250px",
             }}
-            height={250}
-            width={250}
-            isStopped={false}
-            isPaused={false}
           />
         </div>
         <div className="uppercase text-center">Confirming transaction</div>
