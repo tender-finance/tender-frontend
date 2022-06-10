@@ -42,8 +42,8 @@ jobs:
         with:
           node-version: 16
 
-      - name: 📥 Download deps
-        uses: bahmutov/npm-install@v1
+      - name: npm install
+        uses: jaid/action-npm-install@v1.2.1
 
       - name: 🔎 Type check
         run: npm run typecheck --if-present
@@ -63,8 +63,8 @@ jobs:
         with:
           node-version: 16
 
-      - name: 📥 Download deps
-        uses: bahmutov/npm-install@v1
+      - name: npm install
+        uses: jaid/action-npm-install@v1.2.1
 
       - name: ⚡ Run vitest
         run: npm run test -- --coverage
@@ -87,8 +87,8 @@ jobs:
         with:
           node-version: 16
 
-      - name: 📥 Download deps
-        uses: bahmutov/npm-install@v1
+      - name: npm install
+        uses: jaid/action-npm-install@v1.2.1
 
       # - name: 🛠 Setup Database
       #   run: npx prisma migrate reset --force
