@@ -45,18 +45,16 @@ export default function ConnectWallet() {
 
         {/* Prompt to Connect Wallet if not active */}
         {window.ethereum && !isActive && (
-          <div className="text-sm">
-            <button
-              data-testid="connect-wallet"
-              style={{
-                background: "linear-gradient(270deg, #1BD6CF 0%, #00E5AF 100%)",
-              }}
-              className="bg-brand-green text-gray-900 py-4 px-4 rounded-md text-sm"
-              onClick={() => metaMask.activate()}
-            >
-              Connect Wallet
-            </button>
-          </div>
+          <button
+            data-testid="connect-wallet"
+            style={{
+              background: "linear-gradient(270deg, #1BD6CF 0%, #00E5AF 100%)",
+            }}
+            className="hover:cursor-pointer bg-brand-green text-gray-900 py-4 px-4 rounded-md text-sm"
+            onClick={() => metaMask.activate()}
+          >
+            Connect Wallet
+          </button>
         )}
       </>}
 
