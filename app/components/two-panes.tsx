@@ -20,6 +20,7 @@ export default function TwoPanes() {
 
   return (
     <div className="grid grid-cols-2 gap-9 mb-14">
+
       {/* Supply */}
 
       <div>
