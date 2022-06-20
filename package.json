@@ -46,6 +46,7 @@
     "human-readable-numbers": "^0.9.5",
     "logrocket": "^3.0.0",
     "lottie-react": "^2.2.1",
+    "mathjs": "^10.6.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-hot-toast": "^2.2.0",

@@ -4,7 +4,7 @@ import { useEffect, useState, useRef, useContext } from "react";
 import type { JsonRpcSigner } from "@ethersproject/providers";
 import toast from "react-hot-toast";
 import Max from "~/components/max";
-
+import * as math from "mathjs"
 import clsx from "clsx";
 
 import { redeem } from "~/lib/tender";
@@ -116,9 +116,10 @@ export default function Withdraw({
                     maxValue={maxWithdrawAmount.toString()}
                     updateValue={() => {
                       if (!inputEl || !inputEl.current) return;
+                      let value = math.format(maxWithdrawAmount, {notation: "fixed"})
                       inputEl.current.focus();
-                      inputEl.current.value = maxWithdrawAmount.toString();
-                      setValue(maxWithdrawAmount.toString());
+                      inputEl.current.value = value;
+                      setValue(value);
                     }}
                     label="Max"
                     maxValueLabel={market.tokenPair.token.symbol}

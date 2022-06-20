@@ -2,6 +2,7 @@ import { ICON_SIZE } from "~/lib/constants";
 import type { Market, TokenPair } from "~/types/global";
 import { useEffect, useState, useRef, useContext } from "react";
 import type { JsonRpcSigner } from "@ethersproject/providers";
+import * as math from "mathjs"
 
 import clsx from "clsx";
 import toast from "react-hot-toast";
@@ -60,13 +61,15 @@ export default function Borrow({
     borrowLimit
   );
 
-  let formattedMaxBorrowLimit: string = useSafeMaxBorrowAmountForToken(
+  let maxBorrowLimit: number = useSafeMaxBorrowAmountForToken(
     borrowLimit,
     totalBorrowedAmountInUsd,
     market.comptrollerAddress,
     market.tokenPair,
     market.maxBorrowLiquidity
-  ).toFixed(2);
+  )
+
+  let formattedMaxBorrowLimit : string = math.format(maxBorrowLimit)
 
   let maxBorrowAmount = useMaxBorrowAmount(
     borrowLimit,

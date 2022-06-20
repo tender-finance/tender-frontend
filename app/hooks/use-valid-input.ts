@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
+import * as math from "mathjs"
 
 enum InputValidationDetail {
-  NON_NUMERIC_INPUT = "Non-numeric input",
+  NON_NUMERIC_INPUT = "Please enter an amount",
   INSUFFICIENT_LIQUIDITY = "Insufficient liquidity",
-  NEGATIVE_OR_ZERO = "Please provide value",
+  NEGATIVE_OR_ZERO = "Please enter a value",
 }
 
 export function useValidInput(
@@ -34,8 +35,7 @@ export function useValidInput(
           : value;
 
       let isNaNValue: boolean = isNaN(parseFloat(value));
-      let isCoerced = parseFloat(value).toString() !== value;
-      if (isNaNValue || isCoerced) {
+      if (isNaNValue) {
         setReason(InputValidationDetail.NON_NUMERIC_INPUT);
         throw "NaN";
       }
@@ -48,7 +48,7 @@ export function useValidInput(
       } else if (v > ceil) {
         setReason(InputValidationDetail.INSUFFICIENT_LIQUIDITY);
         setIsValid(false);
-      } else if (borrowLimitUsed >= 100) {
+      } else if (borrowLimitUsed >= 100 || borrowLimitUsed < -0) {
         setReason(InputValidationDetail.INSUFFICIENT_LIQUIDITY);
         setIsValid(false);
       } else {

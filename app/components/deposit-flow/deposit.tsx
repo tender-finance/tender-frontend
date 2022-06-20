@@ -6,6 +6,7 @@ import { useValidInput } from "~/hooks/use-valid-input";
 import toast from "react-hot-toast";
 import Max from "~/components/max";
 import clsx from "clsx";
+import * as math from "mathjs"
 
 import { enable, deposit, hasSufficientAllowance } from "~/lib/tender";
 import BorrowLimit from "../fi-modal/borrow-limit";
@@ -131,10 +132,11 @@ export default function Deposit({
                 <Max
                   maxValue={walletBalance.toString()}
                   updateValue={() => {
+                    let value = math.format(walletBalance, {notation: "fixed"})
                     if (!inputEl || !inputEl.current) return;
                     inputEl.current.focus();
-                    inputEl.current.value = walletBalance.toString();
-                    setValue(walletBalance.toString());
+                    inputEl.current.value = value;
+                    setValue(value)
                   }}
                   maxValueLabel={market.tokenPair.token.symbol}
                 />

@@ -7,16 +7,20 @@ import { toShortFiatString, toShortCryptoString } from "~/lib/ui";
 export default function TwoPanes() {
   let { markets } = useContext(TenderContext);
 
-  const marketsWithSupply = markets.filter((m) => m.supplyBalance);
+  // markets with less than this amount are shown as not actively supplying or borrowing
+   const DUST_LIMIT = 0.01;
 
-  const marketsWithBorrow = markets.filter((m) => m.borrowBalance);
+  const marketsWithSupply = markets.filter((m) => m.supplyBalance && m.supplyBalanceInUsd > DUST_LIMIT);
 
-  const marketsWithoutBorrow = markets.filter((m) => !m.borrowBalance);
+  const marketsWithBorrow = markets.filter((m) => m.borrowBalance && m.borrowBalanceInUsd > DUST_LIMIT);
 
-  const marketsWithoutSupply = markets.filter((m) => !m.supplyBalance);
+  const marketsWithoutBorrow = markets.filter((m) => !m.borrowBalance || m.borrowBalanceInUsd <= DUST_LIMIT);
+
+  const marketsWithoutSupply = markets.filter((m) => !m.supplyBalance || m.supplyBalanceInUsd <= DUST_LIMIT);
 
   return (
     <div className="grid grid-cols-2 gap-9 mb-14">
+
       {/* Supply */}
 
       <div>
@@ -33,7 +37,7 @@ export default function TwoPanes() {
               <thead>
                 <tr className="text-xs text-gray-400 ">
                   <th className="pb-4 px-8 text-left">Asset</th>
-                  <th className="pb-4 px-8 text-left">APY / Earned</th>
+                  <th className="pb-4 px-8 text-left">APY</th>
                   <th className="pb-4 px-8 text-left">Balance</th>
                 </tr>
               </thead>
@@ -53,10 +57,12 @@ export default function TwoPanes() {
                       <td className="px-8 py-6 text-left">
                         {m.marketData.depositApy}
                       </td>
-                      <td className="px-8 py-6 text-left">
-                        <div>${m.supplyBalanceInUsd.toFixed(2)}</div>
+                      <td className="px-8 py-6 text-left whitespace-nowrap">
+                        <div>
+                          {toShortCryptoString(m.supplyBalance)} {m.tokenPair.token.symbol}
+                        </div>
                         <div className="bg-black rounded-lg text-xs text-gray-300 text-center py-1 px-2 inline-block whitespace-nowrap">
-                          {m.supplyBalance} {m.tokenPair.token.symbol}
+                          {m.supplyBalanceInUsd.toFixed(2)}{" USD"}
                         </div>
                       </td>
                     </MarketSupplyRow>
@@ -75,7 +81,7 @@ export default function TwoPanes() {
               <thead>
                 <tr className="text-xs text-gray-400 ">
                   <th className="pb-4 px-8 text-left">Asset</th>
-                  <th className="pb-4 px-8 text-left">APY / Earned</th>
+                  <th className="pb-4 px-8 text-left">APY</th>
                   <th className="pb-4 px-8 text-left">Wallet</th>
                 </tr>
               </thead>
@@ -95,7 +101,7 @@ export default function TwoPanes() {
                       <td className="px-8 py-6 text-left">
                         {m.marketData.depositApy}
                       </td>
-                      <td className="px-8 py-6 text-left">
+                      <td className="px-8 py-6 text-left whitespace-nowrap">
                         <div>
                           {toShortCryptoString(m.walletBalance)}{" "}
                           {m.tokenPair.token.symbol}
@@ -131,7 +137,7 @@ export default function TwoPanes() {
                 <tr className="text-xs text-gray-400 ">
                   <th className="pb-4 px-8 text-left">Assets</th>
                   <th className="pb-4 px-8 text-left whitespace-nowrap">
-                    APY / Accrued
+                    APY
                   </th>
                   <th className="pb-4 px-8 text-left">Balance</th>
                   <th className="pb-4 px-8 text-left whitespace-nowrap">
@@ -155,13 +161,16 @@ export default function TwoPanes() {
                       <td className="px-8 py-6 text-left">
                         {m.marketData.borrowApy}
                       </td>
-                      <td className="px-8 py-6 text-left">
-                        <div>${m.borrowBalanceInUsd.toFixed(2)}</div>
+                      <td className="px-8 py-6 text-left whitespace-nowrap">
+                        <div>
+                          {toShortCryptoString(m.borrowBalance)} {m.tokenPair.token.symbol}                        
+                        </div>
 
                         <div className="bg-black rounded-lg text-xs text-gray-300 text-center py-1 px-2 inline-block whitespace-nowrap">
-                          {m.borrowBalance} {m.tokenPair.token.symbol}
+                          {m.borrowBalanceInUsd.toFixed(2)} {"USD"}
                         </div>
                       </td>
+
                       <td className="px-8 py-6 text-left text-brand-green font-bold">
                         {m.borrowLimitUsedOfToken}%
                       </td>
@@ -183,7 +192,7 @@ export default function TwoPanes() {
                 <tr className="text-xs text-gray-400 ">
                   <th className="pb-4 px-8 text-left">Asset</th>
                   <th className="pb-4 px-8 text-left whitespace-nowrap">
-                    APY / Accrued
+                    APY
                   </th>
                   <th className="pb-4 px-8 text-left">Liquidity</th>
                 </tr>
