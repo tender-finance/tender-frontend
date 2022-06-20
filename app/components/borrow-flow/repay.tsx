@@ -2,6 +2,7 @@ import { ICON_SIZE } from "~/lib/constants";
 import type { Market, TokenPair } from "~/types/global";
 import { useContext, useEffect, useRef, useState } from "react";
 import type { JsonRpcSigner } from "@ethersproject/providers";
+import * as math from "mathjs"
 
 import clsx from "clsx";
 import toast from "react-hot-toast";
@@ -147,11 +148,11 @@ export default function Repay({
                   <Max
                     maxValue={maxRepayableAmount.toString()}
                     updateValue={() => {
+                      let value = math.format(maxRepayableAmount, {notation: "fixed"})
                       if (!inputEl || !inputEl.current) return;
                       inputEl.current.focus();
-                      inputEl.current.value = maxRepayableAmount.toString();
-                      console.log("setting", maxRepayableAmount.toString())
-                      setValue(maxRepayableAmount.toString());
+                      inputEl.current.value = value;
+                      setValue(value);
                     }}
                     maxValueLabel={market.tokenPair.token.symbol}
                   />
