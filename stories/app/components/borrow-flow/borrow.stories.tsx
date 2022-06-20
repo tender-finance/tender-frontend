@@ -40,6 +40,7 @@ let token: Token = {
   name: "token",
   decimals: 18,
   address: "0x02",
+  priceDecimals: 18,
   cToken,
 };
 

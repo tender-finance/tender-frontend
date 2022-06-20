@@ -1,7 +1,7 @@
 describe("smoke tests", () => {
-  it("should allow you to enter app", () => {
+  it("should load app", () => {
     cy.visit("/");
-    cy.findByTestId("connect-wallet");
+    cy.findByTestId("app-frame");
   });
 });
 
