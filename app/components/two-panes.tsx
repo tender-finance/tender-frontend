@@ -36,7 +36,7 @@ export default function TwoPanes() {
               <thead>
                 <tr className="text-xs text-gray-400 ">
                   <th className="pb-4 px-8 text-left">Asset</th>
-                  <th className="pb-4 px-8 text-left">APY / Earned</th>
+                  <th className="pb-4 px-8 text-left">APY</th>
                   <th className="pb-4 px-8 text-left">Balance</th>
                 </tr>
               </thead>
@@ -80,7 +80,7 @@ export default function TwoPanes() {
               <thead>
                 <tr className="text-xs text-gray-400 ">
                   <th className="pb-4 px-8 text-left">Asset</th>
-                  <th className="pb-4 px-8 text-left">APY / Earned</th>
+                  <th className="pb-4 px-8 text-left">APY</th>
                   <th className="pb-4 px-8 text-left">Wallet</th>
                 </tr>
               </thead>
@@ -136,7 +136,7 @@ export default function TwoPanes() {
                 <tr className="text-xs text-gray-400 ">
                   <th className="pb-4 px-8 text-left">Assets</th>
                   <th className="pb-4 px-8 text-left whitespace-nowrap">
-                    APY / Accrued
+                    APY
                   </th>
                   <th className="pb-4 px-8 text-left">Balance</th>
                   <th className="pb-4 px-8 text-left whitespace-nowrap">
@@ -191,7 +191,7 @@ export default function TwoPanes() {
                 <tr className="text-xs text-gray-400 ">
                   <th className="pb-4 px-8 text-left">Asset</th>
                   <th className="pb-4 px-8 text-left whitespace-nowrap">
-                    APY / Accrued
+                    APY
                   </th>
                   <th className="pb-4 px-8 text-left">Liquidity</th>
                 </tr>
