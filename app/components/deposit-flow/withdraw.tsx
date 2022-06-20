@@ -56,7 +56,7 @@ export default function Withdraw({
     newBorrowLimit
   );
 
-  let maxWithdrawAmount: number = market.supplyBalance;
+  let maxWithdrawAmount: number = Math.min(market.supplyBalance, market.maxBorrowLiquidity);
 
   let [isValid, validationDetail] = useValidInput(
     value,
