@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 enum InputValidationDetail {
   NON_NUMERIC_INPUT = "Please enter an amount",
   INSUFFICIENT_LIQUIDITY = "Insufficient liquidity",
+  INSUFFICIENT_EQUITY = "This would result in liquidation",
   NEGATIVE_OR_ZERO = "Please enter a value",
 }
 
@@ -48,7 +49,7 @@ export function useValidInput(
         setReason(InputValidationDetail.INSUFFICIENT_LIQUIDITY);
         setIsValid(false);
       } else if (borrowLimitUsed >= 100 || borrowLimitUsed < -0) {
-        setReason(InputValidationDetail.INSUFFICIENT_LIQUIDITY);
+        setReason(InputValidationDetail.INSUFFICIENT_EQUITY);
         setIsValid(false);
       } else {
         setIsValid(true);

@@ -56,7 +56,17 @@ export default function Withdraw({
     newBorrowLimit
   );
 
-  let maxWithdrawAmount: number = Math.min(market.supplyBalance, market.maxBorrowLiquidity);
+  var maxWithdrawAmount: number = Math.min(
+    market.supplyBalance, // how much we're supplying
+    market.maxBorrowLiquidity, // how much cash the contract has
+  );
+
+  // // if there is a borrow balance
+  // if (totalBorrowedAmountInUsd > 0) {
+  //   // 0.8 * (totalSupply - totalBorrow balance / token price)
+  //   // if there is a borrow or else 100%
+  // }
+
 
   let [isValid, validationDetail] = useValidInput(
     value,
