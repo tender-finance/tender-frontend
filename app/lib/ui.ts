@@ -63,7 +63,8 @@ export const toCryptoString = (v: number): string => {
     s = toFiatString(v).substring(1);
   } else {
     s = v
-      .toFixed(6) // round to 6 places
+      .toFixed(7)// round to 7 places instead of 6
+      .slice(0, -1) // then drop the last digit because rounding up breaks the upper limit
       .replace(/(?<=\d)0*$/g, ""); // remove traliing 0's, leaving at least one left
   }
   return s;
