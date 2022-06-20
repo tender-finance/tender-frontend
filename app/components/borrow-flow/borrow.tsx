@@ -66,7 +66,7 @@ export default function Borrow({
     market.comptrollerAddress,
     market.tokenPair,
     market.maxBorrowLiquidity
-  ).toFixed(3).slice(0, -1); // 2 decimal places round down
+  ).toFixed(3).slice(0, -1); // 2 decimal places round
 
   let maxBorrowAmount = useMaxBorrowAmount(
     borrowLimit,
