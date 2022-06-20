@@ -60,7 +60,7 @@ export const toShortCryptoString = (v: number): string => {
  * @returns A human readable string for this value
  */
 export const toCryptoString = (v: number): string => {
-  let s: string;
+  var s: string;
   if (v > 1) {
     // Applies commas to large numbers
     s = toFiatString(v).substring(1);
@@ -68,7 +68,10 @@ export const toCryptoString = (v: number): string => {
     s = v
       .toFixed(7)// round to 7 places instead of 6
       .slice(0, -1) // then drop the last digit because rounding up breaks the upper limit
-      .replace(/(?<=\d)0*$/g, ""); // remove traliing 0's, leaving at least one left
+
+    // note, safari does not support regexp look behind
+    // If there is a decimal, remove traliing 0's, leaving at least one left
+     if (s.indexOf(".") !== -1) s = s.replace(/0+$/g, "0")
   }
   return s;
 };
