@@ -7,13 +7,16 @@ import { toShortFiatString, toShortCryptoString } from "~/lib/ui";
 export default function TwoPanes() {
   let { markets } = useContext(TenderContext);
 
-  const marketsWithSupply = markets.filter((m) => m.supplyBalance && m.supplyBalanceInUsd > 0.001);
+  // markets with less than this amount are shown as not actively supplying or borrowing
+   const DUST_LIMIT = 0.01;
 
-  const marketsWithBorrow = markets.filter((m) => m.borrowBalance && m.borrowBalanceInUsd > 0.001 );
+  const marketsWithSupply = markets.filter((m) => m.supplyBalance && m.supplyBalanceInUsd > DUST_LIMIT);
 
-  const marketsWithoutBorrow = markets.filter((m) => !m.borrowBalance || m.borrowBalanceInUsd <= 0.001);
+  const marketsWithBorrow = markets.filter((m) => m.borrowBalance && m.borrowBalanceInUsd > DUST_LIMIT);
 
-  const marketsWithoutSupply = markets.filter((m) => !m.supplyBalance || m.supplyBalanceInUsd <= 0.001);
+  const marketsWithoutBorrow = markets.filter((m) => !m.borrowBalance || m.borrowBalanceInUsd <= DUST_LIMIT);
+
+  const marketsWithoutSupply = markets.filter((m) => !m.supplyBalance || m.supplyBalanceInUsd <= DUST_LIMIT);
 
   return (
     <div className="grid grid-cols-2 gap-9 mb-14">
