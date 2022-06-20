@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { hooks, metaMask } from "~/connectors/meta-mask";
-const { useAccounts, useError, useIsActivating, useIsActive } = hooks;
+const { useAccounts, useError, useIsActive } = hooks;
 
 export default function ConnectWallet() {
   const accounts = useAccounts();
   const error = useError();
-  const isActivating = useIsActivating();
   const isActive = useIsActive();
   const [onClient, setOnClient] = useState(false);
 
@@ -53,8 +52,7 @@ export default function ConnectWallet() {
                 background: "linear-gradient(270deg, #1BD6CF 0%, #00E5AF 100%)",
               }}
               className="bg-brand-green text-gray-900 py-4 px-4 rounded-md text-sm"
-              onClick={isActivating ? undefined : () => metaMask.activate()}
-              disabled={isActivating}
+              onClick={() => metaMask.activate()}
             >
               Connect Wallet
             </button>
