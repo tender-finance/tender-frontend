@@ -39,7 +39,6 @@ let token: Token = {
   icon: "/images/coin-icons/metis.png",
   name: "token",
   decimals: 18,
-  priceDecimals: 18,
   address: "0x02",
   cToken,
 };

@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import * as math from "mathjs"
 
 enum InputValidationDetail {
   NON_NUMERIC_INPUT = "Please enter an amount",

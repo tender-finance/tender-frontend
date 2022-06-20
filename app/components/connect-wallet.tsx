@@ -37,7 +37,7 @@ export default function ConnectWallet() {
         {!window.ethereum && (
           <a
             className="border border-brand-green text-brand-green py-4 px-4 rounded-md text-sm"
-            target="_blank"
+            target="_blank" rel="noreferrer"
             href="https://metamask.io/"
           >
             Install MetaMask to get started
