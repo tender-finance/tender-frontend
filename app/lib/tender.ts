@@ -23,11 +23,14 @@ interface Txn {
 function formatBigNumber(value: BigNumber, decimals: number): number {
   // formatUnits returns a string with the decimals in the appropriate place,
   // and it needs to be made a float.
-  // toFixed(2) rounds the float to two decimals, and returns a string,
-  // so we need to make it a float again. :(
   let formattedUnit = formatUnits(value, decimals);
   let val = parseFloat(formattedUnit);
+  return val
+}
 
+export function roundNumber(val: number) : number{
+  // toFixed(2) rounds the float to two decimals, and returns a string,
+  // so we need to make it a float again. :(
   return val > 1 ? parseFloat(val.toFixed(2)) : parseFloat(val.toFixed(6));
 }
 

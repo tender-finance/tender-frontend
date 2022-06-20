@@ -1,5 +1,8 @@
+import { roundNumber } from "./tender"
 import * as HRNumbers from "human-readable-numbers";
+
 const DEFAULT_TEXT_CLASS = "text-6xl";
+
 
 /**
  * Used on deposit, withdraw, borrow, and repay modals
@@ -48,7 +51,7 @@ export const toShortFiatString = (v: number): string => {
 };
 
 export const toShortCryptoString = (v: number): string => {
-  return `${v > A_BIG_NUMBER ? HRNumbers.toHumanString(v) : toCryptoString(v)}`;
+  return `${v > A_BIG_NUMBER ? HRNumbers.toHumanString(v) : toCryptoString(roundNumber(v))}`;
 };
 
 /**

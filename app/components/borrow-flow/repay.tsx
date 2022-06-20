@@ -150,6 +150,7 @@ export default function Repay({
                       if (!inputEl || !inputEl.current) return;
                       inputEl.current.focus();
                       inputEl.current.value = maxRepayableAmount.toString();
+                      console.log("setting", maxRepayableAmount.toString())
                       setValue(maxRepayableAmount.toString());
                     }}
                     maxValueLabel={market.tokenPair.token.symbol}

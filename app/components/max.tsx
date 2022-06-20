@@ -7,7 +7,6 @@ interface MaxProps {
   label?: string;
 }
 const formatMaxValue = (v: string): string => {
-  console.log(v);
   return toCryptoString(Math.max(0, parseFloat(v)));
 };
 export default function Max(props: MaxProps) {
