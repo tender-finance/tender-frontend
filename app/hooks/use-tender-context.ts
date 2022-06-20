@@ -19,7 +19,7 @@ export function useTenderContext() {
   let onSupportedNetwork = useOnSupportedNetwork(chainId);
 
   let tokenPairs = useTokenPairs(signer, networkData, onSupportedNetwork);
-  let pollingKey = useInterval(10_000);
+  let pollingKey = useInterval(5_000);
 
   let markets: Market[] = useMarkets(
     signer,

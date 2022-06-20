@@ -12,7 +12,7 @@ export function useTotalBorrowedInUsd(
   let [totalBorrowedAmountInUsd, setTotalBorrowedAmountInUsd] =
     useState<number>(0);
 
-  let poll = useInterval(10_000);
+  let poll = useInterval(5_000);
   let { currentTransaction } = useContext(TenderContext);
 
   useEffect(() => {
