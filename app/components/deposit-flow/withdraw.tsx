@@ -2,7 +2,7 @@ import { ICON_SIZE } from "~/lib/constants";
 import type { Market } from "~/types/global";
 import { useEffect, useState, useRef, useContext } from "react";
 import type { JsonRpcSigner, TransactionReceipt } from "@ethersproject/providers";
-import toast, { useToasterStore } from "react-hot-toast";
+import toast from "react-hot-toast";
 import Max from "~/components/max";
 import * as math from "mathjs"
 import clsx from "clsx";
@@ -229,7 +229,7 @@ export default function Withdraw({
                               </a> 
                             </p>)
                           } else {
-                            toast.error("withdraw unsuccessful.");
+                            toast.error("Withdraw unsuccessful.");
                           }
                           } finally {
                           setIsWaitingToBeMined(false);

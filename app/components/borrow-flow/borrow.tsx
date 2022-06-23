@@ -215,6 +215,7 @@ export default function Borrow({
                           setIsWaitingToBeMined(true);
 
                           let tr: TransactionReceipt = await txn.wait(); // TODO: error handle if transaction fails
+
                           updateTransaction(tr.blockHash);
 
                           toast.dismiss()
