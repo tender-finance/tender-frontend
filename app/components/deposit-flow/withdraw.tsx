@@ -15,6 +15,7 @@ import { useBorrowLimitUsed } from "~/hooks/use-borrow-limit-used";
 import ConfirmingTransaction from "../fi-modal/confirming-transition";
 import { TenderContext } from "~/contexts/tender-context";
 import { shrinkyInputClass, toCryptoString } from "~/lib/ui";
+import { displayTransactionResult } from "../displayTransactionResult";
 
 export interface WithdrawProps {
   market: Market;
@@ -209,12 +210,11 @@ export default function Withdraw({
                           let tr: TransactionReceipt = await txn.wait(); // TODO: error handle if transaction fails
                           updateTransaction(tr.blockHash);
 
-                          toast.dismiss()
-                          toast.success(()=><p>
-                            <a href={`https://andromeda-explorer.metis.io/tx/${tr.transactionHash}/internal-transactions/`}>
-                              Withdraw successful
-                            </a> 
-                          </p>)
+                          // wait an extra 3 seconds for latency
+                          setTimeout(()=> {
+                            displayTransactionResult(tr.transactionHash, "Withdraw successful");
+                          }, 2000)
+
 
                           setValue("");
                           closeModal();

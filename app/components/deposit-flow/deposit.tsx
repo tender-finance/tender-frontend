@@ -15,6 +15,7 @@ import { useBorrowLimitUsed } from "~/hooks/use-borrow-limit-used";
 import ConfirmingTransaction from "../fi-modal/confirming-transition";
 import { TenderContext } from "~/contexts/tender-context";
 import { shrinkyInputClass, toCryptoString } from "~/lib/ui";
+import { displayTransactionResult } from "../displayTransactionResult";
 
 export interface DepositProps {
   closeModal: Function;
@@ -250,12 +251,12 @@ export default function Deposit({
                       setIsWaitingToBeMined(true);
                       let tr: TransactionReceipt = await txn.wait();
                       updateTransaction(tr.blockHash);
-                      toast.dismiss()
-                      toast.success(()=><p>
-                        <a href={`https://andromeda-explorer.metis.io/tx/${tr.transactionHash}/internal-transactions/`}>
-                          Deposit successful
-                        </a> 
-                    </p>)
+
+                      // wait an extra 3 seconds for latency
+                      setTimeout(()=> {
+                        displayTransactionResult(tr.transactionHash, "Deposit successful");
+                      }, 2000)
+
                       setValue("");
                       closeModal();
                     } catch (e) {
