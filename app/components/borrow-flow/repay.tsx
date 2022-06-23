@@ -18,6 +18,7 @@ import ConfirmingTransaction from "../fi-modal/confirming-transition";
 import { TenderContext } from "~/contexts/tender-context";
 import { useNewTotalBorrowedAmountInUsd } from "~/hooks/use-new-total-borrowed-amount-in-usd";
 import { shrinkyInputClass, toCryptoString } from "~/lib/ui";
+import { displayTransactionResult } from "../displayTransactionResult";
 
 export interface RepayProps {
   closeModal: Function;
@@ -262,12 +263,11 @@ export default function Repay({
 
                         let tr: TransactionReceipt = await txn.wait(); // TODO: error handle if transaction fails
                         updateTransaction(tr.blockHash);
-                        toast.dismiss()
-                        toast.success(()=><p>
-                          <a href={`https://andromeda-explorer.metis.io/tx/${tr.transactionHash}/internal-transactions/`}>
-                            Repayment successful
-                          </a> 
-                      </p>)
+
+                        setTimeout(()=> {
+                          displayTransactionResult(tr.transactionHash, "Repayment successful");
+                        }, 2000)
+
                         setValue("");
                         closeModal();
                       } catch (e) {

@@ -19,6 +19,7 @@ import { TenderContext } from "~/contexts/tender-context";
 import { useNewTotalBorrowedAmountInUsd } from "~/hooks/use-new-total-borrowed-amount-in-usd";
 import { useMaxBorrowAmount } from "~/hooks/use-max-borrow-amount";
 import { shrinkyInputClass, toCryptoString } from "~/lib/ui";
+import { displayTransactionResult } from "../displayTransactionResult";
 
 export interface BorrowProps {
   market: Market;
@@ -218,12 +219,9 @@ export default function Borrow({
 
                           updateTransaction(tr.blockHash);
 
-                          toast.dismiss()
-                          toast.success(()=><p>
-                            <a href={`https://andromeda-explorer.metis.io/tx/${tr.transactionHash}/internal-transactions/`}>
-                              Borrow successful
-                            </a> 
-                          </p>)
+                          setTimeout(()=> {
+                            displayTransactionResult(tr.transactionHash, "Borrow successful");
+                          }, 2000)
 
                           closeModal();
                         } catch (e) {
