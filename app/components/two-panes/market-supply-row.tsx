@@ -39,6 +39,8 @@ export default function MarketRow(props: {
         isOpen={!!isDepositModalOpen}
         onRequestClose={() => closeModal()}
         portalClassName="modal"
+        style={{ content: {inset: "unset", margin: "50px auto", zoom: "80%", position:"relative", maxWidth: 600}}}
+        closeTimeoutMS={200}
       >
         <DepositFlow closeModal={() => closeModal()} market={props.market} />
       </ReactModal>

@@ -9,7 +9,7 @@ import {
 
 import LogRocket from 'logrocket';
 
-import { Toaster } from "react-hot-toast";
+import { Toaster, ToastPosition } from "react-hot-toast";
 import type { MetaFunction, LinksFunction } from "remix";
 import tailwindStyles from "./tailwind.css";
 import globalStyles from "./styles/global.css";
@@ -47,7 +47,7 @@ export default function App() {
       </head>
       <body>
         <div id="m"></div>
-        <Toaster />
+        <Toaster toastOptions={{className: "Toast-Notification"}} containerClassName="Toast" position="top-right"/>
         <Web3ReactProvider connectors={connectors}>
           <DisconnectedWarning />
           <Header />
