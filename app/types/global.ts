@@ -53,6 +53,8 @@ export type TenderContext = {
   markets: Market[];
   currentTransaction: string | null;
   updateTransaction: Function;
+  isWaitingToBeMined: boolean;
+  setIsWaitingToBeMined: Function;
 };
 
 export type Market = {

@@ -1,7 +1,7 @@
 import { ICON_SIZE } from "~/lib/constants";
 import type { Market, TokenPair } from "~/types/global";
 import { useContext, useEffect, useRef, useState } from "react";
-import type { JsonRpcSigner } from "@ethersproject/providers";
+import type { JsonRpcSigner, TransactionReceipt } from "@ethersproject/providers";
 import * as math from "mathjs"
 
 import clsx from "clsx";
@@ -43,7 +43,6 @@ export default function Repay({
   walletBalance,
   totalBorrowedAmountInUsd,
 }: RepayProps) {
-  let [isWaitingToBeMined, setIsWaitingToBeMined] = useState<boolean>(false);
   let [isEnabled, setIsEnabled] = useState<boolean>(true);
   let [isEnabling, setIsEnabling] = useState<boolean>(false);
 
@@ -75,7 +74,7 @@ export default function Repay({
     parseFloat(newBorrowLimitUsed)
   );
 
-  let { updateTransaction } = useContext(TenderContext);
+  let { updateTransaction, isWaitingToBeMined, setIsWaitingToBeMined } = useContext(TenderContext);
 
   useEffect(() => {
     if (!signer) {
@@ -248,6 +247,8 @@ export default function Repay({
                         }
 
                         setIsRepayingTxn(true);
+                        toast.loading("Waiting for confirmation")
+
                         // @ts-ignore existence of signer is gated above.
                         let txn = await repay(
                           value,
@@ -258,14 +259,29 @@ export default function Repay({
                         setTxnHash(txn.hash);
 
                         setIsWaitingToBeMined(true);
-                        let tr = await txn.wait(); // TODO: error handle if transaction fails
-                        setValue("");
+
+                        let tr: TransactionReceipt = await txn.wait(); // TODO: error handle if transaction fails
                         updateTransaction(tr.blockHash);
-                        toast.success("Repayment successful");
+                        toast.dismiss()
+                        toast.success(()=><p>
+                          <a href={`https://andromeda-explorer.metis.io/tx/${tr.transactionHash}/internal-transactions/`}>
+                            Repayment successful
+                          </a> 
+                      </p>)
+                        setValue("");
                         closeModal();
                       } catch (e) {
-                        toast.error("Repayment unsuccessful");
-                        console.error(e);
+                        toast.dismiss()
+                        console.log(e)
+                        if (e.transaction.hash) {
+                          toast.error(()=><p>
+                            <a target="_blank" href={`https://andromeda-explorer.metis.io/tx/${e.transactionHash}/internal-transactions/`}>
+                              Repayment unsuccessful
+                            </a> 
+                          </p>)
+                        } else {
+                          toast.error("Repayment unsuccessful.");
+                        }
                       } finally {
                         setIsWaitingToBeMined(false);
                         setIsRepayingTxn(false);

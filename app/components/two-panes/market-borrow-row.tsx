@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import ReactModal from "react-modal";
 import type { Market } from "~/types/global";
 import BorrowFlow from "../borrow-flow";
+import { TenderContext } from "~/contexts/tender-context";
+import toast from "react-hot-toast";
 
 ReactModal.setAppElement("#m");
 
@@ -39,6 +41,8 @@ export default function MarketRow(props: {
         isOpen={!!isDepositModalOpen}
         onRequestClose={() => closeModal()}
         portalClassName="modal"
+        style={{ content: {inset: "unset", margin: "50px auto", zoom: "80%", position:"relative", maxWidth: 600}}}
+        closeTimeoutMS={200}
       >
         <BorrowFlow closeModal={() => closeModal()} market={props.market} />
       </ReactModal>
