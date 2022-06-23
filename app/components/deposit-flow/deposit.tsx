@@ -255,7 +255,7 @@ export default function Deposit({
                       // wait an extra 3 seconds for latency
                       setTimeout(()=> {
                         displayTransactionResult(tr.transactionHash, "Deposit successful");
-                      }, 2000)
+                      }, 3000)
 
                       setValue("");
                       closeModal();

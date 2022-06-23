@@ -213,7 +213,7 @@ export default function Withdraw({
                           // wait an extra 3 seconds for latency
                           setTimeout(()=> {
                             displayTransactionResult(tr.transactionHash, "Withdraw successful");
-                          }, 2000)
+                          }, 3000)
 
 
                           setValue("");
