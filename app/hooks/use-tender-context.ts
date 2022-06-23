@@ -50,6 +50,7 @@ export function useTenderContext() {
     networkData,
     markets,
     currentTransaction,
+    isWaitingToBeMined
   ]);
 
   return tenderContext;
