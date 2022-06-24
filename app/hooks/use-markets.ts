@@ -55,7 +55,7 @@ export function useMarkets(
   let [markets, setMarkets] = useState<Market[]>([]);
 
   let pollingKey = useInterval(5_000);
-  let { currentTransaction, isWaitingToBeMined } = useContext(TenderContext);
+  let { currentTransaction } = useContext(TenderContext);
 
   useEffect(() => {
     if (!signer || !comptrollerAddress) {
@@ -122,7 +122,6 @@ export function useMarkets(
     comptrollerAddress,
     pollingKey,
     currentTransaction,
-    isWaitingToBeMined
   ]);
 
   return markets;

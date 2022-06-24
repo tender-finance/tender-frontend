@@ -1,7 +1,7 @@
 import { ICON_SIZE } from "~/lib/constants";
 import type { Market, TokenPair } from "~/types/global";
 import { useEffect, useState, useRef, useContext } from "react";
-import type { JsonRpcSigner, TransactionReceipt } from "@ethersproject/providers";
+import type { JsonRpcSigner } from "@ethersproject/providers";
 import * as math from "mathjs"
 
 import clsx from "clsx";
@@ -19,7 +19,6 @@ import { TenderContext } from "~/contexts/tender-context";
 import { useNewTotalBorrowedAmountInUsd } from "~/hooks/use-new-total-borrowed-amount-in-usd";
 import { useMaxBorrowAmount } from "~/hooks/use-max-borrow-amount";
 import { shrinkyInputClass, toCryptoString } from "~/lib/ui";
-import { displayTransactionResult } from "../displayTransactionResult";
 
 export interface BorrowProps {
   market: Market;
@@ -42,13 +41,14 @@ export default function Borrow({
   borrowLimitUsed,
   totalBorrowedAmountInUsd,
 }: BorrowProps) {
+  let [isWaitingToBeMined, setIsWaitingToBeMined] = useState<boolean>(false);
   let [value, setValue] = useState<string>("0");
   let [isBorrowing, setIsBorrowing] = useState<boolean>(false);
   let [txnHash, setTxnHash] = useState<string>("");
 
   let inputEl = useRef<HTMLInputElement>(null);
 
-  let { updateTransaction, isWaitingToBeMined, setIsWaitingToBeMined } = useContext(TenderContext);
+  let { updateTransaction } = useContext(TenderContext);
 
   let newTotalBorrowedAmountInUsd = useNewTotalBorrowedAmountInUsd(
     market.tokenPair,
@@ -195,8 +195,6 @@ export default function Borrow({
                     <button
                       onClick={async () => {
                         try {
-                          toast.loading("Waiting for confirmation")
-
                           if (!value) {
                             toast("Please set a value", {
                               icon: "⚠️",
@@ -214,34 +212,16 @@ export default function Borrow({
 
                           setTxnHash(txn.hash);
                           setIsWaitingToBeMined(true);
-
-                          let tr: TransactionReceipt = await txn.wait(); // TODO: error handle if transaction fails
-
+                          let tr = await txn.wait(); // TODO: error handle if transaction fails
                           updateTransaction(tr.blockHash);
-
-                          setTimeout(()=> {
-                            displayTransactionResult(tr.transactionHash, "Borrow successful");
-                          }, 2000)
-
+                          toast.success("Borrow successful");
                           closeModal();
                         } catch (e) {
-                          toast.dismiss()
-                          console.log(e)
-
-                          if (e.transaction.hash) {
-                            toast.error(()=><p>
-                              <a target="_blank" href={`https://andromeda-explorer.metis.io/tx/${e.transactionHash}/internal-transactions/`}>
-                                Borrow unsuccessful
-                              </a> 
-                            </p>)
-                          } else {
-                            toast.error("Borrow unsuccessful.");
-                          }
-
-                          setValue("")
+                          toast.error("Borrow unsuccessful");
+                          console.error(e);
                         } finally {
-                          setIsBorrowing(false);
                           setIsWaitingToBeMined(false);
+                          setIsBorrowing(false);
                         }
                       }}
                       className={clsx(

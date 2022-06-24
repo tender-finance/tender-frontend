@@ -18,9 +18,7 @@ export default function AccountSummary() {
     <div className="max-w-4xl m-auto mb-24">
       <div className="flex mb-16">
         <div className="w-1/3 flex flex-col justify-center items-center">
-          <div className="text-dark-green font-nova font-semibold ">
-            Supply Balance
-          </div>
+          <div className="text-dark-green font-nova font-semibold ">Supply Balance</div>{" "}
           <div className="text-3xl">
             {formatCurrency(totalSupplyBalanceInUsd)}
           </div>
@@ -44,16 +42,12 @@ export default function AccountSummary() {
           </div>
         </div>
         <div className="w-1/3 text-right  flex flex-col justify-center items-center">
-          <div className="text-dark-green font-nova font-semibold ">
-            Borrow Balance
-          </div>
+          <div className="text-dark-green font-nova font-semibold ">Borrow Balance</div>{" "}
           <div className="text-3xl">{formatCurrency(totalBorrowedInUsd)}</div>
         </div>
       </div>
       <div className="flex text-xs justify-center items-center">
-        <div className=" text-gray-400 mr-2 font-nova font-bold">
-          Borrow Limit
-        </div>
+        <div className=" text-gray-400 mr-2 font-nova font-bold">Borrow Limit</div>
         <div
           className="bg-green-300 mr-2 h-2 rounded-full"
           style={{
@@ -69,7 +63,9 @@ export default function AccountSummary() {
           ref={rightLineRef}
         ></div>
         <div>{formatCurrency(borrowLimit)}</div>
+        
       </div>
+      
     </div>
   );
 }

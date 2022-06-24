@@ -60,13 +60,13 @@ export default function Footer() {
     },
   ];
   return (
-    <div className="flex justify-between border-t border-t-gray-700 py-4 px-12">
-      <div className="">
+    <div className="flex justify-between flex-col border-t border-t-gray-700 py-4 px-12 md:flex-row items-center">
+      <div className="mb-10 md:mb-0">
         <a href="#">
           <img src="images/ico/smallLogo.svg" alt="..." />
         </a>
       </div>
-      <div className="flex">
+      <div className="flex py-4 justify-center">
         {productLinks.map((item, index) => {
           return (
             <a className="mr-8 text-" href={item.url} key={index}>

@@ -11,7 +11,7 @@ export function useTotalSupplyBalanceInUsd(
 ) {
   let [totalSupplyBalanceInUsd, setTotalSupplyBalanceInUsd] =
     useState<number>(0);
-  let { currentTransaction, isWaitingToBeMined } = useContext(TenderContext);
+  let { currentTransaction } = useContext(TenderContext);
   let poll = useInterval(5_000);
 
   useEffect(() => {
@@ -22,7 +22,7 @@ export function useTotalSupplyBalanceInUsd(
     getTotalSupplyBalanceInUsd(signer, tokenPairs).then((v) =>
       setTotalSupplyBalanceInUsd(v)
     );
-  }, [signer, tokenPairs, poll, currentTransaction, isWaitingToBeMined]);
+  }, [signer, tokenPairs, poll, currentTransaction]);
 
   return totalSupplyBalanceInUsd;
 }

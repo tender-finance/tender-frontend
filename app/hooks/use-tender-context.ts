@@ -10,7 +10,6 @@ import { useWeb3Signer } from "./use-web3-signer";
 
 export function useTenderContext() {
   let [currentTransaction, updateTransaction] = useState<string | null>(null);
-  let [isWaitingToBeMined, setIsWaitingToBeMined] = useState<boolean>(false);
   let [tenderContext, setTenderContext] = useState<TenderContext | null>();
   const chainId = Web3Hooks.useChainId();
   let provider = Web3Hooks.useProvider();
@@ -39,8 +38,6 @@ export function useTenderContext() {
       markets,
       currentTransaction,
       updateTransaction,
-      isWaitingToBeMined,
-      setIsWaitingToBeMined
     });
   }, [
     signer,
@@ -50,7 +47,6 @@ export function useTenderContext() {
     networkData,
     markets,
     currentTransaction,
-    isWaitingToBeMined
   ]);
 
   return tenderContext;

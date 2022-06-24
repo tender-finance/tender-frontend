@@ -7,44 +7,40 @@ import { toShortFiatString, toShortCryptoString } from "~/lib/ui";
 export default function TwoPanes() {
   let { markets } = useContext(TenderContext);
 
-  const DUST_LIMIT = 0.01;
-
   const marketsWithSupply = markets.filter(
-    (m) => m.supplyBalance && m.supplyBalanceInUsd > DUST_LIMIT
+    (m) => m.supplyBalance && m.supplyBalanceInUsd > 0.001
   );
 
   const marketsWithBorrow = markets.filter(
-    (m) => m.borrowBalance && m.borrowBalanceInUsd > DUST_LIMIT
+    (m) => m.borrowBalance && m.borrowBalanceInUsd > 0.001
   );
 
   const marketsWithoutBorrow = markets.filter(
-    (m) => !m.borrowBalance || m.borrowBalanceInUsd <= DUST_LIMIT
+    (m) => !m.borrowBalance || m.borrowBalanceInUsd <= 0.001
   );
 
   const marketsWithoutSupply = markets.filter(
-    (m) => !m.supplyBalance || m.supplyBalanceInUsd <= DUST_LIMIT
+    (m) => !m.supplyBalance || m.supplyBalanceInUsd <= 0.001
   );
 
   return (
-    <div className="grid grid-cols-2 gap-9 mb-14">
+    <div className="flex flex-col gap-9 mb-14 grid-cols-1 md:grid  grid-cols-2">
       {/* Supply */}
 
       <div>
         {/* Empty state heading for borrow */}
 
         {marketsWithSupply.length == 0 && (
-          <div className="py-6 text-2xl  font-space font-bold  mb-4">
-            Supply
-          </div>
+          <div className="py-6 text-2xl font-space font-bold mb-4">Supply</div>
         )}
         {marketsWithSupply.length >= 0 && (
-          <div className="pane border-custom mb-9 ">
-            <div className="px-8 py-6 font-space font-bold text-2xl border-b border-b-gray-600 mb-4">
+          <div className="pane-custom border-custom mb-9 md:pane-custom border-custom mb-9 ">
+            <div className="px-8 py-6 font-space font-bold text-2xl border-b border-[#282C2B] mb-4">
               Supply
             </div>
             <table className="w-full h-full table-fixed">
               <thead>
-                <tr className="text-xs text-gray-400 font-nova font-semibolt">
+                <tr className="text-xs text-[#818987] font-nova font-semibolt border-b border-[#282C2B]">
                   <th className="pb-4 px-8 text-left">Asset</th>
                   <th className="pb-4 px-8 text-left">APY / Earned</th>
                   <th className="pb-4 px-8 text-left">Balance</th>
@@ -87,10 +83,10 @@ export default function TwoPanes() {
           <div className="mb-3 text-nova text-xl">All Markets</div>
         )}
         {marketsWithoutSupply.length > 0 && (
-          <div className="pane border-custom py-6">
+          <div className="pane-custom border-custom py-6 ">
             <table className="w-full h-full table-fixed">
               <thead>
-                <tr className="text-xs text-gray-400 font-nova font-semibolt">
+                <tr className="text-xs text-[#818987] font-nova font-semibolt border-b border-[#282C2B]">
                   <th className="pb-4 px-8 text-left">Asset</th>
                   <th className="pb-4 px-8 text-left">APY / Earned</th>
                   <th className="pb-4 px-8 text-left">Wallet</th>
@@ -136,18 +132,18 @@ export default function TwoPanes() {
       <div>
         {/* Empty state heading for borrow */}
         {marketsWithBorrow.length == 0 && (
-          <div className="py-6 text-2xl font-space font-bold  mb-4">
+          <div className="py-6 font-space font-bold text-2xl  mb-4">
             Borrowing
           </div>
         )}
         {marketsWithBorrow.length >= 0 && (
-          <div className="pane border-custom mb-9 ">
-            <div className="px-8 py-6 font-space font-bold text-2xl border-b border-b-gray-600 mb-4">
+          <div className="pane-custom border-custom mb-9 md:pane-custom border-custom mb-9 ">
+            <div className="px-8 py-6 font-space font-bold text-2xl border-b border-[#282C2B] mb-4">
               Borrowing
             </div>
             <table className="w-full h-full table-fixed">
               <thead>
-                <tr className="text-xs text-gray-400 font-nova font-semibolt">
+                <tr className="text-xs text-[#818987] font-nova font-semibolt">
                   <th className="pb-4 px-8 text-left">Assets</th>
                   <th className="pb-4 px-8 text-left whitespace-nowrap">
                     APY / Accrued
@@ -197,13 +193,13 @@ export default function TwoPanes() {
         )}
 
         {marketsWithoutBorrow.length > 0 && (
-          <div className="mb-3 text-gray-400 text-xl">All Markets</div>
+          <div className="mb-3 text-white text-xl">All Markets</div>
         )}
         {marketsWithoutBorrow.length > 0 && (
-          <div className="border-custom pane py-6">
+          <div className="border-custom pane-custom py-6">
             <table className="w-full h-full table-fixed ">
               <thead>
-                <tr className="text-xs text-gray-400 font-nova font-semibolt">
+                <tr className="text-xs text-[#818987] font-nova font-semibolt">
                   <th className="pb-4 px-8 text-left">Asset</th>
                   <th className="pb-4 px-8 text-left whitespace-nowrap">
                     APY / Accrued

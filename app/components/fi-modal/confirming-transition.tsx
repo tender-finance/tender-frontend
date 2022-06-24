@@ -13,7 +13,7 @@ export default function ConfirmingTransaction({
 }: Props) {
   let { blockExplorerUrl, blockExplorerName } = useBlockchainExplorer();
   return (
-    <div className="pb-4 overflow-hidden">
+    <div className="overflow-hidden">
       <div>
         <button
           onClick={() => stopWaitingOnConfirmation()}

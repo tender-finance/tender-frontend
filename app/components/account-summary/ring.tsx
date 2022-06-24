@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 const NEAR_ZERO_PERCENT = 385;
 const NEAR_HUNDRED_PERCENT = 760;
 
-const LIGHT_STROKE = "rgba(14, 221, 191, 1)";
-const DARK_STROKE = "rgba(41, 229, 255, 1)";
+const LIGHT_STROKE = "rgba(20, 241, 149, 1)";
+const DARK_STROKE = "rgba(9, 11, 21, 0.32)";
 
 export default function Ring({ percent }: { percent: number }) {
   let [strokeOffset, setStrokeOffset] = useState<number>(NEAR_ZERO_PERCENT);
@@ -24,8 +24,8 @@ export default function Ring({ percent }: { percent: number }) {
     <div className="flex">
       <div
         style={{
-          width: "208px",
-          height: "208px",
+          width: "164.96px",
+          height: "164.96px",
           transform: "rotate(80deg) scale(1.05)",
         }}
       >
@@ -35,7 +35,7 @@ export default function Ring({ percent }: { percent: number }) {
             style={{
               strokeDasharray: "380",
               fill: "transparent",
-              strokeWidth: 4,
+              strokeWidth: 7,
               strokeLinecap: "round",
               transition: "stroke-dashoffset 0.2s ease",
             }}

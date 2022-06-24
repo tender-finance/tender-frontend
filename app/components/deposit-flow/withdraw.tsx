@@ -1,10 +1,10 @@
 import { ICON_SIZE } from "~/lib/constants";
 import type { Market } from "~/types/global";
 import { useEffect, useState, useRef, useContext } from "react";
-import type { JsonRpcSigner, TransactionReceipt } from "@ethersproject/providers";
+import type { JsonRpcSigner } from "@ethersproject/providers";
 import toast from "react-hot-toast";
 import Max from "~/components/max";
-import * as math from "mathjs";
+import * as math from "mathjs"
 import clsx from "clsx";
 
 import { redeem } from "~/lib/tender";
@@ -15,7 +15,6 @@ import { useBorrowLimitUsed } from "~/hooks/use-borrow-limit-used";
 import ConfirmingTransaction from "../fi-modal/confirming-transition";
 import { TenderContext } from "~/contexts/tender-context";
 import { shrinkyInputClass, toCryptoString } from "~/lib/ui";
-import { displayTransactionResult } from "../displayTransactionResult";
 
 export interface WithdrawProps {
   market: Market;
@@ -36,13 +35,13 @@ export default function Withdraw({
   borrowLimitUsed,
   totalBorrowedAmountInUsd,
 }: WithdrawProps) {
+  let [isWaitingToBeMined, setIsWaitingToBeMined] = useState<boolean>(false);
   let [value, setValue] = useState<string>("0");
   let [isWithdrawing, setIsWithdrawing] = useState<boolean>(false);
   let [txnHash, setTxnHash] = useState<string>("");
   let inputEl = useRef<HTMLInputElement>(null);
 
-
-  let { tokenPairs, updateTransaction, isWaitingToBeMined, setIsWaitingToBeMined } = useContext(TenderContext);
+  let { tokenPairs, updateTransaction } = useContext(TenderContext);
 
   let newBorrowLimit = useProjectBorrowLimit(
     signer,
@@ -59,7 +58,7 @@ export default function Withdraw({
 
   var maxWithdrawAmount: number = Math.min(
     market.supplyBalance, // how much we're supplying
-    market.maxBorrowLiquidity // how much cash the contract has
+    market.maxBorrowLiquidity, // how much cash the contract has
   );
 
   // // if there is a borrow balance
@@ -67,6 +66,7 @@ export default function Withdraw({
   //   // 0.8 * (totalSupply - totalBorrow balance / token price)
   //   // if there is a borrow or else 100%
   // }
+
 
   let [isValid, validationDetail] = useValidInput(
     value,
@@ -95,14 +95,18 @@ export default function Withdraw({
           <div>
             <div className="pt-8 bg-[#151515] relative border-[#B5CFCC2B] border-b">
               <div className="float-right">
-                <button onClick={() => closeModal()} className="mr-8">
-                  <img src="/images/ico/close.svg" />
+                <button
+                  onClick={() => closeModal()}
+                  className="mr-8"
+                >
+                  <img src="/images/ico/close.svg"/>
                 </button>
               </div>
               <div className="flex w-full align-middle justify-center items-center">
                 <img
                   src={market.tokenPair.token.icon}
                   style={{ width: ICON_SIZE }}
+                  className=""
                   alt="icon"
                 />
               </div>
@@ -121,9 +125,7 @@ export default function Withdraw({
                     maxValue={maxWithdrawAmount.toString()}
                     updateValue={() => {
                       if (!inputEl || !inputEl.current) return;
-                      let value = math.format(maxWithdrawAmount, {
-                        notation: "fixed",
-                      });
+                      let value = math.format(maxWithdrawAmount, {notation: "fixed"})
                       inputEl.current.focus();
                       inputEl.current.value = value;
                       setValue(value);
@@ -133,28 +135,26 @@ export default function Withdraw({
                   />
                 )}
               </div>
-              <div className="flex mt-6 uppercase">
-                <button
-                  className="flex-grow py-2 font-space font-bold text-base uppercase"
-                  onClick={() => setIsSupplying(true)}
-                >
-                  Supply
-                </button>
-                <button
-                  className="flex-grow py-2 text-[#14F195] border-b-4 uppercase border-b-[#14F195] font-space font-bold text-base"
-                  onClick={() => setIsSupplying(false)}
-                >
-                  Withdraw
-                </button>
-              </div>
+            <div className="flex mt-6 uppercase">
+              <button
+                className="flex-grow py-2 font-space font-bold text-base uppercase"
+                onClick={() => setIsSupplying(true)}
+              >
+                Supply
+              </button>
+              <button
+                className="flex-grow py-2 text-[#14F195] border-b-4 uppercase border-b-[#14F195] font-space font-bold text-base"
+                onClick={() => setIsSupplying(false)}
+              >
+                Withdraw
+              </button>
+            </div>
             </div>
             <div className=" pt-6">
               <div className="px-12 bg-[#0D0D0D]">
                 <div className="flex mb-2 justify-end items-center">
                   <span className="font-bold mr-3">Supply Rates</span>{" "}
-                  <a>
-                    <img src="/images/ico/open.svg" />
-                  </a>
+                  <a><img src="/images/ico/open.svg"/></a>
                 </div>
                 <div className="flex items-center mb-2  pb-4 border-b border-[#282C2B]">
                   <img
@@ -163,9 +163,7 @@ export default function Withdraw({
                     className="mr-3"
                     alt="icon"
                   />
-                  <div className="flex-grow text-[#ADB5B3] font-nova font-base">
-                    Supply APY
-                  </div>
+                  <div className="flex-grow text-[#ADB5B3] font-nova font-base">Supply APY</div>
                   <div>{market.marketData.depositApy}</div>
                 </div>
                 <div className="flex items-center mb-2 pb-4">
@@ -175,9 +173,7 @@ export default function Withdraw({
                     className="mr-3"
                     alt="icon"
                   />
-                  <div className="flex-grow text-[#ADB5B3] font-nova font-base">
-                    Distribution APY
-                  </div>
+                  <div className="flex-grow text-[#ADB5B3] font-nova font-base">Distribution APY</div>
                   <div>{market.marketData.depositApy}</div>
                 </div>
 
@@ -208,7 +204,6 @@ export default function Withdraw({
                             return;
                           }
                           setIsWithdrawing(true);
-                          toast.loading("Waiting for confirmation")
                           // @ts-ignore existence of signer is gated above.
                           let txn = await redeem(
                             value,
@@ -216,35 +211,18 @@ export default function Withdraw({
                             market.tokenPair.cToken,
                             market.tokenPair.token
                           );
-
                           setTxnHash(txn.hash);
+
                           setIsWaitingToBeMined(true);
-
-                          let tr: TransactionReceipt = await txn.wait(); // TODO: error handle if transaction fails
-                          updateTransaction(tr.blockHash);
-
-                          // wait an extra 3 seconds for latency
-                          setTimeout(()=> {
-                            displayTransactionResult(tr.transactionHash, "Withdraw successful");
-                          }, 3000)
-
-
+                          let tr = await txn.wait(); // TODO: error handle if transaction fails
                           setValue("");
+                          updateTransaction(tr.blockHash);
+                          toast.success("Withdraw successful");
                           closeModal();
                         } catch (e) {
-                          toast.dismiss()
-                          console.log(e)
- 
-                          if (e.transaction.hash) {
-                            toast.error(()=><p>
-                              <a target="_blank" href={`https://andromeda-explorer.metis.io/tx/${e.transactionHash}/internal-transactions/`}>
-                                Withdraw unsuccessful
-                              </a> 
-                            </p>)
-                          } else {
-                            toast.error("Withdraw unsuccessful.");
-                          }
-                          } finally {
+                          toast.error("Withdraw unsuccessful");
+                          console.error(e);
+                        } finally {
                           setIsWaitingToBeMined(false);
                           setIsWithdrawing(false);
                         }
@@ -263,9 +241,7 @@ export default function Withdraw({
                 </div>
 
                 <div className="flex text-gray-500">
-                  <div className="flex-grow text-[#ADB5B3] font-nova text-base">
-                    Currently Supplying
-                  </div>
+                  <div className="flex-grow text-[#ADB5B3] font-nova text-base">Currently Supplying</div>
                   <div className="font-nova text-bas text-white">
                     {toCryptoString(market.supplyBalance)}{" "}
                     {market.tokenPair.token.symbol}

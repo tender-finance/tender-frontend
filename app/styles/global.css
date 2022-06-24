@@ -42,6 +42,7 @@
 
 body {
   font-family: "poppins", sans-serif;
+  background-image: none;
 }
 
 .text-heading {
@@ -60,6 +61,13 @@ body {
   color: #14f195;
 }
 
+.pane-custom {
+  background: #0d0d0d;
+  box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.07);
+  overflow-x: hidden;
+  border-radius: 1rem;
+}
+
 .icons-color:hover {
   filter: invert(0%) sepia(100%) saturate(0%) hue-rotate(288deg) brightness(200%) contrast(102%);
 }
@@ -69,12 +77,12 @@ body {
 }
 
 .border-custom-full {
-  border: 1px solid #B5CFCC2B;
+  border: 1px solid #b5cfcc2b;
 }
 
 .border-custom {
-  border-top: 1px solid #B5CFCC2B;
-  border-left: 1px solid #B5CFCC2B;
+  border-top: 1px solid #b5cfcc2b;
+  border-left: 1px solid #b5cfcc2b;
 }
 
 .modal .ReactModal__Overlay--after-open {
@@ -82,8 +90,8 @@ body {
 }
 
 .modal .ReactModal__Content--after-open {
-  background: #0D0D0D !important;
-  border: 1px solid #B5CFCC2B !important;
+  background: #0d0d0d !important;
+  border: 1px solid #b5cfcc2b !important;
   width: 550px;
   border-radius: 1rem !important;
   padding: 0 !important;
@@ -91,41 +99,108 @@ body {
   max-height: 850px;
 }
 
-
-.ReactModal__Overlay {
-  opacity: 0;
-  transition: opacity 300ms;
-}
-
-.ReactModal__Overlay--after-open{
-  opacity: 1;
-}
-
-.ReactModal__Overlay--before-close{
-  opacity: 0;
+@media screen and (max-width: 788px) {
+  .testCircle {
+    width: 100px;
+    height: 100px;
+    top: -50px !important;
+    left: calc(50% - 50px) !important;
+  }
 }
 
 
-/*Toast styles */
-:root {
-  --toastify-color-light: black;
-  --toastify-color-dark: #121212;
-  --toastify-color-info: #3498db;
-  --toastify-color-success: #07bc0c;
-  --toastify-color-warning: #f1c40f;
-  --toastify-color-error: #e74c3c;
-  --toastify-color-transparent: rgba(255, 255, 255, 0.7);
-
-  --toastify-toast-width: 320px;
-
-  --toastify-spinner-color: #09dcc1;
-  --toastify-spinner-color-empty-area: #09dcc1;
+.aside__menu__wrap {
+  position: fixed;
+  left: 0;
+  top: 81px;
+  width: 100%;
+  z-index: 10;
+  height: 100vh;
+  border-top: none;
+  transform: translate(200vw, 0);
+  transition: transform 0.5s ease 0s, opacity 0.5s ease 0s;
 }
 
-div .Toast-Notification { 
-  background: #23262b;
-  color: white;
-  font-weight: 200;
-  font-family: "poppins", sans-serif;
-  font-size: .9rem;
+.aside__menu__wrap.act {
+  transform: translate(calc(50% + 1px), 0px);
+  right: 50%;
+  left: auto;
+}
+
+.aside__menu__bac {
+  position: fixed;
+  width: 100vw;
+  top: 0;
+  height: 100vh;
+  right: 50%;
+  transform: translate(100vw, 0px);
+}
+
+.aside__menu__wrap.act .aside__menu__bac {
+  transform: translate(50%, 0px);
+}
+
+.aside__menu__bac:after {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  background: rgba(0, 0, 0, 0.533);
+  content: "";
+  z-index: 1;
+}
+
+.aside__menu__container {
+  width: 100%;
+  max-width: 350px;
+  height: 100%;
+  max-height: calc(100vh - 81px);
+  margin-right: 0;
+  top: 0;
+  z-index: 10;
+  position: absolute;
+  right: 0;
+  left: auto;
+  background: #000;
+  padding: 20px 40px;
+  margin-right: 0px;
+}
+
+.aside__menu__container .header__menu-link {
+  margin-bottom: 20px;
+}
+
+.header__burg {
+  width: 35px;
+  height: 45px;
+  background: transparent;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border: none;
+}
+
+.header__burg.active span {
+  transform: rotate(45deg);
+  position: fixed;
+}
+
+.header__burg.active span:nth-child(2n) {
+  transform: rotate(-45deg);
+  position: fixed;
+}
+
+.header__burg.active span:nth-child(3n) {
+  display: none;
+}
+
+.header__burg span {
+  width: 35px;
+  height: 5px;
+  background: #fff;
+  border-radius: 30px;
+  transition: 0.3s;
 }

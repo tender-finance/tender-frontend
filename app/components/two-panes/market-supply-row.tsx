@@ -30,7 +30,7 @@ export default function MarketRow(props: {
   return (
     <tr
       onClick={() => openModal()}
-      className="text-gray-400 border-t border-t-gray-600 cursor-pointer"
+      className="border-t border-[#282C2B] cursor-pointer"
     >
       {props.children}
 
@@ -39,8 +39,6 @@ export default function MarketRow(props: {
         isOpen={!!isDepositModalOpen}
         onRequestClose={() => closeModal()}
         portalClassName="modal"
-        style={{ content: {inset: "unset", margin: "50px auto", zoom: "80%", position:"relative", maxWidth: 600}}}
-        closeTimeoutMS={200}
       >
         <DepositFlow closeModal={() => closeModal()} market={props.market} />
       </ReactModal>
