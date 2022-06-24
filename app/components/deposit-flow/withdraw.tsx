@@ -124,7 +124,7 @@ export default function Withdraw({
 
                 {parseFloat(borrowLimitUsed) < 80 && (
                   <Max
-                    maxValue={maxWithdrawAmount.toString()}
+                    maxValue={math.format(maxWithdrawAmount, {notation: "fixed"})}
                     updateValue={() => {
                       if (!inputEl || !inputEl.current) return;
                       let value = math.format(maxWithdrawAmount, {notation: "fixed"})
@@ -214,7 +214,6 @@ export default function Withdraw({
                           setTimeout(()=> {
                             displayTransactionResult(tr.transactionHash, "Withdraw successful");
                           }, 3000)
-
 
                           setValue("");
                           closeModal();

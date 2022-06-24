@@ -69,7 +69,7 @@ export default function Borrow({
     market.maxBorrowLiquidity
   )
 
-  let formattedMaxBorrowLimit : string = math.format(maxBorrowLimit)
+  let formattedMaxBorrowLimit : string = math.format(maxBorrowLimit, {notation: "fixed"})
 
   let maxBorrowAmount = useMaxBorrowAmount(
     borrowLimit,
