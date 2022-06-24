@@ -1,20 +1,26 @@
+import { map } from "mathjs";
+
 export default function Footer() {
   interface Link {
     label: string;
     url: string;
+    ico: string;
   }
   let productLinks: Link[] = [
     {
       label: "Docs",
       url: "https://docs.tender.fi",
+      ico: "/images/ico/list.svg",
     },
     {
       label: "GitHub",
       url: "https://github.com/tender-finance/front-end",
+      ico: "/images/ico/git.svg",
     },
     {
       label: "Support",
       url: "mailto:support@tender.fi",
+      ico: "/images/ico/email.svg",
     },
   ];
 
@@ -22,82 +28,59 @@ export default function Footer() {
     {
       label: "Telegram",
       url: "http://t.me/tender_fi",
+      ico: "/images/ico/telegram.svg",
     },
     {
       label: "Twitter",
       url: "https://twitter.com/tender_fi",
+      ico: "/images/ico/twitter.svg",
     },
     {
       label: "Discord",
       url: "https://discord.gg/CD2hKamT",
+      ico: "/images/ico/discord.svg",
     },
   ];
-  
+
   let companyLinks: Link[] = [
     {
       label: "Blog",
       url: "https://tender-finance.medium.com/",
+      ico: "/images/ico/git.svg",
     },
     {
       label: "Youtube",
       url: "https://www.youtube.com/channel/UCGMP8qwS9SoWRvsd-srnExg/",
+      ico: "/images/ico/git.svg",
     },
     {
       label: "Careers",
       url: "https://triplebyte.com/company/public/ang-sciences",
+      ico: "/images/ico/git.svg",
     },
   ];
   return (
-    <div className="border-t border-t-gray-700">
-      <div className="c grid grid-cols-4 mt-14 mb-24">
-        <div>
-          <div className="heading mb-5 text-lg">Product</div>
-          {productLinks.map(({ url, label }) => (
-            <div key={url} className="mb-4 text-sm font-light">
-              <a href={url} className="text-gray-500">
-                {label}
-              </a>
-            </div>
-          ))}
-        </div>
-        <div>
-          <div className="heading mb-5">Resources</div>
-          {resourceLinks.map(({ url, label }) => (
-            <div key={url} className="mb-4 text-sm font-light">
-              <a href={url} className="text-gray-500">
-                {label}
-              </a>
-            </div>
-          ))}
-        </div>
-        <div>
-          <div className="heading mb-5">Company</div>
-          {companyLinks.map(({ url, label }) => (
-            <div key={url} className="mb-4 text-sm font-light">
-              <a href={url} className="text-gray-500">
-                {label}
-              </a>
-            </div>
-          ))}
-        </div>
-        <div>
-          <div className="heading mb-5">Get in touch</div>
-
-          <div className="mb-8 text-sm font-light text-gray-500">
-            We want to hear from you. Find us on social media
-          </div>
-          <div className="flex">
-            <a href="https://twitter.com/tender_fi" className="mr-3">
-              <img src="/images/twitter-icon.svg" alt="Link to twitter" />
+    <div className="flex justify-between border-t border-t-gray-700 py-4 px-12">
+      <div className="">
+        <a href="#">
+          <img src="images/ico/smallLogo.svg" alt="..." />
+        </a>
+      </div>
+      <div className="flex">
+        {productLinks.map((item, index) => {
+          return (
+            <a className="mr-8 text-" href={item.url} key={index}>
+              <img className="icons-color" src={item.ico} alt="" />
             </a>
-            <a
-              href="https://www.linkedin.com/company/80238010"
-              className="mr-3"
-            >
-              <img src="/images/li-icon.svg" alt="Link to LinkedIn" />
+          );
+        })}
+        {resourceLinks.map((item, index) => {
+          return (
+            <a className="mr-8 text-" key={index} href={item.url}>
+              <img className="icons-color" src={item.ico} alt="" />
             </a>
-          </div>
-        </div>
+          );
+        })}
       </div>
     </div>
   );

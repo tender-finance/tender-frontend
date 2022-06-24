@@ -4,7 +4,7 @@ import { useEffect, useState, useRef, useContext } from "react";
 import type { JsonRpcSigner } from "@ethersproject/providers";
 import toast from "react-hot-toast";
 import Max from "~/components/max";
-import * as math from "mathjs"
+import * as math from "mathjs";
 import clsx from "clsx";
 
 import { redeem } from "~/lib/tender";
@@ -58,7 +58,7 @@ export default function Withdraw({
 
   var maxWithdrawAmount: number = Math.min(
     market.supplyBalance, // how much we're supplying
-    market.maxBorrowLiquidity, // how much cash the contract has
+    market.maxBorrowLiquidity // how much cash the contract has
   );
 
   // // if there is a borrow balance
@@ -66,7 +66,6 @@ export default function Withdraw({
   //   // 0.8 * (totalSupply - totalBorrow balance / token price)
   //   // if there is a borrow or else 100%
   // }
-
 
   let [isValid, validationDetail] = useValidInput(
     value,
@@ -93,26 +92,21 @@ export default function Withdraw({
       {!isWaitingToBeMined && (
         <div>
           <div>
-            <div className="py-8 bg-brand-black-light">
+            <div className="pt-8 bg-[#151515] relative border-[#B5CFCC2B] border-b">
               <div className="float-right">
-                <button
-                  onClick={() => closeModal()}
-                  className="text-4xl rotate-45 text-gray-400 mr-8"
-                >
-                  +
+                <button onClick={() => closeModal()} className="mr-8">
+                  <img src="/images/ico/close.svg" />
                 </button>
               </div>
-              <div className="flex align-middle justify-center items-center">
+              <div className="flex w-full align-middle justify-center items-center">
                 <img
                   src={market.tokenPair.token.icon}
                   style={{ width: ICON_SIZE }}
-                  className="mr-3"
                   alt="icon"
                 />
-                <div>Withdraw {market.tokenPair.token.symbol}</div>
               </div>
 
-              <div className="flex flex-col justify-center items-center overflow-hidden">
+              <div className="flex flex-col justify-center items-center mt-6 overflow-hidden font-space">
                 <input
                   ref={inputEl}
                   style={{ minHeight: 90 }}
@@ -126,7 +120,9 @@ export default function Withdraw({
                     maxValue={maxWithdrawAmount.toString()}
                     updateValue={() => {
                       if (!inputEl || !inputEl.current) return;
-                      let value = math.format(maxWithdrawAmount, {notation: "fixed"})
+                      let value = math.format(maxWithdrawAmount, {
+                        notation: "fixed",
+                      });
                       inputEl.current.focus();
                       inputEl.current.value = value;
                       setValue(value);
@@ -136,34 +132,51 @@ export default function Withdraw({
                   />
                 )}
               </div>
+              <div className="flex mt-6 uppercase">
+                <button
+                  className="flex-grow py-2 font-space font-bold text-base uppercase"
+                  onClick={() => setIsSupplying(true)}
+                >
+                  Supply
+                </button>
+                <button
+                  className="flex-grow py-2 text-[#14F195] border-b-4 uppercase border-b-[#14F195] font-space font-bold text-base"
+                  onClick={() => setIsSupplying(false)}
+                >
+                  Withdraw
+                </button>
+              </div>
             </div>
-            <div className="flex">
-              <button
-                className="flex-grow py-3"
-                onClick={() => setIsSupplying(true)}
-              >
-                Deposit
-              </button>
-              <button
-                className="flex-grow py-3 text-brand-green border-b-2 border-b-brand-green"
-                onClick={() => setIsSupplying(false)}
-              >
-                Withdraw
-              </button>
-            </div>
-            <div className="py-8" style={{ background: "#1C1E22" }}>
-              <div className="py-6 px-12" style={{ background: "#1C1E22" }}>
-                <div className="flex mb-4">
-                  <span className="font-bold mr-3">Deposit Rates</span>{" "}
+            <div className=" pt-6">
+              <div className="px-12 bg-[#0D0D0D]">
+                <div className="flex mb-2 justify-end items-center">
+                  <span className="font-bold mr-3">Supply Rates</span>{" "}
+                  <a>
+                    <img src="/images/ico/open.svg" />
+                  </a>
                 </div>
-                <div className="flex items-center mb-3 text-gray-400  pb-6">
+                <div className="flex items-center mb-2  pb-4 border-b border-[#282C2B]">
                   <img
                     src={market.tokenPair.token.icon}
                     style={{ width: ICON_SIZE }}
                     className="mr-3"
                     alt="icon"
                   />
-                  <div className="flex-grow">Deposit APY</div>
+                  <div className="flex-grow text-[#ADB5B3] font-nova font-base">
+                    Supply APY
+                  </div>
+                  <div>{market.marketData.depositApy}</div>
+                </div>
+                <div className="flex items-center mb-2 pb-4">
+                  <img
+                    src={market.tokenPair.token.icon}
+                    style={{ width: ICON_SIZE }}
+                    className="mr-3"
+                    alt="icon"
+                  />
+                  <div className="flex-grow text-[#ADB5B3] font-nova font-base">
+                    Distribution APY
+                  </div>
                   <div>{market.marketData.depositApy}</div>
                 </div>
 
@@ -176,10 +189,10 @@ export default function Withdraw({
                   newBorrowLimitUsed={newBorrowLimitUsed}
                 />
 
-                <div className="mb-8">
+                <div className="mb-6">
                   {!signer && <div>Connect wallet to get started</div>}
                   {signer && !isValid && (
-                    <button className="py-4 text-center text-white font-bold rounded w-full bg-gray-600">
+                    <button className="uppercase py-4 text-center text-black font-space font-bold text-lg rounded w-full bg-[#14F195]">
                       {validationDetail}
                     </button>
                   )}
@@ -231,8 +244,10 @@ export default function Withdraw({
                 </div>
 
                 <div className="flex text-gray-500">
-                  <div className="flex-grow">Currently Supplying</div>
-                  <div>
+                  <div className="flex-grow text-[#ADB5B3] font-nova text-base">
+                    Currently Supplying
+                  </div>
+                  <div className="font-nova text-bas text-white">
                     {toCryptoString(market.supplyBalance)}{" "}
                     {market.tokenPair.token.symbol}
                   </div>

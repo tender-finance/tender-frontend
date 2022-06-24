@@ -26,6 +26,20 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("/fonts/SpaceGrotesk/SpaceGrotesk-VariableFont_wght.ttf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "ProximaNova";
+  src: url("/fonts/ProximaNova/ProximaNova-Light.ttf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
 body {
   font-family: "poppins", sans-serif;
 }
@@ -34,14 +48,44 @@ body {
   font-family: "neue-machina", sans-serif;
 }
 
+.font-space {
+  font-family: "Space Grotesk", sans-serif !important;
+}
+
+.font-nova {
+  font-family: "ProximaNova", sans-serif !important;
+}
+
+.text-dark-green {
+  color: #14f195;
+}
+
+.icons-color:hover {
+  filter: invert(0%) sepia(100%) saturate(0%) hue-rotate(288deg) brightness(200%) contrast(102%);
+}
+
+.bg-dark-green {
+  background-color: #162421;
+}
+
+.border-custom-full {
+  border: 1px solid #B5CFCC2B;
+}
+
+.border-custom {
+  border-top: 1px solid #B5CFCC2B;
+  border-left: 1px solid #B5CFCC2B;
+}
+
 .modal .ReactModal__Overlay--after-open {
   background: rgba(0, 0, 0, 0.8) !important;
 }
 
 .modal .ReactModal__Content--after-open {
-  background: #1c1e22 !important;
-  border: 0 !important;
+  background: #0D0D0D !important;
+  border: 1px solid #B5CFCC2B !important;
   width: 550px;
+  border-radius: 1rem !important;
   padding: 0 !important;
   margin: auto;
   max-height: 850px;

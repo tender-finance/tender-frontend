@@ -35,11 +35,12 @@ export default function ConnectWallet() {
         {/* Prompt to Install Metamask if window.ethereum is not available */}
         {!window.ethereum && (
           <a
-            className="border border-brand-green text-brand-green py-4 px-4 rounded-md text-sm"
+            className="border font-space font-bold uppercase text-dark-green py-4 px-4 rounded-md text-sm"
             target="_blank" rel="noreferrer"
             href="https://metamask.io/"
+            style={{border: 'solid #14f195 1px'}}
           >
-            Install MetaMask to get started
+            connect wallet
           </a>
         )}
 
