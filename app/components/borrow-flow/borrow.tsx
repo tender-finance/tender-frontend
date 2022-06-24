@@ -69,7 +69,7 @@ export default function Borrow({
     market.maxBorrowLiquidity
   )
 
-  let formattedMaxBorrowLimit : string = math.format(maxBorrowLimit)
+  let formattedMaxBorrowLimit : string = math.format(maxBorrowLimit, {notation: "fixed"})
 
   let maxBorrowAmount = useMaxBorrowAmount(
     borrowLimit,
@@ -223,7 +223,6 @@ export default function Borrow({
                             displayTransactionResult(tr.transactionHash, "Borrow successful");
                           }, 2000)
 
-                          closeModal();
                         } catch (e) {
                           toast.dismiss()
                           console.log(e)

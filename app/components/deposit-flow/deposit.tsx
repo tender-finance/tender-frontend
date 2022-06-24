@@ -131,7 +131,7 @@ export default function Deposit({
             {isEnabled && (
               <div className="relative">
                 <Max
-                  maxValue={walletBalance.toString()}
+                  maxValue={math.format(walletBalance, {notation: "fixed"})}
                   updateValue={() => {
                     let value = math.format(walletBalance, {notation: "fixed"})
                     if (!inputEl || !inputEl.current) return;
@@ -258,7 +258,6 @@ export default function Deposit({
                       }, 3000)
 
                       setValue("");
-                      closeModal();
                     } catch (e) {
                       toast.dismiss()
                       console.log(e)
