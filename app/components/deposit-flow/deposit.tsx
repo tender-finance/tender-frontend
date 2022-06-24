@@ -1,7 +1,7 @@
 import { ICON_SIZE } from "~/lib/constants";
 import type { Market } from "~/types/global";
 import { useContext, useEffect, useRef, useState } from "react";
-import type { JsonRpcSigner } from "@ethersproject/providers";
+import type { JsonRpcSigner, TransactionReceipt } from "@ethersproject/providers";
 import { useValidInput } from "~/hooks/use-valid-input";
 import toast from "react-hot-toast";
 import Max from "~/components/max";
@@ -15,6 +15,7 @@ import { useBorrowLimitUsed } from "~/hooks/use-borrow-limit-used";
 import ConfirmingTransaction from "../fi-modal/confirming-transition";
 import { TenderContext } from "~/contexts/tender-context";
 import { shrinkyInputClass, toCryptoString } from "~/lib/ui";
+import { displayTransactionResult } from "../displayTransactionResult";
 
 export interface DepositProps {
   closeModal: Function;
@@ -264,6 +265,7 @@ export default function Deposit({
                         });
                         return;
                       }
+                      toast.loading("Waiting for confirmation")
                       setIsDepositing(true);
                       let txn = await deposit(
                         value,
@@ -273,15 +275,29 @@ export default function Deposit({
                       );
                       setTxnHash(txn.hash);
                       setIsWaitingToBeMined(true);
-                      let tr = await txn.wait();
-                      setValue("0");
+                      let tr: TransactionReceipt = await txn.wait();
                       updateTransaction(tr.blockHash);
-                      toast.success("Deposit successful");
+
+                      // wait an extra 3 seconds for latency
+                      setTimeout(()=> {
+                        displayTransactionResult(tr.transactionHash, "Deposit successful");
+                      }, 3000)
+
+                      setValue("");
                       closeModal();
                     } catch (e) {
-                      toast.error("Deposit unsuccessful");
-                      console.error(e);
-                    } finally {
+                      toast.dismiss()
+                      console.log(e)
+                      if (e.transaction.hash) {
+                        toast.error(()=><p>
+                          <a target="_blank" href={`https://andromeda-explorer.metis.io/tx/${e.transactionHash}/internal-transactions/`}>
+                            Deposit unsuccessful
+                          </a> 
+                        </p>)
+                      } else {
+                        toast.error("Deposit unsuccessful.");
+                      }
+                  } finally {
                       setIsWaitingToBeMined(false);
                       setIsDepositing(false);
                     }

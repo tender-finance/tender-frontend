@@ -1,7 +1,7 @@
 import { ICON_SIZE } from "~/lib/constants";
 import type { Market } from "~/types/global";
 import { useEffect, useState, useRef, useContext } from "react";
-import type { JsonRpcSigner } from "@ethersproject/providers";
+import type { JsonRpcSigner, TransactionReceipt } from "@ethersproject/providers";
 import toast from "react-hot-toast";
 import Max from "~/components/max";
 import * as math from "mathjs";
@@ -15,6 +15,7 @@ import { useBorrowLimitUsed } from "~/hooks/use-borrow-limit-used";
 import ConfirmingTransaction from "../fi-modal/confirming-transition";
 import { TenderContext } from "~/contexts/tender-context";
 import { shrinkyInputClass, toCryptoString } from "~/lib/ui";
+import { displayTransactionResult } from "../displayTransactionResult";
 
 export interface WithdrawProps {
   market: Market;
@@ -35,13 +36,13 @@ export default function Withdraw({
   borrowLimitUsed,
   totalBorrowedAmountInUsd,
 }: WithdrawProps) {
-  let [isWaitingToBeMined, setIsWaitingToBeMined] = useState<boolean>(false);
   let [value, setValue] = useState<string>("0");
   let [isWithdrawing, setIsWithdrawing] = useState<boolean>(false);
   let [txnHash, setTxnHash] = useState<string>("");
   let inputEl = useRef<HTMLInputElement>(null);
 
-  let { tokenPairs, updateTransaction } = useContext(TenderContext);
+
+  let { tokenPairs, updateTransaction, isWaitingToBeMined, setIsWaitingToBeMined } = useContext(TenderContext);
 
   let newBorrowLimit = useProjectBorrowLimit(
     signer,
@@ -207,6 +208,7 @@ export default function Withdraw({
                             return;
                           }
                           setIsWithdrawing(true);
+                          toast.loading("Waiting for confirmation")
                           // @ts-ignore existence of signer is gated above.
                           let txn = await redeem(
                             value,
@@ -214,18 +216,35 @@ export default function Withdraw({
                             market.tokenPair.cToken,
                             market.tokenPair.token
                           );
-                          setTxnHash(txn.hash);
 
+                          setTxnHash(txn.hash);
                           setIsWaitingToBeMined(true);
-                          let tr = await txn.wait(); // TODO: error handle if transaction fails
-                          setValue("");
+
+                          let tr: TransactionReceipt = await txn.wait(); // TODO: error handle if transaction fails
                           updateTransaction(tr.blockHash);
-                          toast.success("Withdraw successful");
+
+                          // wait an extra 3 seconds for latency
+                          setTimeout(()=> {
+                            displayTransactionResult(tr.transactionHash, "Withdraw successful");
+                          }, 3000)
+
+
+                          setValue("");
                           closeModal();
                         } catch (e) {
-                          toast.error("Withdraw unsuccessful");
-                          console.error(e);
-                        } finally {
+                          toast.dismiss()
+                          console.log(e)
+ 
+                          if (e.transaction.hash) {
+                            toast.error(()=><p>
+                              <a target="_blank" href={`https://andromeda-explorer.metis.io/tx/${e.transactionHash}/internal-transactions/`}>
+                                Withdraw unsuccessful
+                              </a> 
+                            </p>)
+                          } else {
+                            toast.error("Withdraw unsuccessful.");
+                          }
+                          } finally {
                           setIsWaitingToBeMined(false);
                           setIsWithdrawing(false);
                         }

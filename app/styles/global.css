@@ -90,3 +90,42 @@ body {
   margin: auto;
   max-height: 850px;
 }
+
+
+.ReactModal__Overlay {
+  opacity: 0;
+  transition: opacity 300ms;
+}
+
+.ReactModal__Overlay--after-open{
+  opacity: 1;
+}
+
+.ReactModal__Overlay--before-close{
+  opacity: 0;
+}
+
+
+/*Toast styles */
+:root {
+  --toastify-color-light: black;
+  --toastify-color-dark: #121212;
+  --toastify-color-info: #3498db;
+  --toastify-color-success: #07bc0c;
+  --toastify-color-warning: #f1c40f;
+  --toastify-color-error: #e74c3c;
+  --toastify-color-transparent: rgba(255, 255, 255, 0.7);
+
+  --toastify-toast-width: 320px;
+
+  --toastify-spinner-color: #09dcc1;
+  --toastify-spinner-color-empty-area: #09dcc1;
+}
+
+div .Toast-Notification { 
+  background: #23262b;
+  color: white;
+  font-weight: 200;
+  font-family: "poppins", sans-serif;
+  font-size: .9rem;
+}
