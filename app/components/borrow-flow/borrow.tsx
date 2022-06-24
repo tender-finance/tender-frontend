@@ -223,7 +223,6 @@ export default function Borrow({
                             displayTransactionResult(tr.transactionHash, "Borrow successful");
                           }, 2000)
 
-                          closeModal();
                         } catch (e) {
                           toast.dismiss()
                           console.log(e)

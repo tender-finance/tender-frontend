@@ -258,7 +258,6 @@ export default function Deposit({
                       }, 3000)
 
                       setValue("");
-                      closeModal();
                     } catch (e) {
                       toast.dismiss()
                       console.log(e)
