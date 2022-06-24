@@ -2,7 +2,7 @@ import { ICON_SIZE } from "~/lib/constants";
 import type { Market, TokenPair } from "~/types/global";
 import { useEffect, useState, useRef, useContext } from "react";
 import type { JsonRpcSigner } from "@ethersproject/providers";
-import * as math from "mathjs"
+import * as math from "mathjs";
 
 import clsx from "clsx";
 import toast from "react-hot-toast";
@@ -67,9 +67,11 @@ export default function Borrow({
     market.comptrollerAddress,
     market.tokenPair,
     market.maxBorrowLiquidity
-  )
+  );
 
-  let formattedMaxBorrowLimit : string = math.format(maxBorrowLimit)
+  let formattedMaxBorrowLimit: string = math.format(maxBorrowLimit, {
+    notation: "fixed",
+  });
 
   let maxBorrowAmount = useMaxBorrowAmount(
     borrowLimit,
@@ -214,8 +216,13 @@ export default function Borrow({
                           setIsWaitingToBeMined(true);
                           let tr = await txn.wait(); // TODO: error handle if transaction fails
                           updateTransaction(tr.blockHash);
-                          toast.success("Borrow successful");
-                          closeModal();
+
+                          setTimeout(() => {
+                            displayTransactionResult(
+                              tr.transactionHash,
+                              "Borrow successful"
+                            );
+                          }, 2000);
                         } catch (e) {
                           toast.error("Borrow unsuccessful");
                           console.error(e);

@@ -401,6 +401,7 @@ async function borrow(
   // }
 }
 
+// This is the number of cTokens outstanding, not the value in usd
 async function getMarketSizeUsd(
   signer: Signer,
   cToken: cToken

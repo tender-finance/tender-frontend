@@ -2,7 +2,7 @@ import { ICON_SIZE } from "~/lib/constants";
 import type { Market, TokenPair } from "~/types/global";
 import { useContext, useEffect, useRef, useState } from "react";
 import type { JsonRpcSigner } from "@ethersproject/providers";
-import * as math from "mathjs"
+import * as math from "mathjs";
 
 import clsx from "clsx";
 import toast from "react-hot-toast";
@@ -148,7 +148,9 @@ export default function Repay({
                   <Max
                     maxValue={maxRepayableAmount.toString()}
                     updateValue={() => {
-                      let value = math.format(maxRepayableAmount, {notation: "fixed"})
+                      let value = math.format(maxRepayableAmount, {
+                        notation: "fixed",
+                      });
                       if (!inputEl || !inputEl.current) return;
                       inputEl.current.focus();
                       inputEl.current.value = value;
@@ -260,9 +262,6 @@ export default function Repay({
                         setIsWaitingToBeMined(true);
                         let tr = await txn.wait(); // TODO: error handle if transaction fails
                         setValue("");
-                        updateTransaction(tr.blockHash);
-                        toast.success("Repayment successful");
-                        closeModal();
                       } catch (e) {
                         toast.error("Repayment unsuccessful");
                         console.error(e);

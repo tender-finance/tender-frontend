@@ -102,11 +102,8 @@ export default function Deposit({
         <div className="">
           <div className="pt-8 bg-[#151515] relative border-[#B5CFCC2B] border-b">
             <div className="absolute">
-              <button
-                onClick={() => closeModal()}
-                className="mr-8"
-              >
-                <img src="/images/ico/close.svg"/>
+              <button onClick={() => closeModal()} className="mr-8">
+                <img src="/images/ico/close.svg" />
               </button>
             </div>
             <div className="flex align-middle justify-center items-center">
@@ -116,41 +113,43 @@ export default function Deposit({
                 className="mr-3"
                 alt="icon"
               />
-              <div className="text-base font-normal font-nova">{market.tokenPair.token.symbol}</div>
-
+              <div className="text-base font-normal font-nova">
+                {market.tokenPair.token.symbol}
+              </div>
             </div>
 
             {!isEnabled && (
               <div className="flex flex-col items-center mt-5 rounded-2xl">
                 <img
-                src={market.tokenPair.token.icon}
-                style={{ width: ICON_SIZE }}
-                className="mr-3"
-                alt="icon"
-              />
+                  src={market.tokenPair.token.icon}
+                  style={{ width: ICON_SIZE }}
+                  className="mr-3"
+                  alt="icon"
+                />
                 <div className="max-w-sm text-center m-auto mt-5 mb-5 text-sm font-normal font-nova text-white text-sm">
-                  To Supply or Repay {market.tokenPair.token.symbol} to the Compound Protocol, you need to enable it first.
+                  To Supply or Repay {market.tokenPair.token.symbol} to the
+                  Compound Protocol, you need to enable it first.
                 </div>
                 <div className="flex flex-grow w-full">
-            <button
-              className="flex-grow py-3 text-[#14F195] border-b-4 uppercase border-b-[#14F195] font-space font-bold text-base"
-              onClick={() => setIsSupplying(true)}
-            >
-              Supply
-            </button>
-            <button
-              className="flex-grow py-3 font-space font-bold text-base uppercase"
-              onClick={() => setIsSupplying(false)}
-            >
-              Withdraw
-            </button>
-          </div>
+                  <button
+                    className="flex-grow py-3 text-[#14F195] border-b-4 uppercase border-b-[#14F195] font-space font-bold text-base"
+                    onClick={() => setIsSupplying(true)}
+                  >
+                    Supply
+                  </button>
+                  <button
+                    className="flex-grow py-3 font-space font-bold text-base uppercase"
+                    onClick={() => setIsSupplying(false)}
+                  >
+                    Withdraw
+                  </button>
+                </div>
               </div>
             )}
             {isEnabled && (
               <div className="relative">
                 <Max
-                  maxValue={walletBalance.toString()}
+                  maxValue={math.format(walletBalance, { notation: "fixed" })}
                   updateValue={() => {
                     let value = math.format(walletBalance, {
                       notation: "fixed",
@@ -176,35 +175,47 @@ export default function Deposit({
           </div>
 
           {/* Sub Navigation */}
-          
+
           <div className="py-6 px-12" style={{ background: "#0D0D0D" }}>
             <div className="flex mb-4">
-              <span className="font-bold mr-3 font-nova text-sm">Supply Rates</span>{" "}
-              <a><img src="/images/ico/open.svg"/></a>
+              <span className="font-bold mr-3 font-nova text-sm">
+                Supply Rates
+              </span>{" "}
+              <a>
+                <img src="/images/ico/open.svg" />
+              </a>
             </div>
             <div className="flex flex-col items-center mb-3 text-gray-400  pb-6">
-              <div className='flex w-full items-center border-b border-[#282C2B] py-8'>
-              <img
-                src={market.tokenPair.token.icon}
-                style={{ width: ICON_SIZE }}
-                className="mr-3"
-                alt="icon"
-              />
-              <div className="flex-grow font-nova text-base text-[#ADB5B3]">Supply APY</div>
-              <div className="font-nova text-white text-xl">{market.marketData.depositApy}</div>
+              <div className="flex w-full items-center border-b border-[#282C2B] py-8">
+                <img
+                  src={market.tokenPair.token.icon}
+                  style={{ width: ICON_SIZE }}
+                  className="mr-3"
+                  alt="icon"
+                />
+                <div className="flex-grow font-nova text-base text-[#ADB5B3]">
+                  Supply APY
+                </div>
+                <div className="font-nova text-white text-xl">
+                  {market.marketData.depositApy}
+                </div>
               </div>
               <div className="flex w-full items-center py-8">
-              <img
-                src={market.tokenPair.token.icon}
-                style={{ width: ICON_SIZE }}
-                className="mr-3"
-                alt="icon"
-              />
-              <div className="flex-grow font-nova text-base text-[#ADB5B3]">Distribution APY</div>
-              <div className="font-nova text-white text-xl">{market.marketData.depositApy}</div>
+                <img
+                  src={market.tokenPair.token.icon}
+                  style={{ width: ICON_SIZE }}
+                  className="mr-3"
+                  alt="icon"
+                />
+                <div className="flex-grow font-nova text-base text-[#ADB5B3]">
+                  Distribution APY
+                </div>
+                <div className="font-nova text-white text-xl">
+                  {market.marketData.depositApy}
+                </div>
               </div>
             </div>
-            
+
             <div className="mb-8">
               {!signer && <div>Connect wallet to get started</div>}
               {signer && !isEnabled && (
@@ -265,8 +276,16 @@ export default function Deposit({
                       let tr = await txn.wait();
                       setValue("0");
                       updateTransaction(tr.blockHash);
-                      toast.success("Deposit successful");
-                      closeModal();
+
+                      // wait an extra 3 seconds for latency
+                      setTimeout(() => {
+                        displayTransactionResult(
+                          tr.transactionHash,
+                          "Deposit successful"
+                        );
+                      }, 3000);
+
+                      setValue("");
                     } catch (e) {
                       toast.error("Deposit unsuccessful");
                       console.error(e);
@@ -288,7 +307,9 @@ export default function Deposit({
               )}
             </div>
             <div className="flex py-8">
-              <div className="flex-grow text-[#ADB5B3] font-nova text-base font-normal">Curretly Supplying</div>
+              <div className="flex-grow text-[#ADB5B3] font-nova text-base font-normal">
+                Curretly Supplying
+              </div>
               <div className="text-white font-nova text-base font-normal">
                 {toCryptoString(walletBalance)} {market.tokenPair.token.symbol}
               </div>
