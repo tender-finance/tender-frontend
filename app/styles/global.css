@@ -99,12 +99,119 @@ body {
   max-height: 850px;
 }
 
+@font-face {
+  font-family: "poppins";
+  src: url("/fonts/Poppins/Poppins-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: light;
+}
+
+@font-face {
+  font-family: "poppins";
+  src: url("/fonts/Poppins/Poppins-Medium.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "poppins";
+  src: url("/fonts/Poppins/Poppins-Bold.ttf") format("truetype");
+  font-weight: 500;
+  font-style: bold;
+}
+
+@font-face {
+  font-family: "neue-machina";
+  src: url("/fonts/PPNeueMachina/PPNeueMachina-Regular.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("/fonts/SpaceGrotesk/SpaceGrotesk-VariableFont_wght.ttf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "ProximaNova";
+  src: url("/fonts/ProximaNova/ProximaNova-Light.ttf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: "poppins", sans-serif;
+  background-image: none;
+}
+
+.text-heading {
+  font-family: "neue-machina", sans-serif;
+}
+
+.font-space {
+  font-family: "Space Grotesk", sans-serif !important;
+}
+
+.font-nova {
+  font-family: "ProximaNova", sans-serif !important;
+}
+
+.text-dark-green {
+  color: #14f195;
+}
+
+.pane-custom {
+  background: #0d0d0d;
+  box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.07);
+  overflow-x: hidden;
+  border-radius: 1rem;
+}
+
+.icons-color:hover {
+  filter: invert(0%) sepia(100%) saturate(0%) hue-rotate(288deg) brightness(200%) contrast(102%);
+}
+
+.bg-dark-green {
+  background-color: #162421;
+}
+
+.border-custom-full {
+  border: 1px solid #b5cfcc2b;
+}
+
+.border-custom {
+  border-top: 1px solid #b5cfcc2b;
+  border-left: 1px solid #b5cfcc2b;
+}
+
+.modal .ReactModal__Overlay--after-open {
+  background: rgba(0, 0, 0, 0.8) !important;
+}
+
+.modal .ReactModal__Content--after-open {
+  background: #0d0d0d !important;
+  border: 1px solid #b5cfcc2b !important;
+  width: 550px;
+  border-radius: 1rem !important;
+  padding: 0 !important;
+  margin: auto;
+  max-height: 850px;
+}
+
 @media screen and (max-width: 788px) {
-  .testCircle {
-    width: 100px;
-    height: 100px;
-    top: -50px !important;
-    left: calc(50% - 50px) !important;
+  .modal .ReactModal__Content--after-open {
+    background: #0d0d0d !important;
+    border: 1px solid #b5cfcc2b !important;
+    width: 85%;
+    border-radius: 1rem !important;
+    padding: 0 !important;
+    height: fit-content;
+    margin: 0 20px 0 20px;
+    inset: 0;
+    right: 3% !important;
+    left: 3% !important;
   }
 }
 
@@ -145,7 +252,7 @@ body {
   width: 100vw;
   height: 100vh;
   top: 0;
-  background: rgba(0, 0, 0, 0.533);
+  background: rgb(8 8 8 / 0.5);
   content: "";
   z-index: 1;
 }
@@ -161,7 +268,7 @@ body {
   position: absolute;
   right: 0;
   left: auto;
-  background: #000;
+  background: rgb(8 8 8 / var(--tw-bg-opacity));
   padding: 20px 40px;
   margin-right: 0px;
 }
@@ -175,32 +282,36 @@ body {
   height: 45px;
   background: transparent;
   border-radius: 5px;
-  display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  gap: 10px;
+  align-items: flex-end;
+  gap: 6px;
   border: none;
 }
 
 .header__burg.active span {
   transform: rotate(45deg);
-  position: fixed;
+  margin-top: 9px;
 }
 
 .header__burg.active span:nth-child(2n) {
   transform: rotate(-45deg);
-  position: fixed;
+  margin-top: -9px;
 }
 
 .header__burg.active span:nth-child(3n) {
-  display: none;
+  transform: rotate(-45deg);
+  opacity: 0;
 }
 
 .header__burg span {
-  width: 35px;
-  height: 5px;
+  width: 17px;
+  height: 3px;
   background: #fff;
   border-radius: 30px;
-  transition: 0.3s;
+  transition: all 0.3s, opacity 0.1s;
+}
+
+.header__burg span:last-of-type {
+  width: 12px;
 }

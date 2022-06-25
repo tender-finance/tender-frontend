@@ -60,23 +60,23 @@ export default function Footer() {
     },
   ];
   return (
-    <div className="flex justify-between flex-col border-t border-t-gray-700 py-4 px-12 md:flex-row items-center">
-      <div className="mb-10 md:mb-0">
+    <div className="flex-col-reverse justify-center items-center md:flex-row justify-between items-center flex">
+      <div className="mb-5 md:ml-10">
         <a href="#">
           <img src="images/ico/smallLogo.svg" alt="..." />
         </a>
       </div>
-      <div className="flex py-4 justify-center">
+      <div className="mr-0 flex gap-6 md:flex py-4 justify-center items-center md:mr-10">
         {productLinks.map((item, index) => {
           return (
-            <a className="mr-8 text-" href={item.url} key={index}>
+            <a className="" href={item.url} key={index}>
               <img className="icons-color" src={item.ico} alt="" />
             </a>
           );
         })}
         {resourceLinks.map((item, index) => {
           return (
-            <a className="mr-8 text-" key={index} href={item.url}>
+            <a className="" key={index} href={item.url}>
               <img className="icons-color" src={item.ico} alt="" />
             </a>
           );

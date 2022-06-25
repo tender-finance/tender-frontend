@@ -2,7 +2,7 @@ import { ICON_SIZE } from "~/lib/constants";
 import type { Market, TokenPair } from "~/types/global";
 import { useEffect, useState, useRef, useContext } from "react";
 import type { JsonRpcSigner } from "@ethersproject/providers";
-import * as math from "mathjs";
+import * as math from "mathjs"
 
 import clsx from "clsx";
 import toast from "react-hot-toast";
@@ -19,7 +19,6 @@ import { TenderContext } from "~/contexts/tender-context";
 import { useNewTotalBorrowedAmountInUsd } from "~/hooks/use-new-total-borrowed-amount-in-usd";
 import { useMaxBorrowAmount } from "~/hooks/use-max-borrow-amount";
 import { shrinkyInputClass, toCryptoString } from "~/lib/ui";
-import { displayTransactionResult } from "../displayTransactionResult";
 
 export interface BorrowProps {
   market: Market;
@@ -68,11 +67,9 @@ export default function Borrow({
     market.comptrollerAddress,
     market.tokenPair,
     market.maxBorrowLiquidity
-  );
+  )
 
-  let formattedMaxBorrowLimit: string = math.format(maxBorrowLimit, {
-    notation: "fixed",
-  });
+  let formattedMaxBorrowLimit : string = math.format(maxBorrowLimit)
 
   let maxBorrowAmount = useMaxBorrowAmount(
     borrowLimit,
@@ -217,13 +214,8 @@ export default function Borrow({
                           setIsWaitingToBeMined(true);
                           let tr = await txn.wait(); // TODO: error handle if transaction fails
                           updateTransaction(tr.blockHash);
-
-                          setTimeout(() => {
-                            displayTransactionResult(
-                              tr.transactionHash,
-                              "Borrow successful"
-                            );
-                          }, 2000);
+                          toast.success("Borrow successful");
+                          closeModal();
                         } catch (e) {
                           toast.error("Borrow unsuccessful");
                           console.error(e);

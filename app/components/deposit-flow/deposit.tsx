@@ -15,7 +15,6 @@ import { useBorrowLimitUsed } from "~/hooks/use-borrow-limit-used";
 import ConfirmingTransaction from "../fi-modal/confirming-transition";
 import { TenderContext } from "~/contexts/tender-context";
 import { shrinkyInputClass, toCryptoString } from "~/lib/ui";
-import { displayTransactionResult } from "../displayTransactionResult";
 
 export interface DepositProps {
   closeModal: Function;
@@ -102,8 +101,8 @@ export default function Deposit({
       {!isWaitingToBeMined && (
         <div className="">
           <div className="pt-8 bg-[#151515] relative border-[#B5CFCC2B] border-b">
-            <div className="absolute">
-              <button onClick={() => closeModal()} className="mr-8">
+            <div className="absolute right-[10px] top-[15px] sm:right-[22px] sm:top-[24px]">
+              <button onClick={() => closeModal()} className="">
                 <img src="/images/ico/close.svg" />
               </button>
             </div>
@@ -127,19 +126,19 @@ export default function Deposit({
                   className="mr-3"
                   alt="icon"
                 />
-                <div className="max-w-sm text-center m-auto mt-5 mb-5 text-sm font-normal font-nova text-white text-sm">
+                <div className="max-w-sm text-center my-10 mt-5 mb-5 font-normal font-nova text-white text-sm">
                   To Supply or Repay {market.tokenPair.token.symbol} to the
                   Compound Protocol, you need to enable it first.
                 </div>
                 <div className="flex flex-grow w-full">
                   <button
-                    className="flex-grow py-3 text-[#14F195] border-b-4 uppercase border-b-[#14F195] font-space font-bold text-base"
+                    className="flex-grow py-3 text-[#14F195] border-b-4 uppercase border-b-[#14F195] font-space font-bold text-xs sm:text-base"
                     onClick={() => setIsSupplying(true)}
                   >
                     Supply
                   </button>
                   <button
-                    className="flex-grow py-3 font-space font-bold text-base uppercase"
+                    className="flex-grow py-3 font-space font-bold text-xs sm:text-base uppercase"
                     onClick={() => setIsSupplying(false)}
                   >
                     Withdraw
@@ -150,7 +149,7 @@ export default function Deposit({
             {isEnabled && (
               <div className="relative">
                 <Max
-                  maxValue={math.format(walletBalance, { notation: "fixed" })}
+                  maxValue={walletBalance.toString()}
                   updateValue={() => {
                     let value = math.format(walletBalance, {
                       notation: "fixed",
@@ -177,9 +176,9 @@ export default function Deposit({
 
           {/* Sub Navigation */}
 
-          <div className="py-6 px-12" style={{ background: "#0D0D0D" }}>
+          <div className="px-4 py-6 sm:px-12" style={{ background: "#0D0D0D" }}>
             <div className="flex mb-4">
-              <span className="font-bold mr-3 font-nova text-sm">
+              <span className="font-bold mr-3 font-nova text-xs sm:text-sm">
                 Supply Rates
               </span>{" "}
               <a>
@@ -187,28 +186,33 @@ export default function Deposit({
               </a>
             </div>
             <div className="flex flex-col items-center mb-3 text-gray-400  pb-6">
-              <div className="flex w-full items-center border-b border-[#282C2B] py-8">
-                <img
-                  src={market.tokenPair.token.icon}
-                  style={{ width: ICON_SIZE }}
-                  className="mr-3"
-                  alt="icon"
-                />
-                <div className="flex-grow font-nova text-base text-[#ADB5B3]">
+              <div className="flex w-full sm:w-full items-center border-b border-[#282C2B] py-8">
+              <div className="w-6 mr-3 sm:w-12">
+                  <img
+                    src={market.tokenPair.token.icon}
+                    style={{ width: ICON_SIZE }}
+                    className=""
+                    alt="icon"
+                  />
+                </div>
+                <div className="flex-grow font-nova text-sm sm:text-base text-[#ADB5B3]">
                   Supply APY
                 </div>
                 <div className="font-nova text-white text-xl">
                   {market.marketData.depositApy}
                 </div>
               </div>
-              <div className="flex w-full items-center py-8">
-                <img
-                  src={market.tokenPair.token.icon}
-                  style={{ width: ICON_SIZE }}
-                  className="mr-3"
-                  alt="icon"
-                />
-                <div className="flex-grow font-nova text-base text-[#ADB5B3]">
+              <div className="flex w-full sm:w-full items-center py-8">
+                <div className="w-6 mr-3 sm:w-12">
+                  <img
+                    src={market.tokenPair.token.icon}
+                    style={{ width: ICON_SIZE }}
+                    className=""
+                    alt="icon"
+                  />
+                </div>
+
+                <div className="flex-grow font-nova text-sm sm:text-base  text-[#ADB5B3]">
                   Distribution APY
                 </div>
                 <div className="font-nova text-white text-xl">
@@ -217,7 +221,7 @@ export default function Deposit({
               </div>
             </div>
 
-            <div className="mb-8">
+            <div className="flex justify-center mb-8">
               {!signer && <div>Connect wallet to get started</div>}
               {signer && !isEnabled && (
                 <button
@@ -238,7 +242,7 @@ export default function Deposit({
                     }
                   }}
                   className={clsx(
-                    "py-4 text-center text-black font-bold uppercase rounded bg-[#14F195] w-full",
+                    "py-4 text-center text-black font-bold uppercase rounded bg-[#14F195] w-full max-w-[250px]",
                     {
                       "bg-brand-green": !isEnabling,
                       "bg-gray-200": isEnabling,
@@ -277,16 +281,8 @@ export default function Deposit({
                       let tr = await txn.wait();
                       setValue("0");
                       updateTransaction(tr.blockHash);
-
-                      // wait an extra 3 seconds for latency
-                      setTimeout(() => {
-                        displayTransactionResult(
-                          tr.transactionHash,
-                          "Deposit successful"
-                        );
-                      }, 3000);
-
-                      setValue("");
+                      toast.success("Deposit successful");
+                      closeModal();
                     } catch (e) {
                       toast.error("Deposit unsuccessful");
                       console.error(e);
@@ -307,7 +303,7 @@ export default function Deposit({
                 </button>
               )}
             </div>
-            <div className="flex py-8">
+            <div className="flex mt-8">
               <div className="flex-grow text-[#ADB5B3] font-nova text-base font-normal">
                 Curretly Supplying
               </div>

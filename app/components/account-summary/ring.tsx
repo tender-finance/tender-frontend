@@ -22,10 +22,8 @@ export default function Ring({ percent }: { percent: number }) {
 
   return (
     <div className="flex">
-      <div
+      <div className="w-[82px] h-[82px] md:w-[164.96px] md:h-[164.23px]"
         style={{
-          width: "164.96px",
-          height: "164.96px",
           transform: "rotate(80deg) scale(1.05)",
         }}
       >

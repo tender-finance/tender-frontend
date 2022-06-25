@@ -25,7 +25,7 @@ export default function ConnectWallet() {
       {onClient && <>
 
         {isActive && accounts && (
-          <span className="flex text-sm text-gray-400">
+          <span className="flex text-sm text-[#ADB5B3]">
             <span className=" py-2 px-4">
               Connected as {truncateAccount(accounts)}
             </span>
