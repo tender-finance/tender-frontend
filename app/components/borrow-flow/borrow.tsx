@@ -2,7 +2,7 @@ import { ICON_SIZE } from "~/lib/constants";
 import type { Market, TokenPair } from "~/types/global";
 import { useEffect, useState, useRef, useContext } from "react";
 import type { JsonRpcSigner } from "@ethersproject/providers";
-import * as math from "mathjs"
+import * as math from "mathjs";
 
 import clsx from "clsx";
 import toast from "react-hot-toast";
@@ -67,9 +67,9 @@ export default function Borrow({
     market.comptrollerAddress,
     market.tokenPair,
     market.maxBorrowLiquidity
-  )
+  );
 
-  let formattedMaxBorrowLimit : string = math.format(maxBorrowLimit)
+  let formattedMaxBorrowLimit: string = math.format(maxBorrowLimit);
 
   let maxBorrowAmount = useMaxBorrowAmount(
     borrowLimit,
@@ -162,7 +162,7 @@ export default function Borrow({
             <div className="py-8" style={{ background: "#1C1E22" }}>
               <div className="py-6 px-12" style={{ background: "#1C1E22" }}>
                 <div className="flex mb-4">
-                  <span className="font-bold mr-3">Borrow Rates</span>{" "}
+                  <span className="font-bold mr-3">Borrow Rates</span>
                 </div>
                 <div className="flex items-center mb-3 text-gray-400  pb-6">
                   <img
@@ -240,14 +240,14 @@ export default function Borrow({
                 <div className="flex text-gray-500 mb-2">
                   <div className="flex-grow">Currently Borrowing</div>
                   <div>
-                    {toCryptoString(market.borrowBalance)}{" "}
+                    {toCryptoString(market.borrowBalance)}
                     {market.tokenPair.token.symbol}
                   </div>
                 </div>
                 <div className="flex text-gray-500">
                   <div className="flex-grow">Market Liquidity</div>
                   <div>
-                    {toCryptoString(market.maxBorrowLiquidity)}{" "}
+                    {toCryptoString(market.maxBorrowLiquidity)}
                     {market.tokenPair.token.symbol}
                   </div>
                 </div>

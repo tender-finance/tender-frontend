@@ -31,8 +31,10 @@ export default function BorrowLimit(props: BorrowLimitProps) {
           {(value == "0" || !isValid) && <>{toFiatString(borrowLimit)}</>}
           {isValid && value != "0" && (
             <div className="flex">
-              {toFiatString(borrowLimit)}{" "}
-              <span className="text-[#14f195] text-sm sm:text-base"><img className="mx-3" src="/images/ico/arrow.svg" alt="" /></span>
+              {toFiatString(borrowLimit)}
+              <span className="text-[#14f195] text-sm sm:text-base">
+                <img className="mx-3" src="/images/ico/arrow.svg" alt="" />
+              </span>
               {toFiatString(newBorrowLimit)}
             </div>
           )}
@@ -46,7 +48,10 @@ export default function BorrowLimit(props: BorrowLimitProps) {
           {(value == "0" || !isValid) && <>{borrowLimitUsed}%</>}
           {isValid && value != "0" && (
             <div className="flex">
-              {borrowLimitUsed}% <span className="text-[#14f195] text-sm sm:text-base"><img className="mx-3" src="/images/ico/arrow.svg" alt="" /></span>
+              {borrowLimitUsed}%{" "}
+              <span className="text-[#14f195] text-sm sm:text-base">
+                <img className="mx-3" src="/images/ico/arrow.svg" alt="" />
+              </span>
               {newBorrowLimitUsed}%
             </div>
           )}

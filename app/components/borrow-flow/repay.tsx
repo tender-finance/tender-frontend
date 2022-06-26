@@ -2,7 +2,7 @@ import { ICON_SIZE } from "~/lib/constants";
 import type { Market, TokenPair } from "~/types/global";
 import { useContext, useEffect, useRef, useState } from "react";
 import type { JsonRpcSigner } from "@ethersproject/providers";
-import * as math from "mathjs"
+import * as math from "mathjs";
 
 import clsx from "clsx";
 import toast from "react-hot-toast";
@@ -148,7 +148,9 @@ export default function Repay({
                   <Max
                     maxValue={maxRepayableAmount.toString()}
                     updateValue={() => {
-                      let value = math.format(maxRepayableAmount, {notation: "fixed"})
+                      let value = math.format(maxRepayableAmount, {
+                        notation: "fixed",
+                      });
                       if (!inputEl || !inputEl.current) return;
                       inputEl.current.focus();
                       inputEl.current.value = value;
@@ -176,7 +178,7 @@ export default function Repay({
             </div>
             <div className="py-6 px-12" style={{ background: "#1C1E22" }}>
               <div className="flex mb-4">
-                <span className="font-bold mr-3">Borrow Rates</span>{" "}
+                <span className="font-bold mr-3">Borrow Rates</span>
               </div>
               <div className="flex items-center mb-3 text-gray-400  pb-6">
                 <img
@@ -287,7 +289,7 @@ export default function Repay({
               <div className="flex text-gray-500">
                 <div className="flex-grow">Wallet Balance</div>
                 <div>
-                  {toCryptoString(walletBalance)}{" "}
+                  {toCryptoString(walletBalance)}
                   {market.tokenPair.token.symbol}
                 </div>
               </div>

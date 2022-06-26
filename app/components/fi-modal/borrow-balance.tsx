@@ -30,7 +30,7 @@ export default function BorrowBalance(props: BorrowBalanceProps) {
           {(value == "0" || !isValid) && <>{toFiatString(borrowBalance)}</>}
           {isValid && value != "0" && (
             <>
-              {toFiatString(borrowBalance)}{" "}
+              {toFiatString(borrowBalance)}
               <span className="text-brand-green">→</span> $
               {toFiatString(newBorrowBalance)}
             </>

@@ -180,14 +180,14 @@ export default function Deposit({
             <div className="flex mb-4">
               <span className="font-bold mr-3 font-nova text-xs sm:text-sm">
                 Supply Rates
-              </span>{" "}
+              </span>
               <a>
                 <img src="/images/ico/open.svg" />
               </a>
             </div>
             <div className="flex flex-col items-center mb-3 text-gray-400  pb-6">
               <div className="flex w-full sm:w-full items-center border-b border-[#282C2B] py-8">
-              <div className="w-6 mr-3 sm:w-12">
+                <div className="w-6 mr-3 sm:w-12">
                   <img
                     src={market.tokenPair.token.icon}
                     style={{ width: ICON_SIZE }}
@@ -220,7 +220,14 @@ export default function Deposit({
                 </div>
               </div>
             </div>
-
+            <BorrowLimit
+              value={value}
+              isValid={isValid}
+              borrowLimit={borrowLimit}
+              newBorrowLimit={newBorrowLimit}
+              borrowLimitUsed={borrowLimitUsed}
+              newBorrowLimitUsed={newBorrowLimitUsed}
+            />
             <div className="flex justify-center mb-8">
               {!signer && <div>Connect wallet to get started</div>}
               {signer && !isEnabled && (

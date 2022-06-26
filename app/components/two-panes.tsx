@@ -68,7 +68,7 @@ export default function TwoPanes() {
                       </td>
                       <td className="px-8 py-6 text-left whitespace-nowrap">
                         <div>
-                          {toShortCryptoString(m.supplyBalance)}{" "}
+                          {toShortCryptoString(m.supplyBalance)}
                           {m.tokenPair.token.symbol}
                         </div>
                         <div className="bg-dark-green rounded-md text-xs text-dark-green text-center py-1 px-2 inline-block whitespace-nowrap">
@@ -115,7 +115,7 @@ export default function TwoPanes() {
                           {m.tokenPair.token.symbol}
                         </div>
                         <div className="flex gap-1 text-[#818987] font-nova text-sm sm:hidden mt-1">
-                          APY{" "}
+                          APY
                           <p className="text-white">
                             {m.marketData.depositApy}
                           </p>
@@ -126,13 +126,13 @@ export default function TwoPanes() {
                       </td>
                       <td className="text-right px-4 py-6 sm:text-left whitespace-nowrap text-white font-nova font-normal md:px-8">
                         <div>
-                          {toShortCryptoString(m.walletBalance)}{" "}
+                          {toShortCryptoString(m.walletBalance)}
                           {m.tokenPair.token.symbol}
                         </div>
                         <div className="bg-dark-green text-dark-green rounded-md text-xs text-center py-1 px-2 inline-block whitespace-nowrap">
                           {toShortFiatString(
                             m.walletBalance * m.tokenPair.token.priceInUsd
-                          )}{" "}
+                          )}
                           USD
                         </div>
                       </td>
@@ -188,7 +188,7 @@ export default function TwoPanes() {
                       </td>
                       <td className="px-8 py-6 text-left whitespace-nowrap">
                         <div>
-                          {toShortCryptoString(m.borrowBalance)}{" "}
+                          {toShortCryptoString(m.borrowBalance)}
                           {m.tokenPair.token.symbol}
                         </div>
 
@@ -241,7 +241,7 @@ export default function TwoPanes() {
                           {m.tokenPair.token.symbol}
                         </div>
                         <div className="flex gap-1 text-[#818987] font-nova text-sm sm:hidden mt-1">
-                          APY{" "}
+                          APY
                           <p className="text-white">{m.marketData.borrowApy}</p>
                         </div>
                       </td>
@@ -250,13 +250,13 @@ export default function TwoPanes() {
                       </td>
                       <td className="text-right px-4 py-6 md:px-8 text-left whitespace-nowrap text-white font-nova font-normal">
                         <div>
-                          {toShortCryptoString(m.maxBorrowLiquidity)}{" "}
+                          {toShortCryptoString(m.maxBorrowLiquidity)}
                           {m.tokenPair.token.symbol}
                         </div>
                         <div className="bg-dark-green text-dark-green text-xs rounded-md text-center py-1 px-2 inline-block whitespace-nowrap">
                           {toShortFiatString(
                             m.maxBorrowLiquidity * m.tokenPair.token.priceInUsd
-                          )}{" "}
+                          )}
                           USD
                         </div>
                       </td>

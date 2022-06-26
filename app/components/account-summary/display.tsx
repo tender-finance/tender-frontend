@@ -72,7 +72,7 @@ export default function Display({
         <div className="w-full md:w-1/3 flex flex-col justify-center items-center">
           <div className="text-dark-green font-nova font-semibold text-sm mb-4">
             Supply Balance
-          </div>{" "}
+          </div>
           <div className="text-3xl font-space mb-10">
             {toFiatString(totalSupplyBalanceInUsd)}
           </div>
@@ -80,7 +80,7 @@ export default function Display({
         <div className="w-full md:w-1/3 text-right  flex flex-col justify-center items-center">
           <div className="mb-4 text-dark-green text-sm font-nova font-semibold">
             Borrow Balance
-          </div>{" "}
+          </div>
           <div className="text-3xl font-space">
             {toFiatString(totalBorrowedInUsd)}
           </div>
