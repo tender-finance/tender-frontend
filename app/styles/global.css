@@ -219,7 +219,7 @@ body {
 .aside__menu__wrap {
   position: fixed;
   left: 0;
-  top: 81px;
+  top: 64px;
   width: 100%;
   z-index: 10;
   height: 100vh;
@@ -268,7 +268,7 @@ body {
   position: absolute;
   right: 0;
   left: auto;
-  background: rgb(8 8 8 / var(--tw-bg-opacity));
+  background: #000;
   padding: 20px 40px;
   margin-right: 0px;
 }

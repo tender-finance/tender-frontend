@@ -31,39 +31,42 @@ export default function Display({
     >
       <div
         className="absolute w-24 h-24 top-[-50px] left-[calc(50%-50px)] rounded-full md:w-52 md:h-52 md:left-[calc(50%-100px)]"
-        style={{background:
-        "linear-gradient(135deg, rgba(10, 10, 10, 0.12) 0%, rgba(20, 242, 185, .3) 100%), #111" }}
+        style={{
+          background:
+            "linear-gradient(135deg, rgba(10, 10, 10, 0.12) 0%, rgba(20, 242, 185, .3) 100%), #111",
+        }}
       >
-        
-         
-          <div className="flex flex-col h-full justify-center items-center">
-            <div className="uppercase text-[#818987] font-nova font-medium text-sm">
-              Net APY
-            </div>
-
-            {netApy != null && (
-              <div className="text-4xl font-space font-normal">{netApy.toFixed(2)}%</div>
-            )}
-            <div className="absolute top-0 right-0"></div>
-            <div className="absolute top-0 right-0"></div>
-            {netApy == null && <div className="text-2xl md:text-4xl font-space font-normal">--</div>}
-            <div
-              className="absolute md:top-[22px] md:right-[20px]" 
-            >
-              {netApy != null &&
-                totalSupplyBalanceInUsd /
-                  (totalBorrowedInUsd + totalSupplyBalanceInUsd) >
-                  0 && (
-                  <Ring
-                    percent={
-                      totalSupplyBalanceInUsd /
-                      (totalBorrowedInUsd + totalSupplyBalanceInUsd)
-                    }
-                  />
-                )}
-            </div>
+        <div className="flex flex-col h-full justify-center items-center">
+          <div className="uppercase text-[#818987] font-nova font-medium text-sm">
+            Net APY
           </div>
-        
+
+          {netApy != null && (
+            <div className="text-4xl font-space font-normal">
+              {netApy.toFixed(2)}%
+            </div>
+          )}
+          <div className="absolute top-0 right-0"></div>
+          <div className="absolute top-0 right-0"></div>
+          {netApy == null && (
+            <div className="text-2xl md:text-4xl font-space font-normal">
+              --
+            </div>
+          )}
+          <div className="absolute md:top-[22px] md:right-[20px]">
+            {netApy != null &&
+              totalSupplyBalanceInUsd /
+                (totalBorrowedInUsd + totalSupplyBalanceInUsd) >
+                0 && (
+                <Ring
+                  percent={
+                    totalSupplyBalanceInUsd /
+                    (totalBorrowedInUsd + totalSupplyBalanceInUsd)
+                  }
+                />
+              )}
+          </div>
+        </div>
       </div>
       <div className="flex flex-col items-center mt-16 md:flex-row justify-between my-16">
         <div className="w-full md:w-1/3 flex flex-col justify-center items-center">
@@ -99,8 +102,12 @@ export default function Display({
           }}
         ></div>
         <div className="flex justify-start items-center">
-          <div className="pb-2.5 font-nova text-sm text-white">{toFiatString(borrowLimit)}</div>
-          <div className="mr-2 pb-2.5 font-nova text-sm text-white">{borrowLimitUsed}%</div>
+          <div className="pb-2.5 font-nova text-sm text-white">
+            {toFiatString(borrowLimit)}
+          </div>
+          <div className="mr-2 pb-2.5 font-nova text-sm text-white">
+            {borrowLimitUsed}%
+          </div>
         </div>
       </div>
       <div className="w-full flex absolute bottom-0 left-0">

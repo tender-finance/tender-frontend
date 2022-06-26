@@ -3,10 +3,13 @@ import ConnectWallet from "./connect-wallet";
 
 export default function Header() {
   const [activePopupMenu, setActivePopupMenu] = useState(false);
-  
+
   return (
-    <div className="flex w-full c items-center lg:flex mt-8 justify-between">
-      <div className="block" onClick={() => setActivePopupMenu(true)}>
+    <div className="fixed bg-black z-10 inset-x-0 top-0 flex w-full c h-16 items-center justify-between">
+      <div
+        className="w-26 mr-4 block md:w-36"
+        onClick={() => setActivePopupMenu(true)}
+      >
         <a href="/">
           <img
             src="/images/logo1.svg"
@@ -25,8 +28,8 @@ export default function Header() {
         <a className="px-2 cursor-pointer hover:text-white  ">Docs</a>
         <a className="px-2 cursor-pointer hover:text-white  ">Community</a>
       </div>
-      <div>
-        <div className="hidden lg:inline-block mr-3">
+      <div className="flex items-center">
+        <div className="lg:inline-block mr-3">
           <ConnectWallet />
         </div>
 
@@ -41,11 +44,7 @@ export default function Header() {
           <span></span>
         </div>
       </div>
-      <div
-        className={`aside__menu__wrap container ${
-          activePopupMenu ? "act" : ""
-        }`}
-      >
+      <div className={`aside__menu__wrap ${activePopupMenu ? "act" : ""}`}>
         <div
           className="aside__menu__bac"
           onClick={() => setActivePopupMenu(false)}
@@ -57,7 +56,9 @@ export default function Header() {
             <a className="mb-2.5 cursor-pointer hover:text-white  ">Partners</a>
             <a className="mb-2.5 cursor-pointer hover:text-white  ">Team</a>
             <a className="mb-2.5 cursor-pointer hover:text-white  ">Docs</a>
-            <a className="mb-2.5 cursor-pointer hover:text-white  ">Community</a>
+            <a className="mb-2.5 cursor-pointer hover:text-white  ">
+              Community
+            </a>
           </div>
         </div>
       </div>

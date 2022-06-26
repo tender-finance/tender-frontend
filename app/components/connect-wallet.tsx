@@ -15,49 +15,51 @@ export default function ConnectWallet() {
   }
 
   useEffect(() => {
-    setOnClient(true)
+    setOnClient(true);
     void metaMask.connectEagerly();
   }, []);
 
   return (
-    <div className="box">
+    <div className="box text-center">
       {/* only on the client */}
-      {onClient && <>
-
-        {isActive && accounts && (
-          <span className="flex text-sm text-[#ADB5B3]">
-            <span className=" py-2 px-4">
-              Connected as {truncateAccount(accounts)}
+      {onClient && (
+        <>
+          {isActive && accounts && (
+            <span className="flex text-sm text-[#ADB5B3]">
+              <span className=" py-2 px-4">
+                Connected as {truncateAccount(accounts)}
+              </span>
             </span>
-          </span>
-        )}
+          )}
 
-        {/* Prompt to Install Metamask if window.ethereum is not available */}
-        {!window.ethereum && (
-          <a
-            className="border font-space font-bold uppercase text-dark-green py-4 px-4 rounded-md text-sm"
-            target="_blank" rel="noreferrer"
-            href="https://metamask.io/"
-            style={{border: 'solid #14f195 1px'}}
-          >
-            connect wallet
-          </a>
-        )}
+          {/* Prompt to Install Metamask if window.ethereum is not available */}
+          {!window.ethereum && (
+            <a
+              className="border font-space font-bold uppercase text-dark-green py-4 px-4 rounded-md text-sm"
+              target="_blank"
+              rel="noreferrer"
+              href="https://metamask.io/"
+              style={{ border: "solid #14f195 1px" }}
+            >
+              connect wallet
+            </a>
+          )}
 
-        {/* Prompt to Connect Wallet if not active */}
-        {window.ethereum && !isActive && (
-          <button
-            data-testid="connect-wallet"
-            style={{
-              background: "linear-gradient(270deg, #1BD6CF 0%, #00E5AF 100%)",
-            }}
-            className="hover:cursor-pointer bg-brand-green text-gray-900 py-4 px-4 rounded-md text-sm"
-            onClick={() => metaMask.activate()}
-          >
-            Connect Wallet
-          </button>
-        )}
-      </>}
+          {/* Prompt to Connect Wallet if not active */}
+          {window.ethereum && !isActive && (
+            <button
+              data-testid="connect-wallet"
+              style={{
+                background: "linear-gradient(270deg, #1BD6CF 0%, #00E5AF 100%)",
+              }}
+              className="hover:cursor-pointer bg-brand-green text-gray-900 py-4 px-4 rounded-md text-sm"
+              onClick={() => metaMask.activate()}
+            >
+              Connect Wallet
+            </button>
+          )}
+        </>
+      )}
 
       {error?.message && (
         <div className="text-xs text-gray-500">{error.message}</div>
