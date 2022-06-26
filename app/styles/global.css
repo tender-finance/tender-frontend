@@ -289,9 +289,13 @@ body {
   border: none;
 }
 
+.header__burg.active {
+  padding-top: 10px;
+}
+
 .header__burg.active span {
   transform: rotate(45deg);
-  margin-top: 9px;
+  margin-top: -9px;
 }
 
 .header__burg.active span:nth-child(2n) {
@@ -305,7 +309,7 @@ body {
 }
 
 .header__burg span {
-  width: 17px;
+  width: 30px;
   height: 3px;
   background: #fff;
   border-radius: 30px;
@@ -313,5 +317,5 @@ body {
 }
 
 .header__burg span:last-of-type {
-  width: 12px;
+  width: 18px;
 }

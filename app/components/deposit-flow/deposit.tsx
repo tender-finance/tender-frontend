@@ -100,6 +100,7 @@ export default function Deposit({
       )}
       {!isWaitingToBeMined && (
         <div className="">
+          222
           <div className="pt-8 bg-[#151515] relative border-[#B5CFCC2B] border-b">
             <div className="absolute right-[10px] top-[15px] sm:right-[22px] sm:top-[24px]">
               <button onClick={() => closeModal()} className="">
@@ -173,9 +174,7 @@ export default function Deposit({
               </div>
             )}
           </div>
-
           {/* Sub Navigation */}
-
           <div className="px-4 py-6 sm:px-12" style={{ background: "#0D0D0D" }}>
             <div className="flex mb-4">
               <span className="font-bold mr-3 font-nova text-xs sm:text-sm">
