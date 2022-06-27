@@ -42,7 +42,7 @@ export default function TwoPanes() {
               <thead>
                 <tr className="text-xs text-[#818987] font-nova font-semibolt border-b border-[#282C2B] w-full">
                   <th className="px-4 pb-4 md:px-8 text-left">Asset</th>
-                  <th className="hidden sm:flex pb-4 px-8 text-left ">
+                  <th className="flex pb-4 px-4 text-left md:px-8">
                     APY / Earned
                   </th>
                   <th className="text-right pb-4 px-4 md:px-8 pb-4 text-left">
@@ -55,7 +55,7 @@ export default function TwoPanes() {
                 {marketsWithSupply.map((m) => {
                   return (
                     <MarketSupplyRow market={m} key={m.id}>
-                      <td className="flex px-8 py-6 text-left text-white font-nova font-normal items-center h-full">
+                      <td className="flex px-4 py-6 text-left text-white font-nova font-normal items-center h-full md:px-8">
                         <img
                           className="w-9 mr-2"
                           src={m.tokenPair.token.icon}
@@ -63,10 +63,10 @@ export default function TwoPanes() {
                         />
                         {m.tokenPair.token.symbol}
                       </td>
-                      <td className="px-8 py-6 text-left">
+                      <td className="px-4 py-6 text-left md:px-8">
                         {m.marketData.depositApy}
                       </td>
-                      <td className="px-8 py-6 text-left whitespace-nowrap">
+                      <td className="px-4 py-6 text-left whitespace-nowrap md:px-8">
                         <div>
                           {toShortCryptoString(m.supplyBalance)}
                           {m.tokenPair.token.symbol}
@@ -161,7 +161,7 @@ export default function TwoPanes() {
               <thead>
                 <tr className="text-xs text-[#818987] font-nova font-semibolt">
                   <th className="px-4 pb-4 md:px-8 text-left">Assets</th>
-                  <th className="hidden sm:flex pb-4 px-8 text-left whitespace-nowrap">
+                  <th className="flex pb-4 px-4 text-left whitespace-nowrap md:px-8">
                     APY / Accrued
                   </th>
                   <th className="px-4 pb-4 md:px-8 text-left">Balance</th>
@@ -175,7 +175,7 @@ export default function TwoPanes() {
                 {marketsWithBorrow.map((m) => {
                   return (
                     <MarketBorrowRow market={m} key={m.id}>
-                      <td className="flex px-8 py-6 text-left items-center h-full text-white font-nova font-normal">
+                      <td className="flex px-4 py-6 text-left items-center h-full text-white font-nova font-normal md:px-8">
                         <img
                           className="w-9 mr-2"
                           src={m.tokenPair.token.icon}
@@ -183,10 +183,10 @@ export default function TwoPanes() {
                         />
                         <span>{m.tokenPair.token.symbol}</span>
                       </td>
-                      <td className="px-8 py-6 text-left">
+                      <td className="px-4 py-6 text-left md:px-8">
                         {m.marketData.borrowApy}
                       </td>
-                      <td className="px-8 py-6 text-left whitespace-nowrap">
+                      <td className="px-4 py-6 text-left whitespace-nowrap md:px-8">
                         <div>
                           {toShortCryptoString(m.borrowBalance)}
                           {m.tokenPair.token.symbol}
@@ -197,7 +197,7 @@ export default function TwoPanes() {
                         </div>
                       </td>
 
-                      <td className="px-8 py-6 text-left text-brand-green font-bold">
+                      <td className="px-4 py-6 text-left text-brand-green font-bold md:px-8">
                         {m.borrowLimitUsedOfToken}%
                       </td>
                     </MarketBorrowRow>
@@ -217,7 +217,7 @@ export default function TwoPanes() {
               <thead>
                 <tr className="w-full text-xs text-[#818987] font-nova font-semibolt">
                   <th className="px-4 pb-4 md:px-8 text-left">Asset</th>
-                  <th className="hidden sm:flex pb-4 px-8 text-left whitespace-nowrap">
+                  <th className="flex pb-4 px-4 text-left whitespace-nowrap md:px-8">
                     APY / Accrued
                   </th>
 

@@ -99,7 +99,7 @@ export default function Deposit({
         />
       )}
       {!isWaitingToBeMined && (
-        <div className="">
+        <div>
           <div className="pt-8 bg-[#151515] relative border-[#B5CFCC2B] border-b">
             <div className="absolute right-[10px] top-[15px] sm:right-[22px] sm:top-[24px]">
               <button onClick={() => closeModal()} className="">
@@ -119,7 +119,7 @@ export default function Deposit({
             </div>
 
             {!isEnabled && (
-              <div className="flex flex-col items-center mt-5 rounded-2xl">
+              <div className="flex flex-col items-center mt-5 rounded-2xl  px-4">
                 <img
                   src={market.tokenPair.token.icon}
                   style={{ width: ICON_SIZE }}
@@ -129,20 +129,6 @@ export default function Deposit({
                 <div className="max-w-sm text-center my-10 mt-5 mb-5 font-normal font-nova text-white text-sm">
                   To Supply or Repay {market.tokenPair.token.symbol} to the
                   Compound Protocol, you need to enable it first.
-                </div>
-                <div className="flex flex-grow w-full">
-                  <button
-                    className="flex-grow py-3 text-[#14F195] border-b-4 uppercase border-b-[#14F195] font-space font-bold text-xs sm:text-base"
-                    onClick={() => setIsSupplying(true)}
-                  >
-                    Supply
-                  </button>
-                  <button
-                    className="flex-grow py-3 font-space font-bold text-xs sm:text-base uppercase"
-                    onClick={() => setIsSupplying(false)}
-                  >
-                    Withdraw
-                  </button>
                 </div>
               </div>
             )}
@@ -172,6 +158,20 @@ export default function Deposit({
                 </div>
               </div>
             )}
+            <div className="flex flex-grow w-full">
+              <button
+                className="flex-grow py-3 text-[#14F195] border-b-4 uppercase border-b-[#14F195] font-space font-bold text-xs sm:text-base"
+                onClick={() => setIsSupplying(true)}
+              >
+                Supply
+              </button>
+              <button
+                className="flex-grow py-3 font-space font-bold text-xs sm:text-base uppercase"
+                onClick={() => setIsSupplying(false)}
+              >
+                Withdraw
+              </button>
+            </div>
           </div>
           {/* Sub Navigation */}
           <div className="px-4 py-6 sm:px-12" style={{ background: "#0D0D0D" }}>

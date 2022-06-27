@@ -108,190 +108,190 @@ export default function Repay({
 
       {!isWaitingToBeMined && (
         <div>
-          <div>
-            <div className="py-8 bg-brand-black-light ee">
-              <div className="float-right">
-                <button
-                  onClick={() => closeModal()}
-                  className="text-4xl rotate-45 text-gray-400 mr-8"
-                >
-                  +
-                </button>
+          <div className="pt-8 bg-[#151515] relative border-[#B5CFCC2B] border-b">
+            <div className="absolute right-[10px] top-[15px] sm:right-[22px] sm:top-[24px]">
+              <button onClick={() => closeModal()} className="">
+                <img src="/images/ico/close.svg" />
+              </button>
+            </div>
+            <div className="flex align-middle justify-center items-center">
+              <img
+                src={market.tokenPair.token.icon}
+                style={{ width: ICON_SIZE }}
+                className="mr-3"
+                alt="icon"
+              />
+              <div className="text-base font-normal font-nova">
+                {market.tokenPair.token.symbol}
               </div>
-              <div className="flex align-middle justify-center items-center">
-                <img
-                  src={market.tokenPair.token.icon}
-                  style={{ width: ICON_SIZE }}
-                  className="mr-3"
-                  alt="icon"
-                />
-                <div>Repay {market.tokenPair.token.symbol}</div>
-              </div>
+            </div>
 
-              {!isEnabled && (
-                <div>
-                  <div className="max-w-sm text-center m-auto mt-5 mb-5 text-sm text-gray-400">
-                    To borrow or repay {market.tokenPair.token.symbol} to the
-                    Tender Protocol, you need to enable it first.
-                  </div>
+            {!isEnabled && (
+              <div className="flex flex-col items-center mt-5 rounded-2xl">
+                <div className="max-w-sm text-center my-10 mt-5 mb-5 font-normal font-nova text-white text-sm px-4">
+                  To borrow or repay {market.tokenPair.token.symbol} to the
+                  Tender Protocol, you need to enable it first.
                 </div>
-              )}
-              {isEnabled && (
+              </div>
+            )}
+            {isEnabled && (
+              <div className="relative">
+                <Max
+                  maxValue={maxRepayableAmount.toString()}
+                  updateValue={() => {
+                    let value = math.format(maxRepayableAmount, {
+                      notation: "fixed",
+                    });
+                    if (!inputEl || !inputEl.current) return;
+                    inputEl.current.focus();
+                    inputEl.current.value = value;
+                    setValue(value);
+                  }}
+                  maxValueLabel={market.tokenPair.token.symbol}
+                />
                 <div className="flex flex-col justify-center items-center overflow-hidden">
                   <input
                     ref={inputEl}
                     onChange={(e) => setValue(e.target.value)}
                     style={{ minHeight: 90 }}
-                    className={`w-full bg-transparent text-white text-center outline-none ${inputTextClass}`}
+                    className={`w-full bg-transparent  text-white text-center outline-none ${inputTextClass}`}
                     defaultValue={0}
                   />
-                  <Max
-                    maxValue={maxRepayableAmount.toString()}
-                    updateValue={() => {
-                      let value = math.format(maxRepayableAmount, {
-                        notation: "fixed",
-                      });
-                      if (!inputEl || !inputEl.current) return;
-                      inputEl.current.focus();
-                      inputEl.current.value = value;
-                      setValue(value);
-                    }}
-                    maxValueLabel={market.tokenPair.token.symbol}
-                  />
                 </div>
-              )}
-            </div>
-
-            <div className="flex mb-10">
+              </div>
+            )}
+            <div className="flex flex-grow w-full">
               <button
-                className="flex-grow py-3"
+                className="flex-grow py-3 font-space font-bold text-xs sm:text-base uppercase"
                 onClick={() => setIsRepaying(false)}
               >
                 Borrow
               </button>
               <button
-                className="flex-grow py-3 text-brand-green border-b-2 border-b-brand-green"
+                className="flex-grow py-3 text-[#14F195] border-b-4 uppercase border-b-[#14F195] font-space font-bold text-xs sm:text-base"
                 onClick={() => setIsRepaying(true)}
               >
                 Repay
               </button>
             </div>
-            <div className="py-6 px-12" style={{ background: "#1C1E22" }}>
-              <div className="flex mb-4">
-                <span className="font-bold mr-3">Borrow Rates</span>
-              </div>
-              <div className="flex items-center mb-3 text-gray-400  pb-6">
-                <img
-                  src={market.tokenPair.token.icon}
-                  style={{ width: ICON_SIZE }}
-                  className="mr-3"
-                  alt="icon"
-                />
-                <div className="flex-grow">Borrow APY</div>
-                <div>{market.marketData.borrowApy}</div>
-              </div>
-
-              <BorrowBalance
-                value={value}
-                isValid={isValid}
-                borrowBalance={market.totalBorrowedAmountInUsd}
-                newBorrowBalance={newTotalBorrowedAmountInUsd}
-                borrowLimitUsed={borrowLimitUsed}
-                newBorrowLimitUsed={newBorrowLimitUsed}
+          </div>
+          <div className="px-4 py-6 sm:px-12" style={{ background: "#0D0D0D" }}>
+            <div className="flex mb-4">
+              <span className="font-bold mr-3 font-nova text-xs sm:text-sm">
+                Borrow Rates
+              </span>
+            </div>
+            <div className="flex items-center mb-3 text-gray-400  pb-6">
+              <img
+                src={market.tokenPair.token.icon}
+                style={{ width: ICON_SIZE }}
+                className="mr-3"
+                alt="icon"
               />
+              <div className="flex-grow">Borrow APY</div>
+              <div>{market.marketData.borrowApy}</div>
+            </div>
 
-              <div className="mb-8">
-                {!signer && <div>Connect wallet to get started</div>}
-                {signer && !isEnabled && (
-                  <button
-                    onClick={async () => {
-                      try {
-                        setIsEnabling(true);
-                        // @ts-ignore existence of signer is gated above.
-                        await enable(
-                          signer,
-                          market.tokenPair.token,
-                          market.tokenPair.cToken
-                        );
-                        setIsEnabled(true);
-                      } catch (e) {
-                        console.error(e);
-                      } finally {
-                        setIsEnabling(false);
+            <BorrowBalance
+              value={value}
+              isValid={isValid}
+              borrowBalance={market.totalBorrowedAmountInUsd}
+              newBorrowBalance={newTotalBorrowedAmountInUsd}
+              borrowLimitUsed={borrowLimitUsed}
+              newBorrowLimitUsed={newBorrowLimitUsed}
+            />
+
+            <div className="flex justify-center mb-8">
+              {!signer && <div>Connect wallet to get started</div>}
+              {signer && !isEnabled && (
+                <button
+                  onClick={async () => {
+                    try {
+                      setIsEnabling(true);
+                      // @ts-ignore existence of signer is gated above.
+                      await enable(
+                        signer,
+                        market.tokenPair.token,
+                        market.tokenPair.cToken
+                      );
+                      setIsEnabled(true);
+                    } catch (e) {
+                      console.error(e);
+                    } finally {
+                      setIsEnabling(false);
+                    }
+                  }}
+                  className={clsx(
+                    "py-4 text-center text-black font-bold uppercase rounded bg-[#14F195] w-full max-w-[250px]",
+                    {
+                      "bg-brand-green": !isEnabling,
+                      "bg-gray-200": isEnabling,
+                    }
+                  )}
+                >
+                  {isEnabling ? "Enabling..." : "Enable"}
+                </button>
+              )}
+
+              {signer && isEnabled && !isValid && (
+                <button className="py-4 text-center text-white font-bold rounded  w-full bg-gray-600">
+                  {validationDetail}
+                </button>
+              )}
+
+              {signer && isEnabled && isValid && (
+                <button
+                  onClick={async () => {
+                    try {
+                      if (!value) {
+                        toast("Please set a value", {
+                          icon: "⚠️",
+                        });
+                        return;
                       }
-                    }}
-                    className={clsx(
-                      "py-4 text-center font-bold rounded w-full text-white",
-                      {
-                        "bg-brand-green": !isEnabling,
-                        "text-gray-600": isEnabling,
-                      }
-                    )}
-                  >
-                    {isEnabling ? "Enabling..." : "Enable"}
-                  </button>
-                )}
 
-                {signer && isEnabled && !isValid && (
-                  <button className="py-4 text-center text-white font-bold rounded  w-full bg-gray-600">
-                    {validationDetail}
-                  </button>
-                )}
+                      setIsRepayingTxn(true);
+                      // @ts-ignore existence of signer is gated above.
+                      let txn = await repay(
+                        value,
+                        signer,
+                        market.tokenPair.cToken,
+                        market.tokenPair.token
+                      );
+                      setTxnHash(txn.hash);
 
-                {signer && isEnabled && isValid && (
-                  <button
-                    onClick={async () => {
-                      try {
-                        if (!value) {
-                          toast("Please set a value", {
-                            icon: "⚠️",
-                          });
-                          return;
-                        }
+                      setIsWaitingToBeMined(true);
+                      let tr = await txn.wait(); // TODO: error handle if transaction fails
+                      setValue("");
+                      updateTransaction(tr.blockHash);
+                      toast.success("Repayment successful");
+                      closeModal();
+                    } catch (e) {
+                      toast.error("Repayment unsuccessful");
+                      console.error(e);
+                    } finally {
+                      setIsWaitingToBeMined(false);
+                      setIsRepayingTxn(false);
+                    }
+                  }}
+                  className={clsx(
+                    "py-4 text-center font-bold rounded w-full text-black",
+                    {
+                      "bg-brand-green": !isRepayingTxn,
+                      "bg-gray-200": isRepayingTxn,
+                    }
+                  )}
+                >
+                  {isRepayingTxn ? "Repaying..." : "Repay"}
+                </button>
+              )}
+            </div>
 
-                        setIsRepayingTxn(true);
-                        // @ts-ignore existence of signer is gated above.
-                        let txn = await repay(
-                          value,
-                          signer,
-                          market.tokenPair.cToken,
-                          market.tokenPair.token
-                        );
-                        setTxnHash(txn.hash);
-
-                        setIsWaitingToBeMined(true);
-                        let tr = await txn.wait(); // TODO: error handle if transaction fails
-                        setValue("");
-                        updateTransaction(tr.blockHash);
-                        toast.success("Repayment successful");
-                        closeModal();
-                      } catch (e) {
-                        toast.error("Repayment unsuccessful");
-                        console.error(e);
-                      } finally {
-                        setIsWaitingToBeMined(false);
-                        setIsRepayingTxn(false);
-                      }
-                    }}
-                    className={clsx(
-                      "py-4 text-center font-bold rounded w-full text-white",
-                      {
-                        "bg-brand-green": !isRepayingTxn,
-                        "bg-gray-600": isRepayingTxn,
-                      }
-                    )}
-                  >
-                    {isRepayingTxn ? "Repaying..." : "Repay"}
-                  </button>
-                )}
-              </div>
-
-              <div className="flex text-gray-500">
-                <div className="flex-grow">Wallet Balance</div>
-                <div>
-                  {toCryptoString(walletBalance)}
-                  {market.tokenPair.token.symbol}
-                </div>
+            <div className="flex text-gray-500">
+              <div className="flex-grow">Wallet Balance</div>
+              <div>
+                {toCryptoString(walletBalance)}
+                {market.tokenPair.token.symbol}
               </div>
             </div>
           </div>

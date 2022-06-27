@@ -91,15 +91,76 @@ export default function Withdraw({
       )}
       {!isWaitingToBeMined && (
         <div>
-          <div>
-            <div className="pt-8 bg-[#151515] relative border-[#B5CFCC2B] border-b">
-              <div className="absolute right-[10px] top-[15px] sm:right-[22px] sm:top-[24px]">
-                <button onClick={() => closeModal()} className="">
-                  <img src="/images/ico/close.svg" />
-                </button>
+          <div className="pt-8 bg-[#151515] relative border-[#B5CFCC2B] border-b">
+            <div className="absolute right-[10px] top-[15px] sm:right-[22px] sm:top-[24px]">
+              <button onClick={() => closeModal()} className="">
+                <img src="/images/ico/close.svg" />
+              </button>
+            </div>
+            <div className="flex w-full align-middle justify-center items-center">
+              <div className="w-9 sm:w-14">
+                <img
+                  src={market.tokenPair.token.icon}
+                  style={{ width: ICON_SIZE }}
+                  className=""
+                  alt="icon"
+                />
               </div>
-              <div className="flex w-full align-middle justify-center items-center">
-                <div className="w-9 sm:w-14">
+            </div>
+
+            <div className="flex flex-col justify-center items-center mt-6 overflow-hidden font-space">
+              <input
+                ref={inputEl}
+                style={{ minHeight: 90 }}
+                onChange={(e) => setValue(e.target.value)}
+                className={`w-full text-2xl bg-transparent text-white text-center outline-none ${inputTextClass}`}
+                defaultValue={0}
+              />
+
+              {parseFloat(borrowLimitUsed) < 80 && (
+                <Max
+                  maxValue={maxWithdrawAmount.toString()}
+                  updateValue={() => {
+                    if (!inputEl || !inputEl.current) return;
+                    let value = math.format(maxWithdrawAmount, {
+                      notation: "fixed",
+                    });
+                    inputEl.current.focus();
+                    inputEl.current.value = value;
+                    setValue(value);
+                  }}
+                  label="Max"
+                  maxValueLabel={market.tokenPair.token.symbol}
+                />
+              )}
+            </div>
+            <div className="flex mt-6 uppercase">
+              <button
+                className="flex-grow py-2 font-space font-bold text-xs sm:text-base uppercase"
+                onClick={() => setIsSupplying(true)}
+              >
+                Supply
+              </button>
+              <button
+                className="flex-grow py-2 text-[#14F195] border-b-4 uppercase border-b-[#14F195] font-space font-bold text-xs sm:text-base"
+                onClick={() => setIsSupplying(false)}
+              >
+                Withdraw
+              </button>
+            </div>
+          </div>
+          <div className="mt-5">
+            <div className="px-4 sm:px-12 bg-[#0D0D0D]">
+              <div className="flex mb-2 justify-end items-center">
+                <span className="font-bold text-xs sm:text-sm mr-3">
+                  Supply Rates
+                </span>
+                <a>
+                  <img src="/images/ico/open.svg" />
+                </a>
+              </div>
+              <div className="flex items-center mb-2 pb-4 border-b border-[#282C2B]">
+                <div className="w-6 mr-3 sm:w-12">
                   <img
                     src={market.tokenPair.token.icon}
                     style={{ width: ICON_SIZE }}
@@ -107,159 +168,96 @@ export default function Withdraw({
                     alt="icon"
                   />
                 </div>
+                <div className="flex-grow text-[#ADB5B3] font-nova font-base">
+                  Supply APY
+                </div>
+                <div>{market.marketData.depositApy}</div>
+              </div>
+              <div className="flex items-center mb-2 pb-4">
+                <div className="w-6 mr-3 sm:w-12">
+                  <img
+                    src={market.tokenPair.token.icon}
+                    style={{ width: ICON_SIZE }}
+                    className="mr-3"
+                    alt="icon"
+                  />
+                </div>
+                <div className="flex-grow text-[#ADB5B3] font-nova font-base">
+                  Distribution APY
+                </div>
+                <div>{market.marketData.depositApy}</div>
               </div>
 
-              <div className="flex flex-col justify-center items-center mt-6 overflow-hidden font-space">
-                <input
-                  ref={inputEl}
-                  style={{ minHeight: 90 }}
-                  onChange={(e) => setValue(e.target.value)}
-                  className={`w-full text-2xl bg-transparent text-white text-center outline-none ${inputTextClass}`}
-                  defaultValue={0}
-                />
+              <BorrowLimit
+                value={value}
+                isValid={isValid}
+                borrowLimit={borrowLimit}
+                newBorrowLimit={newBorrowLimit}
+                borrowLimitUsed={borrowLimitUsed}
+                newBorrowLimitUsed={newBorrowLimitUsed}
+              />
 
-                {parseFloat(borrowLimitUsed) < 80 && (
-                  <Max
-                    maxValue={maxWithdrawAmount.toString()}
-                    updateValue={() => {
-                      if (!inputEl || !inputEl.current) return;
-                      let value = math.format(maxWithdrawAmount, {
-                        notation: "fixed",
-                      });
-                      inputEl.current.focus();
-                      inputEl.current.value = value;
-                      setValue(value);
+              <div className="flex justify-center mb-3.5 sm:mb-6">
+                {!signer && <div>Connect wallet to get started</div>}
+                {signer && !isValid && (
+                  <button className="uppercase py-4 text-center text-black font-space font-bold text-base sm:text-lg rounded w-full bg-[#14F195] max-w-[250px]">
+                    {validationDetail}
+                  </button>
+                )}
+                {signer && isValid && (
+                  <button
+                    onClick={async () => {
+                      try {
+                        if (!value) {
+                          toast("Please set a value", {
+                            icon: "⚠️",
+                          });
+                          return;
+                        }
+                        setIsWithdrawing(true);
+                        // @ts-ignore existence of signer is gated above.
+                        let txn = await redeem(
+                          value,
+                          signer,
+                          market.tokenPair.cToken,
+                          market.tokenPair.token
+                        );
+                        setTxnHash(txn.hash);
+
+                        setIsWaitingToBeMined(true);
+                        let tr = await txn.wait(); // TODO: error handle if transaction fails
+                        setValue("");
+                        updateTransaction(tr.blockHash);
+                        toast.success("Withdraw successful");
+                        closeModal();
+                      } catch (e) {
+                        toast.error("Withdraw unsuccessful");
+                        console.error(e);
+                      } finally {
+                        setIsWaitingToBeMined(false);
+                        setIsWithdrawing(false);
+                      }
                     }}
-                    label="Max"
-                    maxValueLabel={market.tokenPair.token.symbol}
-                  />
+                    className={clsx(
+                      "py-4 text-center text-white font-bold rounded w-full",
+                      {
+                        "bg-brand-green": !isWithdrawing,
+                        "bg-gray-600": isWithdrawing,
+                      }
+                    )}
+                  >
+                    {isWithdrawing ? "Withdrawing..." : "Withdraw"}
+                  </button>
                 )}
               </div>
-              <div className="flex mt-6 uppercase">
-                <button
-                  className="flex-grow py-2 font-space font-bold text-xs sm:text-base uppercase"
-                  onClick={() => setIsSupplying(true)}
-                >
-                  Supply
-                </button>
-                <button
-                  className="flex-grow py-2 text-[#14F195] border-b-4 uppercase border-b-[#14F195] font-space font-bold text-xs sm:text-base"
-                  onClick={() => setIsSupplying(false)}
-                >
-                  Withdraw
-                </button>
-              </div>
-            </div>
-            <div className="mt-5">
-              <div className="px-4 sm:px-12 bg-[#0D0D0D]">
-                <div className="flex mb-2 justify-end items-center">
-                  <span className="font-bold text-xs sm:text-sm mr-3">
-                    Supply Rates
-                  </span>
-                  <a>
-                    <img src="/images/ico/open.svg" />
-                  </a>
-                </div>
-                <div className="flex items-center mb-2  pb-4 border-b border-[#282C2B]">
-                  <div className="w-6 mr-3 sm:w-12">
-                    <img
-                      src={market.tokenPair.token.icon}
-                      style={{ width: ICON_SIZE }}
-                      className=""
-                      alt="icon"
-                    />
-                  </div>
-                  <div className="flex-grow text-[#ADB5B3] font-nova font-base">
-                    Supply APY
-                  </div>
-                  <div>{market.marketData.depositApy}</div>
-                </div>
-                <div className="flex items-center mb-2 pb-4">
-                  <div className="w-6 mr-3 sm:w-12">
-                    <img
-                      src={market.tokenPair.token.icon}
-                      style={{ width: ICON_SIZE }}
-                      className="mr-3"
-                      alt="icon"
-                    />
-                  </div>
-                  <div className="flex-grow text-[#ADB5B3] font-nova font-base">
-                    Distribution APY
-                  </div>
-                  <div>{market.marketData.depositApy}</div>
-                </div>
 
-                <BorrowLimit
-                  value={value}
-                  isValid={isValid}
-                  borrowLimit={borrowLimit}
-                  newBorrowLimit={newBorrowLimit}
-                  borrowLimitUsed={borrowLimitUsed}
-                  newBorrowLimitUsed={newBorrowLimitUsed}
-                />
-
-                <div className="flex justify-center mb-3.5 sm:mb-6">
-                  {!signer && <div>Connect wallet to get started</div>}
-                  {signer && !isValid && (
-                    <button className="uppercase py-4 text-center text-black font-space font-bold text-base sm:text-lg rounded w-full bg-[#14F195] max-w-[250px]">
-                      {validationDetail}
-                    </button>
-                  )}
-                  {signer && isValid && (
-                    <button
-                      onClick={async () => {
-                        try {
-                          if (!value) {
-                            toast("Please set a value", {
-                              icon: "⚠️",
-                            });
-                            return;
-                          }
-                          setIsWithdrawing(true);
-                          // @ts-ignore existence of signer is gated above.
-                          let txn = await redeem(
-                            value,
-                            signer,
-                            market.tokenPair.cToken,
-                            market.tokenPair.token
-                          );
-                          setTxnHash(txn.hash);
-
-                          setIsWaitingToBeMined(true);
-                          let tr = await txn.wait(); // TODO: error handle if transaction fails
-                          setValue("");
-                          updateTransaction(tr.blockHash);
-                          toast.success("Withdraw successful");
-                          closeModal();
-                        } catch (e) {
-                          toast.error("Withdraw unsuccessful");
-                          console.error(e);
-                        } finally {
-                          setIsWaitingToBeMined(false);
-                          setIsWithdrawing(false);
-                        }
-                      }}
-                      className={clsx(
-                        "py-4 text-center text-white font-bold rounded w-full",
-                        {
-                          "bg-brand-green": !isWithdrawing,
-                          "bg-gray-600": isWithdrawing,
-                        }
-                      )}
-                    >
-                      {isWithdrawing ? "Withdrawing..." : "Withdraw"}
-                    </button>
-                  )}
+              <div className="flex mb-5 sm:mb-8">
+                <div className="flex-grow text-[#ADB5B3] font-nova text-base">
+                  Currently Supplying
                 </div>
-
-                <div className="flex mb-5 sm:mb-8">
-                  <div className="flex-grow text-[#ADB5B3] font-nova text-base">
-                    Currently Supplying
-                  </div>
-                  <div className="font-nova text-bas text-white">
-                    {toCryptoString(market.supplyBalance)}
-                    {market.tokenPair.token.symbol}
-                  </div>
+                <div className="font-nova text-bas text-white">
+                  {toCryptoString(market.supplyBalance)}
+                  {market.tokenPair.token.symbol}
                 </div>
               </div>
             </div>
