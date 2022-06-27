@@ -39,7 +39,6 @@ export default function Deposit({
   totalBorrowedAmountInUsd,
   market,
 }: DepositProps) {
-  let [isWaitingToBeMined, setIsWaitingToBeMined] = useState<boolean>(false);
   let [isEnabled, setIsEnabled] = useState<boolean>(true);
   let [isEnabling, setIsEnabling] = useState<boolean>(false);
   let [isDepositing, setIsDepositing] = useState<boolean>(false);
@@ -49,7 +48,7 @@ export default function Deposit({
 
   let inputEl = useRef<HTMLInputElement>(null);
 
-  let { tokenPairs, updateTransaction } = useContext(TenderContext);
+  let { tokenPairs, updateTransaction, setIsWaitingToBeMined } = useContext(TenderContext);
 
   let newBorrowLimit = useProjectBorrowLimit(
     signer,
@@ -91,15 +90,16 @@ export default function Deposit({
     inputEl && inputEl.current && inputEl.current.select();
   }, []);
 
+  console.log(txnHash)
   return (
     <div>
-      {isWaitingToBeMined && (
+      {(txnHash !== "") && (
         <ConfirmingTransaction
           txnHash={txnHash}
           stopWaitingOnConfirmation={() => closeModal()}
         />
       )}
-      {!isWaitingToBeMined && (
+      {(txnHash === "") && (
         <div>
           <div className="py-8 bg-brand-black-light relative">
             <div className="float-right">
@@ -249,19 +249,19 @@ export default function Deposit({
                       );
                       setTxnHash(txn.hash);
                       setIsWaitingToBeMined(true);
-                      let tr: TransactionReceipt = await txn.wait();
+                      let tr: TransactionReceipt = await txn.wait(2);
+                      console.log("waited ", tr)
                       updateTransaction(tr.blockHash);
+                      console.log("updated")
 
-                      // wait an extra 3 seconds for latency
-                      setTimeout(()=> {
-                        displayTransactionResult(tr.transactionHash, "Deposit successful");
-                      }, 3000)
+                      displayTransactionResult(tr.transactionHash, "Deposit successful");
 
                       setValue("");
                     } catch (e) {
+                      console.log("catch e", e)
                       toast.dismiss()
                       console.log(e)
-                      if (e.transaction.hash) {
+                      if (e.transaction?.hash) {
                         toast.error(()=><p>
                           <a target="_blank" href={`https://andromeda-explorer.metis.io/tx/${e.transactionHash}/internal-transactions/`}>
                             Deposit unsuccessful
@@ -271,6 +271,7 @@ export default function Deposit({
                         toast.error("Deposit unsuccessful.");
                       }
                   } finally {
+                      console.log("finally")
                       setIsWaitingToBeMined(false);
                       setIsDepositing(false);
                     }

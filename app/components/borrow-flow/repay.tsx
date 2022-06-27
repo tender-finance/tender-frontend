@@ -75,7 +75,7 @@ export default function Repay({
     parseFloat(newBorrowLimitUsed)
   );
 
-  let { updateTransaction, isWaitingToBeMined, setIsWaitingToBeMined } = useContext(TenderContext);
+  let { updateTransaction, setIsWaitingToBeMined } = useContext(TenderContext);
 
   useEffect(() => {
     if (!signer) {
@@ -99,14 +99,14 @@ export default function Repay({
 
   return (
     <div>
-      {isWaitingToBeMined && (
+      {(txnHash !== "") && (
         <ConfirmingTransaction
           txnHash={txnHash}
           stopWaitingOnConfirmation={() => closeModal()}
         />
       )}
 
-      {!isWaitingToBeMined && (
+      {(txnHash === "") && (
         <div>
           <div>
             <div className="py-8 bg-brand-black-light">
@@ -261,18 +261,16 @@ export default function Repay({
 
                         setIsWaitingToBeMined(true);
 
-                        let tr: TransactionReceipt = await txn.wait(); // TODO: error handle if transaction fails
+                        let tr: TransactionReceipt = await txn.wait(2); // TODO: error handle if transaction fails
                         updateTransaction(tr.blockHash);
 
-                        setTimeout(()=> {
-                          displayTransactionResult(tr.transactionHash, "Repayment successful");
-                        }, 2000)
+                        displayTransactionResult(tr.transactionHash, "Repayment successful");
 
                         setValue("");
                       } catch (e) {
                         toast.dismiss()
                         console.log(e)
-                        if (e.transaction.hash) {
+                        if (e.transaction?.hash) {
                           toast.error(()=><p>
                             <a target="_blank" href={`https://andromeda-explorer.metis.io/tx/${e.transactionHash}/internal-transactions/`}>
                               Repayment unsuccessful
