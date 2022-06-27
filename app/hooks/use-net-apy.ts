@@ -11,7 +11,7 @@ export function useNetApy(
 ) {
   let [netApy, setNetApy] = useState<number | null>(null);
   let { currentTransaction } = useContext(TenderContext);
-  let poll = useInterval(5_000);
+  let poll = useInterval(7_000);
 
   useEffect(() => {
     if (!signer) {

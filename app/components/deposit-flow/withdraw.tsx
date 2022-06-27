@@ -42,7 +42,7 @@ export default function Withdraw({
   let inputEl = useRef<HTMLInputElement>(null);
 
 
-  let { tokenPairs, updateTransaction, isWaitingToBeMined, setIsWaitingToBeMined } = useContext(TenderContext);
+  let { tokenPairs, updateTransaction, setIsWaitingToBeMined } = useContext(TenderContext);
 
   let newBorrowLimit = useProjectBorrowLimit(
     signer,
@@ -85,13 +85,13 @@ export default function Withdraw({
 
   return (
     <div>
-      {isWaitingToBeMined && (
+      {(txnHash !== "") && (
         <ConfirmingTransaction
           txnHash={txnHash}
           stopWaitingOnConfirmation={() => closeModal()}
         />
       )}
-      {!isWaitingToBeMined && (
+      {(txnHash === "") && (
         <div>
           <div>
             <div className="py-8 bg-brand-black-light">
@@ -207,20 +207,18 @@ export default function Withdraw({
                           setTxnHash(txn.hash);
                           setIsWaitingToBeMined(true);
 
-                          let tr: TransactionReceipt = await txn.wait(); // TODO: error handle if transaction fails
+                          let tr: TransactionReceipt = await txn.wait(2); // TODO: error handle if transaction fails
                           updateTransaction(tr.blockHash);
 
                           // wait an extra 3 seconds for latency
-                          setTimeout(()=> {
-                            displayTransactionResult(tr.transactionHash, "Withdraw successful");
-                          }, 3000)
+                          displayTransactionResult(tr.transactionHash, "Withdraw successful");
 
                           setValue("");
                         } catch (e) {
                           toast.dismiss()
                           console.log(e)
  
-                          if (e.transaction.hash) {
+                          if (e.transaction?.hash) {
                             toast.error(()=><p>
                               <a target="_blank" href={`https://andromeda-explorer.metis.io/tx/${e.transactionHash}/internal-transactions/`}>
                                 Withdraw unsuccessful

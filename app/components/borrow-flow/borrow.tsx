@@ -48,7 +48,7 @@ export default function Borrow({
 
   let inputEl = useRef<HTMLInputElement>(null);
 
-  let { updateTransaction, isWaitingToBeMined, setIsWaitingToBeMined } = useContext(TenderContext);
+  let { updateTransaction, setIsWaitingToBeMined } = useContext(TenderContext);
 
   let newTotalBorrowedAmountInUsd = useNewTotalBorrowedAmountInUsd(
     market.tokenPair,
@@ -93,13 +93,13 @@ export default function Borrow({
 
   return (
     <div>
-      {isWaitingToBeMined && (
+      {(txnHash !== "") && (
         <ConfirmingTransaction
           txnHash={txnHash}
           stopWaitingOnConfirmation={() => closeModal()}
         />
       )}
-      {!isWaitingToBeMined && (
+      {(txnHash === "") && (
         <div>
           <div>
             <div className="py-8 bg-brand-black-light">
@@ -215,19 +215,17 @@ export default function Borrow({
                           setTxnHash(txn.hash);
                           setIsWaitingToBeMined(true);
 
-                          let tr: TransactionReceipt = await txn.wait(); // TODO: error handle if transaction fails
+                          let tr: TransactionReceipt = await txn.wait(2); // TODO: error handle if transaction fails
 
                           updateTransaction(tr.blockHash);
 
-                          setTimeout(()=> {
-                            displayTransactionResult(tr.transactionHash, "Borrow successful");
-                          }, 2000)
+                          displayTransactionResult(tr.transactionHash, "Borrow successful");
 
                         } catch (e) {
                           toast.dismiss()
                           console.log(e)
 
-                          if (e.transaction.hash) {
+                          if (e.transaction?.hash) {
                             toast.error(()=><p>
                               <a target="_blank" href={`https://andromeda-explorer.metis.io/tx/${e.transactionHash}/internal-transactions/`}>
                                 Borrow unsuccessful

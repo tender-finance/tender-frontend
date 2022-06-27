@@ -1,12 +1,26 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { TenderContext } from "~/contexts/tender-context";
-import MarketSupplyRow from "~/components/two-panes/market-supply-row";
-import MarketBorrowRow from "~/components/two-panes/market-borrow-row";
+import MarketRow from "~/components/two-panes/market-row";
 import { toShortFiatString, toShortCryptoString } from "~/lib/ui";
+import BorrowFlow from "./borrow-flow";
+import ReactModal from "react-modal";
+import { Market } from "~/types/global";
+import DepositFlow from "./deposit-flow";
 
 export default function TwoPanes() {
   let { markets } = useContext(TenderContext);
+  let [openMarket, setOpenMarket] = useState<Market | null>(null)
+  let [action, setAction] = useState<"depositing" | "borrowing">("depositing")
 
+  const depositInto = (market: Market) => {
+    setAction("depositing")
+    setOpenMarket(market)
+  }
+
+  const borrowFrom = (market: Market) => {
+    setAction("borrowing")
+    setOpenMarket(market)
+  }
   // markets with less than this amount are shown as not actively supplying or borrowing
    const DUST_LIMIT = 0.01;
 
@@ -21,7 +35,19 @@ export default function TwoPanes() {
   return (
     <div className="grid grid-cols-2 gap-9 mb-14">
 
-      {/* Supply */}
+      <ReactModal
+        shouldCloseOnOverlayClick={true}
+        isOpen={openMarket !== null}
+        onRequestClose={() => setOpenMarket(null)}
+        portalClassName="modal"
+        style={{ content: {inset: "unset", margin: "50px auto", zoom: "75%", position:"relative", maxWidth: 600}}}
+        closeTimeoutMS={200}
+      >
+        {openMarket && (action === "depositing" ? 
+            <DepositFlow key={openMarket.id} closeModal={() => setOpenMarket(null)} market={openMarket} />
+          : <BorrowFlow key={openMarket.id} closeModal={() => setOpenMarket(null)} market={openMarket} />
+        )}
+      </ReactModal>
 
       <div>
         {/* Empty state heading for borrow */}
@@ -45,7 +71,7 @@ export default function TwoPanes() {
               <tbody>
                 {marketsWithSupply.map((m) => {
                   return (
-                    <MarketSupplyRow market={m} key={m.id}>
+                    <MarketRow openMarket={()=> depositInto(m)} market={m} key={m.id}>
                       <td className="flex px-8 py-6 text-left items-center h-full">
                         <img
                           className="w-9 mr-2"
@@ -65,7 +91,7 @@ export default function TwoPanes() {
                           {m.supplyBalanceInUsd.toFixed(2)}{" USD"}
                         </div>
                       </td>
-                    </MarketSupplyRow>
+                    </MarketRow>
                   );
                 })}
               </tbody>
@@ -89,7 +115,7 @@ export default function TwoPanes() {
               <tbody>
                 {marketsWithoutSupply.map((m) => {
                   return (
-                    <MarketSupplyRow market={m} key={m.id}>
+                    <MarketRow openMarket={()=>  depositInto(m) } market={m} key={m.id}>
                       <td className="flex px-8 py-6 text-left items-center h-full">
                         <img
                           className="w-9 mr-2"
@@ -113,7 +139,7 @@ export default function TwoPanes() {
                           USD
                         </div>
                       </td>
-                    </MarketSupplyRow>
+                    </MarketRow>
                   );
                 })}
               </tbody>
@@ -149,7 +175,7 @@ export default function TwoPanes() {
               <tbody>
                 {marketsWithBorrow.map((m) => {
                   return (
-                    <MarketBorrowRow market={m} key={m.id}>
+                    <MarketRow openMarket={()=> borrowFrom(m)} market={m} key={m.id}>
                       <td className="flex px-8 py-6 text-left items-center h-full">
                         <img
                           className="w-9 mr-2"
@@ -174,7 +200,7 @@ export default function TwoPanes() {
                       <td className="px-8 py-6 text-left text-brand-green font-bold">
                         {m.borrowLimitUsedOfToken}%
                       </td>
-                    </MarketBorrowRow>
+                    </MarketRow>
                   );
                 })}
               </tbody>
@@ -201,7 +227,7 @@ export default function TwoPanes() {
               <tbody>
                 {marketsWithoutBorrow.map((m) => {
                   return (
-                    <MarketBorrowRow market={m} key={m.id}>
+                    <MarketRow openMarket={()=> borrowFrom(m)} market={m} key={m.id}>
                       <td className="flex px-8 py-6 text-left items-center h-full">
                         <img
                           className="w-9 mr-2"
@@ -225,7 +251,7 @@ export default function TwoPanes() {
                           USD
                         </div>
                       </td>
-                    </MarketBorrowRow>
+                    </MarketRow>
                   );
                 })}
               </tbody>
