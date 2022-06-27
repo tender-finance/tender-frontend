@@ -70,14 +70,6 @@ body {
   padding-left: 10px;
 }
 
-.pane-custom table {
-  overflow-x: auto;
-  overflow-y: hidden;
-  margin-bottom: 15px;
-  display: block;
-  width: 100%;
-  padding-bottom: 5px;
-}
 
 .pane-custom table::-webkit-scrollbar {
   height: 4px;
@@ -133,6 +125,19 @@ body {
     inset: 0;
     right: 3% !important;
     left: 3% !important;
+  }
+
+
+}
+
+@media screen and (max-width: 420px) {
+  .pane-custom table {
+    overflow-x: auto;
+    overflow-y: hidden;
+    margin-bottom: 15px;
+    display: block;
+    width: 100%;
+    padding-bottom: 5px;
   }
 }
 
