@@ -100,7 +100,6 @@ export default function Deposit({
       )}
       {!isWaitingToBeMined && (
         <div className="">
-          222
           <div className="pt-8 bg-[#151515] relative border-[#B5CFCC2B] border-b">
             <div className="absolute right-[10px] top-[15px] sm:right-[22px] sm:top-[24px]">
               <button onClick={() => closeModal()} className="">

@@ -102,7 +102,7 @@ export default function Borrow({
       {!isWaitingToBeMined && (
         <div>
           <div>
-            <div className="py-8 bg-brand-black-light">
+            <div className="py-8 bg-brand-black-light ss">
               <div className="float-right">
                 <button
                   onClick={() => closeModal()}

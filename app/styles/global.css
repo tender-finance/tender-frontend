@@ -319,3 +319,12 @@ body {
 .header__burg span:last-of-type {
   width: 18px;
 }
+
+.ReactModal__Content {
+  z-index: 11;
+}
+
+.modal {
+  position: relative;
+  z-index: 11;
+}
