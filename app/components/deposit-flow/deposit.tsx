@@ -250,15 +250,12 @@ export default function Deposit({
                       setTxnHash(txn.hash);
                       setIsWaitingToBeMined(true);
                       let tr: TransactionReceipt = await txn.wait(2);
-                      console.log("waited ", tr)
                       updateTransaction(tr.blockHash);
-                      console.log("updated")
 
                       displayTransactionResult(tr.transactionHash, "Deposit successful");
 
                       setValue("");
                     } catch (e) {
-                      console.log("catch e", e)
                       toast.dismiss()
                       console.log(e)
                       if (e.transaction?.hash) {

@@ -17,7 +17,6 @@ export default function ConfirmingTransaction({
   let { isWaitingToBeMined } = useContext(TenderContext);
   let { blockExplorerUrl, blockExplorerName } = useBlockchainExplorer();
 
-  console.log("iswaiting to", isWaitingToBeMined)
   return (
     <div className="pb-4 overflow-hidden">
       <div>
