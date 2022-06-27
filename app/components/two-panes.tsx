@@ -71,7 +71,7 @@ export default function TwoPanes() {
               <tbody>
                 {marketsWithSupply.map((m) => {
                   return (
-                    <MarketRow openMarket={()=> setOpenMarket(m)} market={m} key={m.id}>
+                    <MarketRow openMarket={()=> depositInto(m)} market={m} key={m.id}>
                       <td className="flex px-8 py-6 text-left items-center h-full">
                         <img
                           className="w-9 mr-2"
