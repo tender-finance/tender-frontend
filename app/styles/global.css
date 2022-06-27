@@ -267,3 +267,11 @@ body {
   color: #FFFFFF;
   transform: translate(50%, 10px);
 }
+
+.panel-top-wallet {
+  position: absolute;
+  top: 64px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: 100%;
+}

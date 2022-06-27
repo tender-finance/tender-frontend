@@ -7,7 +7,7 @@ import {
   ScrollRestoration,
 } from "remix";
 
-import LogRocket from 'logrocket';
+import LogRocket from "logrocket";
 
 import { Toaster } from "react-hot-toast";
 import type { MetaFunction, LinksFunction } from "remix";
@@ -32,7 +32,8 @@ export const meta: MetaFunction = () => {
   return { title: "Tender.Finance" };
 };
 
-if (process.env.NODE_ENV === "production") LogRocket.init('6bquwn/tender-frontend');
+if (process.env.NODE_ENV === "production")
+  LogRocket.init("6bquwn/tender-frontend");
 
 const connectors: [MetaMask, Web3ReactHooks][] = [[metaMask, metaMaskHooks]];
 
