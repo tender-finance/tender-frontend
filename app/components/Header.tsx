@@ -82,16 +82,40 @@ export default function Header() {
           ></div>
           <div className="aside__menu__container">
             <div className="flex justify-center flex-col text-[#ADB5B3] font-nova-400 text-xl">
-              <a className="mb-2.5 cursor-pointer hover:text-white  ">About</a>
-              <a className="mb-2.5 cursor-pointer hover:text-white  ">
+              <a
+                className="mb-2.5 cursor-pointer hover:text-white"
+                href="https://docs.tender.fi/introduction/what-is-tender.fi"
+              >
+                About
+              </a>
+              <a
+                className="mb-2.5 cursor-pointer hover:text-white"
+                href="https://www.tender.fi/#Road"
+              >
                 Roadmap
               </a>
-              <a className="mb-2.5 cursor-pointer hover:text-white  ">
+              <a
+                className="mb-2.5 cursor-pointer hover:text-white"
+                href="https://www.tender.fi/#Partners"
+              >
                 Partners
               </a>
-              <a className="mb-2.5 cursor-pointer hover:text-white  ">Team</a>
-              <a className="mb-2.5 cursor-pointer hover:text-white  ">Docs</a>
-              <a className="mb-2.5 cursor-pointer hover:text-white  ">
+              <a
+                className="mb-2.5 cursor-pointer hover:text-white"
+                href="https://www.tender.fi/#Team"
+              >
+                Team
+              </a>
+              <a
+                className="mb-2.5 cursor-pointer hover:text-white"
+                href="https://docs.tender.fi"
+              >
+                Docs
+              </a>
+              <a
+                className="mb-2.5 cursor-pointer hover:text-white"
+                href="https://discord.gg/nmy7dAQd"
+              >
                 Community
               </a>
             </div>

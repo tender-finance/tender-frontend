@@ -41,7 +41,7 @@ export default function TwoPanes() {
   );
 
   return (
-    <div className="grid grid-cols-2 gap-9 mb-14">
+    <div className="flex flex-col md:grid grid-cols-2 gap-9 mb-14">
       <ReactModal
         shouldCloseOnOverlayClick={true}
         isOpen={openMarket !== null}
@@ -106,13 +106,17 @@ export default function TwoPanes() {
                       market={m}
                       key={m.id}
                     >
-                      <td className="flex px-8 py-6 text-left items-center h-full">
-                        <img
-                          className="w-9 mr-2"
-                          src={m.tokenPair.token.icon}
-                          alt={m.tokenPair.token.symbol}
-                        />
-                        {m.tokenPair.token.symbol}
+                      <td className="min-w-[130px] items-left px-4 py-6 text-left text-white bg-red font-nova font-normal h-full w-full md:px-8">
+                        <div className="flex items-center jusstify-left">
+                          <img
+                            className="w-[32px] h-[32px] mr-2"
+                            src={m.tokenPair.token.icon}
+                            alt={m.tokenPair.token.symbol}
+                          />
+                          <span className="flex">
+                            {m.tokenPair.token.symbol}
+                          </span>
+                        </div>
                       </td>
                       <td className="px-4 py-6 text-left md:px-8">
                         {m.marketData.depositApy}
@@ -160,13 +164,17 @@ export default function TwoPanes() {
                       market={m}
                       key={m.id}
                     >
-                      <td className="flex px-8 py-6 text-left items-center h-full">
-                        <img
-                          className="w-9 mr-2"
-                          src={m.tokenPair.token.icon}
-                          alt={m.tokenPair.token.symbol}
-                        />
-                        {m.tokenPair.token.symbol}
+                      <td className="min-w-[130px] items-left px-4 py-6 text-left text-white bg-red font-nova font-normal h-full w-full md:px-8">
+                        <div className="flex items-center jusstify-left">
+                          <img
+                            className="w-[32px] h-[32px] mr-2"
+                            src={m.tokenPair.token.icon}
+                            alt={m.tokenPair.token.symbol}
+                          />
+                          <span className="flex">
+                            {m.tokenPair.token.symbol}
+                          </span>
+                        </div>
                       </td>
                       <td className="px-4 md:px-8 table-cell py-6 text-left text-white font-nova font-normal">
                         {m.marketData.depositApy}
@@ -226,7 +234,7 @@ export default function TwoPanes() {
                       market={m}
                       key={m.id}
                     >
-                      <td className="flex px-8 py-6 text-left items-center h-full">
+                      <td className="min-w-[130px] flex px-4 py-6 text-left items-center h-full text-white font-nova font-normal md:px-8">
                         <img
                           className="w-[32px] h-[32px] mr-2"
                           src={m.tokenPair.token.icon}
@@ -286,13 +294,17 @@ export default function TwoPanes() {
                       market={m}
                       key={m.id}
                     >
-                      <td className="flex px-8 py-6 text-left items-center h-full">
-                        <img
-                          className="w-9 mr-2"
-                          src={m.tokenPair.token.icon}
-                          alt={m.tokenPair.token.symbol}
-                        />
-                        <span className="flex">{m.tokenPair.token.symbol}</span>
+                      <td className="min-w-[130px] px-4 flex-col items-left flex py-6 text-left text-white font-nova font-normal h-full md:px-8">
+                        <div className="flex items-center jusstify-left">
+                          <img
+                            className="w-[32px] h-[32px] mr-2"
+                            src={m.tokenPair.token.icon}
+                            alt={m.tokenPair.token.symbol}
+                          />
+                          <span className="flex">
+                            {m.tokenPair.token.symbol}
+                          </span>
+                        </div>
                       </td>
                       <td className="px-4 md:px-8 table-cell py-6 text-left text-white font-nova font-normal">
                         {m.marketData.borrowApy}
