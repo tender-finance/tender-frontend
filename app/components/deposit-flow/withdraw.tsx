@@ -250,7 +250,7 @@ export default function Withdraw({
                 <div className="flex-grow text-[#ADB5B3] font-nova text-base">
                   Currently Supplying
                 </div>
-                <div className="font-nova text-bas text-white">
+                <div className="font-nova text-base">
                   {toCryptoString(market.supplyBalance)}
                   {market.tokenPair.token.symbol}
                 </div>

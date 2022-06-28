@@ -298,9 +298,9 @@ export default function Deposit({
             </div>
             <div className="flex mt-8">
               <div className="flex-grow text-[#ADB5B3] font-nova text-base font-normal">
-                Curretly Supplying
+                Currently Supplying
               </div>
-              <div className="text-white font-nova text-base font-normal">
+              <div className="font-nova text-base">
                 {toCryptoString(walletBalance)} {market.tokenPair.token.symbol}
               </div>
             </div>

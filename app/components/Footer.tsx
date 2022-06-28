@@ -42,27 +42,10 @@ export default function Footer() {
     },
   ];
 
-  let companyLinks: Link[] = [
-    {
-      label: "Blog",
-      url: "https://tender-finance.medium.com/",
-      ico: "/images/ico/git.svg",
-    },
-    {
-      label: "Youtube",
-      url: "https://www.youtube.com/channel/UCGMP8qwS9SoWRvsd-srnExg/",
-      ico: "/images/ico/git.svg",
-    },
-    {
-      label: "Careers",
-      url: "https://triplebyte.com/company/public/ang-sciences",
-      ico: "/images/ico/git.svg",
-    },
-  ];
   return (
     <div className="flex-col-reverse justify-center items-center md:flex-row justify-between items-center flex">
-      <div className="mb-5 md:ml-10">
-        <a href="#">
+      <div className="mb-5 md:ml-10 mb-0">
+        <a href="/">
           <img src="images/ico/smallLogo.svg" alt="..." />
         </a>
       </div>

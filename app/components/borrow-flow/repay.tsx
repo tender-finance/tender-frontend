@@ -284,9 +284,11 @@ export default function Repay({
               )}
             </div>
 
-            <div className="flex text-gray-500">
-              <div className="flex-grow">Wallet Balance</div>
-              <div>
+            <div className="flex mb-5 sm:mb-8">
+              <div className="flex-grow text-[#ADB5B3] font-nova text-base">
+                Wallet Balance
+              </div>
+              <div className="font-nova text-base">
                 {toCryptoString(walletBalance)}
                 {market.tokenPair.token.symbol}
               </div>

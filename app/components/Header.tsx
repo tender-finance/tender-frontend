@@ -21,13 +21,18 @@ export default function Header() {
             />
           </a>
         </div>
-        <div className="text-[#ADB5B3] hidden lg:flex justify-center font-nova-400">
-          <a className="px-2 cursor-pointer hover:text-white  ">About</a>
-          <a className="px-2 cursor-pointer hover:text-white  ">Roadmap</a>
-          <a className="px-2 cursor-pointer hover:text-white  ">Partners</a>
-          <a className="px-2 cursor-pointer hover:text-white  ">Team</a>
-          <a className="px-2 cursor-pointer hover:text-white  ">Docs</a>
-          <a className="px-2 cursor-pointer hover:text-white  ">Community</a>
+        <div className="text-[#ADB5B3] hidden lg:flex justify-center font-normal text-base font-nova">
+          <a className="px-4 cursor-pointer hover:text-white">About</a>
+          <a className="px-4 cursor-pointer hover:text-white">Roadmap</a>
+          <a className="px-4 cursor-pointer hover:text-white">Partners</a>
+          <a className="px-4 cursor-pointer hover:text-white">Team</a>
+          <a
+            className="px-4 cursor-pointer hover:text-white"
+            href="https://docs.tender.fi"
+          >
+            Docs
+          </a>
+          <a className="px-4 cursor-pointer hover:text-white">Community</a>
         </div>
         <div className="flex items-center">
           <div className="lg:inline-block mr-3">

@@ -238,7 +238,7 @@ export default function Borrow({
                 <div className="flex-grow text-[#ADB5B3] font-nova text-base">
                   Currently Borrowing
                 </div>
-                <div>
+                <div className="font-nova text-base">
                   {toCryptoString(market.borrowBalance)}
                   {market.tokenPair.token.symbol}
                 </div>
@@ -247,7 +247,7 @@ export default function Borrow({
                 <div className="flex-grow text-[#ADB5B3] font-nova text-base">
                   Market Liquidity
                 </div>
-                <div>
+                <div className="font-nova text-base">
                   {toCryptoString(market.maxBorrowLiquidity)}
                   {market.tokenPair.token.symbol}
                 </div>
