@@ -10,7 +10,7 @@ export function useBorrowLimitUsed(
   let [borrowLimitUsed, setBorrowLimitUsed] = useState<string>("");
 
   let { currentTransaction } = useContext(TenderContext);
-  let pollKey = useInterval(5_000);
+  let pollKey = useInterval(7_000);
 
   useEffect(() => {
     if (!borrowLimit) {

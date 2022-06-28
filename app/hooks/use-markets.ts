@@ -54,7 +54,7 @@ export function useMarkets(
 ) {
   let [markets, setMarkets] = useState<Market[]>([]);
 
-  let pollingKey = useInterval(5_000);
+  let pollingKey = useInterval(7_000);
   let { currentTransaction } = useContext(TenderContext);
 
   useEffect(() => {

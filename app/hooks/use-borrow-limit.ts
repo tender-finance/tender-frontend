@@ -13,7 +13,7 @@ export function useBorrowLimit(
   let [borrowLimit, setBorrowLimit] = useState<number>(0);
 
   let { currentTransaction } = useContext(TenderContext);
-  let poll = useInterval(5_000);
+  let poll = useInterval(7_000);
 
   useEffect(() => {
     if (!signer || !tokenPairs) {

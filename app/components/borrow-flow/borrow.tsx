@@ -41,14 +41,13 @@ export default function Borrow({
   borrowLimitUsed,
   totalBorrowedAmountInUsd,
 }: BorrowProps) {
-  let [isWaitingToBeMined, setIsWaitingToBeMined] = useState<boolean>(false);
   let [value, setValue] = useState<string>("0");
   let [isBorrowing, setIsBorrowing] = useState<boolean>(false);
   let [txnHash, setTxnHash] = useState<string>("");
 
   let inputEl = useRef<HTMLInputElement>(null);
 
-  let { updateTransaction } = useContext(TenderContext);
+  let { updateTransaction, setIsWaitingToBeMined } = useContext(TenderContext);
 
   let newTotalBorrowedAmountInUsd = useNewTotalBorrowedAmountInUsd(
     market.tokenPair,
@@ -93,13 +92,13 @@ export default function Borrow({
 
   return (
     <div>
-      {isWaitingToBeMined && (
+      {txnHash !== "" && (
         <ConfirmingTransaction
           txnHash={txnHash}
           stopWaitingOnConfirmation={() => closeModal()}
         />
       )}
-      {!isWaitingToBeMined && (
+      {txnHash === "" && (
         <div>
           <div className="pt-8 bg-[#151515] relative border-[#B5CFCC2B] border-b">
             <div className="absolute right-[10px] top-[15px] sm:right-[22px] sm:top-[24px]">
@@ -111,12 +110,8 @@ export default function Borrow({
               <img
                 src={market.tokenPair.token.icon}
                 style={{ width: ICON_SIZE }}
-                className="mr-3"
                 alt="icon"
               />
-              <div className="text-base font-normal font-nova">
-                Borrow {market.tokenPair.token.symbol}
-              </div>
             </div>
 
             <div className="flex flex-col justify-center items-center mt-6 overflow-hidden font-space">
@@ -158,7 +153,7 @@ export default function Borrow({
             </div>
           </div>
           <div className="mt-5">
-            <div className="px-4 sm:px-12 bg-[#0D0D0D]">
+            <div className="py-6 px-4 sm:px-12 bg-[#0D0D0D]">
               <div className="flex flex-col items-center mb-3 text-gray-400  pb-6">
                 <div className="flex w-full sm:w-full items-center border-b border-[#282C2B] py-8">
                   <img
@@ -234,7 +229,7 @@ export default function Borrow({
                 )}
               </div>
 
-              <div className="flex mb-5 sm:mb-8">
+              <div className="flex mt-8">
                 <div className="flex-grow text-[#ADB5B3] font-nova text-base">
                   Currently Borrowing
                 </div>
@@ -243,7 +238,7 @@ export default function Borrow({
                   {market.tokenPair.token.symbol}
                 </div>
               </div>
-              <div className="flex mb-5 sm:mb-8">
+              <div className="flex mt-8">
                 <div className="flex-grow text-[#ADB5B3] font-nova text-base">
                   Market Liquidity
                 </div>

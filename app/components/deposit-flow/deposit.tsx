@@ -1,7 +1,10 @@
 import { ICON_SIZE } from "~/lib/constants";
 import type { Market } from "~/types/global";
 import { useContext, useEffect, useRef, useState } from "react";
-import type { JsonRpcSigner } from "@ethersproject/providers";
+import type {
+  JsonRpcSigner,
+  TransactionReceipt,
+} from "@ethersproject/providers";
 import { useValidInput } from "~/hooks/use-valid-input";
 import toast from "react-hot-toast";
 import Max from "~/components/max";
@@ -15,6 +18,7 @@ import { useBorrowLimitUsed } from "~/hooks/use-borrow-limit-used";
 import ConfirmingTransaction from "../fi-modal/confirming-transition";
 import { TenderContext } from "~/contexts/tender-context";
 import { shrinkyInputClass, toCryptoString } from "~/lib/ui";
+import { displayTransactionResult } from "../displayTransactionResult";
 
 export interface DepositProps {
   closeModal: Function;
@@ -38,7 +42,6 @@ export default function Deposit({
   totalBorrowedAmountInUsd,
   market,
 }: DepositProps) {
-  let [isWaitingToBeMined, setIsWaitingToBeMined] = useState<boolean>(false);
   let [isEnabled, setIsEnabled] = useState<boolean>(true);
   let [isEnabling, setIsEnabling] = useState<boolean>(false);
   let [isDepositing, setIsDepositing] = useState<boolean>(false);
@@ -48,7 +51,8 @@ export default function Deposit({
 
   let inputEl = useRef<HTMLInputElement>(null);
 
-  let { tokenPairs, updateTransaction } = useContext(TenderContext);
+  let { tokenPairs, updateTransaction, setIsWaitingToBeMined } =
+    useContext(TenderContext);
 
   let newBorrowLimit = useProjectBorrowLimit(
     signer,
@@ -90,15 +94,16 @@ export default function Deposit({
     inputEl && inputEl.current && inputEl.current.select();
   }, []);
 
+  console.log(txnHash);
   return (
     <div>
-      {isWaitingToBeMined && (
+      {txnHash !== "" && (
         <ConfirmingTransaction
           txnHash={txnHash}
           stopWaitingOnConfirmation={() => closeModal()}
         />
       )}
-      {!isWaitingToBeMined && (
+      {txnHash === "" && (
         <div>
           <div className="pt-8 bg-[#151515] relative border-[#B5CFCC2B] border-b">
             <div className="absolute right-[10px] top-[15px] sm:right-[22px] sm:top-[24px]">
@@ -106,55 +111,62 @@ export default function Deposit({
                 <img src="/images/ico/close.svg" />
               </button>
             </div>
-            <div className="flex align-middle justify-center items-center">
-              <img
-                src={market.tokenPair.token.icon}
-                style={{ width: ICON_SIZE }}
-                className="mr-3"
-                alt="icon"
-              />
-              <div className="text-base font-normal font-nova">
-                {market.tokenPair.token.symbol}
-              </div>
-            </div>
 
             {!isEnabled && (
-              <div className="flex flex-col items-center mt-5 rounded-2xl  px-4">
-                <img
-                  src={market.tokenPair.token.icon}
-                  style={{ width: ICON_SIZE }}
-                  className="mr-3"
-                  alt="icon"
-                />
-                <div className="max-w-sm text-center my-10 mt-5 mb-5 font-normal font-nova text-white text-sm">
-                  To Supply or Repay {market.tokenPair.token.symbol} to the
-                  Compound Protocol, you need to enable it first.
+              <div>
+                <div className="flex align-middle justify-center items-center">
+                  <img
+                    src={market.tokenPair.token.icon}
+                    className="w-6 mr-3"
+                    alt="icon"
+                  />
+                  {market.tokenPair.token.symbol}
+                </div>
+                <div className="flex flex-col items-center mt-5 rounded-2xl  px-4">
+                  <img
+                    src={market.tokenPair.token.icon}
+                    className="w-12"
+                    alt="icon"
+                  />
+                  <div className="max-w-sm text-center my-10 mt-5 mb-5 font-normal font-nova text-white text-sm">
+                    To Supply or Repay {market.tokenPair.token.symbol} to the
+                    Compound Protocol, you need to enable it first.
+                  </div>
                 </div>
               </div>
             )}
             {isEnabled && (
-              <div className="relative mt-6">
-                <Max
-                  maxValue={walletBalance.toString()}
-                  updateValue={() => {
-                    let value = math.format(walletBalance, {
-                      notation: "fixed",
-                    });
-                    if (!inputEl || !inputEl.current) return;
-                    inputEl.current.focus();
-                    inputEl.current.value = value;
-                    setValue(value);
-                  }}
-                  maxValueLabel={market.tokenPair.token.symbol}
-                />
-                <div className="flex flex-col justify-center items-center overflow-hidden">
-                  <input
-                    ref={inputEl}
-                    onChange={(e) => setValue(e.target.value)}
-                    style={{ minHeight: 90 }}
-                    className={`w-full text-2xl bg-transparent text-white text-center outline-none ${inputTextClass}`}
-                    defaultValue={0}
+              <div>
+                <div className="flex align-middle justify-center items-center">
+                  <img
+                    src={market.tokenPair.token.icon}
+                    className="w-12"
+                    alt="icon"
                   />
+                </div>
+                <div className="relative mt-6">
+                  <Max
+                    maxValue={walletBalance.toString()}
+                    updateValue={() => {
+                      let value = math.format(walletBalance, {
+                        notation: "fixed",
+                      });
+                      if (!inputEl || !inputEl.current) return;
+                      inputEl.current.focus();
+                      inputEl.current.value = value;
+                      setValue(value);
+                    }}
+                    maxValueLabel={market.tokenPair.token.symbol}
+                  />
+                  <div className="flex flex-col justify-center items-center overflow-hidden">
+                    <input
+                      ref={inputEl}
+                      onChange={(e) => setValue(e.target.value)}
+                      style={{ minHeight: 90 }}
+                      className={`w-full text-2xl bg-transparent text-white text-center outline-none ${inputTextClass}`}
+                      defaultValue={0}
+                    />
+                  </div>
                 </div>
               </div>
             )}
@@ -271,15 +283,34 @@ export default function Deposit({
                       );
                       setTxnHash(txn.hash);
                       setIsWaitingToBeMined(true);
-                      let tr = await txn.wait();
-                      setValue("0");
+                      let tr: TransactionReceipt = await txn.wait(2);
                       updateTransaction(tr.blockHash);
-                      toast.success("Deposit successful");
-                      closeModal();
-                    } catch (e) {
-                      toast.error("Deposit unsuccessful");
-                      console.error(e);
+
+                      displayTransactionResult(
+                        tr.transactionHash,
+                        "Deposit successful"
+                      );
+
+                      setValue("");
+                    } catch (e: any) {
+                      toast.dismiss();
+                      console.log(e);
+                      if (e.transaction?.hash) {
+                        toast.error(() => (
+                          <p>
+                            <a
+                              target="_blank"
+                              href={`https://andromeda-explorer.metis.io/tx/${e.transactionHash}/internal-transactions/`}
+                            >
+                              Deposit unsuccessful
+                            </a>
+                          </p>
+                        ));
+                      } else {
+                        toast.error("Deposit unsuccessful.");
+                      }
                     } finally {
+                      console.log("finally");
                       setIsWaitingToBeMined(false);
                       setIsDepositing(false);
                     }

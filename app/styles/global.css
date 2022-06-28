@@ -110,7 +110,7 @@ body {
   border-radius: 1rem !important;
   padding: 0 !important;
   margin: auto;
-  max-height: 850px;
+  max-height: 900px;
 }
 
 @media screen and (max-width: 788px) {
@@ -126,8 +126,6 @@ body {
     right: 3% !important;
     left: 3% !important;
   }
-
-
 }
 
 @media screen and (max-width: 420px) {

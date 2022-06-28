@@ -2,6 +2,9 @@ import * as animationData from "~/lotties/loader-tender.json";
 // @ts-ignore NO types :(
 import Lottie from "lottie-react";
 import { useBlockchainExplorer } from "~/hooks/use-network-to-blockchain-explorer";
+import { useContext } from "react";
+import { TenderContext } from "~/contexts/tender-context";
+
 
 interface Props {
   stopWaitingOnConfirmation: Function;
@@ -11,7 +14,9 @@ export default function ConfirmingTransaction({
   stopWaitingOnConfirmation,
   txnHash,
 }: Props) {
+  let { isWaitingToBeMined } = useContext(TenderContext);
   let { blockExplorerUrl, blockExplorerName } = useBlockchainExplorer();
+
   return (
     <div className="overflow-hidden">
       <div>
@@ -25,6 +30,7 @@ export default function ConfirmingTransaction({
           className="flex w-full justify-center my-16"
           style={{ maxWidth: "100%" }}
         >
+        {isWaitingToBeMined &&
           <Lottie
             animationData={animationData}
             style={{
@@ -32,8 +38,14 @@ export default function ConfirmingTransaction({
               width: "250px",
             }}
           />
+      }
         </div>
-        <div className="uppercase text-center">Confirming transaction</div>
+        <div className="uppercase text-center">
+          {isWaitingToBeMined
+            ? "Confirming transaction"
+            : "Done!"
+          }
+          </div>
         {txnHash && (
           <div className="flex justify-center">
             <a

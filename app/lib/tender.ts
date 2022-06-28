@@ -16,7 +16,7 @@ import type {
 
 const MINIMUM_REQUIRED_APPROVAL_BALANCE = BigNumber.from("1");
 interface Txn {
-  wait: () => TransactionReceipt;
+  wait: (n?: number) => TransactionReceipt;
   hash: string;
 }
 

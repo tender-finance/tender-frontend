@@ -12,7 +12,7 @@ export function useTotalSupplyBalanceInUsd(
   let [totalSupplyBalanceInUsd, setTotalSupplyBalanceInUsd] =
     useState<number>(0);
   let { currentTransaction } = useContext(TenderContext);
-  let poll = useInterval(5_000);
+  let poll = useInterval(7_000);
 
   useEffect(() => {
     if (!signer || tokenPairs.length === 0) {

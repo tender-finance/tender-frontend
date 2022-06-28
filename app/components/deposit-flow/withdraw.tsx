@@ -35,13 +35,13 @@ export default function Withdraw({
   borrowLimitUsed,
   totalBorrowedAmountInUsd,
 }: WithdrawProps) {
-  let [isWaitingToBeMined, setIsWaitingToBeMined] = useState<boolean>(false);
   let [value, setValue] = useState<string>("0");
   let [isWithdrawing, setIsWithdrawing] = useState<boolean>(false);
   let [txnHash, setTxnHash] = useState<string>("");
   let inputEl = useRef<HTMLInputElement>(null);
 
-  let { tokenPairs, updateTransaction } = useContext(TenderContext);
+  let { tokenPairs, updateTransaction, setIsWaitingToBeMined } =
+    useContext(TenderContext);
 
   let newBorrowLimit = useProjectBorrowLimit(
     signer,
@@ -83,13 +83,13 @@ export default function Withdraw({
 
   return (
     <div>
-      {isWaitingToBeMined && (
+      {txnHash !== "" && (
         <ConfirmingTransaction
           txnHash={txnHash}
           stopWaitingOnConfirmation={() => closeModal()}
         />
       )}
-      {!isWaitingToBeMined && (
+      {txnHash === "" && (
         <div>
           <div className="pt-8 bg-[#151515] relative border-[#B5CFCC2B] border-b">
             <div className="absolute right-[10px] top-[15px] sm:right-[22px] sm:top-[24px]">
@@ -97,16 +97,12 @@ export default function Withdraw({
                 <img src="/images/ico/close.svg" />
               </button>
             </div>
-            <div className="flex w-full align-middle justify-center items-center">
+            <div className="flex align-middle justify-center items-center">
               <img
                 src={market.tokenPair.token.icon}
-                style={{ width: ICON_SIZE }}
-                className="mr-3"
+                className="w-12"
                 alt="icon"
               />
-              <div className="text-base font-normal font-nova">
-                {market.tokenPair.token.symbol}
-              </div>
             </div>
 
             <div className="flex flex-col justify-center items-center mt-6 overflow-hidden font-space">
@@ -151,7 +147,7 @@ export default function Withdraw({
             </div>
           </div>
           <div className="mt-5">
-            <div className="px-4 sm:px-12 bg-[#0D0D0D]">
+            <div className="py-6 px-4 sm:px-12 bg-[#0D0D0D]">
               <div className="flex flex-col items-center mb-3 text-gray-400  pb-6">
                 <div className="flex w-full sm:w-full items-center border-b border-[#282C2B] py-8">
                   <div className="w-6 mr-3 sm:w-12">
@@ -246,7 +242,7 @@ export default function Withdraw({
                 )}
               </div>
 
-              <div className="flex mb-5 sm:mb-8">
+              <div className="flex mt-8">
                 <div className="flex-grow text-[#ADB5B3] font-nova text-base">
                   Currently Supplying
                 </div>

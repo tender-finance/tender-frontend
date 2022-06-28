@@ -43,7 +43,6 @@ export default function Repay({
   walletBalance,
   totalBorrowedAmountInUsd,
 }: RepayProps) {
-  let [isWaitingToBeMined, setIsWaitingToBeMined] = useState<boolean>(false);
   let [isEnabled, setIsEnabled] = useState<boolean>(true);
   let [isEnabling, setIsEnabling] = useState<boolean>(false);
 
@@ -75,7 +74,7 @@ export default function Repay({
     parseFloat(newBorrowLimitUsed)
   );
 
-  let { updateTransaction } = useContext(TenderContext);
+  let { updateTransaction, setIsWaitingToBeMined } = useContext(TenderContext);
 
   useEffect(() => {
     if (!signer) {
@@ -99,14 +98,14 @@ export default function Repay({
 
   return (
     <div>
-      {isWaitingToBeMined && (
+      {txnHash !== "" && (
         <ConfirmingTransaction
           txnHash={txnHash}
           stopWaitingOnConfirmation={() => closeModal()}
         />
       )}
 
-      {!isWaitingToBeMined && (
+      {txnHash === "" && (
         <div>
           <div className="pt-8 bg-[#151515] relative border-[#B5CFCC2B] border-b">
             <div className="absolute right-[10px] top-[15px] sm:right-[22px] sm:top-[24px]">
@@ -114,49 +113,62 @@ export default function Repay({
                 <img src="/images/ico/close.svg" />
               </button>
             </div>
-            <div className="flex align-middle justify-center items-center">
-              <img
-                src={market.tokenPair.token.icon}
-                style={{ width: ICON_SIZE }}
-                className="mr-3"
-                alt="icon"
-              />
-              <div className="text-base font-normal font-nova">
-                {market.tokenPair.token.symbol}
-              </div>
-            </div>
 
             {!isEnabled && (
-              <div className="flex flex-col items-center mt-5 rounded-2xl">
-                <div className="max-w-sm text-center my-10 mt-5 mb-5 font-normal font-nova text-white text-sm px-4">
-                  To borrow or repay {market.tokenPair.token.symbol} to the
-                  Tender Protocol, you need to enable it first.
+              <div>
+                <div className="flex align-middle justify-center items-center">
+                  <img
+                    src={market.tokenPair.token.icon}
+                    className="w-6 mr-3"
+                    alt="icon"
+                  />
+                  {market.tokenPair.token.symbol}
+                </div>
+                <div className="flex flex-col items-center mt-5 rounded-2xl  px-4">
+                  <img
+                    src={market.tokenPair.token.icon}
+                    className="w-12"
+                    alt="icon"
+                  />
+                  <div className="max-w-sm text-center my-10 mt-5 mb-5 font-normal font-nova text-white text-sm px-4">
+                    To borrow or repay {market.tokenPair.token.symbol} to the
+                    Tender Protocol, you need to enable it first.
+                  </div>
                 </div>
               </div>
             )}
             {isEnabled && (
-              <div className="relative  mt-6">
-                <Max
-                  maxValue={maxRepayableAmount.toString()}
-                  updateValue={() => {
-                    let value = math.format(maxRepayableAmount, {
-                      notation: "fixed",
-                    });
-                    if (!inputEl || !inputEl.current) return;
-                    inputEl.current.focus();
-                    inputEl.current.value = value;
-                    setValue(value);
-                  }}
-                  maxValueLabel={market.tokenPair.token.symbol}
-                />
-                <div className="flex flex-col justify-center items-center overflow-hidden">
-                  <input
-                    ref={inputEl}
-                    onChange={(e) => setValue(e.target.value)}
-                    style={{ minHeight: 90 }}
-                    className={`w-full text-2xl bg-transparent text-white text-center outline-none ${inputTextClass}`}
-                    defaultValue={0}
+              <div>
+                <div className="flex align-middle justify-center items-center">
+                  <img
+                    src={market.tokenPair.token.icon}
+                    className="w-12"
+                    alt="icon"
                   />
+                </div>
+                <div className="relative  mt-6">
+                  <Max
+                    maxValue={maxRepayableAmount.toString()}
+                    updateValue={() => {
+                      let value = math.format(maxRepayableAmount, {
+                        notation: "fixed",
+                      });
+                      if (!inputEl || !inputEl.current) return;
+                      inputEl.current.focus();
+                      inputEl.current.value = value;
+                      setValue(value);
+                    }}
+                    maxValueLabel={market.tokenPair.token.symbol}
+                  />
+                  <div className="flex flex-col justify-center items-center overflow-hidden">
+                    <input
+                      ref={inputEl}
+                      onChange={(e) => setValue(e.target.value)}
+                      style={{ minHeight: 90 }}
+                      className={`w-full text-2xl bg-transparent text-white text-center outline-none ${inputTextClass}`}
+                      defaultValue={0}
+                    />
+                  </div>
                 </div>
               </div>
             )}
@@ -284,7 +296,7 @@ export default function Repay({
               )}
             </div>
 
-            <div className="flex mb-5 sm:mb-8">
+            <div className="flex mt-8">
               <div className="flex-grow text-[#ADB5B3] font-nova text-base">
                 Wallet Balance
               </div>
