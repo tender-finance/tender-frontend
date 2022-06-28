@@ -108,15 +108,15 @@ export default function Borrow({
               </button>
             </div>
             <div className="flex w-full align-middle justify-center items-center">
-              <div className="w-9 sm:w-14">
-                <img
-                  src={market.tokenPair.token.icon}
-                  style={{ width: ICON_SIZE }}
-                  className="mr-3"
-                  alt="icon"
-                />
+              <img
+                src={market.tokenPair.token.icon}
+                style={{ width: ICON_SIZE }}
+                className="mr-3"
+                alt="icon"
+              />
+              <div className="text-base font-normal font-nova">
+                Borrow {market.tokenPair.token.symbol}
               </div>
-              <div>Borrow {market.tokenPair.token.symbol}</div>
             </div>
 
             <div className="flex flex-col justify-center items-center mt-6 overflow-hidden font-space">
@@ -142,7 +142,6 @@ export default function Borrow({
                 />
               )}
             </div>
-
             <div className="flex mt-6 uppercase">
               <button
                 className="flex-grow py-2 text-[#14F195] border-b-4 uppercase border-b-[#14F195] font-space font-bold text-xs sm:text-base"
@@ -151,7 +150,7 @@ export default function Borrow({
                 Borrow
               </button>
               <button
-                className="flex-grow py-2 font-space font-bold text-xs sm:text-base uppercase"
+                className="flex-grow py-3 font-space font-bold text-xs sm:text-base uppercase"
                 onClick={() => setIsRepaying(true)}
               >
                 Repay
@@ -160,20 +159,17 @@ export default function Borrow({
           </div>
           <div className="mt-5">
             <div className="px-4 sm:px-12 bg-[#0D0D0D]">
-              <div className="flex mb-2 justify-end items-center">
-                <span className="font-bold text-xs sm:text-sm mr-3">
-                  Borrow Rates
-                </span>
-              </div>
-              <div className="flex items-center mb-2 pb-4 border-b border-[#282C2B]">
-                <img
-                  src={market.tokenPair.token.icon}
-                  style={{ width: ICON_SIZE }}
-                  className="mr-3"
-                  alt="icon"
-                />
-                <div className="flex-grow">Borrow APY</div>
-                <div>{market.marketData.borrowApy}</div>
+              <div className="flex flex-col items-center mb-3 text-gray-400  pb-6">
+                <div className="flex w-full sm:w-full items-center border-b border-[#282C2B] py-8">
+                  <img
+                    src={market.tokenPair.token.icon}
+                    style={{ width: ICON_SIZE }}
+                    className="mr-3"
+                    alt="icon"
+                  />
+                  <div className="flex-grow">Borrow APY</div>
+                  <div>{market.marketData.borrowApy}</div>
+                </div>
               </div>
 
               <BorrowBalance
@@ -185,10 +181,10 @@ export default function Borrow({
                 newBorrowLimitUsed={newBorrowLimitUsed}
               />
 
-              <div className="flex justify-center mb-3.5 sm:mb-6">
+              <div className="flex justify-center mb-8">
                 {!signer && <div>Connect wallet to get started</div>}
                 {signer && !isValid && (
-                  <button className="uppercase py-4 text-center text-black font-space font-bold text-base sm:text-lg rounded w-full bg-[#14F195] max-w-[250px]">
+                  <button className="uppercase py-4 text-center text-black font-space font-bold text-base sm:text-lg rounded w-full bg-[#14F195] max-w-[300px]">
                     {validationDetail || "Borrow"}
                   </button>
                 )}
@@ -226,7 +222,7 @@ export default function Borrow({
                       }
                     }}
                     className={clsx(
-                      "py-4 text-center text-white font-bold rounded w-full",
+                      "uppercase py-4 text-center text-black font-space font-bold text-base sm:text-lg rounded w-full bg-[#14F195] max-w-[300px]",
                       {
                         "bg-brand-green ": !isBorrowing,
                         "bg-gray-600": isBorrowing,

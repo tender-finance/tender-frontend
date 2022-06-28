@@ -35,7 +35,7 @@ export default function ConnectWallet() {
           {/* Prompt to Install Metamask if window.ethereum is not available */}
           {!window.ethereum && (
             <a
-              className="border font-space font-bold uppercase text-dark-green py-4 px-4 rounded-md text-sm"
+              className="border font-space block font-bold uppercase text-dark-green p-2 rounded-md text-sm"
               target="_blank"
               rel="noreferrer"
               href="https://metamask.io/"

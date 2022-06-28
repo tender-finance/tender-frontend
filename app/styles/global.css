@@ -186,8 +186,7 @@ body {
 .aside__menu__container {
   width: 100%;
   max-width: 350px;
-  height: 100%;
-  max-height: calc(100vh - 81px);
+  height: 100vh;
   margin-right: 0;
   top: 0;
   z-index: 10;
@@ -270,7 +269,7 @@ body {
 
 .panel-top-wallet {
   position: absolute;
-  top: 64px;
+  top: 74px;
   left: 50%;
   transform: translate(-50%, 0);
   width: 100%;

@@ -135,7 +135,7 @@ export default function Repay({
               </div>
             )}
             {isEnabled && (
-              <div className="relative">
+              <div className="relative  mt-6">
                 <Max
                   maxValue={maxRepayableAmount.toString()}
                   updateValue={() => {
@@ -154,13 +154,13 @@ export default function Repay({
                     ref={inputEl}
                     onChange={(e) => setValue(e.target.value)}
                     style={{ minHeight: 90 }}
-                    className={`w-full bg-transparent  text-white text-center outline-none ${inputTextClass}`}
+                    className={`w-full text-2xl bg-transparent text-white text-center outline-none ${inputTextClass}`}
                     defaultValue={0}
                   />
                 </div>
               </div>
             )}
-            <div className="flex flex-grow w-full">
+            <div className="flex mt-6 uppercase">
               <button
                 className="flex-grow py-3 font-space font-bold text-xs sm:text-base uppercase"
                 onClick={() => setIsRepaying(false)}
@@ -168,7 +168,7 @@ export default function Repay({
                 Borrow
               </button>
               <button
-                className="flex-grow py-3 text-[#14F195] border-b-4 uppercase border-b-[#14F195] font-space font-bold text-xs sm:text-base"
+                className="flex-grow py-2 text-[#14F195] border-b-4 uppercase border-b-[#14F195] font-space font-bold text-xs sm:text-base"
                 onClick={() => setIsRepaying(true)}
               >
                 Repay
@@ -176,20 +176,17 @@ export default function Repay({
             </div>
           </div>
           <div className="px-4 py-6 sm:px-12" style={{ background: "#0D0D0D" }}>
-            <div className="flex mb-4">
-              <span className="font-bold mr-3 font-nova text-xs sm:text-sm">
-                Borrow Rates
-              </span>
-            </div>
-            <div className="flex items-center mb-3 text-gray-400  pb-6">
-              <img
-                src={market.tokenPair.token.icon}
-                style={{ width: ICON_SIZE }}
-                className="mr-3"
-                alt="icon"
-              />
-              <div className="flex-grow">Borrow APY</div>
-              <div>{market.marketData.borrowApy}</div>
+            <div className="flex flex-col items-center mb-3 text-gray-400  pb-6">
+              <div className="flex w-full sm:w-full items-center border-b border-[#282C2B] py-8">
+                <img
+                  src={market.tokenPair.token.icon}
+                  style={{ width: ICON_SIZE }}
+                  className="mr-3"
+                  alt="icon"
+                />
+                <div className="flex-grow">Borrow APY</div>
+                <div>{market.marketData.borrowApy}</div>
+              </div>
             </div>
 
             <BorrowBalance
@@ -222,7 +219,7 @@ export default function Repay({
                     }
                   }}
                   className={clsx(
-                    "py-4 text-center text-black font-bold uppercase rounded bg-[#14F195] w-full max-w-[250px]",
+                    "py-4 text-center text-black font-bold uppercase rounded bg-[#14F195] w-full max-w-[250px] font-space",
                     {
                       "bg-brand-green": !isEnabling,
                       "bg-gray-200": isEnabling,
@@ -234,7 +231,7 @@ export default function Repay({
               )}
 
               {signer && isEnabled && !isValid && (
-                <button className="py-4 text-center text-white font-bold rounded  w-full bg-gray-600">
+                <button className="uppercase py-4 text-center text-black font-space font-bold text-base sm:text-lg rounded w-full bg-[#14F195] max-w-[300px]">
                   {validationDetail}
                 </button>
               )}
@@ -275,7 +272,7 @@ export default function Repay({
                     }
                   }}
                   className={clsx(
-                    "py-4 text-center font-bold rounded w-full text-black",
+                    "uppercase py-4 text-center text-black font-space font-bold text-base sm:text-lg rounded w-full bg-[#14F195] max-w-[300px]",
                     {
                       "bg-brand-green": !isRepayingTxn,
                       "bg-gray-200": isRepayingTxn,

@@ -133,7 +133,7 @@ export default function Deposit({
               </div>
             )}
             {isEnabled && (
-              <div className="relative">
+              <div className="relative mt-6">
                 <Max
                   maxValue={walletBalance.toString()}
                   updateValue={() => {
@@ -152,15 +152,15 @@ export default function Deposit({
                     ref={inputEl}
                     onChange={(e) => setValue(e.target.value)}
                     style={{ minHeight: 90 }}
-                    className={`w-full bg-transparent  text-white text-center outline-none ${inputTextClass}`}
+                    className={`w-full text-2xl bg-transparent text-white text-center outline-none ${inputTextClass}`}
                     defaultValue={0}
                   />
                 </div>
               </div>
             )}
-            <div className="flex flex-grow w-full">
+            <div className="flex mt-6 uppercase">
               <button
-                className="flex-grow py-3 text-[#14F195] border-b-4 uppercase border-b-[#14F195] font-space font-bold text-xs sm:text-base"
+                className="flex-grow py-2 text-[#14F195] border-b-4 uppercase border-b-[#14F195] font-space font-bold text-xs sm:text-base"
                 onClick={() => setIsSupplying(true)}
               >
                 Supply
@@ -175,15 +175,7 @@ export default function Deposit({
           </div>
           {/* Sub Navigation */}
           <div className="px-4 py-6 sm:px-12" style={{ background: "#0D0D0D" }}>
-            <div className="flex mb-4">
-              <span className="font-bold mr-3 font-nova text-xs sm:text-sm">
-                Supply Rates
-              </span>
-              <a>
-                <img src="/images/ico/open.svg" />
-              </a>
-            </div>
-            <div className="flex flex-col items-center mb-3 text-gray-400  pb-6">
+            <div className="flex flex-col items-center mb-3 text-gray-400 pb-6">
               <div className="flex w-full sm:w-full items-center border-b border-[#282C2B] py-8">
                 <div className="w-6 mr-3 sm:w-12">
                   <img
@@ -196,11 +188,9 @@ export default function Deposit({
                 <div className="flex-grow font-nova text-sm sm:text-base text-[#ADB5B3]">
                   Supply APY
                 </div>
-                <div className="font-nova text-white text-xl">
-                  {market.marketData.depositApy}
-                </div>
+                <div>{market.marketData.depositApy}</div>
               </div>
-              <div className="flex w-full sm:w-full items-center py-8">
+              {/* <div className="flex w-full sm:w-full items-center py-8">
                 <div className="w-6 mr-3 sm:w-12">
                   <img
                     src={market.tokenPair.token.icon}
@@ -213,10 +203,8 @@ export default function Deposit({
                 <div className="flex-grow font-nova text-sm sm:text-base  text-[#ADB5B3]">
                   Distribution APY
                 </div>
-                <div className="font-nova text-white text-xl">
-                  {market.marketData.depositApy}
-                </div>
-              </div>
+                <div>{market.marketData.depositApy}</div>
+              </div> */}
             </div>
             <BorrowLimit
               value={value}
@@ -247,7 +235,7 @@ export default function Deposit({
                     }
                   }}
                   className={clsx(
-                    "py-4 text-center text-black font-bold uppercase rounded bg-[#14F195] w-full max-w-[250px]",
+                    "py-4 text-center text-black font-bold uppercase rounded bg-[#14F195] w-full max-w-[250px] font-space",
                     {
                       "bg-brand-green": !isEnabling,
                       "bg-gray-200": isEnabling,
@@ -259,7 +247,7 @@ export default function Deposit({
               )}
 
               {signer && isEnabled && !isValid && (
-                <button className="py-4 text-center font-bold rounded  w-full bg-gray-600">
+                <button className="uppercase py-4 text-center text-black font-space font-bold text-base sm:text-lg rounded w-full bg-[#14F195] max-w-[300px]">
                   {validationDetail}
                 </button>
               )}
@@ -297,7 +285,7 @@ export default function Deposit({
                     }
                   }}
                   className={clsx(
-                    "py-4 text-center font-bold rounded w-full text-black",
+                    "uppercase py-4 text-center text-black font-space font-bold text-base sm:text-lg rounded w-full bg-[#14F195] max-w-[300px]",
                     {
                       "bg-brand-green": !isDepositing,
                       "bg-gray-600": isDepositing,

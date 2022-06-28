@@ -8,7 +8,7 @@ export default function Header() {
     <div className="fixed bg-black z-10 inset-x-0 top-0 h-16 flex items-center justify-between">
       <div className="flex w-full c items-center justify-between">
         <div
-          className="w-26 mr-4 block md:w-36"
+          className="w-[120px] mr-4 block md:w-[160px]"
           onClick={() => setActivePopupMenu(true)}
         >
           <a href="/">

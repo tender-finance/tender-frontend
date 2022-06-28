@@ -34,7 +34,7 @@ export default function TwoPanes() {
           <div className="py-6 text-2xl font-space font-bold mb-4">Supply</div>
         )}
         {marketsWithSupply.length >= 0 && (
-          <div className="pane-custom border-custom mb-9 md:pane-custom border-custom mb-9 overflow-scroll">
+          <div className="pane-custom border-custom mb-9 md:pane-custom border-custom mb-9">
             <div className="px-8 py-6 font-space font-bold text-2xl border-b border-[#282C2B] mb-4 w-full">
               Supply
             </div>
@@ -55,13 +55,17 @@ export default function TwoPanes() {
                 {marketsWithSupply.map((m) => {
                   return (
                     <MarketSupplyRow market={m} key={m.id}>
-                      <td className="flex px-4 py-6 text-left text-white font-nova font-normal items-center h-full md:px-8">
-                        <img
-                          className="w-9 mr-2"
-                          src={m.tokenPair.token.icon}
-                          alt={m.tokenPair.token.symbol}
-                        />
-                        {m.tokenPair.token.symbol}
+                      <td className="min-w-[130px] items-left px-4 py-6 text-left text-white bg-red font-nova font-normal h-full w-full md:px-8">
+                        <div className="flex items-center jusstify-left">
+                          <img
+                            className="w-[32px] h-[32px] mr-2"
+                            src={m.tokenPair.token.icon}
+                            alt={m.tokenPair.token.symbol}
+                          />
+                          <span className="flex">
+                            {m.tokenPair.token.symbol}
+                          </span>
+                        </div>
                       </td>
                       <td className="px-4 py-6 text-left md:px-8">
                         {m.marketData.depositApy}
@@ -105,14 +109,16 @@ export default function TwoPanes() {
                 {marketsWithoutSupply.map((m) => {
                   return (
                     <MarketSupplyRow market={m} key={m.id}>
-                      <td className="items-left px-4 py-6 text-left text-white bg-red font-nova font-normal h-full w-full md:px-8">
+                      <td className="min-w-[130px] items-left px-4 py-6 text-left text-white bg-red font-nova font-normal h-full w-full md:px-8">
                         <div className="flex items-center jusstify-left">
                           <img
-                            className="w-9 mr-2"
+                            className="w-[32px] h-[32px] mr-2"
                             src={m.tokenPair.token.icon}
                             alt={m.tokenPair.token.symbol}
                           />
-                          {m.tokenPair.token.symbol}
+                          <span className="flex">
+                            {m.tokenPair.token.symbol}
+                          </span>
                         </div>
                         <div className="flex gap-1 text-[#818987] font-nova text-sm sm:hidden mt-1">
                           APY
@@ -175,13 +181,13 @@ export default function TwoPanes() {
                 {marketsWithBorrow.map((m) => {
                   return (
                     <MarketBorrowRow market={m} key={m.id}>
-                      <td className="flex px-4 py-6 text-left items-center h-full text-white font-nova font-normal md:px-8">
+                      <td className="min-w-[130px] flex px-4 py-6 text-left items-center h-full text-white font-nova font-normal md:px-8">
                         <img
-                          className="w-9 mr-2"
+                          className="w-[32px] h-[32px] mr-2"
                           src={m.tokenPair.token.icon}
                           alt={m.tokenPair.token.symbol}
                         />
-                        <span>{m.tokenPair.token.symbol}</span>
+                        <span className="flex">{m.tokenPair.token.symbol}</span>
                       </td>
                       <td className="px-4 py-6 text-left md:px-8">
                         {m.marketData.borrowApy}
@@ -231,14 +237,16 @@ export default function TwoPanes() {
                 {marketsWithoutBorrow.map((m) => {
                   return (
                     <MarketBorrowRow market={m} key={m.id}>
-                      <td className="px-4 flex-col items-left flex py-6 text-left text-white font-nova font-normal h-full md:px-8">
+                      <td className="min-w-[130px] px-4 flex-col items-left flex py-6 text-left text-white font-nova font-normal h-full md:px-8">
                         <div className="flex items-center jusstify-left">
                           <img
-                            className="w-9 mr-2"
+                            className="w-[32px] h-[32px] mr-2"
                             src={m.tokenPair.token.icon}
                             alt={m.tokenPair.token.symbol}
                           />
-                          {m.tokenPair.token.symbol}
+                          <span className="flex">
+                            {m.tokenPair.token.symbol}
+                          </span>
                         </div>
                         <div className="flex gap-1 text-[#818987] font-nova text-sm sm:hidden mt-1">
                           APY

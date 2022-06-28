@@ -98,13 +98,14 @@ export default function Withdraw({
               </button>
             </div>
             <div className="flex w-full align-middle justify-center items-center">
-              <div className="w-9 sm:w-14">
-                <img
-                  src={market.tokenPair.token.icon}
-                  style={{ width: ICON_SIZE }}
-                  className=""
-                  alt="icon"
-                />
+              <img
+                src={market.tokenPair.token.icon}
+                style={{ width: ICON_SIZE }}
+                className="mr-3"
+                alt="icon"
+              />
+              <div className="text-base font-normal font-nova">
+                {market.tokenPair.token.symbol}
               </div>
             </div>
 
@@ -136,7 +137,7 @@ export default function Withdraw({
             </div>
             <div className="flex mt-6 uppercase">
               <button
-                className="flex-grow py-2 font-space font-bold text-xs sm:text-base uppercase"
+                className="flex-grow py-3 font-space font-bold text-xs sm:text-base uppercase"
                 onClick={() => setIsSupplying(true)}
               >
                 Supply
@@ -151,41 +152,35 @@ export default function Withdraw({
           </div>
           <div className="mt-5">
             <div className="px-4 sm:px-12 bg-[#0D0D0D]">
-              <div className="flex mb-2 justify-end items-center">
-                <span className="font-bold text-xs sm:text-sm mr-3">
-                  Supply Rates
-                </span>
-                <a>
-                  <img src="/images/ico/open.svg" />
-                </a>
-              </div>
-              <div className="flex items-center mb-2 pb-4 border-b border-[#282C2B]">
-                <div className="w-6 mr-3 sm:w-12">
-                  <img
-                    src={market.tokenPair.token.icon}
-                    style={{ width: ICON_SIZE }}
-                    className=""
-                    alt="icon"
-                  />
+              <div className="flex flex-col items-center mb-3 text-gray-400  pb-6">
+                <div className="flex w-full sm:w-full items-center border-b border-[#282C2B] py-8">
+                  <div className="w-6 mr-3 sm:w-12">
+                    <img
+                      src={market.tokenPair.token.icon}
+                      style={{ width: ICON_SIZE }}
+                      className=""
+                      alt="icon"
+                    />
+                  </div>
+                  <div className="flex-grow text-[#ADB5B3] font-nova font-base">
+                    Supply APY
+                  </div>
+                  <div>{market.marketData.depositApy}</div>
                 </div>
-                <div className="flex-grow text-[#ADB5B3] font-nova font-base">
-                  Supply APY
-                </div>
-                <div>{market.marketData.depositApy}</div>
-              </div>
-              <div className="flex items-center mb-2 pb-4">
-                <div className="w-6 mr-3 sm:w-12">
-                  <img
-                    src={market.tokenPair.token.icon}
-                    style={{ width: ICON_SIZE }}
-                    className="mr-3"
-                    alt="icon"
-                  />
-                </div>
-                <div className="flex-grow text-[#ADB5B3] font-nova font-base">
-                  Distribution APY
-                </div>
-                <div>{market.marketData.depositApy}</div>
+                {/* <div className="flex w-full sm:w-full items-center py-8">
+                  <div className="w-6 mr-3 sm:w-12">
+                    <img
+                      src={market.tokenPair.token.icon}
+                      style={{ width: ICON_SIZE }}
+                      className="mr-3"
+                      alt="icon"
+                    />
+                  </div>
+                  <div className="flex-grow text-[#ADB5B3] font-nova font-base">
+                    Distribution APY
+                  </div>
+                  <div>{market.marketData.depositApy}</div>
+                </div> */}
               </div>
 
               <BorrowLimit
@@ -197,10 +192,10 @@ export default function Withdraw({
                 newBorrowLimitUsed={newBorrowLimitUsed}
               />
 
-              <div className="flex justify-center mb-3.5 sm:mb-6">
+              <div className="flex justify-center mb-8">
                 {!signer && <div>Connect wallet to get started</div>}
                 {signer && !isValid && (
-                  <button className="uppercase py-4 text-center text-black font-space font-bold text-base sm:text-lg rounded w-full bg-[#14F195] max-w-[250px]">
+                  <button className="uppercase py-4 text-center text-black font-space font-bold text-base sm:text-lg rounded w-full bg-[#14F195] max-w-[300px]">
                     {validationDetail}
                   </button>
                 )}
@@ -239,7 +234,7 @@ export default function Withdraw({
                       }
                     }}
                     className={clsx(
-                      "py-4 text-center text-white font-bold rounded w-full",
+                      "uppercase py-4 text-center text-black font-space font-bold text-base sm:text-lg rounded w-full bg-[#14F195] max-w-[300px]",
                       {
                         "bg-brand-green": !isWithdrawing,
                         "bg-gray-600": isWithdrawing,
