@@ -54,7 +54,7 @@ export default function Header() {
           </a>
           <a
             className="px-4 cursor-pointer hover:text-white"
-            href="https://discord.gg/nmy7dAQd"
+            href="https://discord.com/invite/aKZ8hDBvYG"
           >
             Community
           </a>
@@ -114,7 +114,7 @@ export default function Header() {
               </a>
               <a
                 className="mb-2.5 cursor-pointer hover:text-white"
-                href="https://discord.gg/nmy7dAQd"
+                href="https://discord.com/invite/aKZ8hDBvYG"
               >
                 Community
               </a>

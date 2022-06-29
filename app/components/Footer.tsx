@@ -37,7 +37,7 @@ export default function Footer() {
     },
     {
       label: "Discord",
-      url: "https://discord.gg/CD2hKamT",
+      url: "https://discord.com/invite/aKZ8hDBvYG",
       ico: "/images/ico/discord.svg",
     },
   ];

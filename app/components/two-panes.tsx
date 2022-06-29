@@ -118,10 +118,10 @@ export default function TwoPanes() {
                           </span>
                         </div>
                       </td>
-                      <td className="px-4 py-6 text-left md:px-8">
+                      <td className="px-4 text-left py-6 text-white font-nova font-normal">
                         {m.marketData.depositApy}
                       </td>
-                      <td className="px-4 py-6 text-left whitespace-nowrap md:px-8">
+                      <td className="text-right px-4 py-6 sm:text-left whitespace-nowrap text-white font-nova font-normal md:px-8">
                         <div>
                           {toShortCryptoString(m.supplyBalance)}
                           {m.tokenPair.token.symbol}
@@ -242,10 +242,10 @@ export default function TwoPanes() {
                         />
                         <span className="flex">{m.tokenPair.token.symbol}</span>
                       </td>
-                      <td className="px-4 py-6 text-left md:px-8">
+                      <td className="px-4 text-left py-6 text-white font-nova font-normal">
                         {m.marketData.borrowApy}
                       </td>
-                      <td className="px-4 py-6 text-left whitespace-nowrap md:px-8">
+                      <td className="text-right px-4 py-6 sm:text-left whitespace-nowrap text-white font-nova font-normal md:px-8">
                         <div>
                           {toShortCryptoString(m.borrowBalance)}
                           {m.tokenPair.token.symbol}
