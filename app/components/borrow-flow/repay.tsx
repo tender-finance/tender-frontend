@@ -1,7 +1,10 @@
 import { ICON_SIZE } from "~/lib/constants";
 import type { Market, TokenPair } from "~/types/global";
 import { useContext, useEffect, useRef, useState } from "react";
-import type { JsonRpcSigner } from "@ethersproject/providers";
+import type {
+  JsonRpcSigner,
+  TransactionReceipt,
+} from "@ethersproject/providers";
 import * as math from "mathjs";
 
 import clsx from "clsx";
@@ -18,6 +21,7 @@ import ConfirmingTransaction from "../fi-modal/confirming-transition";
 import { TenderContext } from "~/contexts/tender-context";
 import { useNewTotalBorrowedAmountInUsd } from "~/hooks/use-new-total-borrowed-amount-in-usd";
 import { shrinkyInputClass, toCryptoString } from "~/lib/ui";
+import { displayTransactionResult } from "../displayTransactionResult";
 
 export interface RepayProps {
   closeModal: Function;
@@ -270,7 +274,11 @@ export default function Repay({
                       setTxnHash(txn.hash);
 
                       setIsWaitingToBeMined(true);
-                      let tr = await txn.wait(); // TODO: error handle if transaction fails
+                      let tr: TransactionReceipt = await txn.wait(2); // TODO: error handle if transaction fails
+                      displayTransactionResult(
+                        tr.transactionHash,
+                        "Repayment successful"
+                      );
                       setValue("");
                       updateTransaction(tr.blockHash);
                       toast.success("Repayment successful");

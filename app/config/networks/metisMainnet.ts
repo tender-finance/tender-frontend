@@ -65,10 +65,10 @@ export default {
     },
     DAI: {
       name: "DAI",
-      symbol: "DAI",
-      decimals: 18,
-      address: "0x4651B38e7ec14BB3db731369BFE5B08F2466Bd0A",
-      icon: "/images/coin-icons/dai.svg",
+      // symbol: "DAI",
+      // decimals: 18,
+      // address: "0x4651B38e7ec14BB3db731369BFE5B08F2466Bd0A",
+      // icon: "/images/coin-icons/dai.svg",
       priceDecimals: 18,
       cToken: {
         name: "tDAI",

@@ -1,7 +1,10 @@
 import { ICON_SIZE } from "~/lib/constants";
 import type { Market, TokenPair } from "~/types/global";
 import { useEffect, useState, useRef, useContext } from "react";
-import type { JsonRpcSigner } from "@ethersproject/providers";
+import type {
+  JsonRpcSigner,
+  TransactionReceipt,
+} from "@ethersproject/providers";
 import * as math from "mathjs";
 
 import clsx from "clsx";
@@ -19,6 +22,7 @@ import { TenderContext } from "~/contexts/tender-context";
 import { useNewTotalBorrowedAmountInUsd } from "~/hooks/use-new-total-borrowed-amount-in-usd";
 import { useMaxBorrowAmount } from "~/hooks/use-max-borrow-amount";
 import { shrinkyInputClass, toCryptoString } from "~/lib/ui";
+import { displayTransactionResult } from "../displayTransactionResult";
 
 export interface BorrowProps {
   market: Market;
@@ -68,7 +72,9 @@ export default function Borrow({
     market.maxBorrowLiquidity
   );
 
-  let formattedMaxBorrowLimit: string = math.format(maxBorrowLimit);
+  let formattedMaxBorrowLimit: string = math.format(maxBorrowLimit, {
+    notation: "fixed",
+  });
 
   let maxBorrowAmount = useMaxBorrowAmount(
     borrowLimit,
@@ -204,13 +210,30 @@ export default function Borrow({
 
                         setTxnHash(txn.hash);
                         setIsWaitingToBeMined(true);
-                        let tr = await txn.wait(); // TODO: error handle if transaction fails
+                        let tr: TransactionReceipt = await txn.wait(2);
                         updateTransaction(tr.blockHash);
                         toast.success("Borrow successful");
+                        displayTransactionResult(
+                          tr.transactionHash,
+                          "Borrow successful"
+                        );
                         closeModal();
-                      } catch (e) {
+                      } catch (e: any) {
                         toast.error("Borrow unsuccessful");
-                        console.error(e);
+                        toast.dismiss();
+                        console.log(e);
+                        if (e.transaction?.hash) {
+                          toast.error(() => (
+                            <p>
+                              <a
+                                target="_blank"
+                                href={`https://andromeda-explorer.metis.io/tx/${e.transactionHash}/internal-transactions/`}
+                              >
+                                Borrow unsuccessful
+                              </a>
+                            </p>
+                          ));
+                        }
                       } finally {
                         setIsWaitingToBeMined(false);
                         setIsBorrowing(false);
