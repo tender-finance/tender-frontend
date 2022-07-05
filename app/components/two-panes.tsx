@@ -41,7 +41,7 @@ export default function TwoPanes() {
   );
 
   return (
-    <div className="flex flex-col md:grid grid-cols-2 gap-6 mb-14">
+    <div className="flex flex-col md:grid grid-cols-2 gap-7 mb-14">
       <ReactModal
         shouldCloseOnOverlayClick={true}
         isOpen={openMarket !== null}
@@ -76,8 +76,8 @@ export default function TwoPanes() {
 
       <div>
         {marketsWithSupply.length >= 0 && (
-          <div className="pane-custom border-custom mb-9">
-            <div className="px-[15px] text-[22px] py-[20px] font-space font-bold text-[18px] border-b border-[#282C2B] md:px-[30px] md:py-[20px] md:text-xl">
+          <div className="pane-custom border-custom mb-[20px] md:mb-[40px]">
+            <div className="px-[15px] textSize22 py-[20px] font-space font-bold text-[18px] border-b border-[#282C2B] md:px-[30px] md:py-[20px] md:text-xl">
               Supply
             </div>
             <table className="w-full h-full table-fixed">
@@ -215,9 +215,9 @@ export default function TwoPanes() {
       {/* Borrowing*/}
       <div>
         {marketsWithBorrow.length >= 0 && (
-          <div className="pane-custom border-custom mb-9">
-            <div className="px-[15px] text-[22px] py-[20px] font-space font-bold text-[18px] border-b border-[#282C2B] md:px-[30px] md:py-[20px] md:text-xl">
-              Borrowing
+          <div className="pane-custom border-custom mb-[20px] md:mb-[40px]">
+            <div className="px-[15px] textSize22 py-[20px] font-space font-bold text-[18px] border-b border-[#282C2B] md:px-[30px] md:py-[20px] md:text-xl">
+              Borrow
             </div>
             <table className="w-full h-full table-fixed">
               <thead>

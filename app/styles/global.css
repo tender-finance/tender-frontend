@@ -115,6 +115,10 @@ body {
   max-height: 850px;
 }
 
+.textSize22 {
+  font-size: 22px;
+}
+
 @media screen and (max-width: 788px) {
   .modal .ReactModal__Content--after-open {
     background: #0d0d0d !important;
@@ -128,6 +132,11 @@ body {
     right: 3% !important;
     left: 3% !important;
   }
+
+  .textSize22 {
+    font-size: 18px;
+  }
+
 
 }
 
