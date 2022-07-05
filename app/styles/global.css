@@ -66,8 +66,6 @@ body {
   box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.07);
   border-radius: 1rem;
   border: 1px solid #b5cfcc2b;
-  padding-right: 10px;
-  padding-left: 10px;
 }
 
 .pane-custom table {
@@ -130,7 +128,6 @@ body {
     right: 3% !important;
     left: 3% !important;
   }
-
 
 }
 

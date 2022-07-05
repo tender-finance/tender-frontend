@@ -6,19 +6,13 @@ export default function Header() {
 
   return (
     <div className="fixed bg-black z-10 inset-x-0 top-0 h-16 flex items-center justify-between">
-      <div className="flex w-full c items-center justify-between">
+      <div className="flex w-full c items-center justify-between max-w-[1400px]">
         <div
-          className="w-[120px] mr-4 block md:w-[160px]"
+          className="w-[120px] mr-4 block md:w-[196px]"
           onClick={() => setActivePopupMenu(true)}
         >
           <a href="/">
-            <img
-              src="/images/logo1.svg"
-              alt="Tender Finance"
-              style={{
-                height: 30,
-              }}
-            />
+            <img src="/images/logo1.svg" alt="Tender Finance" />
           </a>
         </div>
         <div className="text-[#ADB5B3] hidden lg:flex justify-center font-normal text-base font-nova">

@@ -12,7 +12,7 @@ export default function AccountSummary() {
 
   return (
     <div
-      className="mb-24 border-custom px-4 relative"
+      className="mb-20 border-custom px-4 relative"
       style={{
         borderRadius: "1rem 1rem 0 0",
         background: `linear-gradient(
@@ -23,7 +23,7 @@ export default function AccountSummary() {
       }}
     >
       <div
-        className="absolute w-36 h-36 top-[-80px] left-[50%] translate-x-[-50%] rounded-full md:w-52 md:h-52  top-[-90px]"
+        className="absolute w-[130px] h-[130px] top-[-80px] left-[50%] translate-x-[-50%] rounded-full md:w-[200px] md:h-[200px] md:top-[-64px]"
         style={{
           background:
             "linear-gradient(135deg, rgba(10, 10, 10, 0.12) 0%, rgba(20, 242, 185, .3) 100%), #111",
@@ -40,20 +40,20 @@ export default function AccountSummary() {
           <div className="absolute md:top-[22px] md:right-[20px]"></div>
         </div>
       </div>
-      <div className="flex flex-col items-center mt-16 md:flex-row justify-between my-16 pt-20 md:pt-14">
-        <div className="w-full md:w-1/3 flex flex-col justify-center items-center">
-          <div className="text-dark-green font-nova font-semibold text-sm mb-4">
+      <div className="flex flex-col items-center mt-16 pt-[85px] md:flex-row justify-between my-6 mb-[44px] md:pt-[55px] md:my-6">
+        <div className="w-full md:max-w-[470px] flex flex-col justify-center items-center mb-[34px] md:mb-0">
+          <div className="text-dark-green font-nova font-semibold text-sm mb-[8px] md:mb-4">
             Supply Balance
           </div>
-          <div className="text-3xl font-space">
+          <div className="text-2xl font-space md:text-3xl">
             {formatCurrency(totalSupplyBalanceInUsd)}
           </div>
         </div>
-        <div className="w-full md:w-1/3 text-right  flex flex-col justify-center items-center">
-          <div className="mb-4 text-dark-green text-sm font-nova font-semibold">
+        <div className="w-full md:max-w-[470px] text-right  flex flex-col justify-center items-center">
+          <div className="text-dark-green font-nova font-semibold text-sm mb-[8px] md:mb-4">
             Borrow Balance
           </div>
-          <div className="text-3xl font-space">
+          <div className="text-2xl font-space md:text-3xl">
             {formatCurrency(totalBorrowedInUsd)}
           </div>
         </div>

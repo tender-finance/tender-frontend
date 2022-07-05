@@ -43,7 +43,7 @@ export default function Footer() {
   ];
 
   return (
-    <div className="flex-col-reverse justify-center items-center md:flex-row justify-between items-center flex">
+    <div className="flex-col-reverse justify-center items-center md:flex-row justify-between items-center flex max-w-[1400px]">
       <div className="mb-5 md:ml-10 mb-0">
         <a href="/">
           <img src="images/ico/smallLogo.svg" alt="..." />
