@@ -24,7 +24,7 @@ export default function Header() {
           </a>
           <a
             className="px-[15px] cursor-pointer hover:text-white"
-            href="https://www.tender.fi/#road"
+            href="https://www.tender.fi/#roadmap"
           >
             Roadmap
           </a>
@@ -84,7 +84,7 @@ export default function Header() {
               </a>
               <a
                 className="mb-2.5 cursor-pointer hover:text-white"
-                href="https://www.tender.fi/#road"
+                href="https://www.tender.fi/#roadmap"
               >
                 Roadmap
               </a>
