@@ -43,24 +43,32 @@ export default function Footer() {
   ];
 
   return (
-    <div className="flex-col-reverse justify-center items-center md:flex-row justify-between items-center flex max-w-[1400px]">
-      <div className="mb-5 md:ml-10 mb-0">
+    <div className="c flex-col-reverse justify-center items-center md:flex-row justify-between items-center flex max-w-[1400px]">
+      <div className="mb-5 mb-0">
         <a href="/">
           <img src="images/ico/smallLogo.svg" alt="..." />
         </a>
       </div>
-      <div className="mr-0 flex gap-6 md:flex py-4 justify-center items-center md:mr-10">
+      <div className="flex gap-[20px] md:flex py-4 justify-center items-center">
         {productLinks.map((item, index) => {
           return (
             <a className="" href={item.url} key={index}>
-              <img className="icons-color" src={item.ico} alt="" />
+              <img
+                className="icons-color w-[20px] h-[20px]"
+                src={item.ico}
+                alt=""
+              />
             </a>
           );
         })}
         {resourceLinks.map((item, index) => {
           return (
             <a className="" key={index} href={item.url}>
-              <img className="icons-color" src={item.ico} alt="" />
+              <img
+                className="icons-color w-[20px] h-[20px]"
+                src={item.ico}
+                alt=""
+              />
             </a>
           );
         })}

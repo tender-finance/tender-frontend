@@ -119,6 +119,10 @@ body {
   font-size: 22px;
 }
 
+.transform-custom {
+  transform: translate(0, -4px);
+}
+
 @media screen and (max-width: 788px) {
   .modal .ReactModal__Content--after-open {
     background: #0d0d0d !important;
@@ -279,8 +283,20 @@ body {
 
 .panel-top-wallet {
   position: absolute;
-  top: 74px;
+  top: 111px;
   left: 50%;
   transform: translate(-50%, 0);
   width: 100%;
+}
+
+.translate__50 {
+  transform: translate(-50%, -50%);
+}
+
+.custom__hidden {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: pre;
 }

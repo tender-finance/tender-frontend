@@ -25,23 +25,21 @@ export default function ConnectWallet() {
       {onClient && (
         <>
           {isActive && accounts && (
-            <span className="flex text-sm text-[#ADB5B3]">
-              <span className=" py-2 px-4">
-                Connected as {truncateAccount(accounts)}
-              </span>
+            <span className=" font-space flex items-center justify-center font-bold text-[15px]">
+              Connected as {truncateAccount(accounts)}
             </span>
           )}
 
           {/* Prompt to Install Metamask if window.ethereum is not available */}
           {!window.ethereum && (
             <a
-              className="border font-space block font-bold uppercase text-dark-green p-2 rounded-md text-sm"
+              className="border font-space flex items-center justify-center font-bold uppercase rounded-md text-dark-green w-[163px] h-[50px] text-[15px]"
               target="_blank"
               rel="noreferrer"
               href="https://metamask.io/"
               style={{ border: "solid #14f195 1px" }}
             >
-              connect wallet
+              Connect wallet
             </a>
           )}
 
@@ -49,10 +47,8 @@ export default function ConnectWallet() {
           {window.ethereum && !isActive && (
             <button
               data-testid="connect-wallet"
-              style={{
-                background: "linear-gradient(270deg, #1BD6CF 0%, #00E5AF 100%)",
-              }}
-              className="hover:cursor-pointer bg-brand-green text-gray-900 py-4 px-4 rounded-md text-sm"
+              style={{ border: "solid #14f195 1px" }}
+              className="border font-space flex items-center justify-center font-bold uppercase rounded-md text-dark-green w-[163px] h-[50px] text-[15px]"
               onClick={() => metaMask.activate()}
             >
               Connect Wallet

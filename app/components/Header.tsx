@@ -5,56 +5,56 @@ export default function Header() {
   const [activePopupMenu, setActivePopupMenu] = useState(false);
 
   return (
-    <div className="fixed bg-black z-10 inset-x-0 top-0 h-16 flex items-center justify-between">
-      <div className="flex w-full c items-center justify-between max-w-[1400px]">
+    <div className="fixed z-10 inset-x-0 top-0 h-[110px] flex items-center justify-between items-center">
+      <div className="flex w-full c items-center justify-between max-w-[1400px] relative">
         <div
-          className="w-[120px] mr-4 block md:w-[196px]"
+          className="w-[120px] block md:w-[196px]"
           onClick={() => setActivePopupMenu(true)}
         >
           <a href="/">
             <img src="/images/logo1.svg" alt="Tender Finance" />
           </a>
         </div>
-        <div className="text-[#ADB5B3] hidden lg:flex justify-center font-normal text-base font-nova">
+        <div className="text-[#ADB5B3] hidden lg:flex justify-center font-normal text-base font-nova absolute top-[50%] left-[50%] translate__50">
           <a
-            className="px-4 cursor-pointer hover:text-white"
+            className="pr-[15px] cursor-pointer hover:text-white"
             href="https://docs.tender.fi/introduction/what-is-tender.fi"
           >
             About
           </a>
           <a
-            className="px-4 cursor-pointer hover:text-white"
+            className="px-[15px] cursor-pointer hover:text-white"
             href="https://www.tender.fi/#Road"
           >
             Roadmap
           </a>
           <a
-            className="px-4 cursor-pointer hover:text-white"
+            className="px-[15px] cursor-pointer hover:text-white"
             href="https://www.tender.fi/#Partners"
           >
             Partners
           </a>
           <a
-            className="px-4 cursor-pointer hover:text-white"
+            className="px-[15px] cursor-pointer hover:text-white"
             href="https://www.tender.fi/#Team"
           >
             Team
           </a>
           <a
-            className="px-4 cursor-pointer hover:text-white"
+            className="px-[15px] cursor-pointer hover:text-white"
             href="https://docs.tender.fi"
           >
             Docs
           </a>
           <a
-            className="px-4 cursor-pointer hover:text-white"
+            className="pl-[15px] cursor-pointer hover:text-white"
             href="https://discord.com/invite/aKZ8hDBvYG"
           >
             Community
           </a>
         </div>
         <div className="flex items-center">
-          <div className="lg:inline-block mr-3">
+          <div className="lg:inline-block">
             <ConnectWallet />
           </div>
 

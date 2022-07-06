@@ -10,7 +10,7 @@
 
   .c {
     @apply m-auto max-w-6xl px-4;
-    max-width: 1290px;
+    max-width: 1280px;
     padding-left: 20px;
     padding-right: 20px;
   }

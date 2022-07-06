@@ -37,7 +37,7 @@ export default function Display({
         }}
       >
         <div className="flex flex-col h-full justify-center items-center">
-          <div className="uppercase text-[#818987] font-nova font-medium text-sm">
+          <div className="uppercase text-[#818987] text-[13px] leading-[170%] tracking-widest font-nova font-medium text-sm transform-custom">
             Net APY
           </div>
 
@@ -68,17 +68,17 @@ export default function Display({
           </div>
         </div>
       </div>
-      <div className="flex flex-col items-center mt-16 pt-[85px] md:flex-row justify-between my-6 mb-[44px] md:pt-[55px] md:my-6">
-        <div className="w-full md:max-w-[470px] flex flex-col justify-center items-center mb-[34px] md:mb-0">
-          <div className="text-dark-green font-nova font-semibold text-sm mb-[8px] md:mb-4">
+      <div className="flex flex-col items-center mt-16 pt-[85px] md:flex-row justify-between my-6 mb-[44px] md:pt-[60px] md:my-6">
+        <div className="w-full md:max-w-[491px] flex flex-col justify-center items-center mb-[34px] md:mb-0">
+          <div className="text-dark-green font-nova font-semibold text-sm mb-[8px] md:mb-[9px]">
             Supply Balance
           </div>
           <div className="text-2xl font-space md:text-3xl">
             {toFiatString(totalSupplyBalanceInUsd)}
           </div>
         </div>
-        <div className="w-full md:max-w-[470px] text-right  flex flex-col justify-center items-center">
-          <div className="text-dark-green font-nova font-semibold text-sm mb-[8px] md:mb-4">
+        <div className="w-full md:max-w-[487px] text-right  flex flex-col justify-center items-center">
+          <div className="text-dark-green font-nova font-semibold text-sm mb-[8px] md:mb-[9px]">
             Borrow Balance
           </div>
           <div className="text-2xl font-space md:text-3xl">
@@ -87,7 +87,7 @@ export default function Display({
         </div>
       </div>
       <div className="flex flex-col text-xs justify-center font-nova pb-4">
-        <div className="justify-self-start text-xs text-[#818987] pb-1 font-nova font-normal">
+        <div className="justify-self-start text-xs text-[#818987] pb-[6px] font-nova font-normal">
           Borrow Limit
         </div>
         <div className="flex justify-between items-center">
@@ -108,7 +108,9 @@ export default function Display({
           transition: "width 1s ease-out",
         }}
       >
-        <span className="span-value">{borrowLimitUsed}%</span>
+        {borrowLimitUsed && (
+          <span className="span-value">{borrowLimitUsed}%</span>
+        )}
       </div>
       <div className="w-full flex absolute bottom-0 left-0">
         <div className="bg-[#262D2A] h-[4px] flex-grow"></div>
