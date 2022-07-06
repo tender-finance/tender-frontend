@@ -5,7 +5,7 @@ export default function Header() {
   const [activePopupMenu, setActivePopupMenu] = useState(false);
 
   return (
-    <div className="fixed z-10 inset-x-0 top-0 h-[110px] flex items-center justify-between items-center">
+    <div className="bg-black fixed z-10 inset-x-0 top-0 h-[110px] flex items-center justify-between items-center">
       <div className="flex w-full c items-center justify-between max-w-[1400px] relative">
         <div
           className="w-[120px] block md:w-[196px]"
