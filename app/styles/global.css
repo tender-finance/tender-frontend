@@ -278,7 +278,7 @@ body {
   font-size: 14px;
   line-height: 140%;
   color: #FFFFFF;
-  transform: translate(50%, 10px);
+  transform: translate(50%, -30px);
 }
 
 .panel-top-wallet {
