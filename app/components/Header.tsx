@@ -24,19 +24,19 @@ export default function Header() {
           </a>
           <a
             className="px-[15px] cursor-pointer hover:text-white"
-            href="https://www.tender.fi/#Road"
+            href="https://www.tender.fi/#road"
           >
             Roadmap
           </a>
           <a
             className="px-[15px] cursor-pointer hover:text-white"
-            href="https://www.tender.fi/#Partners"
+            href="https://www.tender.fi/#partners"
           >
             Partners
           </a>
           <a
             className="px-[15px] cursor-pointer hover:text-white"
-            href="https://www.tender.fi/#Team"
+            href="https://www.tender.fi/#team"
           >
             Team
           </a>
@@ -84,19 +84,19 @@ export default function Header() {
               </a>
               <a
                 className="mb-2.5 cursor-pointer hover:text-white"
-                href="https://www.tender.fi/#Road"
+                href="https://www.tender.fi/#road"
               >
                 Roadmap
               </a>
               <a
                 className="mb-2.5 cursor-pointer hover:text-white"
-                href="https://www.tender.fi/#Partners"
+                href="https://www.tender.fi/#partners"
               >
                 Partners
               </a>
               <a
                 className="mb-2.5 cursor-pointer hover:text-white"
-                href="https://www.tender.fi/#Team"
+                href="https://www.tender.fi/#team"
               >
                 Team
               </a>
