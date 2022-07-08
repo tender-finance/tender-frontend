@@ -85,6 +85,10 @@ body {
   border-top: 1px solid #282C2B;
 }
 
+.border__top__custom:last-child {
+  border-bottom: 1px solid #282C2B;
+}
+
 .pane-custom table {
   overflow-x: auto;
 }
