@@ -5,10 +5,10 @@ export default function Header() {
   const [activePopupMenu, setActivePopupMenu] = useState(false);
 
   return (
-    <div className="bg-black fixed z-10 inset-x-0 top-0 h-[110px] flex items-center justify-between items-center">
+    <div className="bg-black fixed z-10 inset-x-0 top-0 h-[71px] md:h-[110px] flex items-center justify-between items-center">
       <div className="flex w-full c items-center justify-between max-w-[1400px] relative">
         <div
-          className="w-[120px] block md:w-[196px]"
+          className="w-[104px] block md:w-[196px]"
           onClick={() => setActivePopupMenu(true)}
         >
           <a href="/">
@@ -59,14 +59,14 @@ export default function Header() {
           </div>
 
           <div
-            className={`flex lg:hidden header__burg ${
+            className={`flex pt-[2px] pr-[2.6px] gap-[5px] md:gap-[6px] lg:hidden header__burg ${
               activePopupMenu ? "active" : ""
             }`}
             onClick={() => setActivePopupMenu(!activePopupMenu)}
           >
-            <span></span>
-            <span></span>
-            <span></span>
+            <span className="w-[17px] h-[1.3px] lg:w-[30px] lg:h-[3px]"></span>
+            <span className="w-[17px] h-[1.3px] lg:w-[30px] lg:h-[3px]"></span>
+            <span className="w-[10px] h-[1.3px] lg:w-[18px] lg:h-[3px]"></span>
           </div>
         </div>
         <div className={`aside__menu__wrap ${activePopupMenu ? "act" : ""}`}>

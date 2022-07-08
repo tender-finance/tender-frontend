@@ -18,24 +18,8 @@ export default function Display({
   borrowLimit,
 }: props) {
   return (
-    <div
-      className="mb-20 border-custom px-4 relative"
-      style={{
-        borderRadius: "1rem 1rem 0 0",
-        background: `linear-gradient(
-      
-      #111111 0%,
-      rgba(0, 34, 29, .7) 100%
-    )`,
-      }}
-    >
-      <div
-        className="absolute w-[130px] h-[130px] top-[-70px] left-[50%] translate-x-[-50%] rounded-full md:w-[200px] md:h-[200px] md:top-[-80px] md:top-[-64px]"
-        style={{
-          background:
-            "linear-gradient(135deg, rgba(10, 10, 10, 0.12) 0%, rgba(20, 242, 185, .3) 100%), #111",
-        }}
-      >
+    <div className="mb-[90px] md:mb-20 border-custom px-4 relative top__custom">
+      <div className="absolute w-[130px] h-[130px] top-[-64px] left-[50%] translate-x-[-50%] rounded-full md:w-[200px] md:h-[200px] md:top-[-80px] md:top-[-67px] top__custom__value">
         <div className="flex flex-col h-full justify-center items-center">
           <div className="uppercase text-[#818987] text-[13px] leading-[170%] tracking-widest font-nova font-medium text-sm transform-custom">
             Net APY
@@ -53,7 +37,7 @@ export default function Display({
               --
             </div>
           )}
-          <div className="absolute md:top-[22px] md:right-[20px]">
+          <div className="absolute top-[50%] left-[50%] translate__50 items-center flex justify-center">
             {netApy != null &&
               totalSupplyBalanceInUsd /
                 (totalBorrowedInUsd + totalSupplyBalanceInUsd) >
@@ -68,12 +52,12 @@ export default function Display({
           </div>
         </div>
       </div>
-      <div className="flex flex-col items-center mt-16 pt-[85px] md:flex-row justify-between my-6 mb-[44px] md:pt-[60px] md:my-6">
+      <div className="flex flex-col items-center mt-16 pt-[85px] md:flex-row justify-between my-6 mb-[42px] md:mb-[25px] md:pt-[56px] md:my-6">
         <div className="w-full md:max-w-[491px] flex flex-col justify-center items-center mb-[34px] md:mb-0">
           <div className="text-dark-green font-nova font-semibold text-sm mb-[8px] md:mb-[9px]">
             Supply Balance
           </div>
-          <div className="text-2xl font-space md:text-3xl">
+          <div className="mt-[2px] text-2xl font-space md:text-3xl">
             {toFiatString(totalSupplyBalanceInUsd)}
           </div>
         </div>
@@ -86,19 +70,19 @@ export default function Display({
           </div>
         </div>
       </div>
-      <div className="flex flex-col text-xs justify-center font-nova pb-4">
-        <div className="justify-self-start text-xs text-[#818987] pb-[6px] font-nova font-normal">
+      <div className="gap-[5px] md:gap-0 flex flex-col text-xs justify-center font-nova pb-[15px] md:pb-[12px]">
+        <div className="align-baseline justify-self-start text-xs text-[#818987] pb-0 md:pb-[6px] font-nova font-normal">
           Borrow Limit
         </div>
         <div className="flex justify-between items-center">
           <div className="mr-2 font-nova text-sm text-white">0%</div>
-          <div className="font-nova text-sm text-white">
+          <div className="font-nova text-sm text-white mr-[3px] md:mr-0">
             {toFiatString(borrowLimit)}
           </div>
         </div>
       </div>
       <div
-        className="w-full bg-green-300 mr-2 h-[4px] absolute bottom-0 left-0 zIndex-1 flex justify-end"
+        className="w-full h-full bg-green-300 mr-2 h-[5px] md:h-[4px] absolute bottom-0 left-0 zIndex-1 flex justify-end"
         style={{
           background:
             percentUsed > 79

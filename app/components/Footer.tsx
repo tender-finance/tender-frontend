@@ -43,18 +43,22 @@ export default function Footer() {
   ];
 
   return (
-    <div className="c flex-col-reverse justify-center items-center md:flex-row justify-between items-center flex max-w-[1400px]">
-      <div className="mb-5 mb-0">
+    <div className="c h-[120px] border-t md:border-none border-[#2B2B2B] flex-col-reverse justify-center items-center md:flex-row justify-between items-center flex max-w-[1400px]">
+      <div className="mb-[30px] md:mb-5 md:mb-0">
         <a href="/">
-          <img src="images/ico/smallLogo.svg" alt="..." />
+          <img
+            className="w-[120px] h-[20px]"
+            src="images/ico/smallLogo.svg"
+            alt="..."
+          />
         </a>
       </div>
-      <div className="flex gap-[20px] md:flex py-4 justify-center items-center">
+      <div className=" pt-[30px] flex gap-[20px] md:flex md:py-4 justify-center items-center">
         {productLinks.map((item, index) => {
           return (
             <a className="" href={item.url} key={index}>
               <img
-                className="icons-color w-[20px] h-[20px]"
+                className="icons-color w-[20px] h-[20px] md:w-[20px] md:h-[20px]"
                 src={item.ico}
                 alt=""
               />
@@ -65,7 +69,7 @@ export default function Footer() {
           return (
             <a className="" key={index} href={item.url}>
               <img
-                className="icons-color w-[20px] h-[20px]"
+                className="icons-color md:w-[20px] md:h-[20px]"
                 src={item.ico}
                 alt=""
               />

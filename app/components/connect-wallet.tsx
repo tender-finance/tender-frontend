@@ -25,7 +25,7 @@ export default function ConnectWallet() {
       {onClient && (
         <>
           {isActive && accounts && (
-            <span className=" font-space flex items-center justify-center font-bold text-[15px]">
+            <span className=" font-space flex items-center justify-center font-bold text-[10px] w-[100px] md:text-[15px] md:w-[auto]">
               Connected as {truncateAccount(accounts)}
             </span>
           )}
@@ -33,7 +33,7 @@ export default function ConnectWallet() {
           {/* Prompt to Install Metamask if window.ethereum is not available */}
           {!window.ethereum && (
             <a
-              className="border font-space flex items-center justify-center font-bold uppercase rounded-md text-dark-green w-[163px] h-[50px] text-[15px]"
+              className="border font-space flex items-center justify-center font-bold uppercase rounded-md text-dark-green w-[120px] md:text-[15px] h-[30px] text-[10px]"
               target="_blank"
               rel="noreferrer"
               href="https://metamask.io/"
@@ -48,7 +48,7 @@ export default function ConnectWallet() {
             <button
               data-testid="connect-wallet"
               style={{ border: "solid #14f195 1px" }}
-              className="border font-space flex items-center justify-center font-bold uppercase rounded-md text-dark-green w-[163px] h-[50px] text-[15px]"
+              className="border font-space flex items-center justify-center font-bold uppercase rounded-md text-dark-green w-[120px] md:text-[15px] h-[30px] text-[10px]"
               onClick={() => metaMask.activate()}
             >
               Connect Wallet

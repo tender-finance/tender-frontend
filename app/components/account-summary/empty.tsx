@@ -1,5 +1,3 @@
-import Ring from "./ring";
-
 const formatCurrency = (v: number): string => {
   return `$${v.toFixed(2)}`;
 };
@@ -11,24 +9,8 @@ export default function AccountSummary() {
   let borrowLimitUsed = 0;
 
   return (
-    <div
-      className="mb-20 border-custom px-4 relative"
-      style={{
-        borderRadius: "1rem 1rem 0 0",
-        background: `linear-gradient(
-      
-      #111111 0%,
-      rgba(0, 34, 29, .7) 100%
-    )`,
-      }}
-    >
-      <div
-        className="absolute w-[130px] h-[130px] top-[-80px] left-[50%] translate-x-[-50%] rounded-full md:w-[200px] md:h-[200px] md:top-[-64px]"
-        style={{
-          background:
-            "linear-gradient(135deg, rgba(10, 10, 10, 0.12) 0%, rgba(20, 242, 185, .3) 100%), #111",
-        }}
-      >
+    <div className="border-custom px-4 relative top__custom">
+      <div className="absolute w-[130px] h-[130px] top-[-80px] left-[50%] translate-x-[-50%] rounded-full md:w-[200px] md:h-[200px] md:top-[-67px] top__custom__value">
         <div className="flex flex-col h-full justify-center items-center">
           <div className="uppercase text-[#818987] text-[13px] leading-[170%] tracking-widest font-nova font-medium text-sm transform-custom">
             Net APY
@@ -37,10 +19,10 @@ export default function AccountSummary() {
           <div className="absolute top-0 right-0"></div>
           <div className="absolute top-0 right-0"></div>
           <div className="text-2xl md:text-4xl font-space font-normal">--</div>
-          <div className="absolute md:top-[22px] md:right-[20px]"></div>
+          <div className="absolute top-[50%] left-[50%] translate__50 items-center flex justify-center"></div>
         </div>
       </div>
-      <div className="flex flex-col items-center mt-16 pt-[85px] md:flex-row justify-between my-6 mb-[44px] md:pt-[60px] md:my-6">
+      <div className="flex flex-col items-center mt-16 pt-[85px] md:flex-row justify-between my-6 mb-[44px] md:pt-[56px] md:my-6">
         <div className="w-full md:max-w-[485px] flex flex-col justify-center items-center mb-[34px] md:mb-0">
           <div className="text-dark-green font-nova font-semibold text-sm mb-[8px] md:mb-[9px]">
             Supply Balance

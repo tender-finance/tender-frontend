@@ -3,14 +3,9 @@ import { useEffect, useState } from "react";
 const NEAR_ZERO_PERCENT = 385;
 const NEAR_HUNDRED_PERCENT = 760;
 
-const LIGHT_STROKE = "rgba(20, 241, 149, 1)";
-const DARK_STROKE = "rgba(9, 11, 21, 0.32)";
-
 export default function Ring({ percent }: { percent: number }) {
   let [strokeOffset, setStrokeOffset] = useState<number>(NEAR_ZERO_PERCENT);
-  let ringColor = percent >= 0 ? LIGHT_STROKE : DARK_STROKE;
 
-  // Ring animation
   useEffect(() => {
     if (!percent) {
       return;
@@ -23,7 +18,7 @@ export default function Ring({ percent }: { percent: number }) {
   return (
     <div className="flex">
       <div
-        className="w-32 h-32 md:w-[164.96px] md:h-[164.23px]"
+        className="w-[109px] h-[108px] md:w-[164.96px] md:h-[164.23px]"
         style={{
           transform: "rotate(80deg) scale(1.05)",
         }}
@@ -34,15 +29,21 @@ export default function Ring({ percent }: { percent: number }) {
             style={{
               strokeDasharray: "380",
               fill: "transparent",
-              strokeWidth: 7,
+              strokeWidth: 5,
               strokeLinecap: "round",
               transition: "stroke-dashoffset 0.2s ease",
             }}
-            stroke={ringColor}
+            stroke={`${
+              percent >= 0 ? "url('#myGradientLight')" : "rgba(9, 11, 21, 0.32)"
+            }`}
             cx="64"
             cy="64"
             r="60"
           ></circle>
+          <linearGradient id="myGradientLight" gradientTransform="rotate(90)">
+            <stop offset="0%" stopColor="#14F195" />
+            <stop offset="100%" stopColor="#14F1D6" />
+          </linearGradient>
         </svg>
       </div>
     </div>
