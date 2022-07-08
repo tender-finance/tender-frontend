@@ -1,5 +1,3 @@
-import { map } from "mathjs";
-
 export default function Footer() {
   interface Link {
     label: string;
@@ -43,7 +41,7 @@ export default function Footer() {
   ];
 
   return (
-    <div className="c h-[120px] border-t md:border-none border-[#2B2B2B] flex-col-reverse justify-center items-center md:flex-row justify-between items-center flex max-w-[1400px]">
+    <div className="c h-[120px] border-t md:border-none border-[#2B2B2B] flex-col-reverse justify-center items-center md:flex-row justify-between items-center flex max-w-[1400px] md:h-[62px]">
       <div className="mb-[30px] md:mb-5 md:mb-0">
         <a href="/">
           <img

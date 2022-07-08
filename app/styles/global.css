@@ -85,9 +85,6 @@ body {
   border-top: 1px solid #282C2B;
 }
 
-.border__top__custom:last-child {
-  border-bottom: 1px solid #282C2B;
-}
 
 .pane-custom table {
   overflow-x: auto;
@@ -177,6 +174,8 @@ body {
   .header__burg.active span:nth-child(2n) {
     margin-top: -7px;
   }
+
+
 }
 
 @media screen and (max-width: 520px) {
@@ -187,6 +186,10 @@ body {
     display: block;
     width: 100%;
     padding-bottom: 19px;
+  }
+
+  .border__top__custom:last-child {
+    border-bottom: 1px solid #282C2B;
   }
 }
 

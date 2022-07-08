@@ -6,6 +6,7 @@
   body {
     @apply bg-brand-black text-white bg-no-repeat;
     background-image: url(/images/bg-top.svg);
+    background: #000;
   }
 
   .c {

@@ -1,10 +1,10 @@
 import { useContext, useState } from "react";
-import { TenderContext } from "~/contexts/tender-context";
-import MarketRow from "~/components/two-panes/market-row";
-import { toShortFiatString, toShortCryptoString } from "~/lib/ui";
-import BorrowFlow from "./borrow-flow";
 import ReactModal from "react-modal";
+import { TenderContext } from "~/contexts/tender-context";
 import { Market } from "~/types/global";
+import { toShortFiatString, toShortCryptoString } from "~/lib/ui";
+import MarketRow from "~/components/two-panes/market-row";
+import BorrowFlow from "./borrow-flow";
 import DepositFlow from "./deposit-flow";
 
 export default function TwoPanes() {
@@ -21,8 +21,6 @@ export default function TwoPanes() {
     setAction("borrowing");
     setOpenMarket(market);
   };
-
-  console.log(TenderContext);
 
   // markets with less than this amount are shown as not actively supplying or borrowing
   const DUST_LIMIT = 0.01;
@@ -120,7 +118,7 @@ export default function TwoPanes() {
                             src={m.tokenPair.token.icon}
                             alt={m.tokenPair.token.symbol}
                           />
-                          <span className="flex text-[14px] md:text-[16px]">
+                          <span className="flex text-[14px] md:text-[16px] uppercase">
                             {m.tokenPair.token.symbol}
                           </span>
                         </div>
@@ -149,77 +147,77 @@ export default function TwoPanes() {
           </div>
         )}
         {marketsWithoutSupply.length > 0 && (
-          <div className="mb-[20px] font-nova text-white text-[14px] font-semibold tracking-[0.1em] md:mb-[15px] md:text-x">
-            All Markets
-          </div>
-        )}
-        {marketsWithoutSupply.length > 0 && (
-          <div className="pb-[5px] md:pb-[0px] pane-custom border-custom">
-            <table className="w-full h-full table-fixed">
-              <thead>
-                <tr className="w-full text-xs text-[#818987] font-nova font-semibolt border-b border-[#282C2B] ">
-                  <th className="pr-[80px] pt-[15px] p-[15px] md:pr-[0px] md:pl-[30px] md:pr-[0px] text-start text-[12px] md:text-[14px]">
-                    Asset
-                  </th>
-                  <th className="whitespace-nowrap md:whitespace-normal pr-[51px] pt-[15px] p-[15px] md:pl-[40px] md:pr-[0px] text-start text-[12px] md:text-[14px]">
-                    Total Supply
-                  </th>
-                  <th className="whitespace-nowrap md:whitespace-normal pr-[50px] pt-[15px] p-[15px] md:pl-[40px] md:pr-[0px] text-start text-[12px] md:text-[14px]">
-                    Supply APY
-                  </th>
-                  <th className="pt-[15px] p-[15px] text-start text-[12px] md:text-[14px] md:py-[20px] md:px-[15px] md:py-[20px] md:px-[0px] md:py-[20px]">
-                    Wallet
-                  </th>
-                </tr>
-              </thead>
+          <div>
+            <div className="mb-[20px] font-nova text-white text-[14px] font-semibold tracking-[0.1em] md:mb-[15px] md:text-x">
+              All Markets
+            </div>
+            <div className="pb-[5px] md:pb-[0px] pane-custom border-custom">
+              <table className="w-full h-full table-fixed">
+                <thead>
+                  <tr className="w-full text-xs text-[#818987] font-nova font-semibolt border-b border-[#282C2B] ">
+                    <th className="pr-[80px] pt-[15px] p-[15px] md:pr-[0px] md:pl-[30px] md:pr-[0px] text-start text-[12px] md:text-[14px]">
+                      Asset
+                    </th>
+                    <th className="whitespace-nowrap md:whitespace-normal pr-[51px] pt-[15px] p-[15px] md:pl-[40px] md:pr-[0px] text-start text-[12px] md:text-[14px]">
+                      Total Supply
+                    </th>
+                    <th className="whitespace-nowrap md:whitespace-normal pr-[50px] pt-[15px] p-[15px] md:pl-[40px] md:pr-[0px] text-start text-[12px] md:text-[14px]">
+                      Supply APY
+                    </th>
+                    <th className="pt-[15px] p-[15px] text-start text-[12px] md:text-[14px] md:py-[20px] md:px-[15px] md:py-[20px] md:px-[0px] md:py-[20px]">
+                      Wallet
+                    </th>
+                  </tr>
+                </thead>
 
-              <tbody>
-                {marketsWithoutSupply.map((m) => {
-                  return (
-                    <MarketRow
-                      openMarket={() => depositInto(m)}
-                      market={m}
-                      key={m.id}
-                    >
-                      <td className="relative text-white font-nova font-normal pl-[14px] pb-[30px] md:pt-[24px] md:pb-[39px] md:pl-[30px] md:pr-[0px]">
-                        <div className="flex items-center jusstify-left">
-                          <img
-                            className="w-[24px] h-[24px] mr-[10px] md:mr-[16px] md:w-[40px] md:h-[40px]"
-                            src={m.tokenPair.token.icon}
-                            alt={m.tokenPair.token.symbol}
-                          />
-                          <span className="flex text-[14px] md:text-[16px]">
+                <tbody>
+                  {marketsWithoutSupply.map((m) => {
+                    return (
+                      <MarketRow
+                        openMarket={() => depositInto(m)}
+                        market={m}
+                        key={m.id}
+                      >
+                        <td className="relative text-white font-nova font-normal pl-[14px] pb-[30px] md:pt-[24px] md:pb-[39px] md:pl-[30px] md:pr-[0px]">
+                          <div className="flex items-center jusstify-left">
+                            <img
+                              className="w-[24px] h-[24px] mr-[10px] md:mr-[16px] md:w-[40px] md:h-[40px]"
+                              src={m.tokenPair.token.icon}
+                              alt={m.tokenPair.token.symbol}
+                            />
+                            <span className="flex text-[14px] md:text-[16px] uppercase">
+                              {m.tokenPair.token.symbol}
+                            </span>
+                          </div>
+                        </td>
+                        <td className="whitespace-nowrap md:whitespace-normal relative text-white font-nova font-normal pl-[14px] pb-[30px] md:pt-[24px] md:pb-[39px] md:pl-[40px] md:pr-[0px]">
+                          123.432 {m.tokenPair.token.symbol}
+                        </td>
+                        <td className="relative text-white font-nova font-normal pl-[14px] pb-[30px] md:pt-[24px] md:pb-[39px] md:pl-[40px] md:pr-[0px]">
+                          {m.marketData.depositApy}
+                        </td>
+                        <td className="relative text-white font-nova font-normal pb-[30px] md:pt-[24px] md:pb-[39px] md:pr-[30px] md:pl-[0px] pr-[15px]">
+                          <div className="custom__hidden">
+                            {toShortCryptoString(m.walletBalance)}{" "}
                             {m.tokenPair.token.symbol}
-                          </span>
-                        </div>
-                      </td>
-                      <td className="whitespace-nowrap md:whitespace-normal relative text-white font-nova font-normal pl-[14px] pb-[30px] md:pt-[24px] md:pb-[39px] md:pl-[40px] md:pr-[0px]">
-                        123.432 {m.tokenPair.token.symbol}
-                      </td>
-                      <td className="relative text-white font-nova font-normal pl-[14px] pb-[30px] md:pt-[24px] md:pb-[39px] md:pl-[40px] md:pr-[0px]">
-                        {m.marketData.depositApy}
-                      </td>
-                      <td className="relative text-white font-nova font-normal pb-[30px] md:pt-[24px] md:pb-[39px] md:pr-[30px] md:pl-[0px] pr-[15px]">
-                        <div className="custom__hidden">
-                          {toShortCryptoString(m.walletBalance)}{" "}
-                          {m.tokenPair.token.symbol}
-                        </div>
-                        <div className="custom__hidden break-words bg-dark-green text-dark-green rounded-md text-xs text-center py-1 px-2 absolute top-[40px] md:top-[57px] left-[0px]">
-                          {toShortFiatString(
-                            m.walletBalance * m.tokenPair.token.priceInUsd
-                          )}
-                          USD
-                        </div>
-                      </td>
-                    </MarketRow>
-                  );
-                })}
-              </tbody>
-            </table>
+                          </div>
+                          <div className="custom__hidden break-words bg-dark-green text-dark-green rounded-md text-xs text-center py-1 px-2 absolute top-[40px] md:top-[57px] left-[0px]">
+                            {toShortFiatString(
+                              m.walletBalance * m.tokenPair.token.priceInUsd
+                            )}
+                            USD
+                          </div>
+                        </td>
+                      </MarketRow>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
       </div>
-      {/* Borrowing*/}
+
       <div>
         {marketsWithBorrow.length > 0 && (
           <div className="pb-[5px] md:pb-[0px] pane-custom border-custom mb-[20px] md:mb-[40px]">
@@ -262,7 +260,7 @@ export default function TwoPanes() {
                           src={m.tokenPair.token.icon}
                           alt={m.tokenPair.token.symbol}
                         />
-                        <span className="flex text-[14px] md:text-[16px]">
+                        <span className="flex text-[14px] md:text-[16px] uppercase">
                           {m.tokenPair.token.symbol}
                         </span>
                       </td>
@@ -288,75 +286,75 @@ export default function TwoPanes() {
             </table>
           </div>
         )}
-
         {marketsWithoutBorrow.length > 0 && (
-          <div className="mb-[20px] font-nova text-white text-[14px] font-semibold tracking-[0.1em] md:mb-[15px] md:text-x">
-            All Markets
-          </div>
-        )}
-        {marketsWithoutBorrow.length > 0 && (
-          <div className="border-custom pane-custom">
-            <table className="w-full h-full table-fixed !pb-[23px] md:pb-[0px]  md:pt-[0px]">
-              <thead>
-                <tr className="w-full text-xs text-[#818987] font-nova font-semibolt border-b border-[#282C2B] ">
-                  <th className="pl-[15px] pt-[15px] pr-[80px] pb-[15px] md:pr-[0px] md:pl-[30px] md:pr-[0px] text-start text-[12px] md:text-[14px]">
-                    Asset
-                  </th>
-                  <th className="whitespace-nowrap md:whitespace-normal p-[15px] pr-[51px] md:pl-[40px] md:pr-[0px] text-start text-[12px] md:text-[14px]">
-                    Total Borrow
-                  </th>
-                  <th className="whitespace-nowrap md:whitespace-normal p-[15px] pr-[51px] md:pl-[40px] md:pr-[0px] text-start text-[12px] md:text-[14px]">
-                    Borrow APY
-                  </th>
-                  <th className="p-[15px] text-start text-[12px] md:text-[14px] md:py-[20px] md:px-[15px] md:py-[20px] md:px-[0px] md:py-[20px]">
-                    Available Borrow
-                  </th>
-                </tr>
-              </thead>
+          <div>
+            <div className="mb-[20px] font-nova text-white text-[14px] font-semibold tracking-[0.1em] md:mb-[15px] md:text-x">
+              All Markets
+            </div>
+            <div className="pb-[5px] md:pb-[0px] pane-custom border-custom">
+              <table className="w-full h-full table-fixed !pb-[23px] md:pb-[0px]  md:pt-[0px]">
+                <thead>
+                  <tr className="w-full text-xs text-[#818987] font-nova font-semibolt border-b border-[#282C2B] ">
+                    <th className="pl-[15px] pt-[15px] pr-[80px] pb-[15px] md:pr-[0px] md:pl-[30px] md:pr-[0px] text-start text-[12px] md:text-[14px]">
+                      Asset
+                    </th>
+                    <th className="whitespace-nowrap md:whitespace-normal p-[15px] pr-[51px] md:pl-[40px] md:pr-[0px] text-start text-[12px] md:text-[14px]">
+                      Total Borrow
+                    </th>
+                    <th className="whitespace-nowrap md:whitespace-normal p-[15px] pr-[51px] md:pl-[40px] md:pr-[0px] text-start text-[12px] md:text-[14px]">
+                      Borrow APY
+                    </th>
+                    <th className="p-[15px] text-start text-[12px] md:text-[14px] md:py-[20px] md:px-[15px] md:py-[20px] md:px-[0px] md:py-[20px]">
+                      Available Borrow
+                    </th>
+                  </tr>
+                </thead>
 
-              <tbody>
-                {marketsWithoutBorrow.map((m) => {
-                  return (
-                    <MarketRow
-                      openMarket={() => borrowFrom(m)}
-                      market={m}
-                      key={m.id}
-                    >
-                      <td className="relative text-white font-nova font-normal pl-[14px] pb-[30px] md:pt-[24px] md:pb-[39px] md:pl-[30px] md:pr-[0px]">
-                        <div className="flex items-center jusstify-left">
-                          <img
-                            className="w-[24px] h-[24px] mr-[10px] md:mr-[16px] md:w-[40px] md:h-[40px]"
-                            src={m.tokenPair.token.icon}
-                            alt={m.tokenPair.token.symbol}
-                          />
-                          <span className="flex text-[14px] md:text-[16px]">
+                <tbody>
+                  {marketsWithoutBorrow.map((m) => {
+                    return (
+                      <MarketRow
+                        openMarket={() => borrowFrom(m)}
+                        market={m}
+                        key={m.id}
+                      >
+                        <td className="relative text-white font-nova font-normal pl-[14px] pb-[30px] md:pt-[24px] md:pb-[39px] md:pl-[30px] md:pr-[0px]">
+                          <div className="flex items-center jusstify-left">
+                            <img
+                              className="w-[24px] h-[24px] mr-[10px] md:mr-[16px] md:w-[40px] md:h-[40px]"
+                              src={m.tokenPair.token.icon}
+                              alt={m.tokenPair.token.symbol}
+                            />
+                            <span className="flex text-[14px] md:text-[16px] uppercase">
+                              {m.tokenPair.token.symbol}
+                            </span>
+                          </div>
+                        </td>
+                        <td className="whitespace-nowrap md:whitespace-normal relative text-white font-nova text-sm font-normal pl-[14px] pb-[30px] md:pt-[24px] md:pb-[39px] md:pl-[40px] md:pr-[0px]">
+                          123.432 {m.tokenPair.token.symbol}
+                        </td>
+                        <td className="relative pl-[15px] pb-[30px] text-white font-nova font-normal md:pt-[24px] md:pb-[39px] md:pl-[40px] md:pr-[0px]">
+                          {m.marketData.borrowApy}
+                        </td>
+                        <td className="relative text-white font-nova font-normal pb-[30px] md:pt-[24px] md:pb-[39px] md:pr-[30px] md:pl-[0px] pr-[15px]">
+                          <div className="custom__hidden">
+                            {toShortCryptoString(m.maxBorrowLiquidity)}{" "}
                             {m.tokenPair.token.symbol}
-                          </span>
-                        </div>
-                      </td>
-                      <td className="whitespace-nowrap md:whitespace-normal relative text-white font-nova text-sm font-normal pl-[14px] pb-[30px] md:pt-[24px] md:pb-[39px] md:pl-[40px] md:pr-[0px]">
-                        123.432 {m.tokenPair.token.symbol}
-                      </td>
-                      <td className="relative pl-[15px] pb-[30px] text-white font-nova font-normal md:pt-[24px] md:pb-[39px] md:pl-[40px] md:pr-[0px]">
-                        {m.marketData.borrowApy}
-                      </td>
-                      <td className="relative text-white font-nova font-normal pb-[30px] md:pt-[24px] md:pb-[39px] md:pr-[30px] md:pl-[0px] pr-[15px]">
-                        <div className="custom__hidden">
-                          {toShortCryptoString(m.maxBorrowLiquidity)}{" "}
-                          {m.tokenPair.token.symbol}
-                        </div>
-                        <div className="custom__hidden break-words bg-dark-green text-dark-green rounded-md text-xs text-center py-1 px-2 absolute top-[40px] md:top-[57px] left-[0px]">
-                          {toShortFiatString(
-                            m.maxBorrowLiquidity * m.tokenPair.token.priceInUsd
-                          )}
-                          USD
-                        </div>
-                      </td>
-                    </MarketRow>
-                  );
-                })}
-              </tbody>
-            </table>
+                          </div>
+                          <div className="custom__hidden break-words bg-dark-green text-dark-green rounded-md text-xs text-center py-1 px-2 absolute top-[40px] md:top-[57px] left-[0px]">
+                            {toShortFiatString(
+                              m.maxBorrowLiquidity *
+                                m.tokenPair.token.priceInUsd
+                            )}
+                            USD
+                          </div>
+                        </td>
+                      </MarketRow>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
       </div>
