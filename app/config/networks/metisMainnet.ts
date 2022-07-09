@@ -9,7 +9,7 @@ export default {
   Tokens: {
     USDC: {
       name: "USDC",
-      symbol: "USDC",
+      symbol: "m.USDC",
       decimals: 6,
       address: "0xEA32A96608495e54156Ae48931A7c20f0dcc1a21",
       icon: "/images/coin-icons/usdc.svg",
@@ -23,7 +23,7 @@ export default {
     },
     ETH: {
       name: "ETH",
-      symbol: "ETH",
+      symbol: "WETH",
       decimals: 18,
       address: "0x420000000000000000000000000000000000000a",
       icon: "/images/coin-icons/ethereum.svg",
@@ -51,7 +51,7 @@ export default {
     },
     WBTC: {
       name: "wBTC",
-      symbol: "wBTC",
+      symbol: "WBTC",
       decimals: 8,
       address: "0xa5B55ab1dAF0F8e1EFc0eB1931a957fd89B918f4",
       icon: "/images/coin-icons/bitcoin.svg",
@@ -63,23 +63,23 @@ export default {
         address: "0xA1377dbB30BFdc548eE8c9d7Fa3693E512dD6288",
       },
     },
-    DAI: {
-      name: "DAI",
-      symbol: "DAI",
-      decimals: 18,
-      address: "0x4651B38e7ec14BB3db731369BFE5B08F2466Bd0A",
-      icon: "/images/coin-icons/dai.svg",
-      priceDecimals: 18,
-      cToken: {
-        name: "tDAI",
-        symbol: "tDAI",
-        decimals: 8,
-        address: "0x0fB0D26Ef8348c43d9eda482e180D54B0296DB22",
-      },
-    },
+    // DAI: {
+    //   name: "DAI",
+    //   symbol: "DAI",
+    //   decimals: 18,
+    //   address: "0x4651B38e7ec14BB3db731369BFE5B08F2466Bd0A",
+    //   icon: "/images/coin-icons/dai.svg",
+    //   priceDecimals: 18,
+    //   cToken: {
+    //     name: "tDAI",
+    //     symbol: "tDAI",
+    //     decimals: 8,
+    //     address: "0x0fB0D26Ef8348c43d9eda482e180D54B0296DB22",
+    //   },
+    // },
     USDT: {
       name: "USDT",
-      symbol: "USDT",
+      symbol: "m.USDT",
       decimals: 6,
       address: "0xbB06DCA3AE6887fAbF931640f67cab3e3a16F4dC",
       icon: "/images/coin-icons/usdt.svg",
