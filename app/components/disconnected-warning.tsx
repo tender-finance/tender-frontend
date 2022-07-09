@@ -60,7 +60,7 @@ export default function Disconnected() {
           }}
           className="text-center bg-brand-green text-gray-900 py-4 px-4 text-sm"
         >
-          Warning! Unsupported network.
+          Warning! Unsupported network.{" "}
           <button
             className="underline"
             onClick={() => tryConnectingToMetis(provider)}
