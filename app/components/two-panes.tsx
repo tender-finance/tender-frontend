@@ -41,8 +41,6 @@ export default function TwoPanes() {
     (m) => !m.supplyBalance || m.supplyBalanceInUsd <= 0.001
   );
 
-  console.log(markets);
-
   return (
     <div className="flex flex-col md:grid grid-cols-2 gap-[20px] mb-14">
       <ReactModal
