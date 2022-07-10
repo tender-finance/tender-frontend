@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { hooks, metaMask } from "~/connectors/meta-mask";
+import WalletDropdown from "./walletDropdown";
 const { useAccounts, useError, useIsActive } = hooks;
 
 export default function ConnectWallet() {
@@ -21,13 +22,17 @@ export default function ConnectWallet() {
 
   return (
     <div className="box text-center">
-      {/* only on the client */}
       {onClient && (
         <>
           {isActive && accounts && (
-            <span className=" font-space flex items-center justify-center font-bold text-[10px] w-[100px] md:text-[15px] md:w-[auto]">
-              Connected as {truncateAccount(accounts)}
-            </span>
+            <WalletDropdown
+              walletId={truncateAccount(accounts)}
+              // openTop={false}
+              networkName={"test name"}
+              providerIco={"/images/ico/walletProvider.png"}
+              providerIcoLarge={"/images/ico/walletProviderL.png"}
+              isNetworkOnline={true}
+            />
           )}
 
           {/* Prompt to Install Metamask if window.ethereum is not available */}

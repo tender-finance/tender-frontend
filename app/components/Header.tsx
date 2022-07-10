@@ -74,44 +74,47 @@ export default function Header() {
             className="aside__menu__bac"
             onClick={() => setActivePopupMenu(false)}
           ></div>
-          <div className="aside__menu__container">
-            <div className="flex justify-center flex-col text-[#ADB5B3] font-nova-400 text-xl">
+          <div className="aside__menu__container flex items-center justify-center absolute w-[100%] max-w-[350px] top-[0px] z-10 right-[0px] left-[auto] bg-black py-[20px] px-[40px]">
+            <div className="relative flex justify-center items-center flex-col text-[#ADB5B3] font-nova-400 text-xl translate-y-[-45px]">
               <a
-                className="mb-2.5 cursor-pointer hover:text-white"
+                className="mb-[20px] font-nova text-white text-[18px] cursor-pointer"
                 href="https://docs.tender.fi/introduction/what-is-tender.fi"
               >
                 About
               </a>
               <a
-                className="mb-2.5 cursor-pointer hover:text-white"
+                className="mb-[20px] font-nova text-white text-[18px] cursor-pointer"
                 href="https://www.tender.fi/#roadmap"
               >
                 Roadmap
               </a>
               <a
-                className="mb-2.5 cursor-pointer hover:text-white"
+                className="mb-[20px] font-nova text-white text-[18px] cursor-pointer"
                 href="https://www.tender.fi/#partners"
               >
                 Partners
               </a>
               <a
-                className="mb-2.5 cursor-pointer hover:text-white"
+                className="mb-[20px] font-nova text-white text-[18px] cursor-pointer"
                 href="https://www.tender.fi/#team"
               >
                 Team
               </a>
               <a
-                className="mb-2.5 cursor-pointer hover:text-white"
+                className="mb-[20px] font-nova text-white text-[18px] cursor-pointer"
                 href="https://docs.tender.fi"
               >
                 Docs
               </a>
               <a
-                className="mb-2.5 cursor-pointer hover:text-white"
+                className="font-nova text-[18px] text-white cursor-pointer"
                 href="https://discord.com/invite/aKZ8hDBvYG"
               >
                 Community
               </a>
+            </div>
+            <div className="absolute left-[50%] bottom-[20px] translate-x-[-50%]">
+              <ConnectWallet />
             </div>
           </div>
         </div>

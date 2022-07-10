@@ -214,7 +214,7 @@ body {
 }
 
 .aside__menu__wrap.act {
-  transform: translate(calc(50% + 1px), 0px);
+  transform: translate(50%, 0px);
   right: 50%;
   left: auto;
 }
@@ -243,22 +243,7 @@ body {
 }
 
 .aside__menu__container {
-  width: 100%;
-  max-width: 350px;
-  height: 100vh;
-  margin-right: 0;
-  top: 0;
-  z-index: 10;
-  position: absolute;
-  right: 0;
-  left: auto;
-  background: #000;
-  padding: 20px 40px;
-  margin-right: 0px;
-}
-
-.aside__menu__container .header__menu-link {
-  margin-bottom: 20px;
+  height: calc(100vh - 63px);
 }
 
 .header__burg {
@@ -302,6 +287,37 @@ body {
 
 .header__burg span:last-of-type {
   /* width: 18px; */
+}
+
+.dropdown__button {
+  background-color: #181D1B;
+}
+
+.dropdown__arrow {
+  box-sizing: border-box;
+  border-style: solid;
+  border-color: white;
+  border-width: 0px 1px 1px 0px;
+  transform: rotate(45deg);
+  transition: border-width 150ms ease-in-out;
+  transition: all 0.3s;
+}
+
+.dropdown__arrow-active {
+  transform: rotate(225deg) translate(0%, -17%);
+}
+
+.dropdown__body {
+  opacity: 0%;
+  background-color: #181D1B;
+  transition: all 0.3s;
+  visibility: hidden;
+  z-index: 11;
+}
+
+.dropdown__body-active {
+  opacity: 100%;
+  visibility: visible;
 }
 
 .ReactModal__Content {

@@ -18,7 +18,9 @@ export default function AccountSummary() {
 
           <div className="absolute top-0 right-0"></div>
           <div className="absolute top-0 right-0"></div>
-          <div className="text-2xl md:text-4xl font-space font-normal">--</div>
+          <div className="text-[24px] md:text-4xl font-space font-normal">
+            --
+          </div>
           <div className="absolute top-[50%] left-[50%] translate__50 items-center flex justify-center"></div>
         </div>
       </div>

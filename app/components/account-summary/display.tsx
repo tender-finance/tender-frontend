@@ -26,14 +26,14 @@ export default function Display({
           </div>
 
           {netApy != null && (
-            <div className="text-4xl font-space font-normal">
+            <div className="text-[24px] md:text-4xl font-space font-normal">
               {netApy.toFixed(2)}%
             </div>
           )}
           <div className="absolute top-0 right-0"></div>
           <div className="absolute top-0 right-0"></div>
           {netApy == null && (
-            <div className="text-2xl md:text-4xl font-space font-normal">
+            <div className="text-[24px] md:text-4xl font-space font-normal">
               --
             </div>
           )}
