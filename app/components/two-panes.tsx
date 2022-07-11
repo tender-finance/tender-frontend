@@ -124,7 +124,10 @@ export default function TwoPanes() {
                         </div>
                       </td>
                       <td className="whitespace-nowrap md:whitespace-normal relative text-white font-nova font-normal pl-[14px] pb-[30px] md:pt-[24px] md:pb-[39px] md:pl-[30px] md:pr-[0px]">
-                        {m.marketData.marketSizeUsd} {m.tokenPair.token.symbol}
+                        {toShortCryptoString(
+                          Number(m.marketData.marketSizeUsd)
+                        )}{" "}
+                        {m.tokenPair.token.symbol}
                       </td>
                       <td className="relative text-white font-nova font-normal pl-[14px] pb-[30px] md:pt-[24px] md:pb-[39px] md:pl-[30px] md:pr-[0px]">
                         {m.marketData.depositApy}
@@ -191,7 +194,9 @@ export default function TwoPanes() {
                           </div>
                         </td>
                         <td className="whitespace-nowrap md:whitespace-normal relative text-white font-nova font-normal pl-[14px] pb-[30px] md:pt-[24px] md:pb-[39px] md:pl-[30px] md:pr-[0px]">
-                          {m.marketData.marketSizeUsd}{" "}
+                          {toShortCryptoString(
+                            Number(m.marketData.marketSizeUsd)
+                          )}{" "}
                           {m.tokenPair.token.symbol}
                         </td>
                         <td className="relative text-white font-nova font-normal pl-[14px] pb-[30px] md:pt-[24px] md:pb-[39px] md:pl-[30px] md:pr-[0px]">
@@ -268,7 +273,9 @@ export default function TwoPanes() {
                         </div>
                       </td>
                       <td className="whitespace-nowrap md:whitespace-normal relative text-white font-nova font-normal pl-[14px] pb-[30px] md:pt-[24px] md:pb-[39px] md:pl-[30px] md:pr-[0px]">
-                        {m.marketData.totalBorrowedUsd}{" "}
+                        {toShortCryptoString(
+                          Number(m.marketData.totalBorrowedUsd)
+                        )}{" "}
                         {m.tokenPair.token.symbol}
                       </td>
                       <td className="relative text-white font-nova font-normal pl-[14px] pb-[30px] md:pt-[24px] md:pb-[39px] md:pl-[30px] md:pr-[0px]">

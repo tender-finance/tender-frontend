@@ -409,7 +409,7 @@ async function getMarketSizeUsd(
   let value = await contract.totalSupply();
 
   // TODO: better formatting here, test net number is super big. This should probably initially be millions?
-  return `${value.toString().slice(0, 3)}M`;
+  return `${formatBigNumber(value, cToken.decimals)}`;
 }
 
 async function getTotalBorrowedUsd(
@@ -420,7 +420,7 @@ async function getTotalBorrowedUsd(
   let value = await contract.totalBorrows();
 
   // TODO: better formatting here, test net number is super big. This should probably initially be millions?
-  return `${value.toString().slice(0, 3)}M`;
+  return `${formatBigNumber(value, cToken.decimals)}`;
 }
 
 async function hasSufficientAllowance(
