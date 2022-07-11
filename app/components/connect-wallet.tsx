@@ -3,17 +3,11 @@ import { hooks, metaMask } from "~/connectors/meta-mask";
 import WalletDropdown from "./walletDropdown";
 const { useAccounts, useError, useIsActive } = hooks;
 
-export default function ConnectWallet() {
+export default function ConnectWallet({ inMenu }: { inMenu?: boolean }) {
   const accounts = useAccounts();
   const error = useError();
   const isActive = useIsActive();
-  const [onClient, setOnClient] = useState(false);
-
-  function truncateAccount(accounts: string[]): string {
-    return accounts
-      .map((account) => `${account.slice(0, 3)}...${account.slice(-4)}`)
-      .join(",");
-  }
+  const [onClient, setOnClient] = useState<boolean>(false);
 
   useEffect(() => {
     setOnClient(true);
@@ -26,12 +20,12 @@ export default function ConnectWallet() {
         <>
           {isActive && accounts && (
             <WalletDropdown
-              walletId={truncateAccount(accounts)}
-              // openTop={false}
-              networkName={"test name"}
-              providerIco={"/images/ico/walletProvider.png"}
-              providerIcoLarge={"/images/ico/walletProviderL.png"}
+              inMenu={inMenu}
+              addresses={accounts}
+              networkName={"Metis Network"}
+              walletIco={"/images/wallet-icons/metamask.svg"}
               isNetworkOnline={true}
+              handlerDisconnect={() => console.log("Disconnected")}
             />
           )}
 

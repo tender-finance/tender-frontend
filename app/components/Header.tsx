@@ -114,7 +114,7 @@ export default function Header() {
               </a>
             </div>
             <div className="absolute left-[50%] bottom-[20px] translate-x-[-50%]">
-              <ConnectWallet />
+              <ConnectWallet inMenu={true} />
             </div>
           </div>
         </div>

@@ -278,19 +278,9 @@ body {
 }
 
 .header__burg span {
-  /* width: 30px;
-  height: 3px; */
   background: #fff;
   border-radius: 30px;
   transition: all 0.3s, opacity 0.1s;
-}
-
-.header__burg span:last-of-type {
-  /* width: 18px; */
-}
-
-.dropdown__button {
-  background-color: #181D1B;
 }
 
 .dropdown__arrow {
@@ -318,6 +308,15 @@ body {
 .dropdown__body-active {
   opacity: 100%;
   visibility: visible;
+}
+
+.dropdown__button-inMenu {
+  width: 220px;
+  height: 50px;
+  padding: 17px 31px;
+  font-size: 16px;
+  line-height: 19.5px;
+  justify-content: center;
 }
 
 .ReactModal__Content {
