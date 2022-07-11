@@ -10,7 +10,7 @@ interface Props {
 }
 
 const WalletDropdown = (props: Props) => {
-  const [isOpen, setIsOpen] = useState<boolean>(true);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const dropdownRef = useRef<any>(null);
 
   function truncateAccount(account: string): string {
