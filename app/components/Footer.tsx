@@ -21,7 +21,7 @@ export default function Footer() {
   let resourceLinks: Link[] = [
     {
       label: "Telegram",
-      url: "http://t.me/tender_fi",
+      url: "http://t.me/tenderFi",
     },
     {
       label: "Twitter",
@@ -29,7 +29,7 @@ export default function Footer() {
     },
     {
       label: "Discord",
-      url: "https://discord.gg/CD2hKamT",
+      url: "https://discord.gg/TenderFi",
     },
   ];
   
