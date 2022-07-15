@@ -73,7 +73,7 @@ const WalletDropdown = (props: Props) => {
       </div>
 
       <div
-        className={`w-[220px] h-[245px] md:w-[219px] md:h-[250px] rounded-[6px] ${
+        className={`w-[220px] h-[200px] md:w-[219px] md:h-[200px] rounded-[6px] ${
           props.inMenu
             ? "bottom-[60px]"
             : "right-[0px] top-[calc(100%+5px)] md:right-[0px] md:top-[calc(100%+8px)]"
@@ -113,12 +113,12 @@ const WalletDropdown = (props: Props) => {
           >
             COPY ADDRESS
           </button>
-          <button
+          {/* <button
             onClick={props.handlerDisconnect}
             className="flex items-center justify-center leading-[20.4px] text-xs text-center text-dark-green font-bold rounded-[6px] border border-[#14f195] w-[189px] h-[38px] font-space"
           >
             DISCONNECT WALLET
-          </button>
+          </button> */}
         </div>
       </div>
     </div>
