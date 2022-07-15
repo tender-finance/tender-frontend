@@ -1,5 +1,5 @@
 import type { cToken, Token } from "~/types/global";
-import { type Signer, type Contract, utils } from "ethers";
+import {  Signer, Contract, utils } from "ethers";
 import { ethers, BigNumber } from "ethers";
 
 import SampleCTokenAbi from "~/config/sample-ctoken-abi";
@@ -401,26 +401,24 @@ async function borrow(
   // }
 }
 
-async function getMarketSizeUsd(
+async function getTotalSupply(
   signer: Signer,
-  cToken: cToken
-): Promise<string> {
-  let contract = new ethers.Contract(cToken.address, SampleCTokenAbi, signer);
-  let value = await contract.totalSupply();
+  tp: TokenPair
+): Promise<number> {
+  let contract = new ethers.Contract(tp.cToken.address, SampleCTokenAbi, signer);
+  let value: ethers.BigNumber = await contract.totalSupply();
 
-  // TODO: better formatting here, test net number is super big. This should probably initially be millions?
-  return `${formatBigNumber(value, cToken.decimals)}`;
+  return formatBigNumber(value, tp.cToken.decimals)
 }
 
-async function getTotalBorrowedUsd(
+async function getTotalBorrowed(
   signer: Signer,
-  cToken: cToken
-): Promise<string> {
-  let contract = new ethers.Contract(cToken.address, SampleCTokenAbi, signer);
-  let value = await contract.totalBorrows();
+  tp: TokenPair
+): Promise<number> {
+  let contract = new ethers.Contract(tp.cToken.address, SampleCTokenAbi, signer);
+  let value: ethers.BigNumber = await contract.totalBorrows();
 
-  // TODO: better formatting here, test net number is super big. This should probably initially be millions?
-  return `${formatBigNumber(value, cToken.decimals)}`;
+  return formatBigNumber(value, tp.token.decimals)
 }
 
 async function hasSufficientAllowance(
@@ -553,8 +551,8 @@ export {
   getTotalSupplyBalanceInUsd,
   repay,
   borrow,
-  getMarketSizeUsd,
-  getTotalBorrowedUsd,
+  getTotalSupply as getMarketSizeUsd,
+  getTotalBorrowed as getTotalBorrowedUsd,
   hasSufficientAllowance,
   projectBorrowLimit,
   getAssetPriceInUsd,

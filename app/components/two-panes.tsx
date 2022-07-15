@@ -135,7 +135,6 @@ export default function TwoPanes() {
                       <td className="relative text-white font-nova font-normal pb-[30px] md:pt-[24px] md:pb-[39px] md:pr-[30px] pr-[15px] md:pl-[10px]">
                         <div className="custom__hidden">
                           {toShortCryptoString(m.supplyBalance)}{" "}
-                          {m.tokenPair.token.symbol}
                         </div>
                         <div className="custom__hidden break-words bg-dark-green text-dark-green rounded-md text-xs text-center py-1 px-2 absolute top-[40px] md:top-[57px] left-[10px]">
                           {m.supplyBalanceInUsd.toFixed(2)}
@@ -205,7 +204,6 @@ export default function TwoPanes() {
                         <td className="relative text-white font-nova font-normal pb-[30px] md:pt-[24px] md:pb-[39px] md:pr-[30px] pr-[15px] md:pl-[10px]">
                           <div className="custom__hidden">
                             {toShortCryptoString(m.walletBalance)}{" "}
-                            {m.tokenPair.token.symbol}
                           </div>
                           <div className="custom__hidden break-words bg-dark-green text-dark-green rounded-md text-xs text-center py-1 px-2 absolute top-[40px] md:top-[57px] left-[10px]">
                             {toShortFiatString(
@@ -284,7 +282,6 @@ export default function TwoPanes() {
                       <td className="relative text-white font-nova font-normal pb-[30px] md:pt-[24px] md:pb-[39px] md:pr-[30px] pr-[15px] md:pl-[10px]">
                         <div className="custom__hidden">
                           {toShortCryptoString(m.borrowBalance)}{" "}
-                          {m.tokenPair.token.symbol}
                         </div>
                         <div className="custom__hidden break-words bg-dark-green text-dark-green rounded-md text-xs text-center py-1 px-2 absolute top-[40px] md:top-[57px] left-[10px]">
                           {m.borrowBalanceInUsd.toFixed(2)} {"USD"}
@@ -351,7 +348,6 @@ export default function TwoPanes() {
                         <td className="relative text-white font-nova font-normal pb-[30px] md:pt-[24px] md:pb-[39px] md:pr-[30px] pr-[15px] md:pl-[10px]">
                           <div className="custom__hidden">
                             {toShortCryptoString(m.maxBorrowLiquidity)}{" "}
-                            {m.tokenPair.token.symbol}
                           </div>
                           <div className="custom__hidden break-words bg-dark-green text-dark-green rounded-md text-xs text-center py-1 px-2 absolute top-[40px] md:top-[57px] left-[10px]">
                             {toShortFiatString(

@@ -36,8 +36,8 @@ const getMarketData = async (
 
   // TODO: don't think we're using these two fields,
   // but we might when we build the individual market pages?
-  let totalBorrowedUsd = await getTotalBorrowedUsd(signer, tp.cToken);
-  let marketSizeUsd = await getMarketSizeUsd(signer, tp.cToken);
+  let totalBorrowedUsd = await getTotalBorrowedUsd(signer, tp);
+  let marketSizeUsd = await getMarketSizeUsd(signer, tp);
 
   return {
     depositApy,
