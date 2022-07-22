@@ -8,11 +8,10 @@ export default function MarketRow(props: {
   children: React.ReactChild[];
   openMarket: Function;
 }) {
-
   return (
     <tr
       onClick={() => props.openMarket()}
-      className="text-gray-400 border-t border-t-gray-600 cursor-pointer"
+      className="h-[80px] md:h-auto text-gray-400 border-t border__top__custom cursor-pointer"
     >
       {props.children}
     </tr>

@@ -1,6 +1,3 @@
-import { useRef } from "react";
-import Ring from "./ring";
-
 const formatCurrency = (v: number): string => {
   return `$${v.toFixed(2)}`;
 };
@@ -11,58 +8,55 @@ export default function AccountSummary() {
   let borrowLimit = 0;
   let borrowLimitUsed = 0;
 
-  let leftLineRef = useRef(null);
-  let rightLineRef = useRef(null);
-
   return (
-    <div className="max-w-4xl m-auto mb-24">
-      <div className="flex mb-16">
-        <div className="w-1/3 flex flex-col justify-center items-center">
-          <div className="text-brand-green">Supply Balance</div>{" "}
-          <div className="text-3xl">
+    <div className="border-custom px-4 relative top__custom">
+      <div className="absolute w-[130px] h-[130px] top-[-80px] left-[50%] translate-x-[-50%] rounded-full md:w-[200px] md:h-[200px] md:top-[-67px] top__custom__value">
+        <div className="flex flex-col h-full justify-center items-center">
+          <div className="uppercase text-[#818987] text-[13px] leading-[170%] tracking-widest font-nova font-medium text-sm transform-custom">
+            Net APY
+          </div>
+
+          <div className="absolute top-0 right-0"></div>
+          <div className="absolute top-0 right-0"></div>
+          <div className="text-[24px] md:text-4xl font-space font-normal">
+            --
+          </div>
+          <div className="absolute top-[50%] left-[50%] translate__50 items-center flex justify-center"></div>
+        </div>
+      </div>
+      <div className="flex flex-col items-center mt-16 pt-[85px] md:flex-row justify-between my-6 mb-[44px] md:pt-[56px] md:my-6">
+        <div className="w-full md:max-w-[485px] flex flex-col justify-center items-center mb-[34px] md:mb-0">
+          <div className="text-dark-green font-nova font-semibold text-sm mb-[8px] md:mb-[9px]">
+            Supply Balance
+          </div>
+          <div className="text-2xl font-space md:text-3xl">
             {formatCurrency(totalSupplyBalanceInUsd)}
           </div>
         </div>
-        <div className="w-1/3 flex justify-center">
-          <div
-            style={{
-              background:
-                "linear-gradient(270deg, rgba(27, 214, 207, 0.4) 0%, rgba(0, 229, 175, 0.3) 100%), #111",
-              boxShadow: "0 0 100px rgba(27, 214, 207, 0.5)",
-            }}
-            className="bg-gray-800 rounded-full w-52 h-52  justify-start relative"
-          >
-            <div className="flex flex-col h-full justify-center items-center">
-              <div className="uppercase text-gray-100 text-sm">Net APY</div>
-              <div className="text-5xl font-light">--</div>
-              <div className="absolute top-0 right-0">
-                <Ring percent={0} />
-              </div>
-            </div>
+        <div className="w-full md:max-w-[487px] text-right  flex flex-col justify-center items-center">
+          <div className="text-dark-green font-nova font-semibold text-sm mb-[8px] md:mb-[9px]">
+            Borrow Balance
+          </div>
+          <div className="text-2xl font-space md:text-3xl">
+            {formatCurrency(totalBorrowedInUsd)}
           </div>
         </div>
-        <div className="w-1/3 text-right  flex flex-col justify-center items-center">
-          <div className="text-brand-blue">Borrow Balance</div>{" "}
-          <div className="text-3xl">{formatCurrency(totalBorrowedInUsd)}</div>
+      </div>
+      <div className="flex flex-col text-xs justify-center font-nova pb-4">
+        <div className="justify-self-start text-xs text-[#818987] pb-[6px] font-nova font-normal">
+          Borrow Limit
+        </div>
+        <div className="flex justify-between items-center">
+          <div className="mr-2 font-nova text-sm text-white">
+            {borrowLimitUsed}%
+          </div>
+          <div className="font-nova text-sm text-white">
+            {formatCurrency(borrowLimit)}
+          </div>
         </div>
       </div>
-      <div className="flex text-xs justify-center items-center">
-        <div className=" text-gray-400 mr-2">Borrow Limit</div>
-        <div
-          className="bg-green-300 mr-2 h-2 rounded-full"
-          style={{
-            background: "linear-gradient(270deg, #1BD6CF 0%, #00E5AF 100%)",
-            width: 0,
-            transition: "width 1s ease-out",
-          }}
-          ref={leftLineRef}
-        ></div>
-        <div className="mr-2">{borrowLimitUsed}%</div>
-        <div
-          className="bg-gray-300 mr-2 h-0.5 flex-grow"
-          ref={rightLineRef}
-        ></div>
-        <div>{formatCurrency(borrowLimit)}</div>
+      <div className="w-full flex absolute bottom-0 left-0">
+        <div className="bg-[#262D2A] h-[4px] flex-grow"></div>
       </div>
     </div>
   );

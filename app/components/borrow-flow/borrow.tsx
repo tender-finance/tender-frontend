@@ -1,8 +1,11 @@
 import { ICON_SIZE } from "~/lib/constants";
 import type { Market, TokenPair } from "~/types/global";
 import { useEffect, useState, useRef, useContext } from "react";
-import type { JsonRpcSigner, TransactionReceipt } from "@ethersproject/providers";
-import * as math from "mathjs"
+import type {
+  JsonRpcSigner,
+  TransactionReceipt,
+} from "@ethersproject/providers";
+import * as math from "mathjs";
 
 import clsx from "clsx";
 import toast from "react-hot-toast";
@@ -67,9 +70,11 @@ export default function Borrow({
     market.comptrollerAddress,
     market.tokenPair,
     market.maxBorrowLiquidity
-  )
+  );
 
-  let formattedMaxBorrowLimit : string = math.format(maxBorrowLimit, {notation: "fixed"})
+  let formattedMaxBorrowLimit: string = math.format(maxBorrowLimit, {
+    notation: "fixed",
+  });
 
   let maxBorrowAmount = useMaxBorrowAmount(
     borrowLimit,
@@ -93,78 +98,70 @@ export default function Borrow({
 
   return (
     <div>
-      {(txnHash !== "") && (
+      {txnHash !== "" && (
         <ConfirmingTransaction
           txnHash={txnHash}
           stopWaitingOnConfirmation={() => closeModal()}
         />
       )}
-      {(txnHash === "") && (
+      {txnHash === "" && (
         <div>
-          <div>
-            <div className="py-8 bg-brand-black-light">
-              <div className="float-right">
-                <button
-                  onClick={() => closeModal()}
-                  className="text-4xl rotate-45 text-gray-400 mr-8"
-                >
-                  +
-                </button>
-              </div>
-              <div className="flex align-middle justify-center items-center">
-                <img
-                  src={market.tokenPair.token.icon}
-                  style={{ width: ICON_SIZE }}
-                  className="mr-3"
-                  alt="icon"
-                />
-                <div>Borrow {market.tokenPair.token.symbol}</div>
-              </div>
-
-              <div className="flex flex-col justify-center items-center overflow-hidden">
-                <input
-                  ref={inputEl}
-                  onChange={(e) => setValue(e.target.value)}
-                  style={{ minHeight: 90 }}
-                  className={`w-full bg-transparent text-white text-center outline-none ${inputTextClass}`}
-                  defaultValue={0}
-                />
-
-                {parseFloat(borrowLimitUsed) < 80 && (
-                  <Max
-                    maxValue={`${formattedMaxBorrowLimit}`}
-                    updateValue={() => {
-                      if (!inputEl || !inputEl.current) return;
-                      inputEl.current.focus();
-                      inputEl.current.value = `${formattedMaxBorrowLimit}`;
-                      setValue(`${formattedMaxBorrowLimit}`);
-                    }}
-                    maxValueLabel={market.tokenPair.token.symbol}
-                    label="80% Max"
-                  />
-                )}
-              </div>
+          <div className="pt-8 bg-[#151515] relative border-[#B5CFCC2B] border-b">
+            <div className="absolute right-[10px] top-[15px] sm:right-[22px] sm:top-[24px]">
+              <button onClick={() => closeModal()} className="">
+                <img src="/images/ico/close.svg" />
+              </button>
             </div>
-            <div className="flex">
+            <div className="flex w-full align-middle justify-center items-center">
+              <img
+                src={market.tokenPair.token.icon}
+                style={{ width: ICON_SIZE }}
+                alt="icon"
+              />
+            </div>
+
+            <div className="flex flex-col justify-center items-center mt-6 overflow-hidden font-space">
+              <input
+                ref={inputEl}
+                onChange={(e) => setValue(e.target.value)}
+                style={{ minHeight: 90 }}
+                className={`w-full text-2xl bg-transparent text-white text-center outline-none ${inputTextClass}`}
+                defaultValue={0}
+              />
+
+              {parseFloat(borrowLimitUsed) < 80 && (
+                <Max
+                  maxValue={`${formattedMaxBorrowLimit}`}
+                  updateValue={() => {
+                    if (!inputEl || !inputEl.current) return;
+                    inputEl.current.focus();
+                    inputEl.current.value = `${formattedMaxBorrowLimit}`;
+                    setValue(`${formattedMaxBorrowLimit}`);
+                  }}
+                  maxValueLabel={market.tokenPair.token.symbol}
+                  label="80% Max"
+                />
+              )}
+            </div>
+            <div className="flex mt-6 uppercase">
               <button
-                className="flex-grow py-3 text-brand-green border-b-2 border-b-brand-green"
+                className="flex-grow py-2 text-[#14F195] border-b-4 uppercase border-b-[#14F195] font-space font-bold text-xs sm:text-base"
                 onClick={() => setIsRepaying(false)}
               >
                 Borrow
               </button>
               <button
-                className="flex-grow py-3"
+                className="flex-grow py-3 font-space font-bold text-xs sm:text-base uppercase"
                 onClick={() => setIsRepaying(true)}
               >
                 Repay
               </button>
             </div>
-            <div className="py-8" style={{ background: "#1C1E22" }}>
-              <div className="py-6 px-12" style={{ background: "#1C1E22" }}>
-                <div className="flex mb-4">
-                  <span className="font-bold mr-3">Borrow Rates</span>{" "}
-                </div>
-                <div className="flex items-center mb-3 text-gray-400  pb-6">
+          </div>
+          <div className="mt-5">
+            <div className="py-6 px-4 sm:px-12 bg-[#0D0D0D]">
+              <div className="flex flex-col items-center mb-3 text-gray-400  pb-6">
+                <div className="flex w-full sm:w-full items-center border-b border-[#282C2B] py-8">
                   <img
                     src={market.tokenPair.token.icon}
                     style={{ width: ICON_SIZE }}
@@ -174,99 +171,103 @@ export default function Borrow({
                   <div className="flex-grow">Borrow APY</div>
                   <div>{market.marketData.borrowApy}</div>
                 </div>
+              </div>
 
-                <BorrowBalance
-                  value={value}
-                  isValid={isValid}
-                  borrowBalance={totalBorrowedAmountInUsd}
-                  newBorrowBalance={newTotalBorrowedAmountInUsd}
-                  borrowLimitUsed={borrowLimitUsed}
-                  newBorrowLimitUsed={newBorrowLimitUsed}
-                />
+              <BorrowBalance
+                value={value}
+                isValid={isValid}
+                borrowBalance={totalBorrowedAmountInUsd}
+                newBorrowBalance={newTotalBorrowedAmountInUsd}
+                borrowLimitUsed={borrowLimitUsed}
+                newBorrowLimitUsed={newBorrowLimitUsed}
+              />
 
-                <div className="mb-8">
-                  {!signer && <div>Connect wallet to get started</div>}
-                  {signer && !isValid && (
-                    <button className="py-4 text-center  font-bold rounded  w-full bg-gray-600 ">
-                      {validationDetail || "Borrow"}
-                    </button>
-                  )}
-                  {signer && isValid && (
-                    <button
-                      onClick={async () => {
-                        try {
-                          toast.loading("Waiting for confirmation")
+              <div className="flex justify-center mb-8">
+                {!signer && <div>Connect wallet to get started</div>}
+                {signer && !isValid && (
+                  <button className="uppercase py-4 text-center text-black font-space font-bold text-base sm:text-lg rounded w-full bg-[#14F195] max-w-[300px]">
+                    {validationDetail || "Borrow"}
+                  </button>
+                )}
+                {signer && isValid && (
+                  <button
+                    onClick={async () => {
+                      try {
+                        if (!value) {
+                          toast("Please set a value", {
+                            icon: "⚠️",
+                          });
+                          return;
+                        }
+                        setIsBorrowing(true);
 
-                          if (!value) {
-                            toast("Please set a value", {
-                              icon: "⚠️",
-                            });
-                            return;
-                          }
-                          setIsBorrowing(true);
+                        let txn = await borrow(
+                          value,
+                          signer,
+                          market.tokenPair.cToken,
+                          market.tokenPair.token
+                        );
 
-                          let txn = await borrow(
-                            value,
-                            signer,
-                            market.tokenPair.cToken,
-                            market.tokenPair.token
-                          );
-
-                          setTxnHash(txn.hash);
-                          setIsWaitingToBeMined(true);
-
-                          let tr: TransactionReceipt = await txn.wait(2); // TODO: error handle if transaction fails
-
-                          updateTransaction(tr.blockHash);
-
-                          displayTransactionResult(tr.transactionHash, "Borrow successful");
-
-                        } catch (e) {
-                          toast.dismiss()
-                          console.log(e)
-
-                          if (e.transaction?.hash) {
-                            toast.error(()=><p>
-                              <a target="_blank" href={`https://andromeda-explorer.metis.io/tx/${e.transactionHash}/internal-transactions/`}>
+                        setTxnHash(txn.hash);
+                        setIsWaitingToBeMined(true);
+                        let tr: TransactionReceipt = await txn.wait(2);
+                        updateTransaction(tr.blockHash);
+                        toast.success("Borrow successful");
+                        displayTransactionResult(
+                          tr.transactionHash,
+                          "Borrow successful"
+                        );
+                        closeModal();
+                      } catch (e: any) {
+                        toast.error("Borrow unsuccessful");
+                        toast.dismiss();
+                        console.log(e);
+                        if (e.transaction?.hash) {
+                          toast.error(() => (
+                            <p>
+                              <a
+                                target="_blank"
+                                href={`https://andromeda-explorer.metis.io/tx/${e.transactionHash}/internal-transactions/`}
+                              >
                                 Borrow unsuccessful
-                              </a> 
-                            </p>)
-                          } else {
-                            toast.error("Borrow unsuccessful.");
-                          }
-
-                          setValue("")
-                        } finally {
-                          setIsBorrowing(false);
-                          setIsWaitingToBeMined(false);
+                              </a>
+                            </p>
+                          ));
                         }
-                      }}
-                      className={clsx(
-                        "py-4 text-center  font-bold rounded w-full text-white",
-                        {
-                          "bg-brand-green ": !isBorrowing,
-                          "bg-gray-600": isBorrowing,
-                        }
-                      )}
-                    >
-                      {isBorrowing ? "Borrowing..." : "Borrow"}
-                    </button>
-                  )}
-                </div>
+                      } finally {
+                        setIsWaitingToBeMined(false);
+                        setIsBorrowing(false);
+                      }
+                    }}
+                    className={clsx(
+                      "uppercase py-4 text-center text-black font-space font-bold text-base sm:text-lg rounded w-full bg-[#14F195] max-w-[300px]",
+                      {
+                        "bg-brand-green ": !isBorrowing,
+                        "bg-gray-600": isBorrowing,
+                      }
+                    )}
+                  >
+                    {isBorrowing ? "Borrowing..." : "Borrow"}
+                  </button>
+                )}
+              </div>
 
-                <div className="flex text-gray-500 mb-2">
-                  <div className="flex-grow">Currently Borrowing</div>
-                  <div>
-                    {toCryptoString(market.borrowBalance)}{" "}
-                    {market.tokenPair.token.symbol}
-                  </div>
+              <div className="flex mt-8">
+                <div className="flex-grow text-[#ADB5B3] font-nova text-base">
+                  Currently Borrowing
                 </div>
-                <div className="flex text-gray-500">
-                  <div className="flex-grow">Market Liquidity</div>
-                  <div>
-                    {toCryptoString(market.maxBorrowLiquidity)}{" "}
-                    {market.tokenPair.token.symbol}
-                  </div>
+                <div className="font-nova text-base">
+                  {toCryptoString(market.borrowBalance)}
+                  {market.tokenPair.token.symbol}
+                </div>
+              </div>
+              <div className="flex mt-8">
+                <div className="flex-grow text-[#ADB5B3] font-nova text-base">
+                  Market Liquidity
+                </div>
+                <div className="font-nova text-base">
+                  {toCryptoString(market.maxBorrowLiquidity)}
+                  {market.tokenPair.token.symbol}
                 </div>
               </div>
             </div>

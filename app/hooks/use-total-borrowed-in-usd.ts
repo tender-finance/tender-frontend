@@ -13,7 +13,7 @@ export function useTotalBorrowedInUsd(
     useState<number>(0);
 
   let poll = useInterval(7_000);
-  let { currentTransaction, isWaitingToBeMined } = useContext(TenderContext);
+  let { currentTransaction } = useContext(TenderContext);
 
   useEffect(() => {
     if (!signer) {
@@ -23,7 +23,7 @@ export function useTotalBorrowedInUsd(
     getTotalBorrowedInUsd(signer, tokenPairs).then((b) =>
       setTotalBorrowedAmountInUsd(b)
     );
-  }, [signer, tokenPairs, poll, currentTransaction, isWaitingToBeMined]);
+  }, [signer, tokenPairs, poll, currentTransaction]);
 
   return totalBorrowedAmountInUsd;
 }

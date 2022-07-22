@@ -42,7 +42,7 @@ export function useValidInput(
 
       let v: number = parseFloat(value);
 
-      if ((v === 0) || (v <= floor)) {
+      if (v <= floor) {
         setReason(InputValidationDetail.NEGATIVE_OR_ZERO);
         setIsValid(false);
       } else if (v > ceil) {

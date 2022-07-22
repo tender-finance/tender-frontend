@@ -52,7 +52,7 @@ export default function Disconnected() {
         });
   };
   return (
-    <div>
+    <div className="panel-top-wallet absolute top-[71px] left-[50%] w-[100%] md:top-[111px]">
       {isActive && !onSupportedChain && (
         <div
           style={{

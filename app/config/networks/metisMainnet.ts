@@ -9,7 +9,7 @@ export default {
   Tokens: {
     USDC: {
       name: "USDC",
-      symbol: "USDC",
+      symbol: "m.USDC",
       decimals: 6,
       address: "0xEA32A96608495e54156Ae48931A7c20f0dcc1a21",
       icon: "/images/coin-icons/usdc.svg",
@@ -23,7 +23,7 @@ export default {
     },
     ETH: {
       name: "ETH",
-      symbol: "ETH",
+      symbol: "WETH",
       decimals: 18,
       address: "0x420000000000000000000000000000000000000a",
       icon: "/images/coin-icons/ethereum.svg",
@@ -51,7 +51,7 @@ export default {
     },
     WBTC: {
       name: "wBTC",
-      symbol: "wBTC",
+      symbol: "WBTC",
       decimals: 8,
       address: "0xa5B55ab1dAF0F8e1EFc0eB1931a957fd89B918f4",
       icon: "/images/coin-icons/bitcoin.svg",
@@ -79,7 +79,7 @@ export default {
     // },
     USDT: {
       name: "USDT",
-      symbol: "USDT",
+      symbol: "m.USDT",
       decimals: 6,
       address: "0xbB06DCA3AE6887fAbF931640f67cab3e3a16F4dC",
       icon: "/images/coin-icons/usdt.svg",

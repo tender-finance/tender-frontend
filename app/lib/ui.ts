@@ -1,7 +1,7 @@
 import { roundNumber } from "./tender"
 import * as HRNumbers from "human-readable-numbers";
 
-const DEFAULT_TEXT_CLASS = "text-6xl";
+const DEFAULT_TEXT_CLASS = "sm:text-6xl";
 
 
 /**
@@ -26,7 +26,7 @@ const shrinkyInputClass = (len: number): string => {
   } else if (len > 9) {
     className = "text-4xl";
   } else if (len > 7) {
-    className = "text-5xl";
+    className = "sm:text-5xl";
   }
   return className;
 };

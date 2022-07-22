@@ -1,12 +1,15 @@
 import { ICON_SIZE } from "~/lib/constants";
 import type { Market } from "~/types/global";
 import { useContext, useEffect, useRef, useState } from "react";
-import type { JsonRpcSigner, TransactionReceipt } from "@ethersproject/providers";
+import type {
+  JsonRpcSigner,
+  TransactionReceipt,
+} from "@ethersproject/providers";
 import { useValidInput } from "~/hooks/use-valid-input";
 import toast from "react-hot-toast";
 import Max from "~/components/max";
 import clsx from "clsx";
-import * as math from "mathjs"
+import * as math from "mathjs";
 
 import { enable, deposit, hasSufficientAllowance } from "~/lib/tender";
 import BorrowLimit from "../fi-modal/borrow-limit";
@@ -48,7 +51,8 @@ export default function Deposit({
 
   let inputEl = useRef<HTMLInputElement>(null);
 
-  let { tokenPairs, updateTransaction, setIsWaitingToBeMined } = useContext(TenderContext);
+  let { tokenPairs, updateTransaction, setIsWaitingToBeMined } =
+    useContext(TenderContext);
 
   let newBorrowLimit = useProjectBorrowLimit(
     signer,
@@ -90,98 +94,129 @@ export default function Deposit({
     inputEl && inputEl.current && inputEl.current.select();
   }, []);
 
-  console.log(txnHash)
+  console.log(txnHash);
   return (
     <div>
-      {(txnHash !== "") && (
+      {txnHash !== "" && (
         <ConfirmingTransaction
           txnHash={txnHash}
           stopWaitingOnConfirmation={() => closeModal()}
         />
       )}
-      {(txnHash === "") && (
+      {txnHash === "" && (
         <div>
-          <div className="py-8 bg-brand-black-light relative">
-            <div className="float-right">
-              <button
-                onClick={() => closeModal()}
-                className="text-4xl rotate-45 text-gray-400 mr-8"
-              >
-                +
+          <div className="pt-8 bg-[#151515] relative border-[#B5CFCC2B] border-b">
+            <div className="absolute right-[10px] top-[15px] sm:right-[22px] sm:top-[24px]">
+              <button onClick={() => closeModal()} className="">
+                <img src="/images/ico/close.svg" />
               </button>
-            </div>
-            <div className="flex align-middle justify-center items-center">
-              <img
-                src={market.tokenPair.token.icon}
-                style={{ width: ICON_SIZE }}
-                className="mr-3"
-                alt="icon"
-              />
-              <div>Deposit {market.tokenPair.token.symbol}</div>
             </div>
 
             {!isEnabled && (
               <div>
-                <div className="max-w-sm text-center m-auto mt-5 mb-5 text-sm text-gray-400">
-                  To deposit or repay {market.tokenPair.token.symbol} to the
-                  Tender Protocol, you need to enable it first.
+                <div className="flex align-middle justify-center items-center">
+                  <img
+                    src={market.tokenPair.token.icon}
+                    className="w-6 mr-3"
+                    alt="icon"
+                  />
+                  {market.tokenPair.token.symbol}
+                </div>
+                <div className="flex flex-col items-center mt-5 rounded-2xl  px-4">
+                  <img
+                    src={market.tokenPair.token.icon}
+                    className="w-12"
+                    alt="icon"
+                  />
+                  <div className="max-w-sm text-center my-10 mt-5 mb-5 font-normal font-nova text-white text-sm">
+                    To Supply or Repay {market.tokenPair.token.symbol} to the
+                    Compound Protocol, you need to enable it first.
+                  </div>
                 </div>
               </div>
             )}
             {isEnabled && (
-              <div className="relative">
-                <Max
-                  maxValue={math.format(walletBalance, {notation: "fixed"})}
-                  updateValue={() => {
-                    let value = math.format(walletBalance, {notation: "fixed"})
-                    if (!inputEl || !inputEl.current) return;
-                    inputEl.current.focus();
-                    inputEl.current.value = value;
-                    setValue(value)
-                  }}
-                  maxValueLabel={market.tokenPair.token.symbol}
-                />
-                <div className="flex flex-col justify-center items-center overflow-hidden">
-                  <input
-                    ref={inputEl}
-                    onChange={(e) => setValue(e.target.value)}
-                    style={{ minHeight: 90 }}
-                    className={`w-full bg-transparent  text-white text-center outline-none ${inputTextClass}`}
-                    defaultValue={0}
+              <div>
+                <div className="flex align-middle justify-center items-center">
+                  <img
+                    src={market.tokenPair.token.icon}
+                    className="w-12"
+                    alt="icon"
                   />
+                </div>
+                <div className="relative mt-6">
+                  <Max
+                    maxValue={walletBalance.toString()}
+                    updateValue={() => {
+                      let value = math.format(walletBalance, {
+                        notation: "fixed",
+                      });
+                      if (!inputEl || !inputEl.current) return;
+                      inputEl.current.focus();
+                      inputEl.current.value = value;
+                      setValue(value);
+                    }}
+                    maxValueLabel={market.tokenPair.token.symbol}
+                  />
+                  <div className="flex flex-col justify-center items-center overflow-hidden">
+                    <input
+                      ref={inputEl}
+                      onChange={(e) => setValue(e.target.value)}
+                      style={{ minHeight: 90 }}
+                      className={`w-full text-2xl bg-transparent text-white text-center outline-none ${inputTextClass}`}
+                      defaultValue={0}
+                    />
+                  </div>
                 </div>
               </div>
             )}
-          </div>
-
-          {/* Sub Navigation */}
-          <div className="flex mb-10">
-            <button
-              className="flex-grow py-3 text-brand-green border-b-2 border-b-brand-green"
-              onClick={() => setIsSupplying(true)}
-            >
-              Deposit
-            </button>
-            <button
-              className="flex-grow py-3"
-              onClick={() => setIsSupplying(false)}
-            >
-              Withdraw
-            </button>
-          </div>
-          <div className="py-6 px-12" style={{ background: "#1C1E22" }}>
-            <div className="flex mb-4">
-              <span className="font-bold mr-3">Deposit Rates</span>{" "}
+            <div className="flex mt-6 uppercase">
+              <button
+                className="flex-grow py-2 text-[#14F195] border-b-4 uppercase border-b-[#14F195] font-space font-bold text-xs sm:text-base"
+                onClick={() => setIsSupplying(true)}
+              >
+                Supply
+              </button>
+              <button
+                className="flex-grow py-3 font-space font-bold text-xs sm:text-base uppercase"
+                onClick={() => setIsSupplying(false)}
+              >
+                Withdraw
+              </button>
             </div>
-            <div className="flex items-center mb-3 text-gray-400  pb-6">
-              <img
-                src={market.tokenPair.token.icon}
-                style={{ width: ICON_SIZE }}
-                className="mr-3"
-                alt="icon"
-              />
-              <div className="flex-grow">Deposit APY</div>
-              <div>{market.marketData.depositApy}</div>
+          </div>
+          {/* Sub Navigation */}
+          <div className="px-4 py-6 sm:px-12" style={{ background: "#0D0D0D" }}>
+            <div className="flex flex-col items-center mb-3 text-gray-400 pb-6">
+              <div className="flex w-full sm:w-full items-center border-b border-[#282C2B] py-8">
+                <div className="w-6 mr-3 sm:w-12">
+                  <img
+                    src={market.tokenPair.token.icon}
+                    style={{ width: ICON_SIZE }}
+                    className=""
+                    alt="icon"
+                  />
+                </div>
+                <div className="flex-grow font-nova text-sm sm:text-base text-[#ADB5B3]">
+                  Supply APY
+                </div>
+                <div>{market.marketData.depositApy}</div>
+              </div>
+              {/* <div className="flex w-full sm:w-full items-center py-8">
+                <div className="w-6 mr-3 sm:w-12">
+                  <img
+                    src={market.tokenPair.token.icon}
+                    style={{ width: ICON_SIZE }}
+                    className=""
+                    alt="icon"
+                  />
+                </div>
+
+                <div className="flex-grow font-nova text-sm sm:text-base  text-[#ADB5B3]">
+                  Distribution APY
+                </div>
+                <div>{market.marketData.depositApy}</div>
+              </div> */}
             </div>
             <BorrowLimit
               value={value}
@@ -191,7 +226,7 @@ export default function Deposit({
               borrowLimitUsed={borrowLimitUsed}
               newBorrowLimitUsed={newBorrowLimitUsed}
             />
-            <div className="mb-8">
+            <div className="flex justify-center mb-8">
               {!signer && <div>Connect wallet to get started</div>}
               {signer && !isEnabled && (
                 <button
@@ -212,7 +247,7 @@ export default function Deposit({
                     }
                   }}
                   className={clsx(
-                    "py-4 text-center text-white font-bold rounded bg-brand-green w-full",
+                    "py-4 text-center text-black font-bold uppercase rounded bg-[#14F195] w-full max-w-[250px] font-space",
                     {
                       "bg-brand-green": !isEnabling,
                       "bg-gray-200": isEnabling,
@@ -224,7 +259,7 @@ export default function Deposit({
               )}
 
               {signer && isEnabled && !isValid && (
-                <button className="py-4 text-center font-bold rounded  w-full bg-gray-600">
+                <button className="uppercase py-4 text-center text-black font-space font-bold text-base sm:text-lg rounded w-full bg-[#14F195] max-w-[300px]">
                   {validationDetail}
                 </button>
               )}
@@ -239,7 +274,6 @@ export default function Deposit({
                         });
                         return;
                       }
-                      toast.loading("Waiting for confirmation")
                       setIsDepositing(true);
                       let txn = await deposit(
                         value,
@@ -252,29 +286,37 @@ export default function Deposit({
                       let tr: TransactionReceipt = await txn.wait(2);
                       updateTransaction(tr.blockHash);
 
-                      displayTransactionResult(tr.transactionHash, "Deposit successful");
+                      displayTransactionResult(
+                        tr.transactionHash,
+                        "Deposit successful"
+                      );
 
                       setValue("");
-                    } catch (e) {
-                      toast.dismiss()
-                      console.log(e)
+                    } catch (e: any) {
+                      toast.dismiss();
+                      console.log(e);
                       if (e.transaction?.hash) {
-                        toast.error(()=><p>
-                          <a target="_blank" href={`https://andromeda-explorer.metis.io/tx/${e.transactionHash}/internal-transactions/`}>
-                            Deposit unsuccessful
-                          </a> 
-                        </p>)
+                        toast.error(() => (
+                          <p>
+                            <a
+                              target="_blank"
+                              href={`https://andromeda-explorer.metis.io/tx/${e.transactionHash}/internal-transactions/`}
+                            >
+                              Deposit unsuccessful
+                            </a>
+                          </p>
+                        ));
                       } else {
                         toast.error("Deposit unsuccessful.");
                       }
-                  } finally {
-                      console.log("finally")
+                    } finally {
+                      console.log("finally");
                       setIsWaitingToBeMined(false);
                       setIsDepositing(false);
                     }
                   }}
                   className={clsx(
-                    "py-4 text-center font-bold rounded w-full text-white",
+                    "uppercase py-4 text-center text-black font-space font-bold text-base sm:text-lg rounded w-full bg-[#14F195] max-w-[300px]",
                     {
                       "bg-brand-green": !isDepositing,
                       "bg-gray-600": isDepositing,
@@ -285,9 +327,11 @@ export default function Deposit({
                 </button>
               )}
             </div>
-            <div className="flex text-gray-500">
-              <div className="flex-grow">Wallet Balance</div>
-              <div>
+            <div className="flex mt-8">
+              <div className="flex-grow text-[#ADB5B3] font-nova text-base font-normal">
+                Currently Supplying
+              </div>
+              <div className="font-nova text-base">
                 {toCryptoString(walletBalance)} {market.tokenPair.token.symbol}
               </div>
             </div>
