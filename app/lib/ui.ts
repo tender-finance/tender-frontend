@@ -40,7 +40,7 @@ const shrinkyInputClass = (len: number): string => {
 export const toFiatString = (v: number): string => {
   let roundedNumber = parseFloat(v.toFixed(2));
   return `${roundedNumber.toLocaleString("en-US", {
-    style: "currency",
+    // style: "currency",
     currency: "USD",
   })}`;
 };
@@ -51,7 +51,8 @@ export const toShortFiatString = (v: number): string => {
 };
 
 export const toShortCryptoString = (v: number): string => {
-  return `${v > A_BIG_NUMBER ? HRNumbers.toHumanString(v) : toCryptoString(roundNumber(v))}`;
+  let value = `${v > A_BIG_NUMBER ? HRNumbers.toHumanString(v) : toCryptoString(roundNumber(v))}`;
+  return value.slice(0, 16);
 };
 
 /**
@@ -63,7 +64,7 @@ export const toCryptoString = (v: number): string => {
   var s: string;
   if (v > 1) {
     // Applies commas to large numbers
-    s = toFiatString(v).substring(1);
+    s = toFiatString(v);
   } else {
     s = v
       .toFixed(7)// round to 7 places instead of 6

@@ -9,7 +9,7 @@ import {
 } from "./tender";
 
 function formatApy(apy: number): string {
-  return `${apy.toFixed(2).toString()}%`;
+  return `${apy.toFixed(2)}%`;
 }
 
 // https://compound.finance/docs#protocol-math
@@ -21,16 +21,14 @@ function formatApy(apy: number): string {
 //
 // This might be a mistake, but I get the correct APYs based on Compound on Rinkeby.
 function calculateApy(decimals: number, ratePerBlock: number): number {
+  const daysPerYear = 365;
   const blocksPerDay = 2000; // an estimate
-  // TODO: this should probably use token.decimals
+
+  // TODO: this should probably use token.decimals????
   const underlyingAssetMantissa = 1e18;
 
-  const supplyRate =
-    (ratePerBlock / underlyingAssetMantissa) * blocksPerDay + 1;
-
-  const daysPerYear = 365;
-
-  const apy = (Math.pow(supplyRate, daysPerYear) - 1) * 100;
+  // coppied from https://compound.finance/docs
+  const apy = (((Math.pow((ratePerBlock / underlyingAssetMantissa * blocksPerDay) + 1, daysPerYear))) - 1) * 100;
 
   return apy;
 }
