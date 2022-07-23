@@ -406,9 +406,13 @@ async function getTotalSupply(
   tp: TokenPair
 ): Promise<number> {
   let contract = new ethers.Contract(tp.cToken.address, SampleCTokenAbi, signer);
-  let value: ethers.BigNumber = await contract.totalSupply();
 
-  return formatBigNumber(value, tp.cToken.decimals)
+  let cash: ethers.BigNumber = await contract.getCash();
+  let borrows: ethers.BigNumber = await contract.totalBorrows();
+  let reserves: ethers.BigNumber = await contract.totalReserves();
+  let value = cash.add(borrows).sub(reserves)
+
+  return formatBigNumber(value, tp.token.decimals)
 }
 
 async function getTotalBorrowed(
@@ -551,8 +555,8 @@ export {
   getTotalSupplyBalanceInUsd,
   repay,
   borrow,
-  getTotalSupply as getMarketSizeUsd,
-  getTotalBorrowed as getTotalBorrowedUsd,
+  getTotalSupply,
+  getTotalBorrowed,
   hasSufficientAllowance,
   projectBorrowLimit,
   getAssetPriceInUsd,

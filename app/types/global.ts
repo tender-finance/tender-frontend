@@ -63,8 +63,8 @@ export type Market = {
   marketData: {
     depositApy: string;
     borrowApy: string;
-    totalBorrowedUsd: number;
-    marketSizeUsd: number;
+    totalBorrowed: number;
+    marketSize: number;
   };
   walletBalance: number;
   supplyBalance: number;
